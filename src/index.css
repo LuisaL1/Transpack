@@ -1,0 +1,274 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/* Tokens de marca — Manual de Marca Transpack (agosto 2026) */
+@theme inline {
+  /* Principales */
+  --color-azul: #272b7c; /* Azul profundo: voz principal */
+  --color-naranja: #ff7619; /* Naranja ámbar: acción, debe guiar, no dominar */
+  /* Secundarios */
+  --color-beige: #faeed9; /* Cálido / humano */
+  --color-violeta: #2f2959; /* Soporte premium */
+  --color-gris: #f0f6f6; /* Fondo técnico */
+  /* Derivados */
+  --color-azul-900: #1b1e5c;
+  --color-azul-700: #34399a;
+  --color-naranja-600: #e8620a;
+  --color-tinta: #1d2050;
+  --color-texto: #3e4160;
+  --color-suave: #6b6e8a;
+  --color-linea: #e1e5ee;
+  --color-whatsapp: #25d366;
+
+  --font-title: "IBM Plex Sans", sans-serif;
+  --font-body: "Montserrat", sans-serif;
+
+  --shadow-card: 0 12px 32px -12px rgba(39, 43, 124, 0.22);
+  --shadow-float: 0 30px 60px -20px rgba(29, 32, 80, 0.35);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  color: var(--color-texto);
+  background: #ffffff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Títulos: IBM Plex Sans SemiBold, tracking +2% */
+h1,
+h2,
+h3,
+h4 {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-tinta);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-naranja);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+/* Campos que ya muestran el foco con su propio borde (buscador, chat) */
+.no-ring:focus-visible {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #272b7c40;
+  border-radius: 4px;
+}
+
+/* ─── Aparición al hacer scroll (ver <Reveal />) ─────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── Animaciones ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.animate-draw {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: draw 1.6s 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+}
+.marquee:hover .animate-marquee {
+  animation-play-state: paused;
+}
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -56;
+  }
+}
+.route {
+  stroke-dasharray: 6 8;
+  animation: dash 3s linear infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+.pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulseRing 2.2s ease-out infinite;
+}
+
+@keyframes waRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+.wa-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--color-whatsapp);
+  animation: waRing 2.4s ease-out infinite;
+  z-index: -1;
+}
+
+/* FAQ con <details> */
+.faq summary {
+  list-style: none;
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq details[open] .faq-icon {
+  transform: rotate(45deg);
+  background: var(--color-naranja);
+  color: #fff;
+}
+
+/* Contenido de artículos del blog */
+.prose-tp h2 {
+  font-size: 1.5rem;
+  margin: 2.2rem 0 0.8rem;
+  color: var(--color-azul);
+}
+.prose-tp p {
+  margin: 0 0 1.1rem;
+}
+.prose-tp ul {
+  margin: 0 0 1.4rem;
+  padding-left: 1.2rem;
+  list-style: disc;
+}
+.prose-tp li {
+  margin-bottom: 0.6rem;
+}
+.prose-tp li::marker {
+  color: var(--color-naranja);
+}
+.prose-tp strong {
+  color: var(--color-tinta);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .animate-draw {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ─── Árabe (derecha a izquierda) ─────────────────────────────────────────── */
+/* El espaciado entre letras separa los caracteres árabes, que van unidos */
+[dir="rtl"] * {
+  letter-spacing: 0 !important;
+}
+[dir="rtl"] body {
+  font-family: "IBM Plex Sans Arabic", "Montserrat", sans-serif;
+  line-height: 1.75;
+}
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4 {
+  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif;
+  line-height: 1.35;
+}
+/* Las flechas apuntan en el sentido de lectura */
+[dir="rtl"] .bi-arrow-right::before,
+[dir="rtl"] .bi-arrow-left::before,
+[dir="rtl"] .bi-chevron-right::before,
+[dir="rtl"] .bi-arrow-return-left::before {
+  display: inline-block;
+  transform: scaleX(-1);
+}
