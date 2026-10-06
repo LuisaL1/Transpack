@@ -19,7 +19,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
-  const { pathname, hash, search } = useLocation();
+  const { pathname, hash, search, key } = useLocation();
   const { lang, lp, tr } = useLang();
   const MENUS = useMemo(() => menusFor(lang), [lang]);
   const t = headerText(tr);
@@ -59,7 +59,7 @@ export function Header() {
   useEffect(() => {
     setMenuOpen(false);
     setActive(null);
-  }, [pathname, hash, search]);
+  }, [pathname, hash, search, key]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";

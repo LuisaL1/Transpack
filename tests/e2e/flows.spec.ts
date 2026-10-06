@@ -104,3 +104,21 @@ test("cambio de idioma conserva la página", async ({ page, isMobile }) => {
   await expect(page).toHaveURL(/\/en\/services\//);
   await expect(page.locator("html")).toHaveAttribute("lang", /^en/);
 });
+
+test("el logo lleva al inicio y arriba, también estando ya en el inicio", async ({ page }) => {
+  const logo = page.getByRole("link", { name: "Transpack, inicio" }).first();
+  await page.goto("/nosotros");
+  await logo.click();
+  await expect(page).toHaveURL(/\/$/);
+  // Ya en el inicio, más abajo: el logo vuelve arriba
+  await page.mouse.wheel(0, 3000);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(1000);
+  await logo.click();
+  await expect.poll(() => page.evaluate(() => scrollY), { timeout: 5000 }).toBe(0);
+  // Desde una sección del inicio (#cotizar), también
+  await page.goto("/#cotizar");
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(1000);
+  await logo.click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect.poll(() => page.evaluate(() => scrollY), { timeout: 5000 }).toBe(0);
+});

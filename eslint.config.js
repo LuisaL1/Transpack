@@ -8,7 +8,16 @@ import security from "eslint-plugin-security";
 // Calidad (TypeScript + hooks de React), accesibilidad (jsx-a11y) y patrones
 // inseguros (eslint-plugin-security). Ver TESTING.md.
 export default tseslint.config(
-  { ignores: ["dist", "node_modules", "playwright-report", "test-results", "coverage"] },
+  {
+    ignores: [
+      "dist",
+      "node_modules",
+      "playwright-report",
+      "test-results",
+      "coverage",
+      "RecursosTranspack",
+    ],
+  },
   {
     files: ["**/*.{ts,tsx,js,mjs}"],
     extends: [

@@ -82,12 +82,14 @@ src/
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
 docs/                       conversion-y-analitica.md y seo.md
-tests/                      unit/ (Vitest), security/ (revisión estática), e2e/ (Playwright + axe)
+tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
+RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
 
-Los documentos fuente del cliente (modelo de negocio, lógica de cotización,
-blogs, manual de marca) están **fuera del repositorio**, en
-`../contexto/RecursosTranspack/` y `../marca/` (carpeta "pagina web transpack").
+Los documentos fuente del cliente están en `RecursosTranspack/` (contexto, no
+se publican): Modelo de Negocio, Lógica de Cotización, los tres artículos del
+blog en PDF, el Manual de Marca y, en `Imagenes/`, la imagen original de Joel, el
+logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 
 ### Reglas de código
 

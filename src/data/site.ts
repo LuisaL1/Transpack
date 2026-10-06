@@ -1,4 +1,4 @@
-// Contenido del sitio. Fuentes: carpeta contexto/RecursosTranspack (Modelo de
+// Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
 import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
