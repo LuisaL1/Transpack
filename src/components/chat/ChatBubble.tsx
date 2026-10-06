@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import type { ChatMsg } from "@/data/chat";
-import { Bi } from "@/components/ui";
 import { trackEvent } from "@/lib/analytics";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
+import { ChatList, ChatRow, chatRowCls } from "@/components/chat/ChatOptions";
 
-// Mensaje del chat: de Joel (izquierda, con acciones opcionales) o del visitante
+// Mensaje del chat: de Joel (izquierda, con acciones opcionales en el mismo
+// formato de lista con ícono que las opciones) o del visitante
 export function ChatBubble({ msg }: { msg: ChatMsg }) {
   const bot = msg.from === "bot";
   return (
@@ -23,16 +24,11 @@ export function ChatBubble({ msg }: { msg: ChatMsg }) {
           {msg.text}
         </div>
         {msg.actions && (
-          <div className="mt-2 flex flex-col gap-1.5">
-            {msg.actions.map((a) => {
-              const cls = `inline-flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-[0.84rem] font-semibold transition-colors ${
-                a.icon === "whatsapp"
-                  ? "bg-whatsapp text-white hover:brightness-95"
-                  : "border border-linea bg-white text-azul hover:bg-azul hover:text-white"
-              }`;
-              return a.to ? (
-                <Link key={a.label} to={a.to} className={cls}>
-                  <Bi n={a.icon} /> {a.label}
+          <ChatList className="mt-2">
+            {msg.actions.map((a) =>
+              a.to ? (
+                <Link key={a.label} to={a.to} className={chatRowCls}>
+                  <ChatRow icon={a.icon} label={a.label} />
                 </Link>
               ) : (
                 <a
@@ -41,13 +37,13 @@ export function ChatBubble({ msg }: { msg: ChatMsg }) {
                   onClick={() => a.event && trackEvent(a.event.name, a.event.params)}
                   target={a.href?.startsWith("http") ? "_blank" : undefined}
                   rel="noopener"
-                  className={cls}
+                  className={chatRowCls}
                 >
-                  <Bi n={a.icon} /> {a.label}
+                  <ChatRow icon={a.icon} label={a.label} />
                 </a>
-              );
-            })}
-          </div>
+              ),
+            )}
+          </ChatList>
         )}
       </div>
     </div>

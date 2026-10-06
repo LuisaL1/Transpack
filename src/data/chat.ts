@@ -33,8 +33,13 @@ export type ChatStep = {
   actions?: (d: ChatData) => ChatAction[];
 };
 
-const opts = (labels: string[], key: string, next: ChatOption["next"]): ChatOption[] =>
-  labels.map((l) => ({ label: l, next, set: { [key]: l } }));
+// Respuestas cortas de un paso: cada una con su ícono (mismo orden que las etiquetas)
+const opts = (
+  labels: string[],
+  key: string,
+  next: ChatOption["next"],
+  icons: string[],
+): ChatOption[] => labels.map((l, i) => ({ label: l, next, set: { [key]: l }, icon: icons.at(i) }));
 
 // ─── Conversación (en el idioma de la página) ─────────────────────────────────
 
@@ -107,6 +112,11 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
     },
     { label: tr("Hablar con un asesor", "Talk to an advisor"), next: "human", icon: "headset" },
   ];
+  const QUOTE: ChatOption = {
+    label: tr("Quiero cotizar", "I want a quote"),
+    next: "svc",
+    icon: "card-checklist",
+  };
   const BACK: ChatOption = {
     label: tr("Volver al inicio", "Back to start"),
     next: "start",
@@ -236,6 +246,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "cuando",
         (d) => (d.servicio === "internacional" ? "motivo" : "volumen"),
+        ["lightning-charge", "calendar-week", "calendar3", "calendar-check"],
       ),
     },
     motivo: {
@@ -250,6 +261,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "motivo",
         "modalidad",
+        ["briefcase", "mortarboard", "house-heart", "geo-alt", "flag"],
       ),
     },
     modalidad: {
@@ -267,6 +279,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "modalidad",
         "volumen",
+        ["water", "airplane", "question-circle"],
       ),
     },
     volumen: {
@@ -283,6 +296,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "volumen",
         (d) => (d.servicio === "internacional" ? "nombre" : "nivel"),
+        ["box-seam", "door-closed", "building", "house", "buildings"],
       ),
     },
     nivel: {
@@ -296,6 +310,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "nivel",
         "nombre",
+        ["truck", "shield-check", "stars", "question-circle"],
       ),
     },
 
@@ -311,6 +326,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "bodega_que",
         "bod_tiempo",
+        ["house-door", "lamp", "archive", "easel", "three-dots"],
       ),
     },
     bod_tiempo: {
@@ -325,6 +341,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ],
         "bodega_tiempo",
         "origen",
+        ["hourglass-split", "calendar-week", "calendar3", "calendar-range", "question-circle"],
       ),
     },
 
@@ -339,11 +356,13 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
       options: [
         {
           label: tr("Trasladar una oficina", "Move an office"),
+          icon: "buildings",
           next: "empresa",
           set: { servicio: "empresarial", tipo_corp: tr("Traslado de oficina", "Office move") },
         },
         {
           label: tr("Reubicar funcionarios", "Relocate employees"),
+          icon: "people",
           next: "empresa",
           set: {
             servicio: "empresarial",
@@ -352,6 +371,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         },
         {
           label: tr("Un acuerdo corporativo", "A corporate agreement"),
+          icon: "file-earmark-text",
           next: "empresa",
           set: {
             servicio: "empresarial",
@@ -360,6 +380,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         },
         {
           label: tr("Somos embajada u organismo", "We are an embassy or institution"),
+          icon: "flag",
           next: "empresa",
           set: {
             servicio: "empresarial",
@@ -435,7 +456,13 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           to: lp(`/?servicio=${quoteService(d)}#cotizar`),
         },
       ],
-      options: [{ label: tr("Empezar de nuevo", "Start over"), next: "reset" }],
+      options: [
+        {
+          label: tr("Empezar de nuevo", "Start over"),
+          next: "reset",
+          icon: "arrow-counterclockwise",
+        },
+      ],
     },
 
     faq: {
@@ -446,15 +473,28 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ),
       ],
       options: () => [
-        ...FAQS.map((f, i) => ({ label: f.q, next: "faq_answer", set: { faq: String(i) } })),
-        { label: tr("¿Qué servicios ofrecen?", "What services do you offer?"), next: "servicios" },
+        ...FAQS.map((f, i) => ({
+          label: f.q,
+          next: "faq_answer",
+          set: { faq: String(i) },
+          icon: "question-circle",
+        })),
+        {
+          label: tr("¿Qué servicios ofrecen?", "What services do you offer?"),
+          next: "servicios",
+          icon: "grid",
+        },
       ],
     },
     faq_answer: {
       say: (d) => [FAQS[Number(d.faq)]?.a ?? ""],
       options: [
-        { label: tr("Tengo otra pregunta", "I have another question"), next: "faq" },
-        { label: tr("Quiero cotizar", "I want a quote"), next: "svc" },
+        {
+          label: tr("Tengo otra pregunta", "I have another question"),
+          next: "faq",
+          icon: "question-circle",
+        },
+        QUOTE,
         BACK,
       ],
     },
@@ -467,7 +507,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
       ],
       actions: () =>
         SERVICES.map((s) => ({ label: s.title, icon: s.icon, to: lp(`/servicios/${s.slug}`) })),
-      options: [{ label: tr("Quiero cotizar", "I want a quote"), next: "svc" }, BACK],
+      options: [QUOTE, BACK],
     },
     human: {
       say: () => [
@@ -566,3 +606,30 @@ export const chatText = (tr: Tr) => ({
   message: tr("Mensaje", "Message"),
   send: tr("Enviar", "Send"),
 });
+
+// ─── Íconos de las opciones ─────────────────────────────────────────────────
+// Todas las opciones del chat se muestran como lista con ícono (el formato del
+// menú inicial), así que cada una necesita uno. Orden: el ícono propio de la
+// opción → el del servicio que elige (el mismo de su tarjeta en el sitio,
+// tomado de SERVICES o SEGMENTS, así un servicio nuevo hereda el suyo) →
+// pregunta → prefijos de las opciones que arma el cerebro de Joel → por defecto.
+const SITE_ES = siteFor("es");
+const PREFIX_ICONS: [RegExp, string][] = [
+  [/^(Cotizar|Pedir un estimado|Solicitar|Empezar mi)/i, "card-checklist"],
+  [/^(Ver|Conocer)\b/i, "box-arrow-up-right"],
+  [/^Hablar/i, "headset"],
+  [/^Contarte/i, "chat-dots"],
+];
+
+export function optionIcon(o: ChatOption): string {
+  if (o.icon) return o.icon;
+  const q = o.set?.servicio;
+  const fromData =
+    q &&
+    (SITE_ES.SERVICES.find((s) => s.quote === q)?.icon ??
+      SITE_ES.SEGMENTS.find((s) => s.quote === q)?.icon);
+  if (fromData) return fromData;
+  if (/^[¿?]/.test(o.label)) return "question-circle";
+  for (const [re, icon] of PREFIX_ICONS) if (re.test(o.label)) return icon;
+  return "chat-dots";
+}
