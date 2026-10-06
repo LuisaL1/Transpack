@@ -121,6 +121,7 @@ const SLUGS: Record<string, Record<L, string>> = {
 
 const PREFIXED = LANGS.filter((l) => l !== "es") as L[];
 
+/** Idioma de una ruta (el español va sin prefijo) */
 export const langOf = (pathname: string): Lang => {
   const first = pathname.split("/")[1] as L;
   return PREFIXED.includes(first) ? first : "es";

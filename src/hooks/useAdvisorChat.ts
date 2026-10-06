@@ -1,0 +1,220 @@
+// Lógica del chat de Joel: estado de la conversación, mensajes con indicador
+// de "escribiendo", invitación una vez por sesión, apertura desde otras partes
+// del sitio (evento "tp:open-chat") y, en español, el cerebro de Joel: entiende
+// texto libre, saluda según el comportamiento del visitante y aprende.
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  buildChat,
+  type ChatData,
+  type ChatMsg,
+  type ChatOption,
+  type ChatStep,
+} from "@/data/chat";
+import { joelKnowledge } from "@/data/joelKnowledge";
+import { useLang } from "@/i18n";
+import { routeChat } from "@/lib/chatRoute";
+import { createJoel, newMemory, QUOTE_TOPIC, track, type JoelReply } from "@/lib/joel";
+import { trackEvent } from "@/lib/analytics";
+
+// El cerebro se crea al usarse por primera vez (solo en español).
+let joelBrain: ReturnType<typeof createJoel> | null = null;
+const getJoel = () => (joelBrain ??= createJoel(joelKnowledge()));
+
+// Pasos que inician una cotización en el chat
+const QUOTE_STEPS = new Set(["origen", "int_info", "bod_que", "empresa"]);
+// Opciones que, al elegirse después de algo que Joel no entendió, le enseñan
+// a qué se refería el visitante.
+const LEARN_DEST: Record<string, string> = {
+  svc: "intent:cotizar",
+  human: "intent:contacto",
+  corp: "service:empresas",
+};
+
+export function useAdvisorChat() {
+  const [open, setOpen] = useState(false);
+  const [msgs, setMsgs] = useState<ChatMsg[]>([]);
+  const [stepId, setStepId] = useState("start");
+  const [data, setData] = useState<ChatData>({});
+  const [typing, setTyping] = useState(false);
+  const [text, setText] = useState("");
+  const [teaser, setTeaser] = useState(false);
+  const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const timers = useRef<number[]>([]);
+  const { lang } = useLang();
+  const STEPS = useMemo(() => buildChat(lang), [lang]);
+  const brain = lang === "es";
+  const mem = useRef(newMemory());
+  // Paso "dinámico": la respuesta que arma el cerebro de Joel a un texto libre
+  const dyn = useRef<ChatStep | null>(null);
+
+  const step = stepId === "dyn" && dyn.current ? dyn.current : STEPS[stepId];
+
+  const toStep = (r: JoelReply): ChatStep => ({
+    say: () => r.say,
+    actions: r.actions ? () => r.actions! : undefined,
+    options: r.options,
+  });
+
+  // Pasa un texto libre por el cerebro de Joel y muestra su respuesta
+  const think = (value: string, d: ChatData) => {
+    const r = getJoel().respond(value, mem.current);
+    track("chat", r.intent);
+    if (r.service) track("chat", `svc-${r.service}`);
+    trackEvent("chat_message", { intent: r.intent, service: r.service, lang });
+    dyn.current = toStep(r);
+    goTo("dyn", d);
+  };
+
+  // Muestra los mensajes de un paso uno a uno, con indicador de "escribiendo"
+  const goTo = (id: string, d: ChatData) => {
+    let target = id === "reset" ? "start" : id;
+    const nextData = id === "reset" ? {} : d;
+    if (id === "reset") {
+      setMsgs([]);
+      mem.current = newMemory();
+    }
+    // En español, el saludo se arma según lo que el visitante ha hecho en el sitio
+    if (target === "start" && brain) {
+      dyn.current = toStep(getJoel().greeting());
+      target = "dyn";
+    }
+    setData(nextData);
+    setStepId(target);
+    const s = target === "dyn" && dyn.current ? dyn.current : STEPS[target];
+    const lines = s.say(nextData);
+    setTyping(true);
+    let delay = 0;
+    lines.forEach((line, i) => {
+      delay += Math.min(1100, 450 + line.length * 6);
+      const last = i === lines.length - 1;
+      timers.current.push(
+        window.setTimeout(() => {
+          setMsgs((m) => [
+            ...m,
+            { from: "bot", text: line, actions: last ? s.actions?.(nextData) : undefined },
+          ]);
+          if (last) setTyping(false);
+        }, delay),
+      );
+    });
+  };
+
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  // Si cambia el idioma, la conversación se reinicia en el idioma nuevo
+  const firstLang = useRef(lang);
+  useEffect(() => {
+    if (firstLang.current === lang) return;
+    firstLang.current = lang;
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setTyping(false);
+    setData({});
+    setStepId("start");
+    setMsgs([]);
+    mem.current = newMemory();
+    if (open) goTo("start", {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
+
+  // Otros elementos del sitio (por ejemplo el menú) pueden abrir el chat
+  useEffect(() => {
+    const openChat = () => setOpen(true);
+    window.addEventListener("tp:open-chat", openChat);
+    return () => window.removeEventListener("tp:open-chat", openChat);
+  }, []);
+
+  // Saludo al abrir por primera vez
+  useEffect(() => {
+    if (open && msgs.length === 0 && !typing) goTo("start", {});
+    if (open) {
+      setTeaser(false);
+      trackEvent("chat_open", { lang });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  // Invitación discreta una sola vez por sesión
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("tp-chat-teaser") === "1";
+    } catch {
+      /* sin almacenamiento disponible */
+    }
+    if (seen) return;
+    const id = window.setTimeout(() => {
+      setTeaser(true);
+      try {
+        sessionStorage.setItem("tp-chat-teaser", "1");
+      } catch {
+        /* sin almacenamiento disponible */
+      }
+    }, 7000);
+    return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [msgs, typing]);
+
+  useEffect(() => {
+    if (open && step.input && !typing) inputRef.current?.focus();
+  }, [open, step, typing]);
+
+  const choose = (o: ChatOption) => {
+    const d = { ...data, ...o.set };
+    setMsgs((m) => [...m, { from: "user", text: o.label }]);
+    const next = typeof o.next === "function" ? o.next(d) : o.next;
+    if (brain) {
+      // Aprende de la elección si venía de algo que no entendió
+      const svc = o.set?.servicio as keyof typeof QUOTE_TOPIC | undefined;
+      const dest = svc && QUOTE_TOPIC[svc] ? `service:${QUOTE_TOPIC[svc]}` : LEARN_DEST[next];
+      if (dest) getJoel().learn(mem.current, dest);
+      if (next.startsWith("brain:")) {
+        think(next.slice(6), d);
+        return;
+      }
+    }
+    if (QUOTE_STEPS.has(next) && d.servicio) track("quote", d.servicio);
+    goTo(next, d);
+  };
+
+  const send = () => {
+    const value = text.trim();
+    if (!value || typing) return;
+    setText("");
+    setMsgs((m) => [...m, { from: "user", text: value }]);
+    if (step.input) {
+      const d = { ...data, [step.input.key]: value };
+      goTo(step.input.next(d), d);
+    } else if (brain) {
+      think(value, data);
+    } else {
+      const r = routeChat(value);
+      trackEvent("chat_message", { intent: `step-${r.next}`, lang });
+      goTo(r.next, { ...data, ...r.set });
+    }
+  };
+
+  const options = typeof step.options === "function" ? step.options(data) : (step.options ?? []);
+
+  return {
+    open,
+    setOpen,
+    teaser,
+    setTeaser,
+    msgs,
+    typing,
+    text,
+    setText,
+    step,
+    options,
+    choose,
+    send,
+    restart: () => goTo("reset", {}),
+    endRef,
+    inputRef,
+  };
+}

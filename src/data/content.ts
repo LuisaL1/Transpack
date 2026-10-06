@@ -1,4 +1,5 @@
-// Devuelve el contenido del sitio en el idioma de la URL actual.
+// Contenido del sitio en cada idioma (los hooks que lo leen según la URL están
+// en src/hooks/useContent.ts).
 import * as es from "@/data/site";
 import * as en from "@/data/site.en";
 import * as fr from "@/data/site.fr";
@@ -11,7 +12,7 @@ import { blogPosts as postsFr } from "@/data/blogData.fr";
 import { blogPosts as postsDe } from "@/data/blogData.de";
 import { blogPosts as postsIt } from "@/data/blogData.it";
 import { blogPosts as postsAr } from "@/data/blogData.ar";
-import { useLang, type Lang } from "@/i18n";
+import type { Lang } from "@/i18n";
 
 export type SiteContent = typeof es;
 
@@ -34,16 +35,6 @@ const POSTS: Record<Lang, Post[]> = {
 
 export const siteFor = (lang: Lang): SiteContent => SITES[lang];
 export const postsFor = (lang: Lang) => POSTS[lang];
-
-export function useSite() {
-  const { lang } = useLang();
-  return siteFor(lang);
-}
-
-export function usePosts() {
-  const { lang } = useLang();
-  return postsFor(lang);
-}
 
 // Nombres de los destinos del mapa en cada idioma (clave = nombre en español)
 export const DESTINATION_NAMES: Record<string, Record<Exclude<Lang, "es">, string>> = {
@@ -69,12 +60,44 @@ export const DESTINATION_NAMES: Record<string, Record<Exclude<Lang, "es">, strin
     ar: "الإمارات",
   },
   India: { en: "India", fr: "Inde", de: "Indien", it: "India", ar: "الهند" },
+  Brasil: { en: "Brazil", fr: "Brésil", de: "Brasilien", it: "Brasile", ar: "البرازيل" },
+  Argentina: {
+    en: "Argentina",
+    fr: "Argentine",
+    de: "Argentinien",
+    it: "Argentina",
+    ar: "الأرجنتين",
+  },
+  Chile: { en: "Chile", fr: "Chili", de: "Chile", it: "Cile", ar: "تشيلي" },
+  Perú: { en: "Peru", fr: "Pérou", de: "Peru", it: "Perù", ar: "بيرو" },
+  Marruecos: { en: "Morocco", fr: "Maroc", de: "Marokko", it: "Marocco", ar: "المغرب" },
+  Nigeria: { en: "Nigeria", fr: "Nigeria", de: "Nigeria", it: "Nigeria", ar: "نيجيريا" },
+  Kenia: { en: "Kenya", fr: "Kenya", de: "Kenia", it: "Kenya", ar: "كينيا" },
+  Sudáfrica: {
+    en: "South Africa",
+    fr: "Afrique du Sud",
+    de: "Südafrika",
+    it: "Sudafrica",
+    ar: "جنوب أفريقيا",
+  },
+  "Arabia Saudita": {
+    en: "Saudi Arabia",
+    fr: "Arabie saoudite",
+    de: "Saudi-Arabien",
+    it: "Arabia Saudita",
+    ar: "السعودية",
+  },
+  China: { en: "China", fr: "Chine", de: "China", it: "Cina", ar: "الصين" },
+  Japón: { en: "Japan", fr: "Japon", de: "Japan", it: "Giappone", ar: "اليابان" },
+  "Corea del Sur": {
+    en: "South Korea",
+    fr: "Corée du Sud",
+    de: "Südkorea",
+    it: "Corea del Sud",
+    ar: "كوريا الجنوبية",
+  },
+  Tailandia: { en: "Thailand", fr: "Thaïlande", de: "Thailand", it: "Thailandia", ar: "تايلاند" },
 };
 
 export const destinationName = (name: string, lang: Lang) =>
   lang === "es" ? name : (DESTINATION_NAMES[name]?.[lang] ?? name);
-
-export function useDestinationName() {
-  const { lang } = useLang();
-  return (name: string) => destinationName(name, lang);
-}

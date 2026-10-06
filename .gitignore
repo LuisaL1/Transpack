@@ -1,8 +1,16 @@
 node_modules/
 dist/
+dist-ssr/
 .vite/
 *.tsbuildinfo
 *.log
 .env*
+!.env.example
 .DS_Store
 .vercel
+
+# Pruebas
+coverage/
+playwright-report/
+test-results/
+blob-report/

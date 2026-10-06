@@ -1,103 +1,33 @@
 import { Link } from "react-router-dom";
-import imgEquipo from "@/imports/equipo.jpg";
-import imgEmbalaje from "@/imports/embalaje-sala.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import lacmaImg from "@/imports/lacma.jpg";
-import { useSite } from "@/data/content";
-import { useLang, type Tr } from "@/i18n";
+import imgEquipo from "@/assets/images/equipo.jpg";
+import imgEmbalaje from "@/assets/images/embalaje-sala.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import lacmaImg from "@/assets/images/lacma.jpg";
+import { useSite } from "@/hooks/useContent";
+import { useLang } from "@/i18n";
+import { aboutText, aboutTimeline, aboutValues } from "@/data/about";
+import { container, section } from "@/components/ui/layout";
 import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
 import { Bi, btn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 
-const container = "mx-auto w-[min(100%-32px,1200px)]";
-const section = "relative py-[clamp(72px,9vw,128px)]";
-
-const values = (tr: Tr) => [
-  {
-    icon: "people",
-    title: tr("Confianza", "Trust"),
-    text: tr(
-      "Empresas, embajadas y familias nos confían su patrimonio desde hace casi seis décadas.",
-      "Companies, embassies and families have trusted us with their belongings for almost six decades.",
-    ),
-  },
-  {
-    icon: "shield-check",
-    title: tr("Seguridad", "Security"),
-    text: tr(
-      "Embalaje técnico, inventarios precisos y trazabilidad en cada etapa del traslado.",
-      "Technical packing, accurate inventories and traceability at every stage of the move.",
-    ),
-  },
-  {
-    icon: "award",
-    title: tr("Experiencia", "Experience"),
-    text: tr(
-      "Más de 60 mil toneladas de menaje exportadas a 176 países.",
-      "More than 60,000 tons of household goods exported to 176 countries.",
-    ),
-  },
-  {
-    icon: "patch-check",
-    title: tr("Excelencia", "Excellence"),
-    text: tr(
-      "Estándares certificados por LACMA, IAM y PAIMA en origen y destino.",
-      "Standards certified by LACMA, IAM and PAIMA at origin and destination.",
-    ),
-  },
-];
-
-const timeline = (tr: Tr) => [
-  {
-    year: "1968",
-    text: tr(
-      "Nace Transpack en Bogotá, especializada en trasteos y mudanzas.",
-      "Transpack is founded in Bogotá, specializing in moving services.",
-    ),
-  },
-  {
-    year: tr("Décadas de red", "Decades of network"),
-    text: tr(
-      "Construimos una red de más de 2.000 agentes internacionales en 176 países.",
-      "We built a network of more than 2,000 international agents in 176 countries.",
-    ),
-  },
-  {
-    year: tr("Hoy", "Today"),
-    text: tr(
-      "Operamos mudanzas locales, nacionales, internacionales, bodegaje y movilidad corporativa.",
-      "We run local, national and international moves, storage and corporate mobility.",
-    ),
-  },
-  {
-    year: "2028",
-    text: tr(
-      "Visión: ser una de las compañías líderes en trasteos, mudanzas y bodegaje en Bogotá.",
-      "Vision: to be one of the leading moving and storage companies in Bogotá.",
-    ),
-  },
-];
-
-export default function NosotrosPage() {
+// Nosotros (/nosotros): historia, misión y visión, valores, clientes y
+// certificaciones. Textos en src/data/about.ts.
+export function NosotrosPage() {
   const { lp, tr } = useLang();
+  const t = aboutText(tr);
   const { EMBASSIES, SLOGAN, STATS } = useSite();
-  const VALUES = values(tr);
-  const TIMELINE = timeline(tr);
+  const VALUES = aboutValues(tr);
+  const TIMELINE = aboutTimeline(tr);
   return (
     <>
       <PageHero image={imgEquipo}>
         <div className="animate-fade-up max-w-3xl">
-          <Eyebrow light>{tr("Quiénes somos", "About us")}</Eyebrow>
+          <Eyebrow light>{t.quienesSomos}</Eyebrow>
           <h1 className="mb-6 text-[clamp(2.2rem,1.4rem+3vw,3.8rem)] leading-[1.08] !text-white">
-            {tr("Más de cinco décadas moviendo", "More than five decades moving")}{" "}
-            <span className="text-naranja">{tr("lo que más quieres", "what you love most")}</span>
+            {t.masCincoDecadasMoviendo} <span className="text-naranja">{t.masQuieres}</span>
           </h1>
-          <p className="max-w-2xl text-[1.1rem]">
-            {tr(
-              "Somos una organización consolidada desde 1968, especializada en trasteos locales, mudanzas nacionales e internacionales y bodegaje, con alta calidad en embalaje y traslados a cualquier parte de Colombia y el mundo.",
-              "We are an established company founded in 1968, specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world.",
-            )}
-          </p>
+          <p className="max-w-2xl text-[1.1rem]">{t.somosOrganizacionConsolidadaDesde}</p>
           <p className="mt-8 border-s-[3px] border-naranja ps-4 font-title text-[0.78rem] font-medium uppercase tracking-[0.14em] text-beige">
             {SLOGAN}
           </p>
@@ -129,25 +59,12 @@ export default function NosotrosPage() {
       <section id="historia" className={section}>
         <div className={`${container} grid items-start gap-14 lg:grid-cols-2 lg:gap-20`}>
           <Reveal>
-            <Eyebrow>{tr("Nuestra historia", "Our story")}</Eyebrow>
+            <Eyebrow>{t.nuestraHistoria}</Eyebrow>
             <h2 className="mb-6 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">
-              {tr(
-                "Una red operativa global que no se improvisa",
-                "A global operating network you can't improvise",
-              )}
+              {t.redOperativaGlobalNo}
             </h2>
-            <p className="mb-4">
-              {tr(
-                "Nuestra historia empezó hace 58 años, en un momento en el que el comercio internacional era más lento, más manual y con muchas más incertidumbres logísticas. Con el paso de las décadas construimos algo que no se improvisa: una red operativa global.",
-                "Our story began 58 years ago, when international trade was slower, more manual and far more uncertain. Over the decades we built something you can't improvise: a global operating network.",
-              )}
-            </p>
-            <p>
-              {tr(
-                "Hoy, esa red nos permite operar mudanzas marítimas y aéreas hacia Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica, con los mismos estándares en origen y en destino.",
-                "Today that network lets us run sea and air moves to the United States, Canada, the European Union, Asia and all of Latin America, with the same standards at origin and destination.",
-              )}
-            </p>
+            <p className="mb-4">{t.nuestraHistoriaEmpezoHace}</p>
+            <p>{t.hoyEsaRedNos}</p>
           </Reveal>
           <ol className="relative grid gap-8 border-s-2 border-dashed border-naranja/50 ps-8">
             {TIMELINE.map((t, i) => (
@@ -169,19 +86,13 @@ export default function NosotrosPage() {
           {[
             {
               icon: "bullseye",
-              title: tr("Misión", "Mission"),
-              text: tr(
-                "Queremos mantener el compromiso con nuestros clientes ofreciéndoles siempre lo mejor de nosotros en la prestación de servicios de trasteos, mudanzas y transporte a nivel local, nacional e internacional; soportado con una experiencia de más de cinco décadas, donde la atención personalizada, dedicación, cumplimiento y protección al medio ambiente son el fundamento pleno de nuestra gestión.",
-                "To keep our commitment to our clients by always giving our best in local, national and international moving and transport services, backed by more than five decades of experience, with personalized attention, dedication, reliability and environmental protection as the foundation of everything we do.",
-              ),
+              title: t.mision,
+              text: t.queremosMantenerCompromisoNuestros,
             },
             {
               icon: "eye",
-              title: tr("Visión", "Vision"),
-              text: tr(
-                "Para el año 2028 TRANSPACK SAS se perfila como una de las compañías líderes en trasteos locales y mudanzas nacionales e internacionales, así como servicios de bodegaje en Bogotá, reconocida por nuestra excelencia, calidad, experiencia y profesionalismo; permaneciendo siempre a la vanguardia, ofreciendo soluciones a las necesidades de logística de transporte y traslado en Colombia y en el mundo.",
-                "By 2028, TRANSPACK SAS aims to be one of the leading local, national and international moving and storage companies in Bogotá, recognized for its excellence, quality, experience and professionalism, always at the forefront and offering solutions to transport and relocation logistics needs in Colombia and around the world.",
-              ),
+              title: t.vision,
+              text: t.ano2028TranspackSas,
             },
           ].map((b, i) => (
             <Reveal
@@ -202,11 +113,7 @@ export default function NosotrosPage() {
       {/* Valores */}
       <section id="valores" className={section}>
         <div className={container}>
-          <SectionHead
-            center
-            eyebrow={tr("Valores", "Values")}
-            title={tr("Lo que nos mueve", "What drives us")}
-          />
+          <SectionHead center eyebrow={t.valores} title={t.nosMueve} />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map((v, i) => (
               <Reveal
@@ -229,12 +136,9 @@ export default function NosotrosPage() {
       <section id="clientes" className={`${section} overflow-hidden bg-violeta text-white/78`}>
         <div className={`${container} grid gap-14 lg:grid-cols-2`}>
           <Reveal>
-            <Eyebrow light>{tr("Estándar corporativo", "Corporate standard")}</Eyebrow>
+            <Eyebrow light>{t.estandarCorporativo}</Eyebrow>
             <h2 className="mb-6 text-[clamp(1.7rem,1.2rem+1.8vw,2.5rem)] leading-[1.15] !text-white">
-              {tr(
-                "La confianza de las marcas más exigentes",
-                "Trusted by the most demanding brands",
-              )}
+              {t.confianzaMarcasMasExigentes}
             </h2>
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
               {CLIENT_LOGOS.map((c) => (
@@ -244,6 +148,7 @@ export default function NosotrosPage() {
                   className="grid h-[76px] place-items-center rounded-2xl border border-white/10 bg-white/5 px-4 transition-colors hover:bg-white/10"
                 >
                   <img
+                    decoding="async"
                     src={c.src}
                     alt={c.name}
                     loading="lazy"
@@ -258,9 +163,9 @@ export default function NosotrosPage() {
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <Eyebrow light>{tr("Estándar diplomático", "Diplomatic standard")}</Eyebrow>
+            <Eyebrow light>{t.estandarDiplomatico}</Eyebrow>
             <h2 className="mb-6 text-[clamp(1.7rem,1.2rem+1.8vw,2.5rem)] leading-[1.15] !text-white">
-              {tr("Embajadas que han confiado en nosotros", "Embassies that have trusted us")}
+              {t.embajadasHanConfiadoNosotros}
             </h2>
             <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {EMBASSIES.map((e) => (
@@ -269,12 +174,7 @@ export default function NosotrosPage() {
                 </span>
               ))}
             </div>
-            <p className="text-[0.95rem]">
-              {tr(
-                "Además de entidades como la CAF y funcionarios de las Fuerzas Militares de Colombia y Estados Unidos: operaciones que exigen discreción, protocolo y absoluta confidencialidad.",
-                "As well as institutions such as CAF and personnel of the Colombian and United States Armed Forces: operations that demand discretion, protocol and complete confidentiality.",
-              )}
-            </p>
+            <p className="text-[0.95rem]">{t.ademasEntidadesComoCaf}</p>
           </Reveal>
         </div>
       </section>
@@ -284,52 +184,47 @@ export default function NosotrosPage() {
         <div className={`${container} grid items-center gap-14 lg:grid-cols-2 lg:gap-20`}>
           <Reveal className="grid grid-cols-2 gap-3">
             <img
+              loading="lazy"
+              decoding="async"
               src={imgEmbalaje}
-              alt={tr(
-                "Equipo de Transpack empacando en una sala",
-                "Transpack crew packing in a living room",
-              )}
+              alt={t.equipoTranspackEmpacandoSala}
               className="aspect-[3/4] h-full w-full rounded-[22px] object-cover"
             />
             <img
+              loading="lazy"
+              decoding="async"
               src={imgGuacales}
-              alt={tr("Guacales de madera para exportación", "Wooden export crates")}
+              alt={t.guacalesMaderaExportacion}
               className="mt-10 aspect-[3/4] h-full w-full rounded-[22px] object-cover"
             />
           </Reveal>
           <Reveal delay={100}>
-            <Eyebrow>{tr("Certificaciones", "Certifications")}</Eyebrow>
+            <Eyebrow>{t.certificaciones}</Eyebrow>
             <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">
-              {tr("Procesos reales, cuidado experto", "Real processes, expert care")}
+              {t.procesosRealesCuidadoExperto}
             </h2>
-            <p className="mb-6">
-              {tr(
-                "Nuestro trabajo se basa en la precisión, el cuidado y la metodología: inventarios detallados, embalaje técnico y una operación estructurada de principio a fin. Las certificaciones internacionales respaldan que tu mudanza se opera con el mismo estándar en cualquier parte del mundo.",
-                "Our work is built on precision, care and method: detailed inventories, technical packing and a structured operation from start to finish. International certifications ensure your move runs to the same standard anywhere in the world.",
-              )}
-            </p>
+            <p className="mb-6">{t.nuestroTrabajoBasaPrecision}</p>
             <div className="mb-8 flex items-center gap-4 rounded-2xl bg-gris p-4">
               <img
+                loading="lazy"
+                decoding="async"
                 src={lacmaImg}
-                alt={tr("Sello LACMA Certified Packers", "LACMA Certified Packers seal")}
+                alt={t.selloLacmaCertifiedPackers}
                 width={68}
                 height={68}
                 className="rounded-full bg-white p-1"
               />
               <div>
                 <strong className="block font-title font-semibold text-tinta">
-                  LACMA · IAM · PAIMA
+                  {t.certificationsList}
                 </strong>
                 <span className="text-[0.88rem] text-suave">
-                  {tr(
-                    "Asociaciones internacionales de empresas de mudanzas",
-                    "International associations of moving companies",
-                  )}
+                  {t.asociacionesInternacionalesEmpresasMudanzas}
                 </span>
               </div>
             </div>
             <Link to={lp("/#cotizar")} className={`${btn.primary} ${btn.md}`}>
-              {tr("Cotiza tu mudanza", "Get a moving quote")}
+              {t.cotizaMudanza}
             </Link>
           </Reveal>
         </div>

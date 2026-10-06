@@ -1,0 +1,79 @@
+# Integración continua: se ejecuta en cada push y pull request a main.
+# Calidad → seguridad → pruebas de extremo a extremo. Ver TESTING.md.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  calidad:
+    name: Calidad (tipos, lint, unitarias, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test:coverage
+      - run: pnpm build
+      # HTML pre-generado por ruta: títulos, canónicas, hreflang, JSON-LD, sitemap y robots
+      - run: pnpm test:seo
+      # Hoy el JS principal pesa ~830 KB (ver "Pendientes" en README.md): este
+      # límite evita que crezca sin que nadie lo note. Bájelo al dividir el bundle.
+      - name: Tamaño del build
+        run: |
+          du -sh dist
+          if find dist/assets -name '*.js' -size +900k | grep .; then
+            echo "Hay un bundle JS de más de 900 KB" && exit 1
+          fi
+
+  seguridad:
+    name: Seguridad (dependencias, secretos, código)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Vulnerabilidades conocidas en dependencias
+        run: pnpm test:deps
+      - name: Revisión estática (cabeceras, secretos, patrones inseguros)
+        run: pnpm test:security
+      - name: Búsqueda de secretos en el historial
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  e2e:
+    name: Extremo a extremo + accesibilidad
+    runs-on: ubuntu-latest
+    needs: calidad
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-playwright
+          path: playwright-report/
+          retention-days: 14

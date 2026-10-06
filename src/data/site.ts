@@ -1,14 +1,14 @@
 // Contenido del sitio. Fuentes: carpeta contexto/RecursosTranspack (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
-import imgEquipoSala from "@/imports/equipo-sala.jpg";
-import imgEmbalajeSala from "@/imports/embalaje-sala.jpg";
-import imgContenedor from "@/imports/contenedor.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import imgNuevaEtapa from "@/imports/nueva-etapa.jpg";
-import imgGlobal from "@/imports/global.jpg";
-import imgCargue from "@/imports/cargue.jpg";
-import imgProteccion from "@/imports/proteccion.jpg";
-import imgBarco from "@/imports/barco.jpg";
+import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgGlobal from "@/assets/images/global.jpg";
+import imgCargue from "@/assets/images/cargue.jpg";
+import imgProteccion from "@/assets/images/proteccion.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -404,8 +404,8 @@ export const SEGMENTS = [
   {
     id: "diaspora",
     icon: "airplane",
-    tab: "Diáspora",
-    kicker: "Diáspora internacional",
+    tab: "Vivir en el exterior",
+    kicker: "Te mudas a otro país o regresas a Colombia",
     title: "No solo llevamos tus cosas: facilitamos tu transición",
     text: "Si te vas a vivir a Estados Unidos, Canadá, Europa u otro destino, o regresas a Colombia, te acompañamos desde la planeación para que llegues con todo en orden.",
     points: [

@@ -1,38 +1,49 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSite } from "@/data/content";
+import { useSite } from "@/hooks/useContent";
 import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
-import NotFoundPage from "@/pages/NotFoundPage";
+import { NotFoundPage } from "@/pages/NotFoundPage";
+import { track } from "@/lib/joel";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";
+import { serviceDetailText } from "@/data/pages";
 
-export default function ServiceDetailPage() {
+// Detalle de servicio (/servicios/:slug). El servicio sale de SERVICES en
+// src/data/site.ts; los textos de la página están en src/data/pages.ts.
+export function ServiceDetailPage() {
   const { slug } = useParams();
   const { lang, lp, tr } = useLang();
+  const t = serviceDetailText(tr);
   const { FAQS, SERVICES, waLink } = useSite();
   // En inglés la URL trae el slug traducido; internamente se usa el de español
   const service = SERVICES.find((s) => s.slug === slugEs(slug ?? "", lang));
+  // Servicio abierto (perfil del visitante para Joel)
+  const serviceSlug = service?.slug;
+  useEffect(() => {
+    if (serviceSlug) track("service", serviceSlug);
+  }, [serviceSlug]);
   if (!service) return <NotFoundPage />;
 
   const others = SERVICES.filter((s) => s.slug !== service.slug);
   const quoteLink = lp(`/?servicio=${service.quote}#cotizar`);
-  const generic = service.cta === "Cotizar" || service.cta === tr("Cotizar", "Get a quote");
+  const generic = service.cta === "Cotizar" || service.cta === t.cotizar;
 
   return (
     <>
       <PageHero image={service.image}>
         <nav
-          aria-label={tr("Ruta", "Breadcrumb")}
+          aria-label={t.ruta}
           className="mb-6 flex items-center gap-2 text-[0.85rem] text-white/60"
         >
           <Link to={lp("/")} className="hover:text-white">
-            {tr("Inicio", "Home")}
+            {t.inicio}
           </Link>
           <Bi n="chevron-right" className="text-[0.7rem]" />
           <Link to={lp("/#servicios")} className="hover:text-white">
-            {tr("Servicios", "Services")}
+            {t.servicios}
           </Link>
           <Bi n="chevron-right" className="text-[0.7rem]" />
           <span className="text-white">{service.title}</span>
@@ -48,37 +59,15 @@ export default function ServiceDetailPage() {
           <p className="mb-8 max-w-2xl text-[1.08rem]">{service.short}</p>
           <div className="flex flex-wrap gap-3">
             <Link to={quoteLink} className={`${btn.primary} ${btn.lg} w-full sm:w-auto`}>
-              {generic
-                ? tr(
-                    `Cotizar ${service.title.toLowerCase()}`,
-                    `Get a ${service.title.toLowerCase()} quote`,
-                    {
-                      fr: "Demander un devis",
-                      de: "Angebot anfordern",
-                      it: "Richiedi un preventivo",
-                      ar: "اطلب عرض سعر",
-                    },
-                  )
-                : service.cta}
+              {generic ? t.quoteService(service.title) : service.cta}
             </Link>
             <a
-              href={waLink(
-                tr(
-                  `Hola Transpack, quiero información sobre: ${service.title}`,
-                  `Hello Transpack, I would like information about: ${service.title}`,
-                  {
-                    fr: `Bonjour Transpack, je souhaite des informations sur : ${service.title}`,
-                    de: `Hallo Transpack, ich hätte gern Informationen zu: ${service.title}`,
-                    it: `Ciao Transpack, vorrei informazioni su: ${service.title}`,
-                    ar: `مرحبًا ترانسباك، أود الحصول على معلومات حول: ${service.title}`,
-                  },
-                ),
-              )}
+              href={waLink(t.whatsappAbout(service.title))}
               target="_blank"
               rel="noopener"
               className={`${btn.ghost} ${btn.lg} w-full sm:w-auto`}
             >
-              <Bi n="whatsapp" /> {tr("Escríbenos", "Message us")}
+              <Bi n="whatsapp" /> {t.escribenos}
             </a>
           </div>
         </div>
@@ -88,9 +77,9 @@ export default function ServiceDetailPage() {
       <section className={section}>
         <div className={`${container} grid items-start gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-20`}>
           <Reveal>
-            <Eyebrow>{tr("El servicio", "The service")}</Eyebrow>
+            <Eyebrow>{t.servicio}</Eyebrow>
             <h2 className="mb-5 text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15]">
-              {tr("¿Cómo lo hacemos?", "How do we do it?")}
+              {t.comoHacemos}
             </h2>
             <p className="mb-8 text-[1.05rem]">{service.intro}</p>
             {service.note && (
@@ -100,7 +89,7 @@ export default function ServiceDetailPage() {
             )}
           </Reveal>
           <Reveal delay={100} className="rounded-[22px] bg-gris p-8 md:p-10">
-            <h3 className="mb-6 text-xl">{tr("Qué incluye", "What's included")}</h3>
+            <h3 className="mb-6 text-xl">{t.incluye}</h3>
             <Checks items={service.includes} />
           </Reveal>
         </div>
@@ -110,9 +99,9 @@ export default function ServiceDetailPage() {
       <section className={`${section} bg-azul text-white/75`}>
         <div className={container}>
           <Reveal className="mb-12">
-            <Eyebrow light>{tr("Paso a paso", "Step by step")}</Eyebrow>
+            <Eyebrow light>{t.pasoPaso}</Eyebrow>
             <h2 className="text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15] !text-white">
-              {tr("Así será tu proceso", "What your process looks like")}
+              {t.asiSeraProceso}
             </h2>
           </Reveal>
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -141,16 +130,11 @@ export default function ServiceDetailPage() {
       <section className={section}>
         <div className={`${container} grid items-start gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-20`}>
           <Reveal>
-            <Eyebrow>{tr("Preguntas frecuentes", "Frequently asked questions")}</Eyebrow>
+            <Eyebrow>{t.preguntasFrecuentes}</Eyebrow>
             <h2 className="mb-4 text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15]">
-              {tr("Antes de cotizar", "Before you get a quote")}
+              {t.antesCotizar}
             </h2>
-            <p className="text-suave">
-              {tr(
-                "Si tienes otra duda, escríbenos y un asesor te responde.",
-                "If you have another question, message us and an advisor will answer.",
-              )}
-            </p>
+            <p className="text-suave">{t.siTienesOtraDuda}</p>
           </Reveal>
           <Reveal className="faq">
             {FAQS.slice(0, 4).map((f) => (
@@ -172,10 +156,8 @@ export default function ServiceDetailPage() {
       <section className={`${section} bg-gris`}>
         <div className={container}>
           <Reveal className="mb-10">
-            <Eyebrow>{tr("Otros servicios", "Other services")}</Eyebrow>
-            <h2 className="text-[clamp(1.6rem,1.2rem+1.4vw,2.2rem)]">
-              {tr("Complementa tu traslado", "Complete your move")}
-            </h2>
+            <Eyebrow>{t.otrosServicios}</Eyebrow>
+            <h2 className="text-[clamp(1.6rem,1.2rem+1.4vw,2.2rem)]">{t.complementaTraslado}</h2>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {others.map((o, i) => (

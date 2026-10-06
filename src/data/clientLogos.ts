@@ -2,22 +2,22 @@
 // Simple Icons (DHL usa la versión de Commons). Se muestran en un solo tono gris
 // con CSS, así que los archivos pueden conservar sus colores originales.
 // "ratio" = ancho / alto del logo, para que todos se vean del mismo peso visual.
-import dhl from "@/imports/clientes/dhl.svg";
-import mitsubishi from "@/imports/clientes/mitsubishi.svg";
-import saintGobain from "@/imports/clientes/saintgobain.png";
-import sumitomo from "@/imports/clientes/sumitomo.svg";
-import holcim from "@/imports/clientes/holcim.svg";
-import schneider from "@/imports/clientes/schneider.svg";
-import mapfre from "@/imports/clientes/mapfre.svg";
-import airLiquide from "@/imports/clientes/airliquide.svg";
-import argos from "@/imports/clientes/argos.png";
-import teleperformance from "@/imports/clientes/teleperformance.svg";
-import pernodRicard from "@/imports/clientes/pernodricard.svg";
-import m3 from "@/imports/clientes/3m.svg";
-import santander from "@/imports/clientes/santander.svg";
-import nexans from "@/imports/clientes/nexans.svg";
-import cencosud from "@/imports/clientes/cencosud.svg";
-import smartFit from "@/imports/clientes/smartfit.svg";
+import dhl from "@/assets/images/clientes/dhl.svg";
+import mitsubishi from "@/assets/images/clientes/mitsubishi.svg";
+import saintGobain from "@/assets/images/clientes/saintgobain.png";
+import sumitomo from "@/assets/images/clientes/sumitomo.svg";
+import holcim from "@/assets/images/clientes/holcim.svg";
+import schneider from "@/assets/images/clientes/schneider.svg";
+import mapfre from "@/assets/images/clientes/mapfre.svg";
+import airLiquide from "@/assets/images/clientes/airliquide.svg";
+import argos from "@/assets/images/clientes/argos.png";
+import teleperformance from "@/assets/images/clientes/teleperformance.svg";
+import pernodRicard from "@/assets/images/clientes/pernodricard.svg";
+import m3 from "@/assets/images/clientes/3m.svg";
+import santander from "@/assets/images/clientes/santander.svg";
+import nexans from "@/assets/images/clientes/nexans.svg";
+import cencosud from "@/assets/images/clientes/cencosud.svg";
+import smartFit from "@/assets/images/clientes/smartfit.svg";
 
 export const CLIENT_LOGOS = [
   { name: "DHL", src: dhl, ratio: 7.18 },

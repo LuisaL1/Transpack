@@ -1,8 +1,8 @@
 // Deutsche Fassung der Blogartikel (blogData.ts). Der Slug bleibt spanisch als
 // interne Kennung; die deutsche URL kommt aus src/i18n.
-import imgBarco from "@/imports/barco.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import imgGlobal from "@/imports/global.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
 
 export const blogPosts: Post[] = [

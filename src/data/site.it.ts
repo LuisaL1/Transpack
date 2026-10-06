@@ -1,14 +1,14 @@
 // Versione italiana dei contenuti del sito. Stessa struttura di site.ts: quando
 // un testo cambia in spagnolo va aggiornato anche qui. I codici interni (slug,
 // quote, id) restano in spagnolo perché guidano URL e modulo di preventivo.
-import imgEquipoSala from "@/imports/equipo-sala.jpg";
-import imgEmbalajeSala from "@/imports/embalaje-sala.jpg";
-import imgContenedor from "@/imports/contenedor.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import imgNuevaEtapa from "@/imports/nueva-etapa.jpg";
-import imgGlobal from "@/imports/global.jpg";
-import imgCargue from "@/imports/cargue.jpg";
-import imgBarco from "@/imports/barco.jpg";
+import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgGlobal from "@/assets/images/global.jpg";
+import imgCargue from "@/assets/images/cargue.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -310,8 +310,8 @@ export const SEGMENTS = [
   {
     id: "diaspora",
     icon: "airplane",
-    tab: "Colombiani all'estero",
-    kicker: "Comunità colombiana nel mondo",
+    tab: "Vivere all'estero",
+    kicker: "Trasferirsi all'estero o tornare in Colombia",
     title: "Non trasportiamo solo le tue cose: ti aiutiamo a ricominciare",
     text: "Che tu vada a vivere negli Stati Uniti, in Canada, in Europa o altrove, o che torni in Colombia, ti accompagniamo fin dalla pianificazione perché tu arrivi con tutto in ordine.",
     points: [

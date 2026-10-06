@@ -1,14 +1,14 @@
 // English version of the site content. Same structure as site.ts: when a text
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
-import imgEquipoSala from "@/imports/equipo-sala.jpg";
-import imgEmbalajeSala from "@/imports/embalaje-sala.jpg";
-import imgContenedor from "@/imports/contenedor.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import imgNuevaEtapa from "@/imports/nueva-etapa.jpg";
-import imgGlobal from "@/imports/global.jpg";
-import imgCargue from "@/imports/cargue.jpg";
-import imgBarco from "@/imports/barco.jpg";
+import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgGlobal from "@/assets/images/global.jpg";
+import imgCargue from "@/assets/images/cargue.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import type { QuoteService, Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
@@ -311,8 +311,8 @@ export const SEGMENTS = [
   {
     id: "diaspora",
     icon: "airplane",
-    tab: "Diaspora",
-    kicker: "International diaspora",
+    tab: "Living abroad",
+    kicker: "Moving abroad or coming back to Colombia",
     title: "We don't just move your things: we ease your transition",
     text: "Whether you are moving to the United States, Canada, Europe or anywhere else, or coming back to Colombia, we guide you from the planning stage so you arrive with everything in order.",
     points: [

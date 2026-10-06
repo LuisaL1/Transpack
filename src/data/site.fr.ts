@@ -2,14 +2,14 @@
 // texte change en espagnol, il faut aussi le mettre à jour ici. Les codes
 // internes (slug, quote, id) restent en espagnol : ils pilotent les URL et le
 // formulaire de devis.
-import imgEquipoSala from "@/imports/equipo-sala.jpg";
-import imgEmbalajeSala from "@/imports/embalaje-sala.jpg";
-import imgContenedor from "@/imports/contenedor.jpg";
-import imgGuacales from "@/imports/guacales.jpg";
-import imgNuevaEtapa from "@/imports/nueva-etapa.jpg";
-import imgGlobal from "@/imports/global.jpg";
-import imgCargue from "@/imports/cargue.jpg";
-import imgBarco from "@/imports/barco.jpg";
+import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgGuacales from "@/assets/images/guacales.jpg";
+import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgGlobal from "@/assets/images/global.jpg";
+import imgCargue from "@/assets/images/cargue.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -334,8 +334,8 @@ export const SEGMENTS = [
   {
     id: "diaspora",
     icon: "airplane",
-    tab: "Diaspora",
-    kicker: "Diaspora internationale",
+    tab: "Vivre à l'étranger",
+    kicker: "Partir à l'étranger ou revenir en Colombie",
     title: "Nous ne transportons pas seulement vos affaires : nous facilitons votre transition",
     text: "Que vous partiez vivre aux États-Unis, au Canada, en Europe ou ailleurs, ou que vous rentriez en Colombie, nous vous accompagnons dès la préparation pour que vous arriviez avec tout en ordre.",
     points: [

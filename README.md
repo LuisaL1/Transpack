@@ -1,55 +1,122 @@
-# Transpack — sitio web
+# Transpack · Sitio web
 
-React 19 + TypeScript + Vite 8 + Tailwind CSS v4 + React Router 7. Íconos de Bootstrap Icons (`bi bi-*`).
+Sitio corporativo de Transpack S.A.S. (mudanzas y bodegaje, Bogotá) — React 19 +
+Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en seis idiomas
+(español, inglés, francés, alemán, italiano y árabe).
 
-## Comandos
+## Requisitos
+
+- Node.js 22 o superior
+- pnpm 12 (`corepack enable`; la versión exacta está en `packageManager` de `package.json`)
+
+## Uso
 
 ```bash
 pnpm install     # instalar dependencias
-pnpm dev         # servidor de desarrollo → http://localhost:5173
-pnpm build       # verificación de tipos + build de producción en dist/
-pnpm preview     # ver el build de producción
-pnpm format      # formatear con oxfmt
+pnpm dev         # desarrollo en http://localhost:5173
+pnpm build       # build de producción en dist/ (con HTML pre-generado por ruta, ver docs/seo.md)
+pnpm preview     # ver el build localmente
+pnpm check       # tipos + lint + pruebas + build (antes de cada commit)
+pnpm check:all   # lo anterior + auditoría de seguridad + pruebas de extremo a extremo
+pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 ```
 
-## Rutas
+- Pruebas de calidad, accesibilidad y seguridad: ver `TESTING.md`.
+- Google Analytics y eventos de conversión: ver `docs/conversion-y-analitica.md`.
+- SEO técnico y checklist del día de publicación: ver `docs/seo.md`.
+- Arquitectura, reglas de contenido, idiomas, diseño y funcionamiento del asesor
+  virtual Joel: ver `AGENTS.md`.
 
-| Ruta               | Página                                            |
-| ------------------ | ------------------------------------------------- |
-| `/`                | Landing (incluye el cotizador en `#cotizar`)      |
-| `/nosotros`        | Quiénes somos                                     |
+### Rutas
+
+| Ruta | Página |
+| --- | --- |
+| `/` | Inicio (incluye el cotizador en `#cotizar`) |
+| `/nosotros` | Quiénes somos |
 | `/servicios/:slug` | Detalle de servicio (slugs en `src/data/site.ts`) |
-| `/blog/:slug`      | Artículo (contenido en `src/data/blogData.ts`)    |
+| `/blog/:slug` | Artículo (contenido en `src/data/blogData.ts`) |
 
-El cotizador acepta preselección por URL: `/?servicio=internacional&nivel=2#cotizar`
-(`servicio`: local, nacional, internacional, empresarial, bodegaje · `nivel`: 1, 2, 3).
+- Los demás idiomas van con prefijo y URLs traducidas (`/en/about`,
+  `/fr/services/...`).
+- El cotizador acepta preselección por URL: `/?servicio=internacional&nivel=2#cotizar`
+  (`servicio`: local, nacional, internacional, empresarial, bodegaje · `nivel`: 1, 2, 3).
+- Las soluciones abren un segmento con `/?segmento=corporate#soluciones`
+  (residencial, corporate, diplomatic, diaspora).
 
-## Idiomas (es / en / fr / de / it / ar)
+## Despliegue
 
-- Español en la raíz (`/`, `/nosotros`, `/servicios/...`); los demás idiomas con prefijo y URLs traducidas:
-  `/en/about`, `/fr/a-propos`, `/de/ueber-uns`, `/it/chi-siamo`, `/ar/about`
-  (servicios: `/fr/services/...`, `/de/leistungen/...`, `/it/servizi/...`). El árabe se muestra de derecha a izquierda.
-- Rutas, slugs e información de cada idioma: `src/i18n/index.ts` (`SECTIONS`, `SLUGS`, `LANG_INFO`).
-- Textos cortos de la interfaz: en cada componente, como `tr("texto en español", "English text")`.
-  El francés, alemán, italiano y árabe se buscan por el texto en inglés en `src/i18n/dict/{fr,de,it,ar}.ts`.
-- Contenido largo: `src/data/site.{en,fr,de,it,ar}.ts` y `src/data/blogData.{en,fr,de,it,ar}.ts`.
-  **Si cambias un texto en español, actualiza también sus traducciones.**
-- La franja superior (`src/components/LangBar.tsx`) tiene una opción por idioma, nombrada por región:
-  Latinoamérica y España (Español), International (English), France et Canada (Français),
-  Deutschland (Deutsch), Italia (Italiano), الشرق الأوسط (العربية). Las regiones están en `REGIONS`.
+Vercel (framework: Vite, instalación `pnpm install`, build `pnpm build`, salida
+`dist`).
 
-## Dónde editar
+- **Una página por ruta:** el build genera un HTML por ruta (66 páginas en seis
+  idiomas, más `404.html`, `sitemap.xml` y `robots.txt`).
+- **`vercel.json`:**
+  - sirve cada página desde su HTML (`cleanUrls`) y responde 404 real en rutas
+    desconocidas;
+  - define las cabeceras de seguridad (CSP, HSTS…) y la caché de `/assets`.
 
-- **Textos, servicios, contacto, cifras:** `src/data/site.ts`
-- **Blog:** `src/data/blogData.ts`
-- **Colores y tipografías de marca:** bloque `@theme` en `src/index.css`
-  (azul `#272b7c`, naranja `#ff7619`, beige, violeta, gris; IBM Plex Sans + Montserrat, según el Manual de Marca)
-- **Imágenes:** `src/imports/`
-- **Mapamundi del hero:** los países resaltados y sus capitales están en la lista `DEST` de
-  `scripts/generate-world-map.mjs` (código ISO numérico + coordenadas). Después de editarla,
-  ejecutar `pnpm map` para regenerar `src/data/worldMap.ts` (datos reales de Natural Earth).
+Con el repositorio conectado a Vercel, cada push a `main` publica el sitio. Cada
+push y pull request corre además la integración continua de GitHub Actions
+(`.github/workflows/ci.yml`).
 
-## Publicación
+### Variables de entorno (Vercel → Settings → Environment Variables)
 
-Es una SPA: el hosting debe redirigir todas las rutas a `index.html`
-(en Netlify/Vercel/Cloudflare Pages es la opción "SPA fallback" o un rewrite `/* → /index.html`).
+| Variable | Valor | Entorno |
+| --- | --- | --- |
+| `VITE_GA_MEASUREMENT_ID` | `G-BTXBFXKFEN` (Google Analytics 4 de Transpack) | **Solo Production** |
+| `VITE_SITE_INDEXABLE` | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`) | Solo Production |
+| `VITE_GOOGLE_SITE_VERIFICATION` | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS) | Solo Production |
+
+- **Después de crear o cambiar una variable:** Deployments → último despliegue
+  → **Redeploy**. Las variables se leen al compilar.
+- **Solo Production** evita que las vistas previas (Preview) envíen visitas a
+  Google Analytics.
+- **Documentación:** las variables están documentadas en `.env.example`.
+- **En local:** el ID va en `.env.production.local` (no versionado). Así solo
+  `pnpm build` lo usa y `pnpm dev` nunca envía datos.
+
+## Pendientes de desarrollo
+
+- **Cotizador y chat no envían a ningún servidor**: al final arman un mensaje de
+  WhatsApp (`wa.me`) o un correo (`mailto:` a servicioalcliente@transpacksas.com)
+  que el visitante debe enviar. Si se agrega un backend o servicio de
+  formularios (y un CRM), hay que añadirlo a la CSP de `vercel.json`.
+- **Google Analytics**: integrado y verificado (`pnpm test:ga`). Falta crear la
+  variable en Vercel y marcar los eventos clave en GA4 (ver
+  `docs/conversion-y-analitica.md`).
+- **Información que no está en los documentos** (Joel responde "no tengo ese
+  dato" y da el contacto): precios, condiciones del seguro, horario de atención,
+  lista de artículos que no se pueden transportar, formas de pago y políticas
+  de cancelación. Si el cliente las entrega, se agregan a `src/lib/joel.ts` y
+  al contenido.
+- **Joel**:
+  - el cerebro solo funciona en español; en los otros idiomas el chat entiende
+    palabras clave limitadas (por ejemplo, en alemán reconoce "Ausland", pero
+    no nombres de países como "Kanada");
+  - las preguntas que no supo responder quedan solo en el navegador de cada
+    visitante (`localStorage`), así que el equipo no puede revisarlas sin un
+    servidor.
+- **Contraste de color (accesibilidad AA)**: el texto blanco sobre el naranja de
+  marca y el "+" naranja de las cifras no alcanzan el mínimo (tabla en
+  `TESTING.md`). Requiere aprobación de diseño.
+- **Traducciones**: faltan dos etiquetas de accesibilidad de la franja de
+  idiomas en francés, alemán, italiano y árabe (ver `TESTING.md`).
+- **Rendimiento**:
+  - un solo bundle JS de ~836 KB (268 KB comprimido) con los seis idiomas
+    (conviene dividir por idioma o por ruta con `React.lazy`);
+  - fotos en JPG de hasta 425 KB (`cargue.jpg`, `equipo.jpg`, `global.jpg`;
+    convertir a WebP/AVIF y servir tamaños según pantalla).
+- **Fotos**: las actuales se reemplazarán cuando el cliente entregue nuevas.
+- **Por confirmar con el cliente**:
+  - los 13 destinos de ejemplo del mapa en Suramérica, África y Asia;
+  - que se iluminen países con sanciones (Corea del Norte, Siria, Afganistán,
+    Yemen): solo se excluyeron Irán y Rusia, como se pidió.
+- **Mapa de Google** (contacto): se carga sin consentimiento y puede dejar
+  cookies de Google; evaluar cargarlo al hacer clic, como ya se hace con los
+  videos de YouTube.
+- **SEO**: la indexación está desactivada (`noindex`) hasta que el dominio apunte
+  a este sitio. Seguir el checklist de `docs/seo.md`, que incluye las
+  redirecciones 301 desde las URL del sitio anterior. Los artículos no tienen
+  fecha de publicación en el contenido.
+- **Imagen para redes** (`public/brand/og-image.jpg`): pendiente de aprobación
+  del cliente.

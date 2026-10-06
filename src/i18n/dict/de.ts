@@ -159,7 +159,7 @@ const dict: Record<string, string> = {
   "Office moves and employee relocation": "Büroumzüge und Mitarbeiterumzüge",
   "Embassies and institutions, with protocol and confidentiality":
     "Botschaften und Organisationen – mit Protokoll und Diskretion",
-  Diaspora: "Auslandskolumbianer",
+  "Living abroad": "Leben im Ausland",
   "Colombians moving abroad or coming back home": "Kolumbianer, die auswandern oder zurückkehren",
   Coverage: "Netzwerk",
   "Global coverage": "Weltweites Netzwerk",
@@ -413,7 +413,7 @@ const dict: Record<string, string> = {
   "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.":
     "Umzüge vor Ort, innerhalb Kolumbiens und international, Einlagerung und Firmenmobilität – mit 58 Jahren Erfahrung.",
   "Bogotá, point of origin": "Bogotá, Ausgangspunkt",
-  "Countries whose embassies we have served": "Länder, deren Botschaften wir betreut haben",
+  "Countries where we operate": "Länder, in denen wir tätig sind",
   "Agent network in 176 countries": "Partnernetzwerk in 176 Ländern",
   "Companies that trust Transpack": "Unternehmen, die Transpack vertrauen",
   "Companies, embassies and institutions that have trusted Transpack with their mobility":
