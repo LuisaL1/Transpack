@@ -9,6 +9,14 @@ import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgProteccion from "@/assets/images/proteccion.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -506,12 +514,21 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+// Galería (mosaico del inicio). "tall": foto vertical que ocupa dos filas.
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
+  { src: imgContenedor, caption: "Cargue de contenedor", tall: true },
+  { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
+  { src: imgCargueCajas, caption: "Cargue de cajas Transpack" },
   { src: imgGuacales, caption: "Guacales a la medida" },
-  { src: imgBarco, caption: "Rutas marítimas" },
-  { src: imgContenedor, caption: "Cargue de contenedor" },
+  { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
+  { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
   { src: imgEquipoSala, caption: "Protección del mobiliario" },
+  { src: imgBarco, caption: "Rutas marítimas", tall: true },
+  { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
+  { src: imgGuacalExportacion, caption: "Guacal de exportación" },
+  { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
+  { src: imgBodegaMuebles, caption: "Muebles protegidos en bodega" },
 ];
 
 export const ABOUT_IMAGES = { a: imgCargue, b: imgProteccion };

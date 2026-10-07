@@ -10,6 +10,14 @@ import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -436,10 +444,18 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "Emballage à domicile" },
+  { src: imgContenedor, caption: "Chargement de conteneur", tall: true },
+  { src: imgArteHogar, caption: "Protection d'œuvres d'art à domicile" },
+  { src: imgCargueCajas, caption: "Chargement des cartons Transpack" },
   { src: imgGuacales, caption: "Caisses en bois sur mesure" },
-  { src: imgBarco, caption: "Lignes maritimes" },
-  { src: imgContenedor, caption: "Chargement de conteneur" },
+  { src: imgEmbalajeCuadro, caption: "Emballage d'un tableau", tall: true },
+  { src: imgBodegaGuacales, caption: "Entrepôt avec caisses de stockage" },
   { src: imgEquipoSala, caption: "Protection du mobilier" },
+  { src: imgBarco, caption: "Lignes maritimes", tall: true },
+  { src: imgEmbalajeHogar, caption: "Emballage du mobilier à domicile" },
+  { src: imgGuacalExportacion, caption: "Caisse d'exportation" },
+  { src: imgDespachoBodega, caption: "Expédition depuis l'entrepôt" },
+  { src: imgBodegaMuebles, caption: "Meubles protégés en entrepôt" },
 ];

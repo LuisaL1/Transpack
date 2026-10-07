@@ -2,27 +2,24 @@ import { useLang } from "@/i18n";
 import { galleryText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
 
-// Mosaico de fotos del trabajo (GALLERY de src/data/site.ts)
+// Mosaico de fotos del trabajo (GALLERY de src/data/site.ts): 4 columnas en
+// escritorio y 2 en celular. Las fotos verticales ("tall") ocupan dos filas y el
+// acomodo denso llena los huecos, así que agregar o quitar fotos no requiere
+// posiciones a mano (para un mosaico sin huecos: celdas = fotos + verticales,
+// múltiplo de 4).
 export function Gallery() {
-  const spans = [
-    "row-span-2",
-    "",
-    "",
-    "lg:row-span-2 lg:col-start-4 lg:row-start-1",
-    "lg:col-span-2",
-  ];
   const { tr } = useLang();
   const t = galleryText(tr);
   const { GALLERY } = useSite();
   return (
     <section
       aria-label={t.label}
-      className="grid grid-cols-2 grid-rows-[repeat(3,160px)] gap-2.5 p-2.5 sm:grid-rows-[repeat(3,220px)] lg:grid-cols-[1.3fr_1fr_1fr_1.2fr] lg:grid-rows-[260px_260px]"
+      className="grid grid-flow-row-dense auto-rows-[160px] grid-cols-2 gap-2.5 p-2.5 sm:auto-rows-[220px] lg:grid-cols-4"
     >
-      {GALLERY.map((g, i) => (
+      {GALLERY.map((g) => (
         <figure
           key={g.caption}
-          className={`group relative m-0 overflow-hidden rounded-[10px] ${spans[i]}`}
+          className={`group relative m-0 overflow-hidden rounded-[10px] ${g.tall ? "row-span-2" : ""}`}
         >
           <img
             decoding="async"

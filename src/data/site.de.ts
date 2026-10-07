@@ -10,6 +10,14 @@ import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -422,10 +430,18 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "Verpackung vor Ort" },
+  { src: imgContenedor, caption: "Containerbeladung", tall: true },
+  { src: imgArteHogar, caption: "Schutz von Kunstwerken zu Hause" },
+  { src: imgCargueCajas, caption: "Verladen von Transpack-Kartons" },
   { src: imgGuacales, caption: "Maßgefertigte Holzkisten" },
-  { src: imgBarco, caption: "Seewege" },
-  { src: imgContenedor, caption: "Containerbeladung" },
+  { src: imgEmbalajeCuadro, caption: "Verpackung eines Gemäldes", tall: true },
+  { src: imgBodegaGuacales, caption: "Lager mit Aufbewahrungskisten" },
   { src: imgEquipoSala, caption: "Möbelschutz" },
+  { src: imgBarco, caption: "Seewege", tall: true },
+  { src: imgEmbalajeHogar, caption: "Verpackung des Hausrats vor Ort" },
+  { src: imgGuacalExportacion, caption: "Exportkiste" },
+  { src: imgDespachoBodega, caption: "Versand aus dem Lager" },
+  { src: imgBodegaMuebles, caption: "Geschützte Möbel im Lager" },
 ];

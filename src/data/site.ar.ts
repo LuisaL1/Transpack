@@ -9,6 +9,14 @@ import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -380,10 +388,18 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "التغليف في الموقع" },
+  { src: imgContenedor, caption: "تحميل الحاويات", tall: true },
+  { src: imgArteHogar, caption: "حماية الأعمال الفنية في المنزل" },
+  { src: imgCargueCajas, caption: "تحميل صناديق ترانسباك" },
   { src: imgGuacales, caption: "صناديق خشبية حسب المقاس" },
-  { src: imgBarco, caption: "المسارات البحرية" },
-  { src: imgContenedor, caption: "تحميل الحاويات" },
+  { src: imgEmbalajeCuadro, caption: "تغليف لوحة فنية", tall: true },
+  { src: imgBodegaGuacales, caption: "مستودع بصناديق تخزين خشبية" },
   { src: imgEquipoSala, caption: "حماية الأثاث" },
+  { src: imgBarco, caption: "المسارات البحرية", tall: true },
+  { src: imgEmbalajeHogar, caption: "تغليف الأثاث في المنزل" },
+  { src: imgGuacalExportacion, caption: "صندوق تصدير خشبي" },
+  { src: imgDespachoBodega, caption: "الشحن من المستودع" },
+  { src: imgBodegaMuebles, caption: "أثاث محمي في المستودع" },
 ];

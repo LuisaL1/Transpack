@@ -9,6 +9,14 @@ import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
@@ -410,10 +418,18 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "On-site packing" },
+  { src: imgContenedor, caption: "Container loading", tall: true },
+  { src: imgArteHogar, caption: "Protecting artwork at home" },
+  { src: imgCargueCajas, caption: "Loading Transpack boxes" },
   { src: imgGuacales, caption: "Custom wooden crates" },
-  { src: imgBarco, caption: "Sea routes" },
-  { src: imgContenedor, caption: "Container loading" },
+  { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
+  { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
   { src: imgEquipoSala, caption: "Furniture protection" },
+  { src: imgBarco, caption: "Sea routes", tall: true },
+  { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
+  { src: imgGuacalExportacion, caption: "Export crate" },
+  { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
+  { src: imgBodegaMuebles, caption: "Protected furniture in storage" },
 ];

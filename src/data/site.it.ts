@@ -9,6 +9,14 @@ import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
+import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
+import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
+import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
+import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT } from "@/data/site";
 
@@ -412,10 +420,18 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY = [
+export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeSala, caption: "Imballaggio a domicilio" },
+  { src: imgContenedor, caption: "Carico del container", tall: true },
+  { src: imgArteHogar, caption: "Protezione di opere d'arte a domicilio" },
+  { src: imgCargueCajas, caption: "Carico degli scatoloni Transpack" },
   { src: imgGuacales, caption: "Casse in legno su misura" },
-  { src: imgBarco, caption: "Rotte marittime" },
-  { src: imgContenedor, caption: "Carico del container" },
+  { src: imgEmbalajeCuadro, caption: "Imballaggio di un quadro", tall: true },
+  { src: imgBodegaGuacales, caption: "Magazzino con casse di deposito" },
   { src: imgEquipoSala, caption: "Protezione dei mobili" },
+  { src: imgBarco, caption: "Rotte marittime", tall: true },
+  { src: imgEmbalajeHogar, caption: "Imballaggio degli arredi a domicilio" },
+  { src: imgGuacalExportacion, caption: "Cassa per l'esportazione" },
+  { src: imgDespachoBodega, caption: "Spedizione dal magazzino" },
+  { src: imgBodegaMuebles, caption: "Mobili protetti in deposito" },
 ];

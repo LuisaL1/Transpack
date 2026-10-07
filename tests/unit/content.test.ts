@@ -86,6 +86,19 @@ describe("Traducciones", () => {
       ).toEqual(slugs);
   });
 
+  it("la galería tiene las mismas fotos, en el mismo orden, con pie de foto en cada idioma", () => {
+    for (const l of OTHERS) {
+      const g = siteFor(l).GALLERY;
+      expect(g.map((x) => [x.src, !!x.tall]), l).toEqual(es.GALLERY.map((x) => [x.src, !!x.tall]));
+      for (const x of g) expect(x.caption.trim().length, l).toBeGreaterThan(3);
+    }
+  });
+
+  it("el mosaico de la galería no deja huecos (celdas múltiplo de 4)", () => {
+    const cells = es.GALLERY.reduce((n, x) => n + (x.tall ? 2 : 1), 0);
+    expect(cells % 4).toBe(0);
+  });
+
   it("cada destino del mapa tiene su nombre en todos los idiomas", () => {
     for (const d of DESTINATIONS)
       for (const l of OTHERS)
