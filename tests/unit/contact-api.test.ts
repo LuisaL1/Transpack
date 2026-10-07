@@ -1,5 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { BRAND, DEFAULT_LEADS_TO, GET, POST, PRIVACY_PATH, confirmation } from "../../api/contact";
+import { readFileSync } from "node:fs";
+import {
+  BRAND,
+  DEFAULT_LEADS_TO,
+  GET,
+  POST,
+  PRIVACY_PATH,
+  baseUrl,
+  confirmation,
+  layout,
+} from "../../api/contact";
 import { CONTACT } from "@/data/site";
 import { LANGS, localize } from "@/i18n";
 
@@ -94,6 +104,11 @@ describe("/api/contact", () => {
     await POST(req(valid));
     expect(sentBody(f).to[0].email).toBe("comercial@transpacksas.com");
     expect(sentBody(f).sender).toEqual({ email: "web@transpacksas.com", name: "Web" });
+    vi.stubEnv("LEADS_FROM_NAME", "");
+    f.mockClear();
+    await POST(req(valid));
+    // Sin LEADS_FROM_NAME, el remitente es la marca (no "Sitio web …")
+    expect(sentBody(f).sender.name).toBe("Transpack");
     expect(sentBody(f, 1).replyTo.email).toBe("comercial@transpacksas.com");
   });
 
@@ -106,7 +121,9 @@ describe("/api/contact", () => {
     const conf = sentBody(f, 1);
     expect(conf.to[0].email).toBe("ana@empresa.com");
     expect(conf.replyTo.email).toBe(DEFAULT_LEADS_TO);
-    expect(conf.subject).toBe("Recibimos tu solicitud · Transpack");
+    expect(conf.subject).toBe("Recibimos su solicitud · Transpack");
+    expect(conf.htmlContent).toContain("le responderá a este correo a la mayor brevedad");
+    expect(conf.htmlContent).toContain(`href="https://wa.me/${CONTACT.whatsapp}"`);
     expect(conf.htmlContent).toContain("Hola Ana,");
     expect(conf.htmlContent).toContain("https://www.transpacksas.com/privacidad");
     expect(conf.tags).toEqual(["sitio-contacto-confirmacion"]);
@@ -115,7 +132,7 @@ describe("/api/contact", () => {
     await POST(req({ ...valid, kind: "cotizacion", lang: "de", about: "Internationaler Umzug" }));
     const de = sentBody(f, 1);
     expect(de.subject).toMatch(/Wir haben Ihre Anfrage erhalten/);
-    expect(de.htmlContent).toContain("<strong>Internationaler Umzug</strong>");
+    expect(de.htmlContent).toMatch(/<strong[^>]*>Internationaler Umzug<\/strong>/);
     expect(de.htmlContent).toContain("https://www.transpacksas.com/de/datenschutz");
     expect(sentBody(f).tags).toEqual(["sitio-cotizacion"]);
   });
@@ -158,6 +175,54 @@ describe("/api/contact · datos de la confirmación", () => {
 
   it("escapa el nombre y el tema del visitante", () => {
     const c = confirmation("cotizacion", "<script>x</script>", {}, "es", "<img src=x>");
-    expect(c.html).not.toMatch(/<script>|<img/);
+    expect(c.html).not.toMatch(/<script>|<img src=x>/);
+    expect(c.html).toContain("&lt;img src=x&gt;");
   });
 });
+
+describe("/api/contact · diseño de los correos", () => {
+  it("ambos correos llevan el banner de la marca desde el dominio de la solicitud", async () => {
+    const f = vi.fn().mockResolvedValue(ok());
+    vi.stubGlobal("fetch", f);
+    vi.stubEnv("BREVO_API_KEY", "k");
+    await POST(req(valid, { host: "transpack-git-main.vercel.app" }));
+    for (const call of [0, 1]) {
+      const html: string = sentBody(f, call).htmlContent;
+      expect(html).toContain(
+        '<img src="https://transpack-git-main.vercel.app/brand/email-header.png" width="560" alt="Transpack S.A.S."',
+      );
+      expect(html).toContain('<meta name="color-scheme" content="light only">');
+      expect(html).toContain('role="presentation"');
+      expect(html).toContain('bgcolor="#272B7C"');
+      // Pie con razón social, dirección y teléfono del sitio
+      expect(html).toContain(CONTACT.address);
+      expect(html).toContain(CONTACT.phones[0]);
+    }
+    // Correo al equipo: título = asunto y nota para responder
+    const lead = sentBody(f).htmlContent as string;
+    expect(lead).toContain(">Contacto web — Otro</h1>");
+    expect(lead).toContain("Responda este correo para contestarle directamente a la persona.");
+  });
+
+  it("el dominio base no acepta valores extraños", () => {
+    const r = (host: string) =>
+      baseUrl(new Request("https://x/api/contact", { headers: { host } }));
+    expect(r("www.transpacksas.com")).toBe("https://www.transpacksas.com");
+    expect(r("localhost:5173")).toBe("http://localhost:5173");
+    expect(r('evil.com"><script>')).toBe(BRAND.site);
+  });
+
+  it("la plantilla escapa el título y respeta el árabe de derecha a izquierda", () => {
+    expect(layout("https://a.co", "<b>x</b>", "")).toContain("&lt;b&gt;x&lt;/b&gt;");
+    expect(confirmation("contacto", "Ali", {}, "ar").html).toContain('dir="rtl"');
+  });
+
+  it("el banner existe, mide 1120 × 220 px y pesa menos de 60 KB", () => {
+    const png = readFileSync("public/brand/email-header.png");
+    expect(png.subarray(1, 4).toString()).toBe("PNG");
+    expect(png.readUInt32BE(16)).toBe(1120);
+    expect(png.readUInt32BE(20)).toBe(220);
+    expect(png.length).toBeLessThan(60 * 1024);
+  });
+});
+

@@ -207,7 +207,7 @@ export function QuoteWizard({
     fields["Autorización de datos"] = "Sí";
     const r = await sendLead(
       "cotizacion",
-      `Solicitud de cotización · ${serviceNames(es)[service]} · ${fields["Nombre"]}`,
+      `Solicitud de cotización — ${serviceNames(es)[service]}`,
       fields,
       { email, name: fields["Nombre"] },
       "",

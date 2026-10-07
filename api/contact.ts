@@ -7,11 +7,16 @@
 //   BREVO_API_KEY     clave de API de Brevo (obligatoria, secreta: nunca VITE_)
 //   LEADS_TO          correo que recibe las solicitudes (por defecto servicioalcliente@transpacksas.com)
 //   LEADS_FROM        remitente verificado en Brevo (por defecto no-reply@transpacksas.com)
-//   LEADS_FROM_NAME   nombre del remitente (por defecto "Sitio web Transpack")
+//   LEADS_FROM_NAME   nombre del remitente (por defecto "Transpack")
 //
 // Este archivo no importa nada de src/ (la función se compila aparte). Los
-// datos de contacto de la confirmación se comparan con CONTACT en las pruebas
+// datos de contacto de los correos se comparan con CONTACT en las pruebas
 // (tests/unit/contact-api.test.ts).
+//
+// Diseño de los correos: plantilla layout() con el banner de la marca en
+// IMAGEN (public/brand/email-header.png, generado con `pnpm email:header`).
+// Gmail en modo oscuro invierte los colores del HTML y los clientes de correo
+// ignoran las transformaciones CSS, así que el encabezado no puede ser HTML.
 
 type Lang = "es" | "en" | "fr" | "de" | "it" | "ar";
 type Payload = {
@@ -30,7 +35,17 @@ export const BRAND = {
   legalName: "Transpack S.A.S.",
   whatsapp: "573218115967",
   phones: ["321 811 5967", "321 811 5989", "321 811 5977"],
+  address: "Cra. 40 #20A – 96, Bogotá, Colombia",
   site: "https://www.transpacksas.com",
+};
+/** Colores de la marca (bloque @theme de src/styles/index.css) */
+const C = {
+  azul: "#272B7C",
+  tinta: "#1D2050",
+  texto: "#3E4160",
+  suave: "#6B6E8A",
+  linea: "#E1E5EE",
+  gris: "#F0F6F6",
 };
 export const DEFAULT_LEADS_TO = "servicioalcliente@transpacksas.com";
 const LANGS: Lang[] = ["es", "en", "fr", "de", "it", "ar"];
@@ -58,7 +73,8 @@ const esc = (s: string) =>
     .replace(/'/g, "&#39;");
 const EMAIL = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 
-// Textos de la confirmación al visitante (trato de "tú", como el sitio)
+// Textos de la confirmación al visitante, en el idioma del formulario. En
+// español el correo va de "usted" (registro formal pedido para los correos).
 const CONFIRM: Record<
   Lang,
   {
@@ -75,17 +91,17 @@ const CONFIRM: Record<
   }
 > = {
   es: {
-    subject: "Recibimos tu solicitud · Transpack",
-    title: "¡Recibimos tu solicitud!",
+    subject: "Recibimos su solicitud · Transpack",
+    title: "¡Recibimos su solicitud!",
     hello: (n) => `Hola${n ? ` ${n}` : ""},`,
-    quote: (s) => `tu solicitud de cotización de ${s}`,
-    message: (m) => `tu mensaje (${m})`,
+    quote: (s) => `su solicitud de cotización de ${s}`,
+    message: (m) => `su mensaje (${m})`,
     body: (a) =>
-      `Gracias por escribirnos. Recibimos ${a} y un asesor de nuestro equipo te responderá a este correo a la mayor brevedad.`,
-    urgent: "Si necesitas atención inmediata, escríbenos por WhatsApp o llámanos:",
+      `Gracias por escribirnos. Recibimos ${a} y un asesor le responderá a este correo a la mayor brevedad.`,
+    urgent: "Si necesita atención inmediata, escríbanos por WhatsApp o llámenos:",
     phones: "Teléfonos",
-    auto: "Este es un mensaje automático de confirmación. Tratamos tus datos según nuestra",
-    policy: "política de tratamiento de datos",
+    auto: "Este es un mensaje automático de confirmación. Tratamos sus datos según nuestra",
+    policy: "política de privacidad y tratamiento de datos",
   },
   en: {
     subject: "We received your request · Transpack",
@@ -154,13 +170,80 @@ const CONFIRM: Record<
   },
 };
 
-/** Correo de confirmación para el visitante ("recibimos tu solicitud") */
+/** Dominio desde el que llegó la solicitud: el banner carga desde ahí (producción o vista previa de Vercel). */
+export function baseUrl(req: Request): string {
+  const host = (req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "").trim();
+  const [name, port, ...rest] = host.split(":");
+  const valid =
+    host.length <= 253 &&
+    rest.length === 0 &&
+    /^[a-z0-9.-]+$/i.test(name) &&
+    (port === undefined || /^[0-9]{1,5}$/.test(port));
+  if (!valid) return BRAND.site;
+  return `${/^(localhost|127\.0\.0\.1)(:|$)/.test(host) ? "http" : "https"}://${host}`;
+}
+
+/**
+ * Plantilla común de los correos: banner (imagen), título, contenido y pie.
+ * Tablas con estilos en línea (Gmail, Outlook y Apple Mail), 560 px de ancho.
+ * `content` debe venir ya escapado.
+ */
+export function layout(base: string, title: string, content: string, lang: Lang = "es"): string {
+  const dir = lang === "ar" ? "rtl" : "ltr";
+  const align = dir === "rtl" ? "right" : "left";
+  return `<!doctype html>
+<html lang="${lang}" dir="${dir}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>${esc(title)}</title>
+</head>
+<body style="margin:0;padding:0;background:${C.gris}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${C.gris}" style="background:${C.gris}">
+<tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:100%;max-width:560px;background:#FFFFFF;border:1px solid ${C.linea};border-radius:16px;border-collapse:separate;overflow:hidden">
+<tr><td bgcolor="${C.azul}" style="background:${C.azul};padding:0;line-height:0;font-size:0;border-radius:16px 16px 0 0"><img src="${base}/brand/email-header.png" width="560" alt="${BRAND.legalName}" style="display:block;width:100%;max-width:560px;height:auto;border:0;border-radius:16px 16px 0 0"></td></tr>
+<tr><td dir="${dir}" style="padding:28px 28px 4px;text-align:${align}"><h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:${C.azul}">${esc(title)}</h1></td></tr>
+<tr><td dir="${dir}" style="padding:16px 28px 28px;text-align:${align};font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:${C.texto}">${content}</td></tr>
+<tr><td dir="${dir}" style="padding:16px 28px;border-top:1px solid ${C.linea};background:${C.gris};text-align:${align};font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${C.suave};border-radius:0 0 16px 16px"><strong style="color:${C.tinta}">${BRAND.legalName}</strong><br>${esc(BRAND.address)}<br>${BRAND.phones[0]}</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+/** Correo al equipo: tabla con los campos de la solicitud */
+export function leadEmail(base: string, subject: string, fields: Record<string, string>) {
+  const rows = Object.entries(fields)
+    .map(
+      ([k, v]) =>
+        `<tr><td valign="top" style="padding:9px 12px;border:1px solid ${C.linea};background:${C.gris};font-weight:bold;color:${C.azul};width:34%">${esc(k)}</td><td valign="top" style="padding:9px 12px;border:1px solid ${C.linea};white-space:pre-wrap;color:${C.tinta}">${esc(v)}</td></tr>`,
+    )
+    .join("");
+  const note =
+    "Enviado desde el formulario del sitio web. Responda este correo para contestarle directamente a la persona.";
+  const content = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5">${rows}</table>
+<p style="margin:18px 0 0;font-size:12px;color:${C.suave}">${note}</p>`;
+  const text =
+    `${subject}\n\n` +
+    Object.entries(fields)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join("\n") +
+    `\n\n${note}`;
+  return { html: layout(base, subject, content), text };
+}
+
+/** Correo de confirmación para el visitante ("recibimos su solicitud") */
 export function confirmation(
   kind: "contacto" | "cotizacion",
   name: string,
   fields: Record<string, string>,
   lang: Lang = "es",
   about?: string,
+  base: string = BRAND.site,
 ) {
   const c = CONFIRM[lang];
   const first = name.trim().split(/\s+/)[0] ?? "";
@@ -170,24 +253,18 @@ export function confirmation(
   const aboutText = kind === "cotizacion" ? c.quote(topic) : c.message(topic);
   const aboutHtml =
     kind === "cotizacion"
-      ? c.quote(`<strong>${esc(topic)}</strong>`)
+      ? c.quote(`<strong style="color:${C.tinta}">${esc(topic)}</strong>`)
       : c.message(esc(topic));
   const policyUrl = BRAND.site + PRIVACY_PATH[lang];
   const wa = `https://wa.me/${BRAND.whatsapp}`;
-  const dir = lang === "ar" ? "rtl" : "ltr";
-  const html = `<div dir="${dir}" style="background:#F0F6F6;padding:24px 12px;font-family:Arial,sans-serif;color:#2B2B3A">
-<div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #E3E6EE">
-<div style="background:#272B7C;padding:22px 26px"><p style="margin:0;color:#FF7619;font-size:12px;font-weight:bold;letter-spacing:.12em;text-transform:uppercase">${BRAND.legalName}</p><h1 style="margin:6px 0 0;color:#fff;font-size:20px">${esc(c.title)}</h1></div>
-<div style="padding:24px 26px;font-size:15px;line-height:1.6">
-<p style="margin:0 0 12px">${esc(c.hello(first))}</p>
-<p style="margin:0 0 12px">${c.body(aboutHtml)}</p>
-<p style="margin:0 0 18px">${esc(c.urgent)}</p>
-<p style="margin:0 0 6px"><a href="${wa}" style="color:#272B7C;font-weight:bold">WhatsApp ${BRAND.phones[0]}</a></p>
-<p style="margin:0 0 18px;color:#5B5F73">${esc(c.phones)}: ${BRAND.phones.join(" · ")}</p>
-<p style="margin:0;color:#5B5F73;font-size:12px">${esc(c.auto)} <a href="${policyUrl}" style="color:#272B7C">${esc(c.policy)}</a>.</p>
-</div></div></div>`;
-  const text = `${c.hello(first)}\n\n${c.body(aboutText)}\n\n${c.urgent}\nWhatsApp ${BRAND.phones[0]} (${wa})\n${c.phones}: ${BRAND.phones.join(" · ")}\n\n${c.auto} ${c.policy}: ${policyUrl}\n\n${BRAND.legalName}`;
-  return { subject: c.subject, html, text };
+  const content = `<p style="margin:0 0 12px">${esc(c.hello(first))}</p>
+<p style="margin:0 0 20px">${c.body(aboutHtml)}</p>
+<p style="margin:0 0 12px">${esc(c.urgent)}</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 16px"><tr><td bgcolor="${C.azul}" style="background:${C.azul};border-radius:12px"><a href="${wa}" style="display:inline-block;padding:12px 22px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#FFFFFF;text-decoration:none;border-radius:12px">WhatsApp ${BRAND.phones[0]}</a></td></tr></table>
+<p style="margin:0 0 20px;color:${C.suave}">${esc(c.phones)}: ${BRAND.phones.join(" · ")}</p>
+<p style="margin:0;font-size:12px;color:${C.suave}">${esc(c.auto)} <a href="${policyUrl}" style="color:${C.azul}">${esc(c.policy)}</a>.</p>`;
+  const text = `${c.hello(first)}\n\n${c.body(aboutText)}\n\n${c.urgent}\nWhatsApp ${BRAND.phones[0]} (${wa})\n${c.phones}: ${BRAND.phones.join(" · ")}\n\n${c.auto} ${c.policy}: ${policyUrl}\n\n${BRAND.legalName} · ${BRAND.address}`;
+  return { subject: c.subject, html: layout(base, c.title, content, lang), text };
 }
 
 /** Diagnóstico para el área encargada: ¿está configurada la clave? (no la revela) */
@@ -241,22 +318,12 @@ export async function POST(req: Request): Promise<Response> {
   const subject = String(
     body.subject || (kind === "cotizacion" ? "Solicitud de cotización" : "Nuevo mensaje de contacto"),
   ).slice(0, 150);
-  const rows = Object.entries(fields)
-    .map(
-      ([k, v]) =>
-        `<tr><td style="padding:8px 12px;border:1px solid #E3E6EE;background:#F0F6F6;font-weight:600;color:#272B7C;vertical-align:top">${esc(k)}</td><td style="padding:8px 12px;border:1px solid #E3E6EE;white-space:pre-wrap">${esc(v)}</td></tr>`,
-    )
-    .join("");
-  const html = `<div style="font-family:Arial,sans-serif;color:#2B2B3A"><h2 style="color:#272B7C;margin:0 0 12px">${esc(subject)}</h2><table style="border-collapse:collapse;font-size:14px">${rows}</table><p style="color:#5B5F73;font-size:12px;margin-top:16px">Enviado desde el sitio web de Transpack. Responde este correo para contestarle directamente a la persona.</p></div>`;
-  const text =
-    `${subject}\n\n` +
-    Object.entries(fields)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join("\n");
+  const base = baseUrl(req);
+  const { html, text } = leadEmail(base, subject, fields);
 
   const sender = {
     email: process.env.LEADS_FROM || "no-reply@transpacksas.com",
-    name: process.env.LEADS_FROM_NAME || "Sitio web Transpack",
+    name: process.env.LEADS_FROM_NAME || BRAND.name,
   };
   const leadsTo = process.env.LEADS_TO || DEFAULT_LEADS_TO;
   const send = (payload: Record<string, unknown>) =>
@@ -285,7 +352,7 @@ export async function POST(req: Request): Promise<Response> {
 
   // 2) Confirmación automática al visitante (si falla, la solicitud ya llegó: no se reporta error)
   try {
-    const c = confirmation(kind, name, fields, lang, String(body.about ?? "").slice(0, 200));
+    const c = confirmation(kind, name, fields, lang, String(body.about ?? "").slice(0, 200), base);
     await send({
       to: [{ email: replyEmail, name: name || replyEmail }],
       replyTo: { email: leadsTo, name: "Transpack" },
