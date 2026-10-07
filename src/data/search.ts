@@ -9,7 +9,7 @@ import { search, type SearchEntry } from "@/lib/search";
 
 // Índice de búsqueda en el idioma pedido (las rutas ya salen localizadas)
 export function searchIndex(lang: Lang): SearchEntry[] {
-  const { FAQS, SEGMENTS, SERVICES } = siteFor(lang);
+  const { FAQS, PRIVACY, SEGMENTS, SERVICES } = siteFor(lang);
   const posts = postsFor(lang);
   const tr = makeTr(lang);
   const lp = (path: string) => localize(path, lang);
@@ -118,6 +118,16 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       tr("Dirección, teléfonos, WhatsApp y correo", "Address, phone, WhatsApp and email"),
       "/#contacto",
       "telefono whatsapp correo direccion ubicacion mapa phone email address location map",
+    ),
+    page(
+      "shield-lock",
+      PRIVACY.title,
+      tr(
+        "Qué datos usamos, para qué y cómo ejercer tus derechos",
+        "What data we use, why, and how to exercise your rights",
+      ),
+      "/privacidad",
+      "privacidad datos personales habeas data ley 1581 cookies privacy personal data datenschutz donnees",
     ),
   ];
 }

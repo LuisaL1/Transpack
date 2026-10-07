@@ -45,6 +45,11 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   ver pendientes en `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
+- `contact-api.test.ts` — la función `api/contact.ts` con `fetch` simulado (sin
+  correos reales): 503 sin clave, 422 por correo o autorización, 403 desde otro
+  dominio, campo trampa, destino y "responder a", HTML escapado, confirmación
+  al visitante en su idioma, fallas de Brevo (502) y de la confirmación (200).
+  Detalle en `docs/formularios.md`.
 - `joel.test.ts` — el asesor virtual (`src/lib/joel.ts`):
   - entiende texto libre y errores de tipeo;
   - responde la pregunta específica antes que el resumen del servicio;
@@ -70,7 +75,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
 - `components.test.tsx` — el cotizador (elegir servicio → paso 2, validación,
   preselección por URL y textos en el idioma de la ruta) y las pestañas de
   soluciones.
-- `seo.test.ts` — metadatos de las 66 rutas:
+- `seo.test.ts` — metadatos de las 72 rutas:
   - títulos únicos (30–70 caracteres, con marca, y ciudad en los servicios);
   - descripciones únicas (70–160 caracteres);
   - canónicas absolutas sin barra final;
@@ -89,6 +94,8 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - el menú apunta a servicios y segmentos que existen;
   - todos los idiomas con los mismos servicios, segmentos, niveles, pasos,
     preguntas, cifras y artículos;
+  - la política de datos con las mismas secciones en cada idioma, el aviso de
+    que manda la versión en español y el mismo correo y dirección de contacto;
   - cada destino del mapa con su nombre en los seis idiomas;
   - **todos los textos cortos traducidos** en `src/i18n/dict` (salvo los
     pendientes conocidos, abajo);
@@ -100,7 +107,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - **chat de Joel sin degradados**.
 
 ### 2b. HTML pre-generado (`tests/seo/dist.test.ts`, con `pnpm test:seo`)
-Por cada una de las 66 rutas:
+Por cada una de las 72 rutas:
 - existe su `.html`, con el idioma y la dirección del `<html>`;
 - un solo `<title>` y una sola descripción, su canónica, 7 enlaces hreflang,
   Open Graph y `twitter:card`;
@@ -119,6 +126,8 @@ Además:
   - enlaces en pestaña nueva con `rel="noopener"`/`noreferrer`;
   - sin `http://` inseguro;
   - sin credenciales ni llaves en el código;
+  - sin enlaces `mailto:` (el correo va por el formulario) y la clave de Brevo
+    solo en `api/`;
   - solo las variables públicas permitidas: `VITE_GA_MEASUREMENT_ID`,
     `VITE_SITE_INDEXABLE` y `VITE_GOOGLE_SITE_VERIFICATION`;
   - ningún `.env` real versionado y `.gitignore` correcto;
@@ -155,6 +164,10 @@ Además:
   - menú Servicios → página del servicio (escritorio y menú móvil);
   - buscador sin tildes;
   - cotizador con preselección y validación;
+  - formulario de contacto: se abre desde soporte, exige la autorización y
+    envía; se abre precargado y muestra el error con WhatsApp;
+  - cotizador: exige la autorización, envía por correo y el WhatsApp lleva la
+    solicitud (`/api/contact` simulado con `page.route`);
   - segmento abierto desde el menú;
   - chat de Joel con texto libre y sin precios;
   - el texto del visitante se muestra como texto, nunca como HTML;

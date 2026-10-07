@@ -2,6 +2,7 @@
 // Las cookies analíticas no se usan con fines publicitarios y el sitio funciona
 // igual si se rechazan (Ley 1581 de 2012, protección de datos en Colombia).
 import type { Tr } from "@/i18n";
+import { privacyLink } from "@/data/pages";
 
 export const cookieText = (tr: Tr) => ({
   label: tr("Aviso de cookies", "Cookie notice", {
@@ -26,6 +27,7 @@ export const cookieText = (tr: Tr) => ({
       ar: "تساعدنا على فهم كيفية استخدام الموقع لتحسينه. لا نستخدمها أبدًا لأغراض إعلانية. يمكنك قبولها أو رفضها، فالموقع يعمل بالطريقة نفسها (القانون الكولومبي 1581 لسنة 2012).",
     },
   ),
+  policy: privacyLink(tr),
   accept: tr("Aceptar", "Accept", { fr: "Accepter", de: "Akzeptieren", it: "Accetta", ar: "قبول" }),
   reject: tr("Rechazar", "Reject", { fr: "Refuser", de: "Ablehnen", it: "Rifiuta", ar: "رفض" }),
 });

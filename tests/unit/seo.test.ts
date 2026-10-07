@@ -11,9 +11,9 @@ const nodes = (path: string) => getPageMeta(path).jsonLd.flatMap((g) => g["@grap
 const types = (path: string) => nodes(path).map((n) => n["@type"]);
 
 describe("SEO · metadatos por página", () => {
-  it("cubre inicio, nosotros, 6 servicios y 3 artículos en los seis idiomas (66 rutas)", () => {
-    expect(PUBLIC_ROUTES).toHaveLength(66);
-    expect(new Set(PUBLIC_ROUTES).size).toBe(66);
+  it("cubre inicio, nosotros, política de datos, 6 servicios y 3 artículos en los seis idiomas (72 rutas)", () => {
+    expect(PUBLIC_ROUTES).toHaveLength(72);
+    expect(new Set(PUBLIC_ROUTES).size).toBe(72);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));
     expect(PUBLIC_ROUTES.filter((r) => r.startsWith("/servicios/"))).toHaveLength(6);
     expect(metas.every((m) => !m.notFound)).toBe(true);

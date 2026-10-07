@@ -538,5 +538,67 @@ const dict: Record<string, string> = {
     "Pour toute autre question, écrivez-nous et un conseiller vous répondra.",
   "Other services": "Autres services",
   "Complete your move": "Complétez votre déménagement",
+  // ─── Política de datos ───
+  "Data protection": "Protection des données",
+  "On this page": "Sur cette page",
+  "Questions about your data?": "Des questions sur vos données ?",
+  "Write to us and we will help you exercise your rights.":
+    "Écrivez-nous et nous vous aiderons à exercer vos droits.",
+  "Write an email": "Écrire un e-mail",
+  "Privacy policy": "Politique de données",
+  "Read the privacy policy": "Lire la politique de données",
+  "We will use your data only to handle this request, in line with our privacy policy.":
+    "Nous utiliserons vos données uniquement pour traiter cette demande, conformément à notre politique de données.",
+  "What data we use, why, and how to exercise your rights":
+    "Quelles données nous utilisons, pourquoi et comment exercer vos droits",
+  // ─── Formulario de contacto y envío por correo ───
+  "Change my cookie choice":
+    "Modifier mon choix concernant les cookies",
+  "Close form":
+    "Fermer le formulaire",
+  "Contact form":
+    "Formulaire de contact",
+  "Data authorization":
+    "Autorisation des données",
+  "Enter your email to get the reply this way:":
+    "Indiquez votre e-mail pour recevoir la réponse par ce moyen :",
+  "General information":
+    "Informations générales",
+  "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
+    "J'autorise Transpack S.A.S. à traiter mes données personnelles pour répondre à cette demande, conformément à sa",
+  "Leave your details and a Transpack advisor will get back to you.":
+    "Laissez-nous vos coordonnées et un conseiller Transpack vous répondra.",
+  "Message sent!":
+    "Message envoyé !",
+  "Moving or storage quote":
+    "Devis de déménagement ou de garde-meubles",
+  "Open the contact form":
+    "Ouvrir le formulaire de contact",
+  "Personal data (Law 1581)":
+    "Données personnelles (loi 1581)",
+  "Phone":
+    "Téléphone",
+  "Phone numbers":
+    "Téléphones",
+  "Requests, complaints or suggestions":
+    "Demandes, plaintes ou suggestions",
+  "Send message":
+    "Envoyer le message",
+  "Sending…":
+    "Envoi en cours…",
+  "Support with an ongoing service":
+    "Assistance pour un service en cours",
+  "Tell us what you need…":
+    "Dites-nous ce dont vous avez besoin…",
+  "We couldn't send your message right now. Please try again or message us on":
+    "Nous n'avons pas pu envoyer votre message pour le moment. Réessayez ou écrivez-nous sur",
+  "Work with us":
+    "Travailler avec nous",
+  "Write to us":
+    "Écrivez-nous",
+  "You can change your choice at any time.":
+    "Vous pouvez modifier votre choix à tout moment.",
+  "data processing policy":
+    "politique de traitement des données",
 };
 export default dict;

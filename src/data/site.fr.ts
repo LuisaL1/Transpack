@@ -19,7 +19,7 @@ import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg
 import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
-import { CONTACT } from "@/data/site";
+import { CONTACT, type PrivacySection } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
 
@@ -459,3 +459,145 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgDespachoBodega, caption: "Expédition depuis l'entrepôt" },
   { src: imgBodegaMuebles, caption: "Meubles protégés en entrepôt" },
 ];
+
+// Política de tratamiento de datos (traducción; la versión en español es la oficial).
+// Mismas secciones y orden que PRIVACY en src/data/site.ts.
+export const PRIVACY = {
+  title: "Politique de traitement des données personnelles",
+  intro: "Chez Transpack S.A.S., nous traitons vos données personnelles conformément à la loi colombienne 1581 de 2012 et au décret 1377 de 2013 (compilé dans le décret 1074 de 2015). Nous vous expliquons ici quelles données nous collectons sur ce site, à quoi elles servent, comment elles sont transmises et comment exercer vos droits.",
+  updated: "Dernière mise à jour : 7 octobre 2026",
+  notice: "Ceci est une traduction fournie pour votre commodité. La version espagnole fait foi.",
+  sections: [
+    {
+      id: "responsable",
+      title: "Responsable du traitement",
+      text: [
+        "L'entreprise responsable de vos données personnelles est :",
+      ],
+    },
+    {
+      id: "datos",
+      title: "Données collectées et finalités",
+      text: [
+        "Nous ne demandons que les données nécessaires pour traiter votre demande. Voici tous les canaux du site :",
+      ],
+      table: {
+        head: ["Où", "Données", "Finalité"],
+        rows: [
+          [
+            "Formulaire de contact",
+            "Nom, entreprise (facultatif), e-mail, téléphone (facultatif), motif et message.",
+            "Répondre à votre message ou à votre demande, y compris les demandes concernant vos données personnelles.",
+          ],
+          [
+            "Formulaire de devis",
+            "Service, départ et arrivée, dates, détails du logement, volume ou inventaire, niveau de service, services complémentaires et commentaires ; nom, portable et e-mail. Pour une entreprise : son nom et le poste du collaborateur.",
+            "Préparer l'estimation et le devis formel, vous contacter pour le revoir et, si vous l'acceptez, coordonner le service.",
+          ],
+          [
+            "Chat de Joel (conseiller virtuel)",
+            "Les options que vous choisissez et ce que vous écrivez dans la conversation, y compris votre nom et, le cas échéant, celui de votre entreprise.",
+            "Vous orienter et préparer votre demande. La conversation n'est pas envoyée à Transpack : elle ne nous parvient que si vous l'envoyez par WhatsApp ou via le formulaire.",
+          ],
+          [
+            "WhatsApp et téléphone",
+            "Votre numéro et ce que vous choisissez de nous dire.",
+            "Répondre à votre question ou à votre demande.",
+          ],
+          [
+            "Mesure d'audience (uniquement si vous acceptez les cookies)",
+            "Pages consultées, localisation approximative (pays ou ville), type d'appareil et actions comme ouvrir le chat ou envoyer une demande, jamais leur contenu.",
+            "Mesurer de façon agrégée l'utilisation du site pour l'améliorer.",
+          ],
+        ],
+      },
+      after: [
+        "Nous ne vendons pas vos données et ne les utilisons pas à des fins publicitaires.",
+      ],
+    },
+    {
+      id: "sensibles",
+      title: "Données sensibles et données de mineurs",
+      text: [
+        "Nous ne demandons pas de données sensibles (informations de santé, origine ethnique, convictions ou données biométriques, par exemple) ni de données d'enfants ou d'adolescents. Merci de ne pas les inclure dans vos messages ; si vous le faites, nous les utiliserons uniquement pour traiter votre demande.",
+        "Ce site ne s'adresse pas aux mineurs.",
+      ],
+    },
+    {
+      id: "transmision",
+      title: "Transmission et conservation de vos données",
+      items: [
+        "Formulaire de contact et devis par e-mail : vos données sont transmises de façon chiffrée (HTTPS) à une fonction du site lui-même, qui les envoie par e-mail à Transpack via Brevo, notre prestataire d'e-mails, agissant comme sous-traitant. Brevo vous envoie aussi une confirmation de réception de votre demande. Le site ne conserve aucune copie de ce que vous envoyez.",
+        "WhatsApp : si vous choisissez d'envoyer votre demande par WhatsApp, cette conversation est également régie par les conditions et la politique de confidentialité de WhatsApp (Meta).",
+        "Dans votre navigateur : les préférences du conseiller virtuel et votre choix concernant les cookies sont enregistrés uniquement dans votre navigateur (stockage local) et ne sont jamais envoyés à Transpack. Vous pouvez les supprimer à tout moment en effaçant les données de ce site dans votre navigateur.",
+        "Conservation : nous conservons les demandes reçues le temps nécessaire pour les traiter et fournir le service, puis la durée exigée par les règles comptables, fiscales et légales.",
+      ],
+    },
+    {
+      id: "compartir",
+      title: "Avec qui nous partageons vos données",
+      items: [
+        "Pour les déménagements internationaux, avec nos agents et partenaires dans le pays de départ ou d'arrivée et avec les autorités douanières, uniquement dans la mesure nécessaire au déménagement. Cela peut impliquer un transfert de vos données hors de Colombie.",
+        "Avec les prestataires qui nous aident à faire fonctionner le site et à communiquer avec vous, en tant que sous-traitants : Vercel (hébergement du site), Brevo (envoi d'e-mails) et Google (mesure d'audience, uniquement si vous l'acceptez). Certains sont situés hors de Colombie : vos données peuvent donc être transmises à d'autres pays.",
+        "Avec les autorités, lorsque la loi l'exige.",
+      ],
+    },
+    {
+      id: "cookies",
+      title: "Cookies et mesure d'audience",
+      text: [
+        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon.",
+      ],
+    },
+    {
+      id: "derechos",
+      title: "Vos droits",
+      text: [
+        "En tant que titulaire des données, vous pouvez :",
+      ],
+      items: [
+        "Connaître, mettre à jour et rectifier vos données.",
+        "Demander la preuve de l'autorisation que vous nous avez donnée.",
+        "Savoir quel usage nous en avons fait.",
+        "Révoquer votre autorisation ou demander la suppression de vos données, en l'absence d'obligation légale ou contractuelle de les conserver.",
+        "Accéder gratuitement à vos données.",
+        "Déposer une plainte auprès de la Surintendance de l'industrie et du commerce de Colombie (SIC), après avoir adressé votre demande à Transpack.",
+      ],
+    },
+    {
+      id: "como-ejercerlos",
+      title: "Comment exercer vos droits",
+      text: [
+        `Utilisez le formulaire de contact avec le motif « Données personnelles » ou écrivez à ${CONTACT.email}. Indiquez votre nom, votre demande et un moyen de vous répondre.`,
+      ],
+      items: [
+        "Demandes d'information : nous répondons dans un délai maximal de 10 jours ouvrables, prolongeable de 5 jours ouvrables au plus, en vous en indiquant le motif.",
+        "Réclamations (rectification, mise à jour, suppression ou révocation) : nous répondons dans un délai maximal de 15 jours ouvrables, prolongeable de 8 jours ouvrables au plus, en vous en indiquant le motif.",
+      ],
+      after: [
+        "Si notre réponse ne vous satisfait pas, vous pouvez déposer une plainte auprès de la Surintendance de l'industrie et du commerce (SIC).",
+      ],
+    },
+    {
+      id: "autorizacion",
+      title: "Autorisation",
+      text: [
+        "En cochant la case d'autorisation du formulaire de contact ou du formulaire de devis, vous nous autorisez à traiter vos données pour les finalités de cette politique. Si vous nous écrivez par WhatsApp ou nous appelez, vous nous donnez votre autorisation par ce geste, afin que nous traitions votre demande. Vous pouvez la révoquer à tout moment par les moyens indiqués dans « Comment exercer vos droits ».",
+      ],
+    },
+    {
+      id: "seguridad",
+      title: "Sécurité",
+      text: [
+        "Nous appliquons des mesures techniques, humaines et administratives raisonnables pour protéger vos données contre la perte, la consultation, l'utilisation ou l'accès non autorisés.",
+      ],
+    },
+    {
+      id: "vigencia",
+      title: "Modifications et entrée en vigueur",
+      text: [
+        "Cette politique s'applique dès sa publication sur ce site. En cas de modification substantielle, nous l'annoncerons ici avant son application et mettrons à jour la date de cette page.",
+      ],
+    },
+  ] as PrivacySection[],
+};

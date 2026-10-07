@@ -50,6 +50,7 @@ type L = Exclude<Lang, "es">;
 const SECTIONS: Record<string, Record<L, string>> = {
   servicios: { en: "services", fr: "services", de: "leistungen", it: "servizi", ar: "services" },
   nosotros: { en: "about", fr: "a-propos", de: "ueber-uns", it: "chi-siamo", ar: "about" },
+  privacidad: { en: "privacy", fr: "confidentialite", de: "datenschutz", it: "privacy", ar: "privacy" },
 };
 
 // Slugs de servicios y artículos (el árabe usa los del inglés: URLs legibles)

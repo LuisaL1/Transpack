@@ -65,3 +65,16 @@ test("GA4: al rechazar no se crean cookies de Google Analytics", async ({ page }
   await page.goto("/nosotros");
   await expect(page.getByRole("dialog", { name: "Aviso de cookies" })).toHaveCount(0);
 });
+
+test("la política de datos permite cambiar la decisión sobre cookies", async ({ page }) => {
+  await page.goto("/privacidad");
+  const banner = page.getByRole("dialog", { name: "Aviso de cookies" });
+  test.skip(!(await banner.isVisible().catch(() => false)), "Build sin VITE_GA_MEASUREMENT_ID");
+  await banner.getByRole("button", { name: "Rechazar" }).click();
+  await expect(banner).toBeHidden();
+  // resetConsent(): borra la decisión y vuelve a mostrar el aviso
+  await page.getByRole("button", { name: "Cambiar mi decisión sobre cookies" }).click();
+  await expect(banner).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("tp-analytics-consent"))).toBeNull();
+});
+

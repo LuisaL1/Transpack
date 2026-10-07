@@ -21,7 +21,7 @@ import type { QuoteService, Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
 export type { QuoteService, Service } from "@/data/site";
-import { CONTACT } from "@/data/site";
+import { CONTACT, type PrivacySection } from "@/data/site";
 
 export const waLink = (text = "Hello Transpack, I would like information about a move") =>
   `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`;
@@ -433,3 +433,145 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
   { src: imgBodegaMuebles, caption: "Protected furniture in storage" },
 ];
+
+// Política de tratamiento de datos (traducción; la versión en español es la oficial).
+// Mismas secciones y orden que PRIVACY en src/data/site.ts.
+export const PRIVACY = {
+  title: "Personal Data Processing Policy",
+  intro: "At Transpack S.A.S. we process your personal data in accordance with Colombian Law 1581 of 2012 and Decree 1377 of 2013 (compiled in Decree 1074 of 2015). Here we explain what data we collect on this site, what we use it for, how it is transmitted and how you can exercise your rights.",
+  updated: "Last updated: October 7, 2026",
+  notice: "This is a translation for your convenience. The Spanish version is the official one.",
+  sections: [
+    {
+      id: "responsable",
+      title: "Data controller",
+      text: [
+        "The company responsible for your personal data is:",
+      ],
+    },
+    {
+      id: "datos",
+      title: "What data we collect and why",
+      text: [
+        "We only ask for the data needed to handle your request. These are all the channels on the site:",
+      ],
+      table: {
+        head: ["Where", "Data", "Purpose"],
+        rows: [
+          [
+            "Contact form",
+            "Name, company (optional), email, phone (optional), reason and message.",
+            "To answer your message or request, including requests about your personal data.",
+          ],
+          [
+            "Quote form",
+            "Service, origin and destination, dates, property details, volume or inventory, service level, additional services and comments; name, mobile number and email. For companies: the company name and the employee's position.",
+            "To prepare the estimate and formal quote, contact you to review it and, if you accept it, coordinate the service.",
+          ],
+          [
+            "Joel chat (virtual advisor)",
+            "The options you choose and what you write in the conversation, including your name and, if applicable, your company's.",
+            "To guide you and prepare your request. The conversation is not sent to Transpack: it only reaches us if you send it on WhatsApp or through the form.",
+          ],
+          [
+            "WhatsApp and phone",
+            "Your number and whatever you choose to tell us.",
+            "To handle your question or request.",
+          ],
+          [
+            "Site analytics (only if you accept cookies)",
+            "Pages visited, approximate location (country or city), device type and actions such as opening the chat or sending a request, never their content.",
+            "To measure, in aggregate, how the site is used in order to improve it.",
+          ],
+        ],
+      },
+      after: [
+        "We do not sell your data or use it for advertising.",
+      ],
+    },
+    {
+      id: "sensibles",
+      title: "Sensitive data and data of minors",
+      text: [
+        "We do not ask for sensitive data (such as health information, ethnic origin, beliefs or biometric data) or for data of children or adolescents. Please do not include it in your messages; if you do, we will use it only to handle your request.",
+        "This site is not directed at minors.",
+      ],
+    },
+    {
+      id: "transmision",
+      title: "How your data is transmitted and kept",
+      items: [
+        "Contact form and quote form by email: your data travels encrypted (HTTPS) to a function of the site itself, which emails it to Transpack through Brevo, our email provider, acting as data processor. Brevo also sends you a confirmation that we received your request. The site keeps no copy of what you send.",
+        "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
+        "In your browser: the virtual advisor's preferences and your cookie choice are stored only in your browser (local storage) and are never sent to Transpack. You can delete them at any time by clearing this site's data in your browser.",
+        "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
+      ],
+    },
+    {
+      id: "compartir",
+      title: "Who we share your data with",
+      items: [
+        "For international moves, with our agents and partners in the country of origin or destination and with customs authorities, only as needed to carry out the move. This may involve transferring your data outside Colombia.",
+        "With the providers that help us run the site and communicate with you, acting as data processors: Vercel (site hosting), Brevo (email delivery) and Google (analytics, only if you accept it). Some are located outside Colombia, so your data may be transmitted to other countries.",
+        "With authorities, when required by law.",
+      ],
+    },
+    {
+      id: "cookies",
+      title: "Cookies and analytics",
+      text: [
+        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same.",
+      ],
+    },
+    {
+      id: "derechos",
+      title: "Your rights",
+      text: [
+        "As the data subject, you can:",
+      ],
+      items: [
+        "Know, update and correct your data.",
+        "Request proof of the authorization you gave us.",
+        "Find out how we have used it.",
+        "Revoke your authorization or ask us to delete your data, when there is no legal or contractual duty to keep it.",
+        "Access your data free of charge.",
+        "File complaints with Colombia's Superintendence of Industry and Commerce (SIC), after submitting your request to Transpack.",
+      ],
+    },
+    {
+      id: "como-ejercerlos",
+      title: "How to exercise your rights",
+      text: [
+        `Use the contact form with the reason “Personal data” or write to ${CONTACT.email}. Include your name, your request and a way to reply to you.`,
+      ],
+      items: [
+        "Inquiries: we answer within 10 business days at most, extendable by up to 5 more business days, in which case we will tell you why.",
+        "Claims (correction, update, deletion or revocation): we answer within 15 business days at most, extendable by up to 8 more business days, in which case we will tell you why.",
+      ],
+      after: [
+        "If you are not satisfied with our answer, you can file a complaint with the Superintendence of Industry and Commerce (SIC).",
+      ],
+    },
+    {
+      id: "autorizacion",
+      title: "Authorization",
+      text: [
+        "By ticking the authorization box in the contact form or the quote form, you authorize us to process your data for the purposes of this policy. If you message us on WhatsApp or call us, you give us your authorization through that action, so we can handle your request. You can revoke it at any time through the channels in “How to exercise your rights”.",
+      ],
+    },
+    {
+      id: "seguridad",
+      title: "Security",
+      text: [
+        "We apply reasonable technical, human and administrative measures to protect your data against loss and unauthorized consultation, use or access.",
+      ],
+    },
+    {
+      id: "vigencia",
+      title: "Changes and validity",
+      text: [
+        "This policy applies from its publication on this site. If we change it substantially, we will announce it here before the changes take effect and update the date on this page.",
+      ],
+    },
+  ] as PrivacySection[],
+};

@@ -1119,7 +1119,8 @@ export function createJoel(kb: JoelKB) {
   const MAIL: JoelAction = {
     label: "Enviar un correo",
     icon: "envelope",
-    href: `mailto:${kb.contact.email}`,
+    // Abre el formulario de contacto del sitio (components/layout/ContactModal.tsx)
+    href: "#contacto",
   };
   const wa = (text?: string): JoelAction => ({
     label: "Escribir por WhatsApp",
@@ -1488,6 +1489,8 @@ export function createJoel(kb: JoelKB) {
         "embajada",
         "precio",
         "cuesta",
+        "mis datos",
+        "privacidad",
       ],
       reply: () => ({
         say: [
@@ -2062,6 +2065,35 @@ export function createJoel(kb: JoelKB) {
             href: `https://maps.google.com/?q=${encodeURIComponent(kb.contact.address)}`,
           },
           ...CONTACT,
+        ],
+      }),
+    },
+    {
+      id: "datos-personales",
+      need: [
+        [
+          "datos personales",
+          "habeas data",
+          "politica de datos",
+          "politica de privacidad",
+          "privacidad",
+          "proteccion de datos",
+          "tratamiento de datos",
+          "ley 1581",
+          "con mis datos",
+          "usan mis datos",
+          "borrar mis datos",
+          "eliminar mis datos",
+        ],
+      ],
+      reply: () => ({
+        say: [
+          "Usamos tus datos solo para atender tu solicitud y prestarte el servicio; no los vendemos ni los usamos para publicidad (Ley 1581 de 2012).",
+          `Puedes consultarlos, corregirlos o pedir que los borremos con el formulario de contacto (motivo «Datos personales») o escribiendo a ${kb.contact.email}. Todo el detalle está en nuestra política de datos.`,
+        ],
+        actions: [
+          { label: "Ver la política de datos", icon: "shield-lock", to: "/privacidad" },
+          { label: "Escribir sobre mis datos", icon: "envelope", href: "#contacto?motivo=datos" },
         ],
       }),
     },

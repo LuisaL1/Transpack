@@ -4,14 +4,14 @@
 
 | Qué | Dónde | Detalle |
 | --- | --- | --- |
-| HTML pre-generado por ruta | `src/entry-server.tsx`, `scripts/prerender.mjs` | 66 páginas (11 por idioma × 6 idiomas) + `404.html`, con el contenido ya renderizado: los buscadores y las redes lo leen sin ejecutar JavaScript. |
+| HTML pre-generado por ruta | `src/entry-server.tsx`, `scripts/prerender.mjs` | 72 páginas (12 por idioma × 6 idiomas) + `404.html`, con el contenido ya renderizado: los buscadores y las redes lo leen sin ejecutar JavaScript. |
 | Idioma por página | `<html lang dir>` en cada HTML | `es-CO`, `en-US`, `fr-FR`, `de-DE`, `it-IT` y `ar` (de derecha a izquierda). |
 | Metadatos | `src/seo/meta.ts` (textos en `src/data/meta.ts`) | Título único (30–70 caracteres, palabra clave + ciudad + marca), descripción única (70–160), canónica absoluta, robots, Open Graph, Twitter. |
 | Idiomas (hreflang) | `meta.ts` + `sitemap.xml` | Cada página enlaza su versión en los seis idiomas y `x-default` (español), recíprocos. |
 | Datos estructurados | `meta.ts` (JSON-LD en `@graph`) | Empresa (`MovingCompany`, un `LocalBusiness`) y `WebSite` en todas las páginas, más el tipo de cada página (ver abajo). |
 | Datos de la empresa | `src/seo/site.ts` | Salen de `CONTACT`, `SLOGAN` y `STATS` (`src/data/site.ts`): razón social, dirección, teléfonos, correo, redes y año de fundación. |
 | Navegación interna | `SeoHead` (`src/components/layout/SeoHead.tsx`) | Al cambiar de página actualiza idioma, título y todas las etiquetas (sin `innerHTML`). Va antes de `AnalyticsTracker`, para que `page_view` lleve el título correcto. |
-| sitemap.xml y robots.txt | `scripts/prerender.mjs` | Sitemap con las 66 canónicas, `lastmod`, `priority` y alternativas por idioma. `robots.txt` según el interruptor de indexación. |
+| sitemap.xml y robots.txt | `scripts/prerender.mjs` | Sitemap con las 72 canónicas, `lastmod`, `priority` y alternativas por idioma. `robots.txt` según el interruptor de indexación. |
 | 404 real | `dist/404.html` + `vercel.json` | Vercel responde estado 404 en rutas desconocidas. La página ofrece inicio, cotizador y servicios, con `noindex`. |
 | Servidor | `vercel.json` | `cleanUrls` y `trailingSlash: false` (sin el antiguo comodín a `index.html`). |
 | Imágenes de marca | `public/brand/` | `logo.png` (584 px, la mayor versión disponible del logo) y `og-image.jpg` (1200×630) para compartir en redes. |

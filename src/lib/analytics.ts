@@ -79,6 +79,21 @@ export function setConsent(value: "granted" | "denied") {
   gtag("consent", "update", { analytics_storage: value });
 }
 
+/** Evento que escucha el aviso de cookies para volver a mostrarse. */
+export const CONSENT_RESET_EVENT = "tp:consent-reset";
+
+/** Borra la decisión sobre cookies y vuelve a mostrar el aviso
+ *  (botón "Cambiar mi decisión sobre cookies" de la política de datos). */
+export function resetConsent() {
+  try {
+    localStorage.removeItem(CONSENT_KEY);
+  } catch {
+    /* sin almacenamiento */
+  }
+  gtag("consent", "update", { analytics_storage: "denied" });
+  window.dispatchEvent(new Event(CONSENT_RESET_EVENT));
+}
+
 /** Página vista (se llama en cada cambio de ruta). */
 export function trackPageView(path: string) {
   if (!analyticsEnabled) return;

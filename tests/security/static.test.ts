@@ -53,6 +53,17 @@ describe("Código", () => {
       for (const m of s.match(/import\.meta\.env\.(\w+)/g) ?? []) expect(allowed, f).toContain(m);
   });
 
+  it("ningún enlace abre el programa de correo: todo pasa por el formulario (#contacto)", () => {
+    for (const [f, s] of code) expect(s, f).not.toMatch(/mailto:/);
+  });
+
+  it("la clave de Brevo solo existe en el servidor (api/), nunca en el navegador", () => {
+    for (const [f, s] of code) expect(s, f).not.toMatch(/BREVO|api\.brevo\.com/);
+    const api = readFileSync("api/contact.ts", "utf8");
+    expect(api).toContain("process.env.BREVO_API_KEY");
+    expect(api).not.toMatch(/VITE_BREVO/);
+  });
+
   it("el chat de Joel no ejecuta ni interpreta HTML del visitante", () => {
     for (const [f, s] of code.filter(([f]) => /chat|joel/i.test(f)))
       expect(s, f).not.toMatch(/innerHTML|dangerouslySetInnerHTML|DOMParser/);

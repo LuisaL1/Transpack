@@ -122,3 +122,139 @@ test("el logo lleva al inicio y arriba, también estando ya en el inicio", async
   await expect(page).toHaveURL(/\/$/);
   await expect.poll(() => page.evaluate(() => scrollY), { timeout: 5000 }).toBe(0);
 });
+
+// ─── Formularios con envío por correo ────────────────────────────────────────
+// /api/contact se simula con page.route: nunca se envía un correo real.
+async function closeCookies(page: Page) {
+  const cookies = page.getByRole("dialog", { name: "Aviso de cookies" });
+  if (await cookies.isVisible().catch(() => false))
+    await cookies.getByRole("button", { name: "Rechazar" }).click();
+}
+
+test("formulario de contacto: se abre desde soporte, exige autorización y envía", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, "El ícono de soporte está en la barra de escritorio");
+  let sent: Record<string, unknown> | null = null;
+  await page.route("**/api/contact", async (r) => {
+    sent = r.request().postDataJSON();
+    await r.fulfill({ json: { ok: true } });
+  });
+  await page.goto("/");
+  await closeCookies(page);
+  await page.getByRole("button", { name: "Soporte" }).first().hover();
+  await page.getByRole("link", { name: /Escríbenos Formulario de contacto/ }).click();
+  const dlg = page.getByRole("dialog", { name: "Escríbenos" });
+  await expect(dlg).toBeVisible();
+  await expect(dlg.locator("#ct-nombre")).toBeFocused();
+  await dlg.locator("#ct-nombre").fill("Ana Prueba");
+  await dlg.locator("#ct-email").fill("ana@empresa.com");
+  await dlg.locator("#ct-motivo").selectOption("pqrs");
+  await dlg.locator("#ct-mensaje").fill("Quisiera información.");
+  // La autorización es obligatoria y no viene marcada
+  await expect(dlg.locator("#ct-autorizacion")).not.toBeChecked();
+  await dlg.getByRole("button", { name: /Enviar mensaje/ }).click();
+  expect(
+    await dlg
+      .locator("#ct-autorizacion")
+      .evaluate((el) => (el as HTMLInputElement).validity.valueMissing),
+  ).toBe(true);
+  expect(sent).toBeNull();
+  await expect(dlg.getByRole("link", { name: "política de tratamiento de datos" })).toHaveAttribute(
+    "href",
+    "/privacidad",
+  );
+  await dlg.locator("#ct-autorizacion").check();
+  await dlg.getByRole("button", { name: /Enviar mensaje/ }).click();
+  await expect(dlg.getByText("¡Mensaje enviado!")).toBeVisible();
+  await expect(dlg.getByText(/Un asesor te responderá a ana@empresa.com/)).toBeVisible();
+  expect(sent).toMatchObject({
+    kind: "contacto",
+    replyTo: { email: "ana@empresa.com", name: "Ana Prueba" },
+    website: "",
+    fields: { Motivo: "Peticiones, quejas, reclamos o sugerencias (PQRS)", "Autorización de datos": "Sí" },
+  });
+  // Esc cierra la ventana
+  await page.keyboard.press("Escape");
+  await expect(dlg).toBeHidden();
+});
+
+test("formulario de contacto: se abre precargado y muestra el error con WhatsApp", async ({
+  page,
+}) => {
+  await page.route("**/api/contact", (r) =>
+    r.fulfill({ status: 503, json: { ok: false, error: "not-configured" } }),
+  );
+  await page.goto("/privacidad");
+  await closeCookies(page);
+  await page.getByRole("link", { name: "Abrir el formulario de contacto" }).first().click();
+  const dlg = page.getByRole("dialog", { name: "Escríbenos" });
+  await expect(dlg.locator("#ct-motivo")).toHaveValue("datos");
+  await dlg.locator("#ct-nombre").fill("Ana");
+  await dlg.locator("#ct-email").fill("ana@empresa.com");
+  await dlg.locator("#ct-mensaje").fill("Quiero actualizar mis datos.");
+  await dlg.locator("#ct-autorizacion").check();
+  await dlg.getByRole("button", { name: /Enviar mensaje/ }).click();
+  const alert = dlg.getByRole("alert");
+  await expect(alert).toContainText("No pudimos enviar tu mensaje");
+  await expect(alert.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", /wa\.me/);
+  // Clic afuera cierra
+  await page.mouse.click(5, 5);
+  await expect(dlg).toBeHidden();
+});
+
+test("cotizador: exige autorización, envía por correo y el WhatsApp lleva la solicitud", async ({
+  page,
+}) => {
+  let sent: { kind?: string; subject?: string; fields?: Record<string, string> } | null = null;
+  await page.route("**/api/contact", async (r) => {
+    sent = r.request().postDataJSON();
+    await r.fulfill({ json: { ok: true } });
+  });
+  await page.goto("/?servicio=local#cotizar");
+  await closeCookies(page);
+  const form = page.locator("#cotizar form");
+  const next = () => form.getByRole("button", { name: /Continuar|Ver mi solicitud/ }).click();
+  await form.locator('input[name="origen"]').fill("Chapinero");
+  await form.locator('input[name="destino"]').fill("Usaquén");
+  await next();
+  await form.getByRole("button", { name: "Urgente · próximos días" }).click();
+  await next();
+  await next();
+  await next();
+  await form.locator('input[name="nombre"]').fill("Ana Prueba");
+  await form.locator('input[name="telefono"]').fill("3000000000");
+  await form.locator('input[name="email"]').fill("ana@empresa.com");
+  await next();
+  await expect(form.getByText("Debes autorizar el tratamiento de datos")).toBeVisible();
+  await form.getByRole("checkbox").check();
+  await next();
+
+  const wa = form.getByRole("link", { name: /Enviar por WhatsApp/ });
+  const href = decodeURIComponent((await wa.getAttribute("href")) ?? "");
+  expect(href).toMatch(/^https:\/\/wa\.me\/573218115967\?text=/);
+  expect(href).toContain("*Servicio:* Mudanza local");
+  expect(href).toContain("*Nombre:* Ana Prueba");
+  expect(href).toContain("*Autorización de datos:* Sí");
+
+  await form.getByRole("button", { name: /Enviar por correo/ }).click();
+  await expect(form.getByText(/Un asesor te responderá a ana@empresa.com/)).toBeVisible();
+  expect(sent!.kind).toBe("cotizacion");
+  expect(sent!.subject).toContain("Solicitud de cotización");
+  expect(sent!.fields).toMatchObject({
+    Origen: "Chapinero",
+    Nombre: "Ana Prueba",
+    Correo: "ana@empresa.com",
+    "Autorización de datos": "Sí",
+  });
+});
+
+test("la política de datos carga con la tabla de canales y el formulario", async ({ page }) => {
+  await page.goto("/privacidad");
+  await expect(page.locator("h1")).toHaveText("Política de tratamiento de datos personales");
+  await expect(page.getByText(/mediante Brevo/)).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Abrir el formulario de contacto" }).first(),
+  ).toHaveAttribute("href", "#contacto?motivo=datos");
+});

@@ -11,6 +11,7 @@ const STRICT = process.env.A11Y_STRICT === "1";
 for (const route of [
   "/",
   "/nosotros",
+  "/privacidad",
   "/servicios/mudanzas-internacionales",
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",
   "/en",

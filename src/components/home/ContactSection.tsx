@@ -1,6 +1,7 @@
 import { useLang } from "@/i18n";
 import { contactText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
+import { contactHref } from "@/data/contact";
 import { Bi, Eyebrow, Reveal } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
@@ -37,7 +38,7 @@ export function ContactSection() {
       icon: "envelope",
       title: t.email,
       body: (
-        <a href={`mailto:${CONTACT.email}`} className="break-all hover:text-naranja">
+        <a href={contactHref()} className="break-all hover:text-naranja">
           {CONTACT.email}
         </a>
       ),

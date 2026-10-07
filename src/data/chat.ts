@@ -4,6 +4,7 @@
 // de la interfaz. La lógica está en src/hooks/useAdvisorChat.ts; en español el
 // texto libre lo responde el cerebro de Joel (src/lib/joel.ts).
 import { siteFor } from "@/data/content";
+import { contactHref } from "@/data/contact";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
 
 export const NAME = "Joel";
@@ -409,6 +410,10 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
     nombre: {
       say: () => [
         tr("¡Perfecto! Por último, ¿cómo te llamas?", "Perfect! Lastly, what's your name?"),
+        tr(
+          "Usaremos tus datos solo para gestionar esta solicitud, según nuestra política de datos.",
+          "We will use your data only to handle this request, in line with our privacy policy.",
+        ),
       ],
       input: { key: "nombre", placeholder: tr("Tu nombre", "Your name"), next: () => "resumen" },
     },
@@ -451,9 +456,25 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           },
         },
         {
+          // Abre el formulario de contacto con la solicitud ya escrita
+          label: tr("Enviar por correo", "Send by email"),
+          icon: "envelope",
+          href: contactHref({
+            motivo: "cotizacion",
+            nombre: d.nombre,
+            empresa: d.empresa,
+            mensaje: waMessage(d),
+          }),
+        },
+        {
           label: tr("Completar en el cotizador", "Complete it in the quote form"),
           icon: "ui-checks",
           to: lp(`/?servicio=${quoteService(d)}#cotizar`),
+        },
+        {
+          label: tr("Política de datos", "Privacy policy"),
+          icon: "shield-lock",
+          to: lp("/privacidad"),
         },
       ],
       options: [
@@ -545,7 +566,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         {
           label: tr("Enviar un correo", "Send an email"),
           icon: "envelope",
-          href: `mailto:${CONTACT.email}`,
+          href: contactHref(),
         },
       ],
       options: [BACK],

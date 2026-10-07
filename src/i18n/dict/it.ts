@@ -535,5 +535,67 @@ const dict: Record<string, string> = {
     "Se hai un'altra domanda, scrivici e un consulente ti risponderà.",
   "Other services": "Altri servizi",
   "Complete your move": "Completa il tuo trasloco",
+  // ─── Política de datos ───
+  "Data protection": "Protezione dei dati",
+  "On this page": "In questa pagina",
+  "Questions about your data?": "Domande sui tuoi dati?",
+  "Write to us and we will help you exercise your rights.":
+    "Scrivici e ti aiuteremo a esercitare i tuoi diritti.",
+  "Write an email": "Scrivi un'e-mail",
+  "Privacy policy": "Informativa privacy",
+  "Read the privacy policy": "Leggi l'informativa privacy",
+  "We will use your data only to handle this request, in line with our privacy policy.":
+    "Useremo i tuoi dati solo per gestire questa richiesta, secondo la nostra informativa privacy.",
+  "What data we use, why, and how to exercise your rights":
+    "Quali dati usiamo, perché e come esercitare i tuoi diritti",
+  // ─── Formulario de contacto y envío por correo ───
+  "Change my cookie choice":
+    "Cambia la mia scelta sui cookie",
+  "Close form":
+    "Chiudi il modulo",
+  "Contact form":
+    "Modulo di contatto",
+  "Data authorization":
+    "Consenso al trattamento dei dati",
+  "Enter your email to get the reply this way:":
+    "Scrivi la tua e-mail per ricevere la risposta in questo modo:",
+  "General information":
+    "Informazioni generali",
+  "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
+    "Autorizzo Transpack S.A.S. a trattare i miei dati personali per rispondere a questa richiesta, secondo la sua",
+  "Leave your details and a Transpack advisor will get back to you.":
+    "Lasciaci i tuoi dati e un consulente Transpack ti risponderà.",
+  "Message sent!":
+    "Messaggio inviato!",
+  "Moving or storage quote":
+    "Preventivo di trasloco o deposito",
+  "Open the contact form":
+    "Apri il modulo di contatto",
+  "Personal data (Law 1581)":
+    "Dati personali (legge 1581)",
+  "Phone":
+    "Telefono",
+  "Phone numbers":
+    "Telefoni",
+  "Requests, complaints or suggestions":
+    "Richieste, reclami o suggerimenti",
+  "Send message":
+    "Invia messaggio",
+  "Sending…":
+    "Invio in corso…",
+  "Support with an ongoing service":
+    "Assistenza per un servizio in corso",
+  "Tell us what you need…":
+    "Raccontaci di cosa hai bisogno…",
+  "We couldn't send your message right now. Please try again or message us on":
+    "Non siamo riusciti a inviare il tuo messaggio in questo momento. Riprova o scrivici su",
+  "Work with us":
+    "Lavora con noi",
+  "Write to us":
+    "Scrivici",
+  "You can change your choice at any time.":
+    "Puoi cambiare la tua scelta in qualsiasi momento.",
+  "data processing policy":
+    "informativa sul trattamento dei dati",
 };
 export default dict;

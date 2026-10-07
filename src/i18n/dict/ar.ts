@@ -519,5 +519,66 @@ const dict: Record<string, string> = {
     "إن كان لديك سؤال آخر، راسلنا وسيجيبك أحد مستشارينا.",
   "Other services": "خدمات أخرى",
   "Complete your move": "أكمل خدمات انتقالك",
+  // ─── Política de datos ───
+  "Data protection": "حماية البيانات",
+  "On this page": "في هذه الصفحة",
+  "Questions about your data?": "هل لديك أسئلة حول بياناتك؟",
+  "Write to us and we will help you exercise your rights.": "راسلنا وسنساعدك على ممارسة حقوقك.",
+  "Write an email": "أرسل بريدًا إلكترونيًا",
+  "Privacy policy": "سياسة البيانات",
+  "Read the privacy policy": "اقرأ سياسة البيانات",
+  "We will use your data only to handle this request, in line with our privacy policy.":
+    "سنستخدم بياناتك فقط لمعالجة هذا الطلب، وفقًا لسياسة البيانات لدينا.",
+  "What data we use, why, and how to exercise your rights":
+    "البيانات التي نستخدمها والغرض منها وكيفية ممارسة حقوقك",
+  // ─── Formulario de contacto y envío por correo ───
+  "Change my cookie choice":
+    "تغيير قراري بشأن ملفات تعريف الارتباط",
+  "Close form":
+    "إغلاق النموذج",
+  "Contact form":
+    "نموذج التواصل",
+  "Data authorization":
+    "الموافقة على معالجة البيانات",
+  "Enter your email to get the reply this way:":
+    "أدخل بريدك الإلكتروني لتلقي الرد بهذه الطريقة:",
+  "General information":
+    "معلومات عامة",
+  "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
+    "أوافق على أن تعالج Transpack S.A.S. بياناتي الشخصية للرد على هذا الطلب، وفقًا لـ",
+  "Leave your details and a Transpack advisor will get back to you.":
+    "اترك بياناتك وسيرد عليك أحد مستشاري ترانسباك.",
+  "Message sent!":
+    "تم إرسال الرسالة!",
+  "Moving or storage quote":
+    "عرض سعر للنقل أو التخزين",
+  "Open the contact form":
+    "افتح نموذج التواصل",
+  "Personal data (Law 1581)":
+    "البيانات الشخصية (القانون 1581)",
+  "Phone":
+    "الهاتف",
+  "Phone numbers":
+    "أرقام الهاتف",
+  "Requests, complaints or suggestions":
+    "طلبات أو شكاوى أو اقتراحات",
+  "Send message":
+    "إرسال الرسالة",
+  "Sending…":
+    "جارٍ الإرسال…",
+  "Support with an ongoing service":
+    "دعم لخدمة جارية",
+  "Tell us what you need…":
+    "أخبرنا بما تحتاج إليه…",
+  "We couldn't send your message right now. Please try again or message us on":
+    "تعذّر إرسال رسالتك الآن. حاول مرة أخرى أو راسلنا عبر",
+  "Work with us":
+    "اعمل معنا",
+  "Write to us":
+    "راسلنا",
+  "You can change your choice at any time.":
+    "يمكنك تغيير قرارك في أي وقت.",
+  "data processing policy":
+    "سياسة معالجة البيانات",
 };
 export default dict;

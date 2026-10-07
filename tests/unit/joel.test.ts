@@ -33,6 +33,19 @@ describe("Comprensión", () => {
     expect(ask("¿embalan los muebles?").intent).toBe("fact-embalan");
     expect(ask("¿hacen mudanzas de oficina?").intent).toBe("fact-oficinas");
     expect(ask("que documentos necesito para mudarme a otro pais").intent).toBe("fact-documentos");
+    // Datos personales: no lo confunde con "política" como tema ajeno
+    for (const q of [
+      "¿qué hacen con mis datos?",
+      "politica de privacidad",
+      "quiero borrar mis datos",
+    ]) {
+      const r = ask(q);
+      expect(r.intent, q).toBe("fact-datos-personales");
+      expect(
+        r.actions?.some((a) => a.to === "/privacidad"),
+        q,
+      ).toBe(true);
+    }
   });
 
   it("recuerda de qué servicio se venía hablando", () => {

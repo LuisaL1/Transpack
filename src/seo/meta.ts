@@ -215,6 +215,28 @@ function aboutMeta(lang: Lang): PageMeta {
   };
 }
 
+function privacyMeta(lang: Lang): PageMeta {
+  const t = SEO_TEXT[lang];
+  const path = localize("/privacidad", lang);
+  const title = t.privacyTitle;
+  const description = t.privacyDescription;
+  return {
+    ...base(path, lang, "/privacidad"),
+    title,
+    description,
+    priority: 0.3,
+    jsonLd: [
+      graph(
+        webPage(path, lang, title, description),
+        breadcrumb([
+          [t.breadcrumb.home, localize("/", lang)],
+          [t.breadcrumb.privacy, path],
+        ]),
+      ),
+    ],
+  };
+}
+
 function serviceMeta(slug: string, lang: Lang): PageMeta | null {
   const s = siteFor(lang).SERVICES.find((x) => x.slug === slug);
   if (!s) return null;
@@ -324,6 +346,7 @@ export function getPageMeta(pathname: string): PageMeta {
     if (localize(es, lang) !== path) return null;
     if (es === "/") return homeMeta(lang);
     if (es === "/nosotros") return aboutMeta(lang);
+    if (es === "/privacidad") return privacyMeta(lang);
     const svc = es.match(/^\/servicios\/([a-z0-9-]+)$/);
     if (svc) return serviceMeta(svc[1], lang);
     const art = es.match(/^\/blog\/([a-z0-9-]+)$/);
@@ -337,6 +360,7 @@ export function getPageMeta(pathname: string): PageMeta {
 export const PUBLIC_ROUTES: string[] = LANGS.flatMap((l) => [
   localize("/", l),
   localize("/nosotros", l),
+  localize("/privacidad", l),
   ...siteFor("es").SERVICES.map((s) => localize(`/servicios/${s.slug}`, l)),
   ...postsFor("es").map((p) => localize(`/blog/${p.slug}`, l)),
 ]);

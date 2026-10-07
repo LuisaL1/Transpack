@@ -2,6 +2,8 @@
 // textos de la cabecera. Cada menú tiene una tarjeta destacada (izquierda) y
 // una lista de enlaces: "to" = ruta interna, "href" = enlace externo,
 // "chat" = abre a Joel.
+import { privacyLink } from "@/data/pages";
+import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
 
@@ -244,10 +246,10 @@ export function menusFor(lang: Lang): Menu[] {
           href: `tel:+57${CONTACT.phones[0].replace(/\s/g, "")}`,
         },
         {
-          label: tr("Correo electrónico", "Email"),
-          desc: CONTACT.email,
+          label: tr("Escríbenos", "Email us"),
+          desc: tr("Formulario de contacto", "Contact form"),
           icon: "envelope",
-          href: `mailto:${CONTACT.email}`,
+          href: contactHref(),
         },
         {
           label: tr("Habla con Joel", "Talk to Joel"),
@@ -286,9 +288,9 @@ export function supportFor(lang: Lang): MenuItem[] {
     },
     {
       label: tr("Escríbenos", "Email us"),
-      desc: CONTACT.email,
+      desc: tr("Formulario de contacto", "Contact form"),
       icon: "envelope",
-      href: `mailto:${CONTACT.email}`,
+      href: contactHref(),
     },
   ];
 }
@@ -320,6 +322,7 @@ export const footerText = (tr: Tr) => ({
   about: tr("Quiénes somos", "About us"),
   contact: tr("Contacto", "Contact"),
   legal: "Transpack S.A.S. · Bogotá, Colombia",
+  privacy: privacyLink(tr),
 });
 
 // Franja superior de idiomas: una opción por idioma, nombrada por la región

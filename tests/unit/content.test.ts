@@ -56,6 +56,42 @@ describe("Servicios", () => {
 });
 
 describe("Traducciones", () => {
+  it("la política de datos tiene las mismas secciones en cada idioma y la versión en español es la oficial", () => {
+    for (const l of OTHERS) {
+      const p = siteFor(l).PRIVACY;
+      expect(
+        p.sections.map((s) => s.id),
+        l,
+      ).toEqual(es.PRIVACY.sections.map((s) => s.id));
+      p.sections.forEach((s, i) => {
+        expect(s.text?.length ?? 0, `${l} ${s.id}`).toBe(es.PRIVACY.sections[i].text?.length ?? 0);
+        expect(s.items?.length ?? 0, `${l} ${s.id}`).toBe(
+          es.PRIVACY.sections[i].items?.length ?? 0,
+        );
+        expect(s.after?.length ?? 0, `${l} ${s.id}`).toBe(es.PRIVACY.sections[i].after?.length ?? 0);
+        expect(s.table?.rows.length ?? 0, `${l} ${s.id}`).toBe(
+          es.PRIVACY.sections[i].table?.rows.length ?? 0,
+        );
+      });
+      expect(p.notice, l).not.toBe("");
+      // Mismo correo de contacto que el resto del sitio (la dirección y los
+      // teléfonos los muestra la página desde CONTACT)
+      expect(JSON.stringify(p), l).toContain(es.CONTACT.email);
+    }
+  });
+
+  it("la política de datos cubre todos los canales del sitio y no inventa el NIT", () => {
+    const table = es.PRIVACY.sections.find((s) => s.id === "datos")!.table!;
+    const where = table.rows.map((r) => r[0]).join(" ");
+    for (const c of ["Formulario de contacto", "Cotizador", "Joel", "WhatsApp", "Analítica"])
+      expect(where).toContain(c);
+    const all = JSON.stringify(es.PRIVACY);
+    for (const k of ["Brevo", "Meta", "navegador", "Superintendencia", "10 días hábiles", "15 días hábiles"])
+      expect(all).toContain(k);
+    // El NIT no está en los documentos del cliente: queda vacío hasta que lo entreguen
+    expect(es.CONTACT.nit).toMatch(/^(\d{3}\.?\d{3}\.?\d{3}-\d)?$/);
+  });
+
   it("cada idioma tiene los mismos servicios, segmentos, niveles, pasos y preguntas", () => {
     for (const l of OTHERS) {
       const s = siteFor(l);
@@ -89,7 +125,10 @@ describe("Traducciones", () => {
   it("la galería tiene las mismas fotos, en el mismo orden, con pie de foto en cada idioma", () => {
     for (const l of OTHERS) {
       const g = siteFor(l).GALLERY;
-      expect(g.map((x) => [x.src, !!x.tall]), l).toEqual(es.GALLERY.map((x) => [x.src, !!x.tall]));
+      expect(
+        g.map((x) => [x.src, !!x.tall]),
+        l,
+      ).toEqual(es.GALLERY.map((x) => [x.src, !!x.tall]));
       for (const x of g) expect(x.caption.trim().length, l).toBeGreaterThan(3);
     }
   });

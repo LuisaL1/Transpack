@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
 import { footerText } from "@/data/navigation";
+import { contactHref } from "@/data/contact";
 import { Bi } from "@/components/ui";
 import { Logo } from "@/components/layout/Logo";
 
@@ -65,7 +66,7 @@ export function Footer() {
           <a href={waLink()} target="_blank" rel="noopener" className={linkCls}>
             {CONTACT.phones[0]}
           </a>
-          <a href={`mailto:${CONTACT.email}`} className={`${linkCls} break-all`}>
+          <a href={contactHref()} className={`${linkCls} break-all`}>
             {CONTACT.email}
           </a>
         </div>
@@ -74,7 +75,12 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {t.legal}
         </span>
-        <span>{CONTACT.web}</span>
+        <span className="flex flex-wrap gap-x-5 gap-y-2">
+          <Link to={lp("/privacidad")} className={linkCls}>
+            {t.privacy}
+          </Link>
+          <span>{CONTACT.web}</span>
+        </span>
       </div>
     </footer>
   );

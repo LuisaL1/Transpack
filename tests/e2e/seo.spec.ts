@@ -12,6 +12,8 @@ test.describe("sin JavaScript", () => {
     ["/servicios/mudanzas-internacionales", /otro país/, "es-CO"],
     ["/blog/por-que-una-mudanza-maritima-internacional-puede-tardar", /tardar/, "es-CO"],
     ["/en/services/international-moving", /abroad/, "en-US"],
+    ["/privacidad", /Política de tratamiento de datos personales/, "es-CO"],
+    ["/de/datenschutz", /personenbezogener Daten/, "de-DE"],
     ["/ar", /.+/, "ar"],
   ] as const) {
     test(`${route} trae idioma, título, H1, canónica y JSON-LD en el HTML`, async ({ page }) => {

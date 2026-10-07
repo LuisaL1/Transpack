@@ -536,5 +536,67 @@ const dict: Record<string, string> = {
     "Bei weiteren Fragen schreiben Sie uns – ein Berater antwortet Ihnen.",
   "Other services": "Weitere Leistungen",
   "Complete your move": "Ergänzen Sie Ihren Umzug",
+  // ─── Política de datos ───
+  "Data protection": "Datenschutz",
+  "On this page": "Auf dieser Seite",
+  "Questions about your data?": "Fragen zu Ihren Daten?",
+  "Write to us and we will help you exercise your rights.":
+    "Schreiben Sie uns, und wir helfen Ihnen, Ihre Rechte auszuüben.",
+  "Write an email": "E-Mail schreiben",
+  "Privacy policy": "Datenschutzrichtlinie",
+  "Read the privacy policy": "Datenschutzrichtlinie lesen",
+  "We will use your data only to handle this request, in line with our privacy policy.":
+    "Wir verwenden Ihre Daten nur zur Bearbeitung dieser Anfrage, gemäß unserer Datenschutzrichtlinie.",
+  "What data we use, why, and how to exercise your rights":
+    "Welche Daten wir nutzen, wofür und wie Sie Ihre Rechte ausüben",
+  // ─── Formulario de contacto y envío por correo ───
+  "Change my cookie choice":
+    "Meine Cookie-Entscheidung ändern",
+  "Close form":
+    "Formular schließen",
+  "Contact form":
+    "Kontaktformular",
+  "Data authorization":
+    "Einwilligung zur Datenverarbeitung",
+  "Enter your email to get the reply this way:":
+    "Geben Sie Ihre E-Mail-Adresse an, um die Antwort auf diesem Weg zu erhalten:",
+  "General information":
+    "Allgemeine Informationen",
+  "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
+    "Ich willige ein, dass Transpack S.A.S. meine personenbezogenen Daten zur Beantwortung dieser Anfrage verarbeitet, gemäß ihrer",
+  "Leave your details and a Transpack advisor will get back to you.":
+    "Hinterlassen Sie Ihre Daten, und ein Berater von Transpack meldet sich bei Ihnen.",
+  "Message sent!":
+    "Nachricht gesendet!",
+  "Moving or storage quote":
+    "Angebot für Umzug oder Einlagerung",
+  "Open the contact form":
+    "Kontaktformular öffnen",
+  "Personal data (Law 1581)":
+    "Personenbezogene Daten (Gesetz 1581)",
+  "Phone":
+    "Telefon",
+  "Phone numbers":
+    "Telefonnummern",
+  "Requests, complaints or suggestions":
+    "Anfragen, Beschwerden oder Vorschläge",
+  "Send message":
+    "Nachricht senden",
+  "Sending…":
+    "Wird gesendet…",
+  "Support with an ongoing service":
+    "Unterstützung bei einer laufenden Leistung",
+  "Tell us what you need…":
+    "Sagen Sie uns, was Sie brauchen…",
+  "We couldn't send your message right now. Please try again or message us on":
+    "Wir konnten Ihre Nachricht gerade nicht senden. Bitte versuchen Sie es erneut oder schreiben Sie uns per",
+  "Work with us":
+    "Bei uns arbeiten",
+  "Write to us":
+    "Schreiben Sie uns",
+  "You can change your choice at any time.":
+    "Sie können Ihre Entscheidung jederzeit ändern.",
+  "data processing policy":
+    "Datenschutzrichtlinie",
 };
 export default dict;

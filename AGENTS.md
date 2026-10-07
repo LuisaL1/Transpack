@@ -32,6 +32,7 @@ src/
 │   ├── NosotrosPage.tsx        "/nosotros"
 │   ├── ServiceDetailPage.tsx   "/servicios/:slug"
 │   ├── ArticlePage.tsx         "/blog/:slug"
+│   ├── PrivacyPage.tsx         "/privacidad" (texto en PRIVACY de site.ts)
 │   └── NotFoundPage.tsx        404
 ├── components/
 │   ├── layout/             Layout (cabecera + contenido + pie + chat), SeoHead,
@@ -64,12 +65,14 @@ src/
 │   ├── search.ts           Qué encuentra el buscador y búsquedas sugeridas
 │   ├── meta.ts             Títulos, descripciones y migas de cada página por idioma (SEO)
 │   ├── consent.ts          Textos del aviso de cookies
+│   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes
 │   └── worldMap.ts         Mapamundi (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
 │   ├── joel.ts             "Cerebro" del asesor virtual (sin IA externa)
 │   ├── chatRoute.ts        Chat en en/fr/de/it/ar: palabras clave → paso
-│   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos)
+│   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
+│   ├── leads.ts            sendLead(): envía formularios a /api/contact
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
@@ -79,9 +82,10 @@ src/
 ├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/index.css        Tokens de marca (@theme), estilos globales y animaciones
+api/contact.ts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
-docs/                       conversion-y-analitica.md y seo.md
+docs/                       conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
@@ -130,6 +134,22 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   Nunca se envía el texto que escribe el visitante (solo la intención detectada).
   Tabla de eventos: `docs/conversion-y-analitica.md`.
 
+### Formularios y datos personales
+
+- **Nada de `mailto:`** (lo revisa la prueba de seguridad). Para "escribir un
+  correo" use un enlace a `#contacto` o `contactHref({ motivo, mensaje, nombre,
+  empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
+  `App`.
+- Los envíos pasan por `sendLead()` (`src/lib/leads.ts`) → `api/contact.ts` →
+  Brevo. Nunca a servicios de formularios de terceros. La clave
+  (`BREVO_API_KEY`) es del servidor: jamás con prefijo `VITE_` ni en `src/`.
+- Todo formulario que pida datos personales lleva la casilla de autorización
+  (sin marcar por defecto, con enlace a `/privacidad`) y envía
+  `"Autorización de datos": "Sí"`; el servidor la vuelve a verificar.
+- El correo al equipo va en español (motivos y etiquetas); la confirmación al
+  visitante va en su idioma (`lang`).
+- Las pruebas nunca envían correos reales: simulan `fetch` o `/api/contact`.
+
 ## Reglas de contenido
 
 - Todo sale de los documentos del cliente y de lo ya publicado en el sitio.
@@ -143,6 +163,11 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en
   `scripts/generate-world-map.mjs`.
+- Política de datos (`PRIVACY` en `src/data/site.ts` y sus traducciones, página
+  `/privacidad`): es un borrador pendiente de aprobación legal. El NIT
+  (`CONTACT.nit`) está vacío hasta que el cliente lo entregue: no inventarlo. Si se pide un dato nuevo al visitante
+  (cotizador, chat) o se agrega una herramienta que recoja datos, actualice la
+  política en los seis idiomas. La versión en español es la oficial.
 - El cotizador **no calcula precios** (la Lógica de Cotización no los define):
   perfila la solicitud y la envía por WhatsApp o correo.
 - Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez

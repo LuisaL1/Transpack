@@ -23,6 +23,10 @@ export const CONTACT = {
   phones: ["321 811 5967", "321 811 5989", "321 811 5977"],
   email: "servicioalcliente@transpacksas.com",
   address: "Cra. 40 #20A – 96, Bogotá, Colombia",
+  legalName: "Transpack S.A.S.",
+  // PENDIENTE: el NIT no aparece en los documentos del cliente. No inventarlo:
+  // mientras esté vacío, la política de datos no lo muestra.
+  nit: "",
   handle: "@transpackmudanzas",
   web: "www.transpacksas.com",
   socials: [
@@ -532,3 +536,161 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 ];
 
 export const ABOUT_IMAGES = { a: imgCargue, b: imgProteccion };
+
+// ─── Política de tratamiento de datos personales ─────────────────────────────
+// Ley 1581 de 2012 y Decreto 1377 de 2013 (compilado en el Decreto 1074 de
+// 2015). BORRADOR basado en los datos que recoge el sitio: debe revisarlo y
+// aprobarlo el asesor legal de Transpack antes de publicar el sitio (ver
+// README.md). Página: /privacidad (pages/PrivacyPage.tsx).
+
+export type PrivacySection = {
+  id: string;
+  title: string;
+  /** Párrafos antes de la tabla o la lista */
+  text?: string[];
+  /** Tabla "Dónde · Datos · Finalidad" */
+  table?: { head: [string, string, string]; rows: [string, string, string][] };
+  items?: string[];
+  /** Párrafos después de la tabla o la lista */
+  after?: string[];
+};
+
+export const PRIVACY = {
+  title: "Política de tratamiento de datos personales",
+  intro: "En Transpack S.A.S. tratamos tus datos personales de acuerdo con la Ley 1581 de 2012 y el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015). Aquí te explicamos qué datos recogemos en este sitio, para qué los usamos, cómo se transmiten y cómo puedes ejercer tus derechos.",
+  updated: "Última actualización: 7 de octubre de 2026",
+  notice: "",
+  sections: [
+    {
+      id: "responsable",
+      title: "Responsable del tratamiento",
+      text: [
+        "La empresa responsable de tus datos personales es:",
+      ],
+    },
+    {
+      id: "datos",
+      title: "Qué datos recogemos y para qué",
+      text: [
+        "Solo pedimos los datos necesarios para atender lo que nos solicitas. Estos son todos los canales del sitio:",
+      ],
+      table: {
+        head: ["Dónde", "Datos", "Finalidad"],
+        rows: [
+          [
+            "Formulario de contacto",
+            "Nombre, empresa (opcional), correo, teléfono (opcional), motivo y mensaje.",
+            "Responder tu mensaje o solicitud, incluidas las solicitudes sobre tus datos personales.",
+          ],
+          [
+            "Cotizador",
+            "Servicio, origen y destino, fechas, datos del inmueble, volumen o inventario, nivel de servicio, servicios adicionales y comentarios; nombre, celular y correo. Si es para una empresa: nombre de la empresa y cargo del funcionario.",
+            "Preparar el estimado y la cotización formal, contactarte para revisarla y, si la aceptas, coordinar el servicio.",
+          ],
+          [
+            "Chat de Joel (asesor virtual)",
+            "Las opciones que eliges y lo que escribes en la conversación, incluido tu nombre y, si aplica, el de tu empresa.",
+            "Orientarte y preparar tu solicitud. La conversación no se envía a Transpack: solo nos llega si tú la envías por WhatsApp o por el formulario.",
+          ],
+          [
+            "WhatsApp y teléfono",
+            "Tu número y lo que decidas contarnos.",
+            "Atender tu consulta o solicitud.",
+          ],
+          [
+            "Analítica del sitio (solo si aceptas las cookies)",
+            "Páginas visitadas, ubicación aproximada (país o ciudad), tipo de dispositivo y acciones como abrir el chat o enviar una solicitud, nunca su contenido.",
+            "Medir de forma agregada cómo se usa el sitio para mejorarlo.",
+          ],
+        ],
+      },
+      after: [
+        "No vendemos tus datos ni los usamos para publicidad.",
+      ],
+    },
+    {
+      id: "sensibles",
+      title: "Datos sensibles y de menores de edad",
+      text: [
+        "No pedimos datos sensibles (como información de salud, origen étnico, creencias o datos biométricos) ni datos de niñas, niños o adolescentes. Te pedimos no incluirlos en tus mensajes; si lo haces, los usaremos solo para atender tu solicitud.",
+        "Este sitio no está dirigido a menores de edad.",
+      ],
+    },
+    {
+      id: "transmision",
+      title: "Cómo se transmiten y conservan tus datos",
+      items: [
+        "Formulario de contacto y cotizador por correo: tus datos viajan cifrados (HTTPS) a una función del propio sitio, que los envía por correo a Transpack mediante Brevo, nuestro proveedor de correo, que actúa como encargado del tratamiento. Brevo también te envía una confirmación de que recibimos tu solicitud. El sitio no guarda copia de lo que envías.",
+        "WhatsApp: si eliges enviar tu solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
+        "En tu navegador: las preferencias del asesor virtual y tu decisión sobre cookies se guardan solo en tu navegador (almacenamiento local) y nunca se envían a Transpack. Puedes borrarlas cuando quieras borrando los datos de este sitio en tu navegador.",
+        "Conservación: guardamos las solicitudes que recibimos durante el tiempo necesario para atenderlas y prestar el servicio, y después el que exijan las normas contables, tributarias y legales.",
+      ],
+    },
+    {
+      id: "compartir",
+      title: "Con quién compartimos tus datos",
+      items: [
+        "En mudanzas internacionales, con nuestros agentes y aliados en el país de origen o de destino y con las autoridades aduaneras, solo en lo necesario para hacer la mudanza. Esto puede implicar transferir tus datos fuera de Colombia.",
+        "Con los proveedores que nos ayudan a operar el sitio y a comunicarnos contigo, como encargados del tratamiento: Vercel (alojamiento del sitio), Brevo (envío de correos) y Google (analítica, solo si la aceptas). Algunos están fuera de Colombia, por lo que tus datos pueden transmitirse a otros países.",
+        "Con autoridades, cuando la ley lo exija.",
+      ],
+    },
+    {
+      id: "cookies",
+      title: "Cookies y analítica",
+      text: [
+        "Usamos Google Analytics solo si aceptas las cookies analíticas en el aviso que aparece al entrar. Google actúa como encargado del tratamiento. No usamos cookies con fines publicitarios y, si las rechazas, el sitio funciona igual.",
+      ],
+    },
+    {
+      id: "derechos",
+      title: "Tus derechos",
+      text: [
+        "Como titular de los datos puedes:",
+      ],
+      items: [
+        "Conocer, actualizar y rectificar tus datos.",
+        "Pedir prueba de la autorización que nos diste.",
+        "Saber qué uso les hemos dado.",
+        "Revocar la autorización o pedir que eliminemos tus datos, cuando no exista un deber legal o contractual de conservarlos.",
+        "Acceder gratis a tus datos.",
+        "Presentar quejas ante la Superintendencia de Industria y Comercio (SIC), después de haber hecho tu solicitud a Transpack.",
+      ],
+    },
+    {
+      id: "como-ejercerlos",
+      title: "Cómo ejercer tus derechos",
+      text: [
+        `Usa el formulario de contacto con el motivo «Datos personales» o escríbenos a ${CONTACT.email}. Indica tu nombre, tu solicitud y un medio para responderte.`,
+      ],
+      items: [
+        "Consultas: respondemos en máximo 10 días hábiles, prorrogables hasta 5 días hábiles más, avisándote el motivo.",
+        "Reclamos (corrección, actualización, supresión o revocatoria): respondemos en máximo 15 días hábiles, prorrogables hasta 8 días hábiles más, avisándote el motivo.",
+      ],
+      after: [
+        "Si no quedas satisfecho con la respuesta, puedes presentar una queja ante la Superintendencia de Industria y Comercio (SIC).",
+      ],
+    },
+    {
+      id: "autorizacion",
+      title: "Autorización",
+      text: [
+        "Al marcar la casilla de autorización en el formulario de contacto o en el cotizador, nos autorizas a tratar tus datos para las finalidades de esta política. Si nos escribes por WhatsApp o nos llamas, nos das tu autorización con esa acción, para atender tu solicitud. Puedes revocarla en cualquier momento por los medios de «Cómo ejercer tus derechos».",
+      ],
+    },
+    {
+      id: "seguridad",
+      title: "Seguridad",
+      text: [
+        "Aplicamos medidas técnicas, humanas y administrativas razonables para proteger tus datos contra pérdida, consulta, uso o acceso no autorizado.",
+      ],
+    },
+    {
+      id: "vigencia",
+      title: "Cambios y vigencia",
+      text: [
+        "Esta política rige desde su publicación en este sitio. Si la cambiamos de forma sustancial, lo informaremos aquí antes de aplicar los cambios y actualizaremos la fecha de esta página.",
+      ],
+    },
+  ] as PrivacySection[],
+};

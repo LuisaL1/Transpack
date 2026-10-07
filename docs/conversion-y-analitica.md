@@ -25,14 +25,33 @@
 - **Antes de aceptar**, GA solo recibe señales sin cookies (sin `_ga`).
 - **La decisión** se guarda en el navegador (`localStorage`,
   `tp-analytics-consent`) y se comunica con `gtag("consent", "update")`.
+- **Cambiar la decisión:** el botón "Cambiar mi decisión sobre cookies" de la
+  política de datos (`/privacidad`) llama a `resetConsent()`: borra la decisión,
+  vuelve a denegar `analytics_storage` y emite el evento `tp:consent-reset`, que
+  escucha el aviso de cookies para volver a mostrarse.
+
+## Protección de datos personales (Ley 1581 de 2012)
+
+- **Política:** `/privacidad` (texto en `PRIVACY`, `src/data/site.ts` y sus
+  traducciones). Se enlaza desde el pie, el aviso de cookies, la autorización
+  del formulario y del cotizador, el chat y Joel.
+- **Autorización:** el formulario de contacto y el cotizador exigen marcar la
+  casilla (sin marcar por defecto); la solicitud lleva "Autorización de datos:
+  Sí" y la función `/api/contact` la vuelve a verificar. El chat informa el uso
+  de los datos antes de pedir el nombre.
+- **Qué recibe Google Analytics:** solo eventos e intenciones, nunca el texto
+  que escribe el visitante ni sus datos de contacto (nombre, correo, teléfono o
+  mensaje no se envían en ningún evento).
+- **Envío de solicitudes:** por la función propia del sitio con Brevo como
+  encargado del tratamiento; el sitio no guarda copia (ver `docs/formularios.md`).
 
 ## Eventos
 
 | Evento | Cuándo | Parámetros |
 | --- | --- | --- |
 | `page_view` | Cada cambio de ruta (es una SPA: `send_page_view: false` y envío manual) | `page_path`, `page_location`, `page_title` (ya con el título de la página nueva: `SeoHead` se monta antes) |
-| `generate_lead` | **Solicitud enviada**: en el cotizador, al pulsar "Enviar por WhatsApp" o "Enviar por correo"; en el chat de Joel, al pulsar "Enviar por WhatsApp" en el resumen | `method` (`whatsapp`, `email`, `chat_whatsapp`), `service` (local, nacional, internacional, empresarial, bodegaje), `level` (cotizador), `lang` |
-| `contact_click` | Clic en cualquier enlace `tel:`, `mailto:` o `https://wa.me/` del sitio | `method` (`phone`, `email`, `email_quote` = correo con asunto de cotización, `whatsapp`) |
+| `generate_lead` | **Solicitud enviada**: en el cotizador, al pulsar "Enviar por WhatsApp" o cuando el envío por correo **se confirma**; en el formulario de contacto, cuando el envío se confirma; en el chat de Joel, al pulsar "Enviar por WhatsApp" en el resumen | `method` (`whatsapp`, `email` = cotizador por correo, `form` = formulario de contacto, `chat_whatsapp`), `service` (local, nacional, internacional, empresarial, bodegaje), `level` (cotizador), `reason` (motivo del formulario: cotizacion, informacion, soporte, pqrs, datos, empleo, otro), `lang` |
+| `contact_click` | Clic en un enlace `tel:` o `https://wa.me/`, o apertura del formulario de contacto (cualquier enlace a `#contacto`) | `method` (`phone`, `whatsapp`, `form`) |
 | `chat_open` | Al abrir el chat de Joel (botón, invitación, menú o buscador) | `lang` |
 | `chat_message` | Cada mensaje escrito al chat. **Nunca se envía el texto del visitante**, solo lo que Joel entendió | `intent` (p. ej. `precio`, `fact-seguro`, `pain-exterior`, `obj-caro`; en otros idiomas `step-<paso>`), `service`, `lang` |
 | `search` | Al elegir un resultado del buscador | `search_term`, `result` (ruta elegida), `lang` |
@@ -50,9 +69,10 @@
    poder filtrar por ellas.
 5. **Qué pregunta la gente a Joel:** informe de `chat_message` por `intent`.
    Las intenciones `fallback` son preguntas que Joel no supo responder.
-6. Un `generate_lead` significa que el visitante pulsó enviar: WhatsApp o el
-   correo se abren con la solicitud lista, pero el envío final lo hace el
-   visitante. Contraste con las solicitudes que realmente llegan a WhatsApp.
+6. Con `method` `email` o `form`, `generate_lead` se registra solo cuando la
+   solicitud llegó a Brevo. Con WhatsApp significa que el visitante pulsó
+   enviar: WhatsApp se abre con la solicitud lista, pero el envío final lo hace
+   el visitante. Contraste con las solicitudes que realmente llegan a WhatsApp.
 
 ## Pruebas
 

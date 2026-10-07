@@ -19,7 +19,7 @@ import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg
 import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
-import { CONTACT } from "@/data/site";
+import { CONTACT, type PrivacySection } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
 
@@ -445,3 +445,145 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgDespachoBodega, caption: "Versand aus dem Lager" },
   { src: imgBodegaMuebles, caption: "Geschützte Möbel im Lager" },
 ];
+
+// Política de tratamiento de datos (traducción; la versión en español es la oficial).
+// Mismas secciones y orden que PRIVACY en src/data/site.ts.
+export const PRIVACY = {
+  title: "Richtlinie zur Verarbeitung personenbezogener Daten",
+  intro: "Transpack S.A.S. verarbeitet Ihre personenbezogenen Daten gemäß dem kolumbianischen Gesetz 1581 von 2012 und dem Dekret 1377 von 2013 (zusammengefasst im Dekret 1074 von 2015). Hier erklären wir, welche Daten wir auf dieser Website erheben, wofür wir sie verwenden, wie sie übermittelt werden und wie Sie Ihre Rechte ausüben können.",
+  updated: "Letzte Aktualisierung: 7. Oktober 2026",
+  notice: "Dies ist eine Übersetzung zu Ihrer Information. Maßgeblich ist die spanische Fassung.",
+  sections: [
+    {
+      id: "responsable",
+      title: "Verantwortliche Stelle",
+      text: [
+        "Verantwortlich für Ihre personenbezogenen Daten ist:",
+      ],
+    },
+    {
+      id: "datos",
+      title: "Welche Daten wir erheben und wofür",
+      text: [
+        "Wir fragen nur die Daten ab, die wir zur Bearbeitung Ihrer Anfrage benötigen. Dies sind alle Kanäle der Website:",
+      ],
+      table: {
+        head: ["Wo", "Daten", "Zweck"],
+        rows: [
+          [
+            "Kontaktformular",
+            "Name, Unternehmen (optional), E-Mail, Telefon (optional), Anliegen und Nachricht.",
+            "Ihre Nachricht oder Anfrage beantworten, einschließlich Anfragen zu Ihren personenbezogenen Daten.",
+          ],
+          [
+            "Angebotsformular",
+            "Leistung, Abhol- und Zielort, Termine, Angaben zur Immobilie, Volumen oder Inventar, Servicestufe, Zusatzleistungen und Kommentare; Name, Handynummer und E-Mail. Bei Unternehmen: Name des Unternehmens und Position des Mitarbeiters.",
+            "Kostenvoranschlag und verbindliches Angebot erstellen, Sie zur Besprechung kontaktieren und, wenn Sie annehmen, die Leistung koordinieren.",
+          ],
+          [
+            "Chat mit Joel (virtueller Berater)",
+            "Die Optionen, die Sie wählen, und was Sie im Gespräch schreiben, einschließlich Ihres Namens und gegebenenfalls Ihres Unternehmens.",
+            "Sie beraten und Ihre Anfrage vorbereiten. Das Gespräch wird nicht an Transpack gesendet: Es erreicht uns nur, wenn Sie es per WhatsApp oder über das Formular senden.",
+          ],
+          [
+            "WhatsApp und Telefon",
+            "Ihre Nummer und was Sie uns mitteilen möchten.",
+            "Ihre Frage oder Anfrage bearbeiten.",
+          ],
+          [
+            "Website-Analyse (nur wenn Sie Cookies akzeptieren)",
+            "Aufgerufene Seiten, ungefährer Standort (Land oder Stadt), Gerätetyp und Aktionen wie das Öffnen des Chats oder das Senden einer Anfrage, nie deren Inhalt.",
+            "Die Nutzung der Website zusammengefasst messen, um sie zu verbessern.",
+          ],
+        ],
+      },
+      after: [
+        "Wir verkaufen Ihre Daten nicht und nutzen sie nicht für Werbung.",
+      ],
+    },
+    {
+      id: "sensibles",
+      title: "Sensible Daten und Daten von Minderjährigen",
+      text: [
+        "Wir fragen keine sensiblen Daten ab (etwa Gesundheitsinformationen, ethnische Herkunft, Überzeugungen oder biometrische Daten) und keine Daten von Kindern oder Jugendlichen. Bitte nehmen Sie solche Daten nicht in Ihre Nachrichten auf; falls doch, verwenden wir sie nur zur Bearbeitung Ihrer Anfrage.",
+        "Diese Website richtet sich nicht an Minderjährige.",
+      ],
+    },
+    {
+      id: "transmision",
+      title: "Wie Ihre Daten übermittelt und aufbewahrt werden",
+      items: [
+        "Kontaktformular und Angebotsformular per E-Mail: Ihre Daten werden verschlüsselt (HTTPS) an eine Funktion der Website selbst übertragen, die sie über Brevo, unseren E-Mail-Dienstleister und Auftragsverarbeiter, per E-Mail an Transpack sendet. Brevo schickt Ihnen außerdem eine Bestätigung, dass Ihre Anfrage eingegangen ist. Die Website speichert keine Kopie Ihrer Angaben.",
+        "WhatsApp: Wenn Sie Ihre Anfrage per WhatsApp senden, gelten für dieses Gespräch zusätzlich die Nutzungsbedingungen und die Datenschutzrichtlinie von WhatsApp (Meta).",
+        "In Ihrem Browser: Die Einstellungen des virtuellen Beraters und Ihre Cookie-Entscheidung werden nur in Ihrem Browser (lokaler Speicher) gespeichert und nie an Transpack gesendet. Sie können sie jederzeit löschen, indem Sie die Daten dieser Website in Ihrem Browser entfernen.",
+        "Aufbewahrung: Wir bewahren eingegangene Anfragen so lange auf, wie es für ihre Bearbeitung und die Erbringung der Leistung nötig ist, und danach so lange, wie es buchhalterische, steuerliche und gesetzliche Vorschriften verlangen.",
+      ],
+    },
+    {
+      id: "compartir",
+      title: "An wen wir Ihre Daten weitergeben",
+      items: [
+        "Bei internationalen Umzügen an unsere Agenten und Partner im Herkunfts- oder Zielland sowie an die Zollbehörden, nur soweit für den Umzug erforderlich. Dies kann eine Übermittlung Ihrer Daten außerhalb Kolumbiens bedeuten.",
+        "An Dienstleister, die uns beim Betrieb der Website und bei der Kommunikation mit Ihnen als Auftragsverarbeiter unterstützen: Vercel (Hosting der Website), Brevo (E-Mail-Versand) und Google (Analyse, nur wenn Sie zustimmen). Einige befinden sich außerhalb Kolumbiens, daher können Ihre Daten in andere Länder übermittelt werden.",
+        "An Behörden, wenn das Gesetz es verlangt.",
+      ],
+    },
+    {
+      id: "cookies",
+      title: "Cookies und Website-Analyse",
+      text: [
+        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso.",
+      ],
+    },
+    {
+      id: "derechos",
+      title: "Ihre Rechte",
+      text: [
+        "Als betroffene Person können Sie:",
+      ],
+      items: [
+        "Ihre Daten einsehen, aktualisieren und berichtigen.",
+        "Einen Nachweis über die von Ihnen erteilte Einwilligung verlangen.",
+        "Erfahren, wie wir Ihre Daten verwendet haben.",
+        "Ihre Einwilligung widerrufen oder die Löschung Ihrer Daten verlangen, sofern keine gesetzliche oder vertragliche Pflicht zur Aufbewahrung besteht.",
+        "Kostenlos auf Ihre Daten zugreifen.",
+        "Beschwerde bei der kolumbianischen Aufsichtsbehörde für Industrie und Handel (SIC) einlegen, nachdem Sie Ihr Anliegen an Transpack gerichtet haben.",
+      ],
+    },
+    {
+      id: "como-ejercerlos",
+      title: "So üben Sie Ihre Rechte aus",
+      text: [
+        `Nutzen Sie das Kontaktformular mit dem Anliegen „Personenbezogene Daten“ oder schreiben Sie an ${CONTACT.email}. Geben Sie Ihren Namen, Ihr Anliegen und eine Kontaktmöglichkeit an.`,
+      ],
+      items: [
+        "Anfragen: Wir antworten innerhalb von höchstens 10 Werktagen, verlängerbar um bis zu 5 weitere Werktage unter Angabe des Grundes.",
+        "Beschwerden (Berichtigung, Aktualisierung, Löschung oder Widerruf): Wir antworten innerhalb von höchstens 15 Werktagen, verlängerbar um bis zu 8 weitere Werktage unter Angabe des Grundes.",
+      ],
+      after: [
+        "Wenn Sie mit unserer Antwort nicht zufrieden sind, können Sie Beschwerde bei der Aufsichtsbehörde für Industrie und Handel (SIC) einlegen.",
+      ],
+    },
+    {
+      id: "autorizacion",
+      title: "Einwilligung",
+      text: [
+        "Indem Sie das Einwilligungsfeld im Kontaktformular oder im Angebotsformular ankreuzen, erlauben Sie uns, Ihre Daten für die Zwecke dieser Richtlinie zu verarbeiten. Wenn Sie uns per WhatsApp schreiben oder anrufen, erteilen Sie uns Ihre Einwilligung durch diese Handlung, damit wir Ihre Anfrage bearbeiten können. Sie können sie jederzeit über die unter „So üben Sie Ihre Rechte aus“ genannten Wege widerrufen.",
+      ],
+    },
+    {
+      id: "seguridad",
+      title: "Sicherheit",
+      text: [
+        "Wir treffen angemessene technische, personelle und organisatorische Maßnahmen, um Ihre Daten vor Verlust sowie unbefugter Einsicht, Nutzung oder unbefugtem Zugriff zu schützen.",
+      ],
+    },
+    {
+      id: "vigencia",
+      title: "Änderungen und Gültigkeit",
+      text: [
+        "Diese Richtlinie gilt ab ihrer Veröffentlichung auf dieser Website. Wesentliche Änderungen kündigen wir hier an, bevor sie wirksam werden, und aktualisieren das Datum dieser Seite.",
+      ],
+    },
+  ] as PrivacySection[],
+};

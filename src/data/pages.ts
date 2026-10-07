@@ -74,3 +74,29 @@ export const ctaBandText = (tr: Tr) => ({
   ),
   cta: tr("Cotizar ahora", "Get a quote"),
 });
+
+// Política de tratamiento de datos (/privacidad). El texto legal está en
+// PRIVACY (src/data/site.ts y sus traducciones).
+export const privacyText = (tr: Tr) => ({
+  eyebrow: tr("Protección de datos", "Data protection"),
+  ruta: tr("Ruta", "Breadcrumb"),
+  inicio: tr("Inicio", "Home"),
+  enEstaPagina: tr("En esta página", "On this page"),
+  dudas: tr("¿Preguntas sobre tus datos?", "Questions about your data?"),
+  escribenos: tr(
+    "Escríbenos y te ayudamos a ejercer tus derechos.",
+    "Write to us and we will help you exercise your rights.",
+  ),
+  abrirFormulario: tr("Abrir el formulario de contacto", "Open the contact form"),
+  // Datos del responsable
+  razonSocial: tr("Razón social", "Company name"),
+  nit: "NIT",
+  direccion: tr("Dirección", "Address"),
+  correo: tr("Correo", "Email"),
+  telefonos: tr("Teléfonos", "Phone numbers"),
+  cambiarCookies: tr("Puedes cambiar tu decisión cuando quieras.", "You can change your choice at any time."),
+  cambiarCookiesBtn: tr("Cambiar mi decisión sobre cookies", "Change my cookie choice"),
+});
+
+/** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
+export const privacyLink = (tr: Tr) => tr("Política de datos", "Privacy policy");
