@@ -783,7 +783,7 @@ export function QuoteWizard({
       >
         <span
           aria-hidden="true"
-          className="absolute -bottom-20 -right-20 h-40 w-40 rotate-45 bg-naranja/90"
+          className="absolute -bottom-20 -right-20 h-40 w-40 rotate-45 rounded-[22%] bg-naranja/90"
         />
         <h3 className="mb-5 text-lg !text-white">{t.solicitud}</h3>
         {/* Sin datos todavía: el aviso va fuera de la lista (<dl> solo admite <dt>/<dd>) */}

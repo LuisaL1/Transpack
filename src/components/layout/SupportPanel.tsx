@@ -14,7 +14,7 @@ export function SupportPanel() {
       <div className="relative overflow-hidden bg-gradient-to-br from-azul to-violeta px-5 py-4">
         <span
           aria-hidden="true"
-          className="absolute -right-8 -top-8 h-20 w-20 rotate-45 bg-naranja/25"
+          className="absolute -right-8 -top-8 h-20 w-20 rotate-45 rounded-[22%] bg-naranja/25"
         />
         <p className="relative flex items-center gap-2 font-title font-semibold text-white">
           <Bi n="headset" className="text-naranja" /> {t.supportTitle}

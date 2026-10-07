@@ -27,7 +27,7 @@ export function Services() {
               >
                 <span
                   aria-hidden="true"
-                  className="absolute -right-12 -top-12 h-20 w-20 rotate-45 bg-naranja opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  className="absolute -right-12 -top-12 h-20 w-20 rotate-45 rounded-[22%] bg-naranja opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 />
                 <span
                   className={`grid h-14 w-14 place-items-center rounded-[14px] text-[1.6rem] transition-colors duration-300 ${

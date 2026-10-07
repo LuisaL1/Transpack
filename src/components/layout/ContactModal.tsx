@@ -132,7 +132,7 @@ export function ContactModal() {
         <header className="relative overflow-hidden bg-azul px-6 pb-5 pt-5">
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rotate-45 bg-naranja/25"
+            className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rotate-45 rounded-[22%] bg-naranja/25"
           />
           <p className="relative font-title text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-naranja">
             Transpack

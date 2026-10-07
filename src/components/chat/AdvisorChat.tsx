@@ -48,7 +48,7 @@ export function AdvisorChat() {
           <header className="relative flex items-center gap-3 overflow-hidden bg-azul px-5 py-4">
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rotate-45 bg-naranja/25"
+              className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rotate-45 rounded-[22%] bg-naranja/25"
             />
             <span className="relative">
               <ChatAvatar size={42} />

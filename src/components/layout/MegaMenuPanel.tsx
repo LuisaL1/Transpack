@@ -19,7 +19,7 @@ export function MegaMenuPanel({ menu }: { menu: Menu }) {
       <div className="relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-azul to-violeta p-6 text-white/75">
         <span
           aria-hidden="true"
-          className="absolute -right-10 -top-10 h-28 w-28 rotate-45 bg-naranja/25"
+          className="absolute -right-10 -top-10 h-28 w-28 rotate-45 rounded-[22%] bg-naranja/25"
         />
         <p className="relative mb-2 font-title text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-naranja">
           {f.kicker}
