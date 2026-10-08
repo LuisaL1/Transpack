@@ -58,7 +58,7 @@ const ZOHO_STUB = `(() => {
 
 async function mockZoho(page: Page) {
   const requests: string[] = [];
-  await page.route("https://salesiq.zoho.com/**", (r) => {
+  await page.route("https://salesiq.zohopublic.com/**", (r) => {
     requests.push(r.request().url());
     return r.fulfill({ contentType: "text/javascript", body: ZOHO_STUB });
   });
@@ -181,7 +181,7 @@ test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", 
   page,
 }) => {
   await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
-  await page.route("https://salesiq.zoho.com/**", (r) => r.abort());
+  await page.route("https://salesiq.zohopublic.com/**", (r) => r.abort());
   await page.goto("/");
   const chat = await openChat(page);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
@@ -222,7 +222,7 @@ test("chat con un asesor dentro de Joel: se escribe y se responde ahí mismo", a
     return r.fulfill({ json: { ok: true, messages: [] } });
   });
   let zoho = 0;
-  await page.route("https://salesiq.zoho.com/**", (r) => (zoho++, r.abort()));
+  await page.route("https://salesiq.zohopublic.com/**", (r) => (zoho++, r.abort()));
   await page.goto("/");
   const chat = await openChat(page);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();

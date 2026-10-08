@@ -84,7 +84,7 @@ test("CSP permite cargar el chat con un asesor (Zoho SalesIQ)", async ({ page, i
   await page.route("**/*", async (r) => {
     const url = r.request().url();
     // Script de Zoho simulado (no se carga el real en las pruebas)
-    if (url.startsWith("https://salesiq.zoho.com/")) {
+    if (url.startsWith("https://salesiq.zohopublic.com/")) {
       loaded = true;
       return r.fulfill({
         contentType: "text/javascript",

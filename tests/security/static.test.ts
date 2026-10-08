@@ -131,7 +131,7 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
     // Ningún comodín, salvo los subdominios de Google Tag Manager (Google Analytics).
     // Zoho SalesIQ (chat) va con dominios exactos.
     expect(script.replace("https://*.googletagmanager.com", "")).not.toMatch(/\*/);
-    expect(script).toContain("https://salesiq.zoho.com https://static.zohocdn.com");
+    expect(script).toContain("https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com");
     expect(csp).toMatch(/default-src 'self'/);
     expect(csp).toMatch(/frame-ancestors 'none'/);
     expect(csp).toMatch(/object-src 'none'/);
@@ -149,6 +149,7 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
       "https://fonts.gstatic.com",
       "https://i.ytimg.com", // portadas de los videos
       "https://salesiq.zoho.com", // chat de Zoho SalesIQ
+      "https://salesiq.zohopublic.com", // widget de Zoho SalesIQ
       "https://static.zohocdn.com",
       "https://www.google.com", // mapa de contacto
       "https://www.youtube-nocookie.com", // videos (sin cookies)

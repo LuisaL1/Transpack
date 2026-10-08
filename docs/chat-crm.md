@@ -189,7 +189,7 @@ Dominios observados al cargar y abrir el widget el 8 de octubre de 2026:
 
 | Directiva | Dominios de Zoho |
 | --- | --- |
-| `script-src` | `https://salesiq.zoho.com`, `https://static.zohocdn.com` |
+| `script-src` | `https://salesiq.zohopublic.com` (widget), `https://salesiq.zoho.com`, `https://static.zohocdn.com` |
 | `style-src`, `font-src`, `media-src` | `https://static.zohocdn.com` |
 | `img-src` | `https://static.zohocdn.com`, `https://*.zohopublic.com` |
 | `connect-src` | `https://salesiq.zoho.com`, `https://*.zohopublic.com`, `wss://*.zohopublic.com`, `https://static.zohocdn.com` |

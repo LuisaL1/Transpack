@@ -11,14 +11,14 @@
 //   están en src/styles/index.css.
 // · El chat atiende solo en español (decisión de Transpack), en todos los idiomas.
 // · El código del widget no es secreto: es el mismo que Zoho pide pegar en la página.
-// Dominios que usa (CSP en vercel.json): salesiq.zoho.com, static.zohocdn.com y
-// *.zohopublic.com. Documentación: docs/chat-crm.md.
+// Dominios que usa (CSP en vercel.json): salesiq.zohopublic.com (el widget),
+// static.zohocdn.com y *.zohopublic.com. Documentación: docs/chat-crm.md.
 
 import chatCss from "@/styles/zoho-chat.css?raw";
 
 /** Código del widget de SalesIQ (Zoho → Configuración → Canales → Sitio web) */
 export const SALESIQ_WIDGET = "siq8d38e38af4540824c78096b7725bb11aa5c42288eecc3028007e86bb9e4360dc";
-export const SALESIQ_SRC = `https://salesiq.zoho.com/widget?wc=${SALESIQ_WIDGET}`;
+export const SALESIQ_SRC = `https://salesiq.zohopublic.com/widget?wc=${SALESIQ_WIDGET}`;
 import { CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 export { ADVISOR_EVENT, CRM_CHAT_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 /** Tiempo máximo para que Zoho responda antes de ofrecer otros canales */
