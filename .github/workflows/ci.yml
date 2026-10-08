@@ -31,13 +31,14 @@ jobs:
       - run: pnpm build
       # HTML pre-generado por ruta: títulos, canónicas, hreflang, JSON-LD, sitemap y robots
       - run: pnpm test:seo
-      # Hoy el JS principal pesa ~830 KB (ver "Pendientes" en README.md): este
-      # límite evita que crezca sin que nadie lo note. Bájelo al dividir el bundle.
+      # Hoy el JS principal pesa ~670 KB y las librerías van aparte (~260 KB,
+      # vite.config.ts; ver "Pendientes" en README.md): este límite evita que
+      # crezca sin que nadie lo note. Bájelo al dividir el bundle por idioma.
       - name: Tamaño del build
         run: |
           du -sh dist
-          if find dist/assets -name '*.js' -size +900k | grep .; then
-            echo "Hay un bundle JS de más de 900 KB" && exit 1
+          if find dist/assets -name '*.js' -size +800k | grep .; then
+            echo "Hay un bundle JS de más de 800 KB" && exit 1
           fi
 
   seguridad:

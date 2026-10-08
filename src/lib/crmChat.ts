@@ -19,11 +19,8 @@ import chatCss from "@/styles/zoho-chat.css?raw";
 /** Código del widget de SalesIQ (Zoho → Configuración → Canales → Sitio web) */
 export const SALESIQ_WIDGET = "siq8d38e38af4540824c78096b7725bb11aa5c42288eecc3028007e86bb9e4360dc";
 export const SALESIQ_SRC = `https://salesiq.zoho.com/widget?wc=${SALESIQ_WIDGET}`;
-/** Evento con { open: boolean } cuando la ventana de Zoho se abre o se cierra */
-export const CRM_CHAT_EVENT = "tp:crm-chat";
-/** Pedido de abrir el chat con un asesor (botón en el chat de Joel; lo atiende useAdvisorChat) */
-export const ADVISOR_EVENT = "tp:open-advisor";
-export const requestAdvisorChat = () => window.dispatchEvent(new Event(ADVISOR_EVENT));
+import { CRM_CHAT_EVENT } from "@/lib/advisorEvents";
+export { ADVISOR_EVENT, CRM_CHAT_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 /** Tiempo máximo para que Zoho responda antes de ofrecer otros canales */
 const TIMEOUT_MS = 15_000;
 

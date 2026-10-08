@@ -3,7 +3,7 @@ import type { ChatMsg } from "@/data/chat";
 import { trackEvent } from "@/lib/analytics";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
 import { ChatList, ChatRow, chatRowCls } from "@/components/chat/ChatOptions";
-import { requestAdvisorChat } from "@/lib/crmChat";
+import { requestAdvisorChat } from "@/lib/advisorEvents";
 
 // Mensaje del chat: de Joel (izquierda, con acciones opcionales en el mismo
 // formato de lista con ícono que las opciones) o del visitante

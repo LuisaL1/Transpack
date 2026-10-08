@@ -132,9 +132,9 @@ el dominio apunte a este sitio.
 
 ## Pendientes de rendimiento
 
-- **Bundle:** un solo bundle JS de ~836 KB (268 KB comprimido) con los seis
-  idiomas. Dividir por idioma o por ruta (`React.lazy`) mejora la primera
-  carga.
+- **Bundle:** JS principal de ~670 KB (218 KB comprimido) con los seis
+  idiomas, más las librerías en un archivo aparte (~260 KB). Dividir por idioma
+  o por ruta (`React.lazy`) mejora la primera carga.
 - **Fotos:** JPG de hasta 425 KB. Convertir a WebP/AVIF y servir tamaños según
   la pantalla (`srcset`).
 - **Mapa de Google:** se carga en cuanto se ve. Cargarlo al hacer clic, como los

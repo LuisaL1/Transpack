@@ -16,7 +16,7 @@ import { makeTr, useLang } from "@/i18n";
 import { routeChat } from "@/lib/chatRoute";
 import { createJoel, newMemory, QUOTE_TOPIC, track, type JoelReply } from "@/lib/joel";
 import { trackEvent } from "@/lib/analytics";
-import { ADVISOR_EVENT, CRM_CHAT_EVENT, openCrmChat } from "@/lib/crmChat";
+import { ADVISOR_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 
@@ -130,7 +130,10 @@ export function useAdvisorChat() {
     const onRequest = () => {
       setAdvisor("loading");
       trackEvent("contact_click", { method: "advisor_chat" });
-      openCrmChat().catch(() => {
+      // El código de Zoho se descarga solo ahora (archivo aparte)
+      import("@/lib/crmChat")
+        .then((m) => m.openCrmChat())
+        .catch(() => {
         setAdvisor("idle");
         const t = chatText(makeTr(lang));
         setMsgs((m) => [

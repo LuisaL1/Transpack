@@ -41,8 +41,9 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `dangerouslySetInnerHTML` y `eval`. Hay tres excepciones justificadas en el
   código (delegación de teclado en el cotizador y el buscador, y clic en el
   fondo del buscador para cerrarlo), cada una con su alternativa de teclado.
-- **Build** sin errores. En CI falla si un bundle JS pasa de 900 KB (hoy ~820 KB;
-  ver pendientes en `README.md`).
+- **Build** sin errores. En CI falla si un archivo JS pasa de 800 KB (hoy el
+  principal pesa ~670 KB y las librerías van aparte; ver pendientes en
+  `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
 - `contact-api.test.ts` — la función `api/contact.ts` con `fetch` simulado (sin

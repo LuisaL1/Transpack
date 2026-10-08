@@ -30,4 +30,21 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        // Librerías (React y React Router) en un archivo aparte: el navegador
+        // las guarda en caché entre versiones del sitio y el JS principal
+        // queda bajo el límite del CI (.github/workflows/ci.yml).
+        codeSplitting: {
+          groups: [
+            {
+              name: "vendor",
+              test: /node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/,
+            },
+          ],
+        },
+      },
+    },
+  },
 });

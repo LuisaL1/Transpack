@@ -120,8 +120,10 @@ push y pull request corre además la integración continua de GitHub Actions
 - **Traducciones**: faltan dos etiquetas de accesibilidad de la franja de
   idiomas en francés, alemán, italiano y árabe (ver `TESTING.md`).
 - **Rendimiento**:
-  - un solo bundle JS de ~836 KB (268 KB comprimido) con los seis idiomas
-    (conviene dividir por idioma o por ruta con `React.lazy`);
+  - JS principal de ~670 KB (218 KB comprimido) con los seis idiomas; las
+    librerías van aparte (~260 KB, `vite.config.ts`) y el chat con un asesor se
+    descarga solo al usarlo. Conviene dividir por idioma o por ruta con
+    `React.lazy`. El CI falla si un archivo JS pasa de 800 KB;
   - fotos en JPG de hasta 425 KB (`cargue.jpg`, `equipo.jpg`, `global.jpg`;
     convertir a WebP/AVIF y servir tamaños según pantalla).
 - **Fotos**: las actuales se reemplazarán cuando el cliente entregue nuevas.
