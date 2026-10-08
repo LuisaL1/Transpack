@@ -73,7 +73,9 @@ src/
 │   ├── chatRoute.ts        Chat en en/fr/de/it/ar: palabras clave → paso
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
-│   ├── crmChat.ts          Chat con un asesor: carga Zoho SalesIQ solo al elegirlo (docs/chat-crm.md)
+│   ├── advisorChat.ts      Chat con un asesor DENTRO de Joel (habla con /api/advisor)
+│   ├── advisorEvents.ts    Eventos del chat con un asesor
+│   ├── crmChat.ts          Respaldo: ventana de Zoho SalesIQ, solo al elegirla (docs/chat-crm.md)
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
@@ -85,6 +87,7 @@ src/
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
                             zoho-chat.css (diseño del sitio dentro del chat de Zoho)
 api/contact.ts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
+api/advisor.ts              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -222,8 +225,13 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 ### Chat con un asesor (Zoho SalesIQ)
 
 - **Joel atiende primero.** "Hablar con un asesor" (y, en español, cualquier
-  pedido de contacto) ofrece como primera opción **"Chatear con un asesor"**,
-  que abre Zoho SalesIQ, el chat del CRM (`docs/chat-crm.md`).
+  pedido de contacto) ofrece como primera opción **"Chatear con un asesor"**
+  (`docs/chat-crm.md`):
+  - **dentro de Joel** si `/api/advisor` está configurado: la persona escribe
+    en la misma ventana y el asesor responde desde SalesIQ (API REST, sin
+    cargar Zoho en el navegador). Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo
+    en el servidor; cada conversación con un pase firmado;
+  - si no, se abre la **ventana de Zoho** (respaldo, abajo).
 - `src/lib/crmChat.ts` carga el script de Zoho **solo en ese momento** (nunca
   al entrar: sin cookies de Zoho antes), una sola vez, en español y con el
   botón de Zoho oculto. Antes de ofrecerlo, Joel avisa del uso de los datos.

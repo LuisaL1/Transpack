@@ -587,9 +587,30 @@ const dict: Record<string, string> = {
     "اترك رسالة",
   "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
     "بالتأكيد! يمكنك الآن المحادثة مع أحد مستشاري فريقنا، أو إن كنت تفضل، مراسلتنا عبر واتساب أو الاتصال بنا أو إرسال بريد إلكتروني.",
-  "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.":
-    "تُفتح المحادثة مع مستشار في منصة خدمة العملاء لدينا (Zoho SalesIQ) وتتم باللغة الإسبانية. تُحفظ رسائلك في نظام العملاء لدينا وفقًا لسياسة البيانات.",
+  "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.":
+    "سيساعدك أحد مستشاري فريقنا باللغة الإسبانية عبر منصة خدمة العملاء لدينا (Zoho SalesIQ). تُحفظ رسائلك في نظام العملاء لدينا وفقًا لسياسة البيانات.",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "تعذّر فتح المحادثة مع مستشار الآن. تواصل معنا بطريقة أخرى:",
+  // ─── Chat con un asesor dentro de Joel ───
+  "Advisor":
+    "مستشار",
+  "Chat with a Transpack advisor":
+    "محادثة مع مستشار ترانسباك",
+  "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.":
+    "تم، أبلغنا فريقنا. سيرد عليك أحد المستشارين هنا قريبًا، ويمكنك متابعة الكتابة.",
+  "Our advisors are busy right now. You can keep waiting here or reach us another way:":
+    "مستشارونا مشغولون الآن. يمكنك مواصلة الانتظار هنا أو التواصل معنا بطريقة أخرى:",
+  "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).":
+    "أخبرني في رسالة واحدة بما تحتاج إليه وسأوصلك بأحد مستشاري فريقنا. سيرد عليك هنا مباشرة (يرد فريقنا باللغة الإسبانية).",
+  "The advisor ended the conversation. Thank you for writing to us!":
+    "أنهى المستشار المحادثة. شكرًا لتواصلك معنا!",
+  "Write your message to the advisor…":
+    "اكتب رسالتك إلى المستشار…",
+  "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.":
+    "عدت إليّ. إذا أردت التحدث مع مستشار مرة أخرى، اختر «التحدث مع مستشار».",
+  "You're still in the chat with a Transpack advisor.":
+    "ما زلت في المحادثة مع مستشار ترانسباك.",
+  "Your message couldn't be sent. Please try again.":
+    "تعذّر إرسال رسالتك. حاول مرة أخرى.",
 };
 export default dict;

@@ -2377,7 +2377,7 @@ export function createJoel(kb: JoelKB) {
       intent: "contacto",
       say: [
         "¡Claro! Puedes chatear ahora con un asesor de nuestro equipo o, si prefieres, escribirnos por WhatsApp, llamarnos o enviarnos un correo.",
-        "El chat con un asesor se abre en nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
+        "Un asesor de nuestro equipo te atiende desde nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
         `También puedes visitarnos en ${kb.contact.address}.`,
       ],
       actions: CONTACT,

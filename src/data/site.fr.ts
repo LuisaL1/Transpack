@@ -502,7 +502,7 @@ export const PRIVACY = {
           [
             "Chat avec un conseiller (Zoho SalesIQ)",
             "Ce que vous écrivez dans la conversation et les informations que vous choisissez de nous donner (par exemple nom, e-mail ou téléphone), ainsi que des données techniques de la visite : pages consultées, localisation approximative, navigateur et appareil.",
-            "Traiter votre demande avec un conseiller de notre équipe. Il ne se charge que si vous choisissez « Discuter avec un conseiller » dans le chat de Joel.",
+            "Traiter votre demande avec un conseiller de notre équipe, dans la même fenêtre que le chat de Joel. Il n'est utilisé que si vous choisissez « Discuter avec un conseiller ».",
           ],
           [
             "WhatsApp et téléphone",
@@ -535,7 +535,7 @@ export const PRIVACY = {
         "Formulaire de contact et devis par e-mail : vos données sont transmises de façon chiffrée (HTTPS) à une fonction du site lui-même, qui les envoie par e-mail à Transpack via Brevo, notre prestataire d'e-mails, agissant comme sous-traitant. Brevo vous envoie aussi une confirmation de réception de votre demande. Le site ne conserve aucune copie de ce que vous envoyez.",
         "WhatsApp : si vous choisissez d'envoyer votre demande par WhatsApp, cette conversation est également régie par les conditions et la politique de confidentialité de WhatsApp (Meta).",
         "Dans votre navigateur : les préférences du conseiller virtuel et votre choix concernant les cookies sont enregistrés uniquement dans votre navigateur (stockage local) et ne sont jamais envoyés à Transpack. Vous pouvez les supprimer à tout moment en effaçant les données de ce site dans votre navigateur.",
-        "Chat avec un conseiller : si vous le choisissez dans le chat de Joel, Zoho SalesIQ se charge. C'est l'outil de chat de notre CRM, qui agit comme sous-traitant. La conversation et les données de la visite sont conservées sur les serveurs de Zoho, qui peuvent se trouver hors de Colombie, et dans notre CRM. Tant que vous ne choisissez pas ce chat, Zoho ne se charge pas et ne dépose aucun cookie.",
+        "Chat avec un conseiller : si vous le choisissez dans le chat de Joel, vos messages sont envoyés depuis notre site à Zoho SalesIQ, l'outil de chat de notre CRM, qui agit comme sous-traitant. La conversation est conservée sur les serveurs de Zoho, qui peuvent se trouver hors de Colombie, et dans notre CRM. Tant que vous ne choisissez pas ce chat, rien n'est envoyé à Zoho.",
         "Conservation : nous conservons les demandes reçues le temps nécessaire pour les traiter et fournir le service, puis la durée exigée par les règles comptables, fiscales et légales.",
       ],
     },
@@ -552,7 +552,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies et mesure d'audience",
       text: [
-        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon. Si vous choisissez de discuter avec un conseiller, Zoho SalesIQ dépose les cookies nécessaires au fonctionnement de la conversation.",
+        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon. Si le chat avec un conseiller s'ouvre dans la fenêtre de Zoho SalesIQ, Zoho dépose les cookies nécessaires à son fonctionnement.",
       ],
     },
     {

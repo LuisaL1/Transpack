@@ -488,7 +488,7 @@ export const PRIVACY = {
           [
             "Chat mit einem Berater (Zoho SalesIQ)",
             "Was Sie im Gespräch schreiben und die Angaben, die Sie uns machen möchten (zum Beispiel Name, E-Mail oder Telefon), sowie technische Daten des Besuchs: aufgerufene Seiten, ungefährer Standort, Browser und Gerät.",
-            "Ihre Anfrage mit einem Berater unseres Teams bearbeiten. Er wird nur geladen, wenn Sie im Chat mit Joel „Mit einem Berater chatten“ wählen.",
+            "Ihre Anfrage mit einem Berater unseres Teams bearbeiten, im selben Fenster wie der Chat mit Joel. Er wird nur genutzt, wenn Sie „Mit einem Berater chatten“ wählen.",
           ],
           [
             "WhatsApp und Telefon",
@@ -521,7 +521,7 @@ export const PRIVACY = {
         "Kontaktformular und Angebotsformular per E-Mail: Ihre Daten werden verschlüsselt (HTTPS) an eine Funktion der Website selbst übertragen, die sie über Brevo, unseren E-Mail-Dienstleister und Auftragsverarbeiter, per E-Mail an Transpack sendet. Brevo schickt Ihnen außerdem eine Bestätigung, dass Ihre Anfrage eingegangen ist. Die Website speichert keine Kopie Ihrer Angaben.",
         "WhatsApp: Wenn Sie Ihre Anfrage per WhatsApp senden, gelten für dieses Gespräch zusätzlich die Nutzungsbedingungen und die Datenschutzrichtlinie von WhatsApp (Meta).",
         "In Ihrem Browser: Die Einstellungen des virtuellen Beraters und Ihre Cookie-Entscheidung werden nur in Ihrem Browser (lokaler Speicher) gespeichert und nie an Transpack gesendet. Sie können sie jederzeit löschen, indem Sie die Daten dieser Website in Ihrem Browser entfernen.",
-        "Chat mit einem Berater: Wenn Sie ihn im Chat mit Joel wählen, wird Zoho SalesIQ geladen, das Chat-Werkzeug unseres CRM, das als Auftragsverarbeiter handelt. Das Gespräch und die Besuchsdaten werden auf den Servern von Zoho, die sich außerhalb Kolumbiens befinden können, und in unserem CRM gespeichert. Solange Sie diesen Chat nicht wählen, wird Zoho nicht geladen und setzt keine Cookies.",
+        "Chat mit einem Berater: Wenn Sie ihn im Chat mit Joel wählen, werden Ihre Nachrichten von unserer Website an Zoho SalesIQ gesendet, das Chat-Werkzeug unseres CRM, das als Auftragsverarbeiter handelt. Das Gespräch wird auf den Servern von Zoho, die sich außerhalb Kolumbiens befinden können, und in unserem CRM gespeichert. Solange Sie diesen Chat nicht wählen, wird nichts an Zoho gesendet.",
         "Aufbewahrung: Wir bewahren eingegangene Anfragen so lange auf, wie es für ihre Bearbeitung und die Erbringung der Leistung nötig ist, und danach so lange, wie es buchhalterische, steuerliche und gesetzliche Vorschriften verlangen.",
       ],
     },
@@ -538,7 +538,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies und Website-Analyse",
       text: [
-        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso. Wenn Sie mit einem Berater chatten, setzt Zoho SalesIQ die Cookies, die für das Gespräch nötig sind.",
+        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso. Wenn sich der Chat mit einem Berater im Fenster von Zoho SalesIQ öffnet, setzt Zoho die dafür nötigen Cookies.",
       ],
     },
     {

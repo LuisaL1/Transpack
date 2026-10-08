@@ -2,19 +2,31 @@ import { Link } from "react-router-dom";
 import type { ChatMsg } from "@/data/chat";
 import { trackEvent } from "@/lib/analytics";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
+import { Bi } from "@/components/ui";
 import { ChatList, ChatRow, chatRowCls } from "@/components/chat/ChatOptions";
 import { requestAdvisorChat } from "@/lib/advisorEvents";
 
-// Mensaje del chat: de Joel (izquierda, con acciones opcionales en el mismo
-// formato de lista con ícono que las opciones) o del visitante
+// Mensaje del chat: de Joel o de un asesor (izquierda, con acciones opcionales
+// en el mismo formato de lista con ícono que las opciones) o del visitante
 export function ChatBubble({ msg }: { msg: ChatMsg }) {
-  const bot = msg.from === "bot";
+  const agent = msg.from === "agent";
+  const bot = msg.from === "bot" || agent;
   return (
     <div
       className={`animate-fade-up flex items-end gap-2 ${bot ? "justify-start" : "justify-end"}`}
     >
-      {bot && <ChatAvatar size={24} />}
+      {agent ? (
+        // Asesor de Transpack: ícono de audífonos en lugar de la foto de Joel
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-azul text-[0.7rem] text-naranja">
+          <Bi n="headset" />
+        </span>
+      ) : (
+        bot && <ChatAvatar size={24} />
+      )}
       <div className={`max-w-[82%] ${bot ? "" : "text-end"}`}>
+        {agent && msg.name && (
+          <p className="mb-1 font-title text-[0.72rem] font-semibold text-azul">{msg.name}</p>
+        )}
         <div
           className={`inline-block whitespace-pre-line px-3.5 py-2.5 text-start text-[0.86rem] leading-relaxed ${
             bot

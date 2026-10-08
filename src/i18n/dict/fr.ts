@@ -607,9 +607,30 @@ const dict: Record<string, string> = {
     "Laisser un message",
   "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
     "Bien sûr ! Vous pouvez discuter dès maintenant avec un conseiller de notre équipe ou, si vous préférez, nous écrire sur WhatsApp, nous appeler ou nous envoyer un e-mail.",
-  "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.":
-    "Le chat avec un conseiller s'ouvre sur notre plateforme de service client (Zoho SalesIQ) et se déroule en espagnol. Vos messages sont conservés dans notre système clients, conformément à notre politique de données.",
+  "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.":
+    "Un conseiller de notre équipe vous répondra en espagnol depuis notre plateforme de service client (Zoho SalesIQ). Vos messages sont conservés dans notre système clients, conformément à notre politique de données.",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "Nous n'avons pas pu ouvrir le chat avec un conseiller pour le moment. Contactez-nous autrement :",
+  // ─── Chat con un asesor dentro de Joel ───
+  "Advisor":
+    "Conseiller",
+  "Chat with a Transpack advisor":
+    "Discussion avec un conseiller Transpack",
+  "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.":
+    "C'est fait, notre équipe a été prévenue. Un conseiller vous répondra ici dans quelques instants ; vous pouvez continuer à écrire.",
+  "Our advisors are busy right now. You can keep waiting here or reach us another way:":
+    "Nos conseillers sont occupés pour le moment. Vous pouvez continuer à attendre ici ou nous contacter autrement :",
+  "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).":
+    "Dites-moi en un message ce dont vous avez besoin et je vous mets en contact avec un conseiller de notre équipe. Il vous répondra ici même (notre équipe répond en espagnol).",
+  "The advisor ended the conversation. Thank you for writing to us!":
+    "Le conseiller a terminé la conversation. Merci de nous avoir écrit !",
+  "Write your message to the advisor…":
+    "Écrivez votre message au conseiller…",
+  "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.":
+    "Vous êtes de nouveau avec moi. Pour reparler à un conseiller, choisissez « Parler à un conseiller ».",
+  "You're still in the chat with a Transpack advisor.":
+    "Vous êtes toujours en discussion avec un conseiller Transpack.",
+  "Your message couldn't be sent. Please try again.":
+    "Votre message n'a pas pu être envoyé. Veuillez réessayer.",
 };
 export default dict;

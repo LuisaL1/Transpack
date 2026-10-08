@@ -120,16 +120,15 @@ test("chat: el texto del visitante se muestra como texto, nunca como HTML", asyn
   ).toBeUndefined();
 });
 
-test("Joel atiende primero y abre el chat con un asesor (Zoho) solo si se elige", async ({
-  page,
-}) => {
+test("sin chat integrado, Joel abre la ventana de Zoho solo si se elige", async ({ page }) => {
+  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
   const requests = await mockZoho(page);
   await page.goto("/");
   const chat = await openChat(page);
   // Joel funciona sin cargar Zoho
   expect(requests).toEqual([]);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
-  await expect(chat.getByText(/se abre en nuestra plataforma de atención \(Zoho SalesIQ\)/)).toBeVisible({
+  await expect(chat.getByText(/nuestra plataforma de atención \(Zoho SalesIQ\)/)).toBeVisible({
     timeout: 10_000,
   });
   expect(requests).toEqual([]);
@@ -162,6 +161,7 @@ test("Joel atiende primero y abre el chat con un asesor (Zoho) solo si se elige"
 test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", async ({
   page,
 }) => {
+  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
   await page.route("https://salesiq.zoho.com/**", (r) => r.abort());
   await page.goto("/");
   const chat = await openChat(page);
@@ -174,6 +174,55 @@ test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", 
   );
   await chat.getByRole("link", { name: /Dejar un mensaje/ }).click();
   await expect(page.getByRole("dialog", { name: "Escríbenos" })).toBeVisible();
+});
+
+test("chat con un asesor dentro de Joel: se escribe y se responde ahí mismo", async ({
+  page,
+}) => {
+  // /api/advisor simulado: nunca se conecta con Zoho en las pruebas
+  const calls: { action?: string; question?: string; text?: string }[] = [];
+  let polls = 0;
+  await page.route("**/api/advisor", async (r) => {
+    if (r.request().method() === "GET") return r.fulfill({ json: { configured: true } });
+    const b = r.request().postDataJSON();
+    calls.push(b);
+    if (b.action === "start") return r.fulfill({ json: { ok: true, token: "pase.prueba" } });
+    if (b.action === "poll" && ++polls === 2)
+      return r.fulfill({
+        json: {
+          ok: true,
+          messages: [
+            { id: "1", seq: 1, from: "system", name: "Laura", text: "joined", time: 1 },
+            { id: "2", seq: 2, from: "operator", name: "Laura", text: "¡Hola! ¿En qué te ayudo?", time: 2 },
+          ],
+        },
+      });
+    return r.fulfill({ json: { ok: true, messages: [] } });
+  });
+  let zoho = 0;
+  await page.route("https://salesiq.zoho.com/**", (r) => (zoho++, r.abort()));
+  await page.goto("/");
+  const chat = await openChat(page);
+  await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
+  await chat.getByRole("button", { name: "Chatear con un asesor" }).click({ timeout: 10_000 });
+  await expect(chat.getByText(/Cuéntame en un mensaje qué necesitas/)).toBeVisible();
+  await expect(chat.getByText("Chat con un asesor de Transpack")).toBeVisible();
+  // La primera pregunta abre la conversación
+  await send(chat, "Quiero cotizar una mudanza a Canadá");
+  await expect(chat.getByText(/ya le avisé a nuestro equipo/)).toBeVisible();
+  expect(calls.find((c) => c.action === "start")?.question).toBe("Quiero cotizar una mudanza a Canadá");
+  // La respuesta del asesor aparece en la ventana de Joel, con su nombre
+  await expect(chat.getByText("Laura se unió a la conversación.")).toBeVisible({ timeout: 15_000 });
+  await expect(chat.getByText("¡Hola! ¿En qué te ayudo?")).toBeVisible();
+  // El visitante responde y el mensaje va al asesor (no al cerebro de Joel)
+  await send(chat, "Somos dos personas");
+  await expect.poll(() => calls.find((c) => c.action === "send")?.text).toBe("Somos dos personas");
+  // Nunca se carga la ventana de Zoho
+  expect(zoho).toBe(0);
+  // Volver con Joel
+  await chat.getByRole("button", { name: "Volver con Joel" }).click();
+  await expect(chat.getByText(/Volviste conmigo/)).toBeVisible();
+  await expect(chat.getByText("Chat con un asesor de Transpack")).toBeHidden();
 });
 
 test("cambio de idioma conserva la página", async ({ page, isMobile }) => {

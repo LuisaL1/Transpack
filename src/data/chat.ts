@@ -22,7 +22,14 @@ export type ChatAction = {
   /** Evento de Google Analytics al pulsar la acción (p. ej. la solicitud enviada) */
   event?: { name: string; params?: Record<string, string> };
 };
-export type ChatMsg = { from: "bot" | "user"; text: string; actions?: ChatAction[] };
+export type ChatMsg = {
+  /** "agent": un asesor de Transpack respondiendo desde Zoho SalesIQ */
+  from: "bot" | "user" | "agent";
+  text: string;
+  actions?: ChatAction[];
+  /** Nombre del asesor (mensajes "agent") */
+  name?: string;
+};
 export type ChatOption = {
   label: string;
   next: string | ((d: ChatData) => string);
@@ -540,8 +547,8 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ),
         // Aviso antes de cargar Zoho (Ley 1581): se carga solo si elige el chat
         tr(
-          "El chat con un asesor se abre en nuestra plataforma de atención (Zoho SalesIQ) y se atiende en español. Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
-          "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.",
+          "Un asesor de nuestro equipo te atiende en español desde nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
+          "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.",
         ),
         tr(
           `También puedes visitarnos en ${CONTACT.address}.`,
@@ -645,6 +652,52 @@ export const chatText = (tr: Tr) => ({
   ),
   crmWhatsapp: tr("Escribir por WhatsApp", "Message on WhatsApp"),
   crmForm: tr("Dejar un mensaje", "Leave a message"),
+  // Chat con un asesor dentro de la ventana de Joel (src/lib/advisorChat.ts)
+  advisorAsk: tr(
+    "Cuéntame en un mensaje qué necesitas y te conecto con un asesor de nuestro equipo. Te responderá aquí mismo.",
+    "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).",
+  ),
+  advisorConnecting: tr(
+    "Listo, ya le avisé a nuestro equipo. Un asesor te responderá aquí en unos momentos; puedes seguir escribiendo.",
+    "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.",
+  ),
+  advisorJoined: (name: string) =>
+    tr(`${name} se unió a la conversación.`, `${name} joined the conversation.`, {
+      fr: `${name} a rejoint la conversation.`,
+      de: `${name} ist dem Gespräch beigetreten.`,
+      it: `${name} si è unito alla conversazione.`,
+      ar: `انضم ${name} إلى المحادثة.`,
+    }),
+  advisorBusy: tr(
+    "Nuestros asesores están ocupados en este momento. Puedes seguir esperando aquí o escribirnos por otro canal:",
+    "Our advisors are busy right now. You can keep waiting here or reach us another way:",
+  ),
+  advisorEnded: tr(
+    "El asesor terminó la conversación. ¡Gracias por escribirnos!",
+    "The advisor ended the conversation. Thank you for writing to us!",
+  ),
+  advisorBack: tr(
+    "Volviste conmigo. Si quieres hablar otra vez con un asesor, elige «Hablar con un asesor».",
+    "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.",
+  ),
+  advisorResume: tr(
+    "Sigues en el chat con un asesor de Transpack.",
+    "You're still in the chat with a Transpack advisor.",
+  ),
+  advisorSendError: tr(
+    "Tu mensaje no se pudo enviar. Inténtalo de nuevo.",
+    "Your message couldn't be sent. Please try again.",
+  ),
+  advisorBanner: tr("Chat con un asesor de Transpack", "Chat with a Transpack advisor"),
+  advisorEnd: tr("Volver con Joel", "Back to Joel", {
+    fr: "Revenir à Joel",
+    de: "Zurück zu Joel",
+    it: "Torna da Joel",
+    ar: "العودة إلى جويل",
+  }),
+  advisorPlaceholder: tr("Escribe tu mensaje al asesor…", "Write your message to the advisor…"),
+  advisorLabel: tr("Asesor", "Advisor"),
+  backToStart: tr("Volver al inicio", "Back to start"),
 });
 
 // ─── Íconos de las opciones ─────────────────────────────────────────────────

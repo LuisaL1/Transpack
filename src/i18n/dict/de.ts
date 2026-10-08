@@ -605,9 +605,30 @@ const dict: Record<string, string> = {
     "Nachricht hinterlassen",
   "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
     "Gern! Sie können jetzt mit einem Berater unseres Teams chatten oder uns, wenn Sie möchten, per WhatsApp schreiben, anrufen oder eine E-Mail senden.",
-  "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.":
-    "Der Chat mit einem Berater öffnet sich in unserer Kundenservice-Plattform (Zoho SalesIQ) und wird auf Spanisch geführt. Ihre Nachrichten werden gemäß unserer Datenschutzrichtlinie in unserem Kundensystem gespeichert.",
+  "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.":
+    "Ein Berater unseres Teams betreut Sie auf Spanisch über unsere Kundenservice-Plattform (Zoho SalesIQ). Ihre Nachrichten werden gemäß unserer Datenschutzrichtlinie in unserem Kundensystem gespeichert.",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "Wir konnten den Chat mit einem Berater gerade nicht öffnen. Erreichen Sie uns auf anderem Weg:",
+  // ─── Chat con un asesor dentro de Joel ───
+  "Advisor":
+    "Berater",
+  "Chat with a Transpack advisor":
+    "Chat mit einem Transpack-Berater",
+  "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.":
+    "Erledigt, unser Team wurde benachrichtigt. Ein Berater antwortet Ihnen hier in Kürze; Sie können weiterschreiben.",
+  "Our advisors are busy right now. You can keep waiting here or reach us another way:":
+    "Unsere Berater sind gerade beschäftigt. Sie können hier weiter warten oder uns auf anderem Weg erreichen:",
+  "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).":
+    "Schreiben Sie mir in einer Nachricht, was Sie brauchen, und ich verbinde Sie mit einem Berater unseres Teams. Er antwortet Ihnen direkt hier (unser Team antwortet auf Spanisch).",
+  "The advisor ended the conversation. Thank you for writing to us!":
+    "Der Berater hat das Gespräch beendet. Vielen Dank für Ihre Nachricht!",
+  "Write your message to the advisor…":
+    "Schreiben Sie Ihre Nachricht an den Berater…",
+  "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.":
+    "Sie sind wieder bei mir. Wenn Sie erneut mit einem Berater sprechen möchten, wählen Sie „Mit einem Berater sprechen“.",
+  "You're still in the chat with a Transpack advisor.":
+    "Sie sind weiterhin im Chat mit einem Transpack-Berater.",
+  "Your message couldn't be sent. Please try again.":
+    "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
 };
 export default dict;

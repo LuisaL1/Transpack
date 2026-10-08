@@ -24,6 +24,44 @@ export default defineConfig({
         });
       },
     },
+    {
+      // En desarrollo, /api/advisor se simula: un "asesor" de prueba responde a
+      // los pocos segundos. No se conecta con Zoho (ver docs/chat-crm.md).
+      name: "dev-advisor-mock",
+      configureServer(server) {
+        let started = 0;
+        let sent = false;
+        server.middlewares.use("/api/advisor", (req, res) => {
+          res.setHeader("Content-Type", "application/json");
+          if (req.method === "GET") return res.end(JSON.stringify({ configured: true }));
+          let body = "";
+          req.on("data", (c) => (body += c));
+          req.on("end", () => {
+            const b = JSON.parse(body || "{}") as { action?: string; after?: number };
+            console.log("[dev] /api/advisor (simulado):", body.slice(0, 300));
+            if (b.action === "start") {
+              started = Date.now();
+              sent = false;
+              return res.end(JSON.stringify({ ok: true, token: "dev.token" }));
+            }
+            if (b.action === "poll" && !sent && Date.now() - started > 5000) {
+              sent = true;
+              const now = Date.now();
+              return res.end(
+                JSON.stringify({
+                  ok: true,
+                  messages: [
+                    { id: "1", seq: 1, from: "system", name: "Laura (prueba)", text: "joined", time: now },
+                    { id: "2", seq: 2, from: "operator", name: "Laura (prueba)", text: "¡Hola! Soy Laura, asesora de Transpack (mensaje simulado). ¿En qué te ayudo?", time: now },
+                  ],
+                }),
+              );
+            }
+            res.end(JSON.stringify({ ok: true, messages: [] }));
+          });
+        });
+      },
+    },
   ],
   resolve: {
     alias: {

@@ -68,6 +68,7 @@ push y pull request corre además la integración continua de GitHub Actions
 | `VITE_SITE_INDEXABLE` | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`) | Solo Production |
 | `VITE_GOOGLE_SITE_VERIFICATION` | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS) | Solo Production |
 | `BREVO_API_KEY` | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`) | Production |
+| `ZOHO_CLIENT_ID` / `ZOHO_CLIENT_SECRET` / `ZOHO_REFRESH_TOKEN` / `ADVISOR_SECRET` | Chat con un asesor dentro de Joel (Zoho SalesIQ). **Secretas** (sin `VITE_`); ver `docs/chat-crm.md` | Production |
 | `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production |
 
 - **Después de crear o cambiar una variable:** Deployments → último despliegue
@@ -102,7 +103,11 @@ push y pull request corre además la integración continua de GitHub Actions
   de cancelación. Si el cliente las entrega, se agregan a `src/lib/joel.ts` y
   al contenido.
 - **Chat con un asesor (Zoho SalesIQ)**: Joel atiende primero y ofrece
-  "Chatear con un asesor", que abre Zoho (ver `docs/chat-crm.md`). En el panel
+  "Chatear con un asesor". Ya está listo el chat **dentro de la ventana de
+  Joel** (`api/advisor.ts`), pero falta que el área encargada cree las
+  credenciales de la API de Zoho y las configure en Vercel; mientras tanto se
+  abre la ventana de Zoho. Pasos y prueba con `pnpm advisor:check` en
+  `docs/chat-crm.md`. En el panel
   de Zoho falta autorizar el dominio `www.transpacksas.com` y decidir si el bot
   de Zoho saluda o pasa directo a un asesor. Hay que verificar en producción
   que la CSP no bloquee funciones del chat (adjuntos o llamadas). Si Zoho

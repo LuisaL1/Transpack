@@ -12,6 +12,8 @@
     "format": "oxfmt",
     "map": "node scripts/generate-world-map.mjs src/data/worldMap.ts",
     "email:header": "node scripts/generate-email-header.mjs",
+    "advisor:token": "node scripts/zoho-token.mjs",
+    "advisor:check": "node scripts/zoho-advisor-check.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

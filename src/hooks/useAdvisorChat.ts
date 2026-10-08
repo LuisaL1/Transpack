@@ -2,6 +2,9 @@
 // de "escribiendo", invitación una vez por sesión, apertura desde otras partes
 // del sitio (evento "tp:open-chat") y, en español, el cerebro de Joel: entiende
 // texto libre, saluda según el comportamiento del visitante y aprende.
+// Chat con un asesor: si /api/advisor está configurado, el visitante habla con
+// el asesor aquí mismo (Zoho SalesIQ por detrás); si no, se abre la ventana de
+// Zoho (src/lib/crmChat.ts). Ver docs/chat-crm.md.
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildChat,
@@ -19,6 +22,16 @@ import { trackEvent } from "@/lib/analytics";
 import { ADVISOR_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
+import {
+  advisorAvailable,
+  loadSaved,
+  pollAdvisor,
+  POLL_MS,
+  save,
+  sendToAdvisor,
+  startAdvisor,
+  WAIT_MS,
+} from "@/lib/advisorChat";
 
 // El cerebro se crea al usarse por primera vez (solo en español).
 let joelBrain: ReturnType<typeof createJoel> | null = null;
@@ -122,31 +135,40 @@ export function useAdvisorChat() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
-  // Chat con un asesor (Zoho SalesIQ): Joel atiende primero y, si la persona
-  // elige "Chatear con un asesor", se carga y abre Zoho. Mientras la ventana de
-  // Zoho está abierta se ocultan el botón y la ventana de Joel.
+  // ─── Chat con un asesor ────────────────────────────────────────────────
+  // advisor: ventana de Zoho ("loading"/"open") cuando no hay chat integrado.
+  // live: chat con el asesor dentro de Joel (/api/advisor):
+  //   "ask" (Joel pide la pregunta) → "connecting" (esperando asesor) → "live".
   const [advisor, setAdvisor] = useState<"idle" | "loading" | "open">("idle");
+  const [live, setLive] = useState<"off" | "ask" | "connecting" | "live">("off");
+  const pass = useRef<{ token: string; after: number } | null>(null);
+  const t = useMemo(() => chatText(makeTr(lang)), [lang]);
+  const otherChannels = () => [
+    { label: t.crmWhatsapp, icon: "whatsapp", href: siteFor(lang).waLink() },
+    { label: t.crmForm, icon: "envelope", href: contactHref() },
+  ];
+  const say = (text: string, actions?: ChatMsg["actions"]) =>
+    setMsgs((m) => [...m, { from: "bot", text, actions }]);
+
+  // Ventana de Zoho (cuando el chat integrado no está configurado)
+  const openZohoWindow = () => {
+    setAdvisor("loading");
+    // El código de Zoho se descarga solo ahora (archivo aparte)
+    import("@/lib/crmChat")
+      .then((m) => m.openCrmChat())
+      .catch(() => {
+        setAdvisor("idle");
+        say(t.crmError, otherChannels());
+      });
+  };
+
   useEffect(() => {
     const onRequest = () => {
-      setAdvisor("loading");
       trackEvent("contact_click", { method: "advisor_chat" });
-      // El código de Zoho se descarga solo ahora (archivo aparte)
-      import("@/lib/crmChat")
-        .then((m) => m.openCrmChat())
-        .catch(() => {
-        setAdvisor("idle");
-        const t = chatText(makeTr(lang));
-        setMsgs((m) => [
-          ...m,
-          {
-            from: "bot",
-            text: t.crmError,
-            actions: [
-              { label: t.crmWhatsapp, icon: "whatsapp", href: siteFor(lang).waLink() },
-              { label: t.crmForm, icon: "envelope", href: contactHref() },
-            ],
-          },
-        ]);
+      void advisorAvailable().then((ok) => {
+        if (!ok) return openZohoWindow();
+        setLive("ask");
+        say(t.advisorAsk);
       });
     };
     const onChange = (e: Event) => {
@@ -160,7 +182,99 @@ export function useAdvisorChat() {
       window.removeEventListener(ADVISOR_EVENT, onRequest);
       window.removeEventListener(CRM_CHAT_EVENT, onChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
+
+  // Conversación en curso tras recargar o cambiar de página
+  useEffect(() => {
+    const s = loadSaved();
+    if (!s) return;
+    pass.current = s;
+    setLive("live");
+    say(t.advisorResume);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const endAdvisor = (text = t.advisorBack) => {
+    pass.current = null;
+    save(null);
+    setLive("off");
+    dyn.current = {
+      say: () => [text],
+      options: [{ label: t.backToStart, next: "start", icon: "house" }],
+    };
+    goTo("dyn", data);
+  };
+
+  // Respuestas del asesor: se preguntan cada pocos segundos mientras dura el chat
+  useEffect(() => {
+    if (live !== "connecting" && live !== "live") return;
+    let stop = false;
+    const tick = async () => {
+      const p = pass.current;
+      if (!p || stop) return;
+      const r = await pollAdvisor(p.token, p.after);
+      if (stop) return;
+      if (!r.ok) {
+        if (r.error === "token") endAdvisor(t.advisorEnded);
+        return;
+      }
+      for (const m of r.messages ?? []) {
+        p.after = Math.max(p.after, m.seq);
+        if (m.from === "system" && m.text === "joined") {
+          setLive("live");
+          say(t.advisorJoined(m.name));
+        } else if (m.from === "system" && m.text === "ended") {
+          endAdvisor(t.advisorEnded);
+          return;
+        } else if (m.from !== "system") {
+          setLive("live");
+          setMsgs((list) => [
+            ...list,
+            { from: "agent", text: m.text, name: m.name || t.advisorLabel },
+          ]);
+        }
+      }
+      save(p);
+    };
+    const id = window.setInterval(tick, POLL_MS);
+    void tick();
+    return () => {
+      stop = true;
+      clearInterval(id);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live]);
+
+  // Si nadie responde a tiempo, Joel ofrece otros canales (una vez)
+  useEffect(() => {
+    if (live !== "connecting") return;
+    const id = window.setTimeout(() => say(t.advisorBusy, otherChannels()), WAIT_MS);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live]);
+
+  // Mensaje del visitante en el chat con el asesor
+  const sendLive = async (value: string) => {
+    if (live === "ask") {
+      const r = await startAdvisor(value, data.nombre);
+      if (!r.ok || !r.token) {
+        setLive("off");
+        say(t.crmError, otherChannels());
+        return;
+      }
+      pass.current = { token: r.token, after: 0 };
+      save(pass.current);
+      trackEvent("generate_lead", { method: "advisor_chat", lang });
+      setLive("connecting");
+      say(t.advisorConnecting);
+      return;
+    }
+    const p = pass.current;
+    if (!p) return;
+    const r = await sendToAdvisor(p.token, value);
+    if (!r.ok) say(t.advisorSendError);
+  };
 
   // Otros elementos del sitio (por ejemplo el menú) pueden abrir el chat
   useEffect(() => {
@@ -204,8 +318,8 @@ export function useAdvisorChat() {
   }, [msgs, typing]);
 
   useEffect(() => {
-    if (open && step.input && !typing) inputRef.current?.focus();
-  }, [open, step, typing]);
+    if (open && (step.input || live !== "off") && !typing) inputRef.current?.focus();
+  }, [open, step, typing, live]);
 
   const choose = (o: ChatOption) => {
     const d = { ...data, ...o.set };
@@ -230,6 +344,10 @@ export function useAdvisorChat() {
     if (!value || typing) return;
     setText("");
     setMsgs((m) => [...m, { from: "user", text: value }]);
+    if (live !== "off") {
+      void sendLive(value);
+      return;
+    }
     if (step.input) {
       const d = { ...data, [step.input.key]: value };
       goTo(step.input.next(d), d);
@@ -242,12 +360,20 @@ export function useAdvisorChat() {
     }
   };
 
-  const options = typeof step.options === "function" ? step.options(data) : (step.options ?? []);
+  // Durante el chat con un asesor no se muestran las opciones de Joel
+  const options =
+    live !== "off"
+      ? []
+      : typeof step.options === "function"
+        ? step.options(data)
+        : (step.options ?? []);
 
   return {
     open,
     setOpen,
     advisor,
+    live,
+    endAdvisor: () => endAdvisor(),
     teaser,
     setTeaser,
     msgs,

@@ -46,6 +46,11 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
+- `advisor-api.test.ts` — la función `api/advisor.ts` (chat con un asesor
+  dentro de Joel) con `fetch` simulado: sin credenciales 503; pase firmado por
+  conversación (sin pase, alterado o vencido → 403); envía y lee mensajes de
+  la conversación correcta; solo devuelve lo nuevo del asesor; errores de Zoho
+  → 502 sin detalle. Ver `docs/chat-crm.md`.
 - `contact-api.test.ts` — la función `api/contact.ts` con `fetch` simulado (sin
   correos reales): 503 sin clave, 422 por correo o autorización, 403 desde otro
   dominio, campo trampa, destino y "responder a", HTML escapado, confirmación
@@ -171,7 +176,9 @@ Además:
     solicitud (`/api/contact` simulado con `page.route`);
   - segmento abierto desde el menú;
   - chat de Joel con texto libre y sin precios;
-  - chat con un asesor (Zoho simulado): Joel funciona sin cargar Zoho; se
+  - chat con un asesor dentro de Joel (`/api/advisor` simulado): se escribe y
+    se responde en la misma ventana, con el nombre del asesor;
+  - chat con un asesor en la ventana de Zoho (Zoho simulado): Joel funciona sin cargar Zoho; se
     carga solo al elegir "Chatear con un asesor", en español y con el diseño
     del sitio; si no carga, Joel ofrece WhatsApp y el formulario;
   - el texto del visitante se muestra como texto, nunca como HTML;

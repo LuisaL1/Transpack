@@ -478,7 +478,7 @@ export const PRIVACY = {
           [
             "Chat con un consulente (Zoho SalesIQ)",
             "Ciò che scrivi nella conversazione e i dati che decidi di darci (per esempio nome, e-mail o telefono), insieme a dati tecnici della visita: pagine visitate, posizione approssimativa, browser e dispositivo.",
-            "Gestire la tua richiesta con un consulente del nostro team. Si carica solo se scegli «Chatta con un consulente» nella chat di Joel.",
+            "Gestire la tua richiesta con un consulente del nostro team, nella stessa finestra della chat di Joel. Si usa solo se scegli «Chatta con un consulente».",
           ],
           [
             "WhatsApp e telefono",
@@ -511,7 +511,7 @@ export const PRIVACY = {
         "Modulo di contatto e preventivo via e-mail: i tuoi dati viaggiano cifrati (HTTPS) verso una funzione del sito stesso, che li invia via e-mail a Transpack tramite Brevo, il nostro fornitore di e-mail, che agisce come responsabile del trattamento. Brevo ti invia anche una conferma di ricezione della richiesta. Il sito non conserva alcuna copia di ciò che invii.",
         "WhatsApp: se scegli di inviare la richiesta tramite WhatsApp, quella conversazione è regolata anche dai termini e dall'informativa privacy di WhatsApp (Meta).",
         "Nel tuo browser: le preferenze del consulente virtuale e la tua scelta sui cookie sono salvate solo nel tuo browser (archiviazione locale) e non vengono mai inviate a Transpack. Puoi cancellarle quando vuoi eliminando i dati di questo sito dal browser.",
-        "Chat con un consulente: se la scegli nella chat di Joel, si carica Zoho SalesIQ, lo strumento di chat del nostro CRM, che agisce come responsabile del trattamento. La conversazione e i dati della visita sono conservati sui server di Zoho, che possono trovarsi fuori dalla Colombia, e nel nostro CRM. Finché non scegli questa chat, Zoho non si carica e non salva cookie.",
+        "Chat con un consulente: se la scegli nella chat di Joel, i tuoi messaggi vengono inviati dal nostro sito a Zoho SalesIQ, lo strumento di chat del nostro CRM, che agisce come responsabile del trattamento. La conversazione è conservata sui server di Zoho, che possono trovarsi fuori dalla Colombia, e nel nostro CRM. Finché non scegli questa chat, non viene inviato nulla a Zoho.",
         "Conservazione: conserviamo le richieste ricevute per il tempo necessario a gestirle e a fornire il servizio e, in seguito, per quello richiesto dalle norme contabili, fiscali e di legge.",
       ],
     },
@@ -528,7 +528,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookie e statistiche",
       text: [
-        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo. Se scegli di chattare con un consulente, Zoho SalesIQ salva i cookie necessari al funzionamento della conversazione.",
+        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo. Se la chat con un consulente si apre nella finestra di Zoho SalesIQ, Zoho salva i cookie necessari al suo funzionamento.",
       ],
     },
     {

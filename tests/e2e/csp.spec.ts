@@ -96,6 +96,7 @@ test("CSP permite cargar el chat con un asesor (Zoho SalesIQ)", async ({ page, i
     const res = await r.fetch();
     await r.fulfill({ response: res, headers: { ...res.headers(), ...headers } });
   });
+  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
   await page.goto("/");
   await page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ }).click();
   const chat = page.getByRole("region", { name: "Chat con Joel" });
