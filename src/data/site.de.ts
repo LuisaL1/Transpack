@@ -451,7 +451,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 export const PRIVACY = {
   title: "Richtlinie zur Verarbeitung personenbezogener Daten",
   intro: "Transpack S.A.S. verarbeitet Ihre personenbezogenen Daten gemäß dem kolumbianischen Gesetz 1581 von 2012 und dem Dekret 1377 von 2013 (zusammengefasst im Dekret 1074 von 2015). Hier erklären wir, welche Daten wir auf dieser Website erheben, wofür wir sie verwenden, wie sie übermittelt werden und wie Sie Ihre Rechte ausüben können.",
-  updated: "Letzte Aktualisierung: 7. Oktober 2026",
+  updated: "Letzte Aktualisierung: 8. Oktober 2026",
   notice: "Dies ist eine Übersetzung zu Ihrer Information. Maßgeblich ist die spanische Fassung.",
   sections: [
     {
@@ -486,6 +486,11 @@ export const PRIVACY = {
             "Sie beraten und Ihre Anfrage vorbereiten. Das Gespräch wird nicht an Transpack gesendet: Es erreicht uns nur, wenn Sie es per WhatsApp oder über das Formular senden.",
           ],
           [
+            "Chat mit einem Berater (Zoho SalesIQ)",
+            "Was Sie im Gespräch schreiben und die Angaben, die Sie uns machen möchten (zum Beispiel Name, E-Mail oder Telefon), sowie technische Daten des Besuchs: aufgerufene Seiten, ungefährer Standort, Browser und Gerät.",
+            "Ihre Anfrage mit einem Berater unseres Teams bearbeiten. Er wird nur geladen, wenn Sie im Chat mit Joel „Mit einem Berater chatten“ wählen.",
+          ],
+          [
             "WhatsApp und Telefon",
             "Ihre Nummer und was Sie uns mitteilen möchten.",
             "Ihre Frage oder Anfrage bearbeiten.",
@@ -516,6 +521,7 @@ export const PRIVACY = {
         "Kontaktformular und Angebotsformular per E-Mail: Ihre Daten werden verschlüsselt (HTTPS) an eine Funktion der Website selbst übertragen, die sie über Brevo, unseren E-Mail-Dienstleister und Auftragsverarbeiter, per E-Mail an Transpack sendet. Brevo schickt Ihnen außerdem eine Bestätigung, dass Ihre Anfrage eingegangen ist. Die Website speichert keine Kopie Ihrer Angaben.",
         "WhatsApp: Wenn Sie Ihre Anfrage per WhatsApp senden, gelten für dieses Gespräch zusätzlich die Nutzungsbedingungen und die Datenschutzrichtlinie von WhatsApp (Meta).",
         "In Ihrem Browser: Die Einstellungen des virtuellen Beraters und Ihre Cookie-Entscheidung werden nur in Ihrem Browser (lokaler Speicher) gespeichert und nie an Transpack gesendet. Sie können sie jederzeit löschen, indem Sie die Daten dieser Website in Ihrem Browser entfernen.",
+        "Chat mit einem Berater: Wenn Sie ihn im Chat mit Joel wählen, wird Zoho SalesIQ geladen, das Chat-Werkzeug unseres CRM, das als Auftragsverarbeiter handelt. Das Gespräch und die Besuchsdaten werden auf den Servern von Zoho, die sich außerhalb Kolumbiens befinden können, und in unserem CRM gespeichert. Solange Sie diesen Chat nicht wählen, wird Zoho nicht geladen und setzt keine Cookies.",
         "Aufbewahrung: Wir bewahren eingegangene Anfragen so lange auf, wie es für ihre Bearbeitung und die Erbringung der Leistung nötig ist, und danach so lange, wie es buchhalterische, steuerliche und gesetzliche Vorschriften verlangen.",
       ],
     },
@@ -524,7 +530,7 @@ export const PRIVACY = {
       title: "An wen wir Ihre Daten weitergeben",
       items: [
         "Bei internationalen Umzügen an unsere Agenten und Partner im Herkunfts- oder Zielland sowie an die Zollbehörden, nur soweit für den Umzug erforderlich. Dies kann eine Übermittlung Ihrer Daten außerhalb Kolumbiens bedeuten.",
-        "An Dienstleister, die uns beim Betrieb der Website und bei der Kommunikation mit Ihnen als Auftragsverarbeiter unterstützen: Vercel (Hosting der Website), Brevo (E-Mail-Versand) und Google (Analyse, nur wenn Sie zustimmen). Einige befinden sich außerhalb Kolumbiens, daher können Ihre Daten in andere Länder übermittelt werden.",
+        "An Dienstleister, die uns beim Betrieb der Website und bei der Kommunikation mit Ihnen als Auftragsverarbeiter unterstützen: Vercel (Hosting der Website), Brevo (E-Mail-Versand), Zoho (Chat mit einem Berater und CRM) und Google (Analyse, nur wenn Sie zustimmen). Einige befinden sich außerhalb Kolumbiens, daher können Ihre Daten in andere Länder übermittelt werden.",
         "An Behörden, wenn das Gesetz es verlangt.",
       ],
     },
@@ -532,7 +538,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies und Website-Analyse",
       text: [
-        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso.",
+        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso. Wenn Sie mit einem Berater chatten, setzt Zoho SalesIQ die Cookies, die für das Gespräch nötig sind.",
       ],
     },
     {
@@ -568,7 +574,7 @@ export const PRIVACY = {
       id: "autorizacion",
       title: "Einwilligung",
       text: [
-        "Indem Sie das Einwilligungsfeld im Kontaktformular oder im Angebotsformular ankreuzen, erlauben Sie uns, Ihre Daten für die Zwecke dieser Richtlinie zu verarbeiten. Wenn Sie uns per WhatsApp schreiben oder anrufen, erteilen Sie uns Ihre Einwilligung durch diese Handlung, damit wir Ihre Anfrage bearbeiten können. Sie können sie jederzeit über die unter „So üben Sie Ihre Rechte aus“ genannten Wege widerrufen.",
+        "Indem Sie das Einwilligungsfeld im Kontaktformular oder im Angebotsformular ankreuzen, erlauben Sie uns, Ihre Daten für die Zwecke dieser Richtlinie zu verarbeiten. Wenn Sie uns im Chat mit einem Berater oder per WhatsApp schreiben oder anrufen, erteilen Sie uns Ihre Einwilligung durch diese Handlung, damit wir Ihre Anfrage bearbeiten können. Sie können sie jederzeit über die unter „So üben Sie Ihre Rechte aus“ genannten Wege widerrufen.",
       ],
     },
     {

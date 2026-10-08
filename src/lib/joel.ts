@@ -20,7 +20,14 @@
 // artículos restringidos…) Joel no lo inventa: lo dice y da el contacto.
 // Responde en español; en los otros idiomas el chat sigue el flujo guiado.
 
-export type JoelAction = { label: string; icon: string; href?: string; to?: string };
+export type JoelAction = {
+  label: string;
+  icon: string;
+  href?: string;
+  to?: string;
+  /** Abre el chat con un asesor (Zoho SalesIQ) */
+  crm?: boolean;
+};
 export type JoelOption = {
   label: string;
   next: string;
@@ -1127,7 +1134,9 @@ export function createJoel(kb: JoelKB) {
     icon: "whatsapp",
     href: kb.whatsapp(text),
   });
-  const CONTACT = [wa(), CALL, MAIL];
+  // Chat con un asesor de Transpack (Zoho SalesIQ): primera opción de contacto
+  const ADVISOR_CHAT: JoelAction = { label: "Chatear con un asesor", icon: "headset", crm: true };
+  const CONTACT = [ADVISOR_CHAT, wa(), CALL, MAIL];
   const see = (key: string): JoelAction[] =>
     T(key)
       ? [{ label: `Ver ${lc(T(key).title)}`, icon: "box-arrow-up-right", to: T(key).link }]
@@ -2367,7 +2376,8 @@ export function createJoel(kb: JoelKB) {
     contacto: () => ({
       intent: "contacto",
       say: [
-        "¡Claro! Nuestro equipo te atiende por WhatsApp, teléfono o correo.",
+        "¡Claro! Puedes chatear ahora con un asesor de nuestro equipo o, si prefieres, escribirnos por WhatsApp, llamarnos o enviarnos un correo.",
+        "El chat con un asesor se abre en nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
         `También puedes visitarnos en ${kb.contact.address}.`,
       ],
       actions: CONTACT,

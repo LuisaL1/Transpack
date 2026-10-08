@@ -73,6 +73,7 @@ src/
 │   ├── chatRoute.ts        Chat en en/fr/de/it/ar: palabras clave → paso
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
+│   ├── crmChat.ts          Chat con un asesor: carga Zoho SalesIQ solo al elegirlo (docs/chat-crm.md)
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
@@ -81,11 +82,12 @@ src/
 │                           useScrollToHash, useVisitorTracking
 ├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
-└── styles/index.css        Tokens de marca (@theme), estilos globales y animaciones
+└── styles/                index.css (tokens de marca, estilos globales y animaciones) y
+                            zoho-chat.css (diseño del sitio dentro del chat de Zoho)
 api/contact.ts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
-docs/                       conversion-y-analitica.md, formularios.md y seo.md
+docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
@@ -213,3 +215,19 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   palabras clave (`src/lib/chatRoute.ts`).
 - Otros componentes abren el chat con `window.dispatchEvent(new Event("tp:open-chat"))`
   (`openChat()` en `components/layout/MenuLink.tsx`).
+
+### Chat con un asesor (Zoho SalesIQ)
+
+- **Joel atiende primero.** "Hablar con un asesor" (y, en español, cualquier
+  pedido de contacto) ofrece como primera opción **"Chatear con un asesor"**,
+  que abre Zoho SalesIQ, el chat del CRM (`docs/chat-crm.md`).
+- `src/lib/crmChat.ts` carga el script de Zoho **solo en ese momento** (nunca
+  al entrar: sin cookies de Zoho antes), una sola vez, en español y con el
+  botón de Zoho oculto. Antes de ofrecerlo, Joel avisa del uso de los datos.
+- Acciones con `crm: true` (`ChatAction` y `JoelAction`) abren ese chat.
+- **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
+  chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de
+  `src/styles/index.css`. Solo colores de la marca.
+- Dominios de Zoho en la CSP de `vercel.json`: si se agrega otro, súmelo
+  también a la lista de `tests/security/static.test.ts`.
+- Las pruebas simulan el script de Zoho: nunca cargan el real.

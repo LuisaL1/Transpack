@@ -5,16 +5,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildChat,
+  chatText,
   type ChatData,
   type ChatMsg,
   type ChatOption,
   type ChatStep,
 } from "@/data/chat";
 import { joelKnowledge } from "@/data/joelKnowledge";
-import { useLang } from "@/i18n";
+import { makeTr, useLang } from "@/i18n";
 import { routeChat } from "@/lib/chatRoute";
 import { createJoel, newMemory, QUOTE_TOPIC, track, type JoelReply } from "@/lib/joel";
 import { trackEvent } from "@/lib/analytics";
+import { ADVISOR_EVENT, CRM_CHAT_EVENT, openCrmChat } from "@/lib/crmChat";
+import { contactHref } from "@/data/contact";
+import { siteFor } from "@/data/content";
 
 // El cerebro se crea al usarse por primera vez (solo en español).
 let joelBrain: ReturnType<typeof createJoel> | null = null;
@@ -118,6 +122,43 @@ export function useAdvisorChat() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
+  // Chat con un asesor (Zoho SalesIQ): Joel atiende primero y, si la persona
+  // elige "Chatear con un asesor", se carga y abre Zoho. Mientras la ventana de
+  // Zoho está abierta se ocultan el botón y la ventana de Joel.
+  const [advisor, setAdvisor] = useState<"idle" | "loading" | "open">("idle");
+  useEffect(() => {
+    const onRequest = () => {
+      setAdvisor("loading");
+      trackEvent("contact_click", { method: "advisor_chat" });
+      openCrmChat().catch(() => {
+        setAdvisor("idle");
+        const t = chatText(makeTr(lang));
+        setMsgs((m) => [
+          ...m,
+          {
+            from: "bot",
+            text: t.crmError,
+            actions: [
+              { label: t.crmWhatsapp, icon: "whatsapp", href: siteFor(lang).waLink() },
+              { label: t.crmForm, icon: "envelope", href: contactHref() },
+            ],
+          },
+        ]);
+      });
+    };
+    const onChange = (e: Event) => {
+      const isOpen = (e as CustomEvent<{ open: boolean }>).detail.open;
+      setAdvisor(isOpen ? "open" : "idle");
+      if (isOpen) setOpen(false);
+    };
+    window.addEventListener(ADVISOR_EVENT, onRequest);
+    window.addEventListener(CRM_CHAT_EVENT, onChange);
+    return () => {
+      window.removeEventListener(ADVISOR_EVENT, onRequest);
+      window.removeEventListener(CRM_CHAT_EVENT, onChange);
+    };
+  }, [lang]);
+
   // Otros elementos del sitio (por ejemplo el menú) pueden abrir el chat
   useEffect(() => {
     const openChat = () => setOpen(true);
@@ -203,6 +244,7 @@ export function useAdvisorChat() {
   return {
     open,
     setOpen,
+    advisor,
     teaser,
     setTeaser,
     msgs,

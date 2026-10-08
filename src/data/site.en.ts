@@ -439,7 +439,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 export const PRIVACY = {
   title: "Personal Data Processing Policy",
   intro: "At Transpack S.A.S. we process your personal data in accordance with Colombian Law 1581 of 2012 and Decree 1377 of 2013 (compiled in Decree 1074 of 2015). Here we explain what data we collect on this site, what we use it for, how it is transmitted and how you can exercise your rights.",
-  updated: "Last updated: October 7, 2026",
+  updated: "Last updated: October 8, 2026",
   notice: "This is a translation for your convenience. The Spanish version is the official one.",
   sections: [
     {
@@ -474,6 +474,11 @@ export const PRIVACY = {
             "To guide you and prepare your request. The conversation is not sent to Transpack: it only reaches us if you send it on WhatsApp or through the form.",
           ],
           [
+            "Advisor chat (Zoho SalesIQ)",
+            "What you write in the conversation and any details you choose to give us (for example, name, email or phone), along with technical data about the visit: pages viewed, approximate location, browser and device.",
+            "To handle your question with an advisor from our team. It only loads if you choose “Chat with an advisor” in Joel's chat.",
+          ],
+          [
             "WhatsApp and phone",
             "Your number and whatever you choose to tell us.",
             "To handle your question or request.",
@@ -504,6 +509,7 @@ export const PRIVACY = {
         "Contact form and quote form by email: your data travels encrypted (HTTPS) to a function of the site itself, which emails it to Transpack through Brevo, our email provider, acting as data processor. Brevo also sends you a confirmation that we received your request. The site keeps no copy of what you send.",
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: the virtual advisor's preferences and your cookie choice are stored only in your browser (local storage) and are never sent to Transpack. You can delete them at any time by clearing this site's data in your browser.",
+        "Advisor chat: if you choose it in Joel's chat, Zoho SalesIQ loads. It is the chat tool of our CRM and acts as data processor. The conversation and the visit data are stored on Zoho's servers, which may be outside Colombia, and in our CRM. Until you choose that chat, Zoho does not load or store cookies.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },
@@ -512,7 +518,7 @@ export const PRIVACY = {
       title: "Who we share your data with",
       items: [
         "For international moves, with our agents and partners in the country of origin or destination and with customs authorities, only as needed to carry out the move. This may involve transferring your data outside Colombia.",
-        "With the providers that help us run the site and communicate with you, acting as data processors: Vercel (site hosting), Brevo (email delivery) and Google (analytics, only if you accept it). Some are located outside Colombia, so your data may be transmitted to other countries.",
+        "With the providers that help us run the site and communicate with you, acting as data processors: Vercel (site hosting), Brevo (email delivery), Zoho (advisor chat and CRM) and Google (analytics, only if you accept it). Some are located outside Colombia, so your data may be transmitted to other countries.",
         "With authorities, when required by law.",
       ],
     },
@@ -520,7 +526,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies and analytics",
       text: [
-        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same.",
+        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same. If you choose to chat with an advisor, Zoho SalesIQ stores the cookies needed for the conversation to work.",
       ],
     },
     {
@@ -556,7 +562,7 @@ export const PRIVACY = {
       id: "autorizacion",
       title: "Authorization",
       text: [
-        "By ticking the authorization box in the contact form or the quote form, you authorize us to process your data for the purposes of this policy. If you message us on WhatsApp or call us, you give us your authorization through that action, so we can handle your request. You can revoke it at any time through the channels in “How to exercise your rights”.",
+        "By ticking the authorization box in the contact form or the quote form, you authorize us to process your data for the purposes of this policy. If you write to us in the advisor chat or on WhatsApp, or call us, you give us your authorization through that action, so we can handle your request. You can revoke it at any time through the channels in “How to exercise your rights”.",
       ],
     },
     {

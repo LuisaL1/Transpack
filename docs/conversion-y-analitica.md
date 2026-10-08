@@ -51,7 +51,7 @@
 | --- | --- | --- |
 | `page_view` | Cada cambio de ruta (es una SPA: `send_page_view: false` y envío manual) | `page_path`, `page_location`, `page_title` (ya con el título de la página nueva: `SeoHead` se monta antes) |
 | `generate_lead` | **Solicitud enviada**: en el cotizador, al pulsar "Enviar por WhatsApp" o cuando el envío por correo **se confirma**; en el formulario de contacto, cuando el envío se confirma; en el chat de Joel, al pulsar "Enviar por WhatsApp" en el resumen | `method` (`whatsapp`, `email` = cotizador por correo, `form` = formulario de contacto, `chat_whatsapp`), `service` (local, nacional, internacional, empresarial, bodegaje), `level` (cotizador), `reason` (motivo del formulario: cotizacion, informacion, soporte, pqrs, datos, empleo, otro), `lang` |
-| `contact_click` | Clic en un enlace `tel:` o `https://wa.me/`, o apertura del formulario de contacto (cualquier enlace a `#contacto`) | `method` (`phone`, `whatsapp`, `form`) |
+| `contact_click` | Clic en un enlace `tel:` o `https://wa.me/`, apertura del formulario de contacto (cualquier enlace a `#contacto`) o "Chatear con un asesor" en el chat de Joel (abre Zoho SalesIQ) | `method` (`phone`, `whatsapp`, `form`, `advisor_chat`) |
 | `chat_open` | Al abrir el chat de Joel (botón, invitación, menú o buscador) | `lang` |
 | `chat_message` | Cada mensaje escrito al chat. **Nunca se envía el texto del visitante**, solo lo que Joel entendió | `intent` (p. ej. `precio`, `fact-seguro`, `pain-exterior`, `obj-caro`; en otros idiomas `step-<paso>`), `service`, `lang` |
 | `search` | Al elegir un resultado del buscador | `search_term`, `result` (ruta elegida), `lang` |

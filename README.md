@@ -100,6 +100,12 @@ push y pull request corre además la integración continua de GitHub Actions
   lista de artículos que no se pueden transportar, formas de pago y políticas
   de cancelación. Si el cliente las entrega, se agregan a `src/lib/joel.ts` y
   al contenido.
+- **Chat con un asesor (Zoho SalesIQ)**: Joel atiende primero y ofrece
+  "Chatear con un asesor", que abre Zoho (ver `docs/chat-crm.md`). En el panel
+  de Zoho falta autorizar el dominio `www.transpacksas.com` y decidir si el bot
+  de Zoho saluda o pasa directo a un asesor. Hay que verificar en producción
+  que la CSP no bloquee funciones del chat (adjuntos o llamadas). Si Zoho
+  cambia su ventana, revisar que el diseño del sitio se siga aplicando.
 - **Joel**:
   - el cerebro solo funciona en español; en los otros idiomas el chat entiende
     palabras clave limitadas (por ejemplo, en alemán reconoce "Ausland", pero

@@ -1,0 +1,299 @@
+/* ─── Ventana del chat de Zoho SalesIQ con el diseño del sitio ────────────────
+   Mismo estilo del chat de Joel (AdvisorChat): cabecera azul sólida
+   con el cuadrado naranja translúcido girado 45° (puntas redondeadas), rótulo
+   naranja en mayúsculas, fondo gris, opciones en tarjetas blancas con el ícono
+   en un recuadro gris y botón de enviar azul con ícono naranja.
+
+   Se inyecta dentro de la ventana de Zoho desde src/lib/crmChat.ts. El mismo
+   archivo se puede pegar en Zoho (Configuración → Marca → Personalización →
+   CSS personalizado) para que también aplique fuera del sitio. Ver
+   docs/chat-crm.md. Solo colores de la marca (src/styles/index.css). */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap");
+
+/* Colores: el verde del tema de Zoho pasa a ser el azul de la marca */
+[theme] {
+  --siqcw-custom-text-color: #272b7c;
+  --siqcw-custom-icon-color: #272b7c;
+  --siqcw-custom-bg-color: #272b7c;
+  --siqcw-custom-border-color: #272b7c;
+  --siqcw-custom-secondary-bg: #272b7c;
+  --siqcw-minimise-button-bg-color: #272b7c;
+  --siqcw-newchat-btn-bg: #ff7619;
+  --siqcw-dialog-hdr-bg-color: #272b7c;
+  --siqcw-button-bg-color: #272b7c;
+  --siqcw-call-only-btn-bg: #272b7c;
+  --siqcw-visitor-bubble-gradient-color:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.86)), #272b7c;
+  --siqcw-dropdown-listdiv-sel-bg:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), #272b7c;
+  --siqcw-agent-bubble-bg-color: #ffffff;
+  --siqcw-listitem-hover-bg-color: #f0f6f6;
+  --siqcw-homelist-hover-bg-color: #f0f6f6;
+  --siqcw-options-hover-bg-color: #f0f6f6;
+  --siqcw-composer-icon-hover-bg-color: #f0f6f6;
+  --siqcw-input-focus-bg-color: #ffffff;
+  --siqcw-divider-bg-color: #e1e5ee;
+  --siqcw-banner-bg: #faeed9;
+  --siqcw-common-radius: 16px;
+}
+
+/* Tipografías del sitio */
+body,
+button,
+input,
+textarea,
+[theme] {
+  font-family: "Montserrat", sans-serif !important;
+  color: #3e4160;
+}
+.home-title,
+.header-title,
+.home-widget > .fw600:first-child {
+  font-family: "IBM Plex Sans", sans-serif !important;
+}
+
+/* Fondo gris del cuerpo, como el chat de Joel */
+.siqcw-section-cont,
+.call-home-wrap {
+  background: #f0f6f6 !important;
+}
+
+/* ── Cabeceras: azul sólido + cuadrado naranja girado ──────────────────────── */
+.siqcw-header,
+.home-header-wrap,
+.seasonal-home-bg {
+  background: #272b7c !important;
+  background-image: none !important;
+  position: relative;
+  overflow: hidden;
+}
+.seasonal-header-bg::before,
+.seasonal-cw-bg {
+  display: none !important;
+}
+.siqcw-header::after,
+.home-header-wrap::after {
+  content: "";
+  position: absolute;
+  top: -32px;
+  left: auto !important;
+  right: -32px;
+  width: 80px;
+  height: 80px;
+  border-radius: 22%;
+  background: rgba(255, 118, 25, 0.25);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.home-header-wrap::after {
+  top: -40px;
+  right: -40px;
+  width: 112px;
+  height: 112px;
+}
+.siqcw-header *,
+.brand-detl-wrap,
+.brand-detl-wrap * {
+  color: #ffffff !important;
+}
+.header-title .font16 {
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-weight: 600;
+}
+/* Rótulo naranja en mayúsculas sobre el saludo */
+.home-title::before {
+  content: "Transpack";
+  display: block;
+  margin-bottom: 10px;
+  font:
+    600 11px/1 "IBM Plex Sans",
+    sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ff7619 !important;
+}
+.home-desc {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-weight: 500 !important;
+}
+
+/* ── Opciones del inicio (chatear, llamar): tarjeta con ícono en cuadro gris ── */
+.home-icon-optns {
+  background: #ffffff !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 16px !important;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
+  transition: background-color 0.2s;
+}
+.home-icon-optns:hover {
+  background: #ffffff !important;
+  border-color: rgba(39, 43, 124, 0.25) !important;
+}
+.home-icon-optns .circle-btns {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  background: #f0f6f6 !important;
+  color: #272b7c !important;
+  display: grid !important;
+  place-items: center;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.home-icon-optns:hover .circle-btns {
+  background: #272b7c !important;
+  color: #ff7619 !important;
+}
+.home-icon-optns .font16 {
+  font-weight: 600;
+  color: #272b7c !important;
+}
+.home-icon-optns .font13 {
+  color: #6b6e8a !important;
+}
+
+/* Artículos y preguntas frecuentes: tarjeta blanca con borde fino */
+.home-widget {
+  background: #ffffff !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 16px !important;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
+  overflow: hidden;
+}
+.home-widget > .fw600:first-child {
+  color: #1d2050 !important;
+}
+.siqcw-list-item .list-title {
+  color: #272b7c !important;
+}
+.siqcw-list-item:hover .categ-rgt-icon {
+  color: #ff7619 !important;
+}
+.home-widget .clr8 {
+  color: #272b7c !important;
+  font-weight: 600;
+}
+
+/* Pestañas inferiores: la activa en azul con línea naranja */
+.footer-tab.sel,
+.footer-tab.sel * {
+  color: #272b7c !important;
+}
+.footer-tab.sel::after,
+.footer-tab.sel .footer-sub-tab::after {
+  background: #ff7619 !important;
+}
+
+/* ── Conversación ─────────────────────────────────────────────────────────── */
+.siqcw-textarea-cont {
+  background: #ffffff !important;
+  border-top: 1px solid #e1e5ee !important;
+}
+.siqcw-textarea {
+  font-size: 14px !important;
+  color: #1d2050 !important;
+}
+.siqcw-textarea::placeholder {
+  color: #6b6e8a !important;
+}
+/* Botón de enviar: cuadro azul con ícono naranja */
+.siqico-send {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px !important;
+  background: #272b7c !important;
+  color: #ff7619 !important;
+  display: grid !important;
+  place-items: center;
+  transition: background-color 0.2s;
+}
+.siqico-send:hover {
+  background: #ff7619 !important;
+  color: #ffffff !important;
+}
+
+/* Burbujas del asistente: blancas con borde fino y la punta arriba a la izquierda */
+.siqcw-agentmsg-grp .chat-bubble,
+.siqcw-agentmsg-grp .chat-bubble-cont .chat-bubble,
+.siqcw-agentmsg-grp .first_msg .chat-bubble {
+  background: #ffffff !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 4px 16px 16px 16px !important;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
+  color: #3e4160 !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+.siqcw-name-div {
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-weight: 600;
+  color: #272b7c !important;
+}
+.bubble-time {
+  color: #6b6e8a !important;
+}
+
+/* Opciones del asistente: filas como las del chat de Joel (texto azul en
+   negrita, borde fino y flecha que se vuelve naranja al pasar el mouse) */
+.chat-sugges-cont .textR {
+  text-align: left !important;
+  box-sizing: border-box;
+  padding-right: 15px;
+}
+.tag-div {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  padding: 11px 14px !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  color: #272b7c !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-align: left !important;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.tag-div::after {
+  content: "›";
+  font-size: 18px;
+  line-height: 1;
+  color: #6b6e8a;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+.tag-div:hover {
+  background: #f0f6f6 !important;
+  border-color: rgba(39, 43, 124, 0.25) !important;
+}
+.tag-div:hover::after {
+  color: #ff7619;
+  transform: translateX(2px);
+}
+
+/* Foto de Joel en lugar del robot de Zoho (cabecera y donde aparezca el bot).
+   La imagen se sirve desde el sitio: public/brand/joel-avatar.png. Si este CSS
+   se pega en el panel de Zoho, use la dirección completa:
+   https://www.transpacksas.com/brand/joel-avatar.png */
+.siqcw-bot-logo {
+  background-image: url("/brand/joel-avatar.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border-radius: 50% !important;
+}
+.embed-prof-cont {
+  border-radius: 50% !important;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}

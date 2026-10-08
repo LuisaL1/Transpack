@@ -3,6 +3,7 @@ import type { ChatMsg } from "@/data/chat";
 import { trackEvent } from "@/lib/analytics";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
 import { ChatList, ChatRow, chatRowCls } from "@/components/chat/ChatOptions";
+import { requestAdvisorChat } from "@/lib/crmChat";
 
 // Mensaje del chat: de Joel (izquierda, con acciones opcionales en el mismo
 // formato de lista con ícono que las opciones) o del visitante
@@ -26,7 +27,17 @@ export function ChatBubble({ msg }: { msg: ChatMsg }) {
         {msg.actions && (
           <ChatList className="mt-2">
             {msg.actions.map((a) =>
-              a.to ? (
+              a.crm ? (
+                // Chat con un asesor (Zoho SalesIQ): lo abre useAdvisorChat
+                <button
+                  key={a.label}
+                  type="button"
+                  onClick={requestAdvisorChat}
+                  className={`${chatRowCls} w-full`}
+                >
+                  <ChatRow icon={a.icon} label={a.label} />
+                </button>
+              ) : a.to ? (
                 <Link key={a.label} to={a.to} className={chatRowCls}>
                   <ChatRow icon={a.icon} label={a.label} />
                 </Link>

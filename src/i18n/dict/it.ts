@@ -597,5 +597,16 @@ const dict: Record<string, string> = {
     "Puoi cambiare la tua scelta in qualsiasi momento.",
   "data processing policy":
     "informativa sul trattamento dei dati",
+  // ─── Chat con un asesor (Zoho SalesIQ) ───
+  "Chat with an advisor (in Spanish)":
+    "Chatta con un consulente (in spagnolo)",
+  "Leave a message":
+    "Lascia un messaggio",
+  "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
+    "Certo! Puoi chattare ora con un consulente del nostro team oppure, se preferisci, scriverci su WhatsApp, chiamarci o inviarci un'e-mail.",
+  "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.":
+    "La chat con un consulente si apre nella nostra piattaforma di assistenza clienti (Zoho SalesIQ) e si svolge in spagnolo. I tuoi messaggi vengono conservati nel nostro sistema clienti, secondo la nostra informativa privacy.",
+  "We couldn't open the advisor chat right now. Reach us another way:":
+    "Non siamo riusciti ad aprire la chat con un consulente in questo momento. Contattaci in un altro modo:",
 };
 export default dict;

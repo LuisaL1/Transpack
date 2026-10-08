@@ -120,8 +120,10 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
   it("la CSP no permite scripts en línea ni eval, ni objetos ni ser embebida", () => {
     const script = csp.match(/script-src ([^;]+)/)![1];
     expect(script).not.toMatch(/unsafe-inline|unsafe-eval/);
-    // Ningún comodín, salvo los subdominios de Google Tag Manager (Google Analytics)
+    // Ningún comodín, salvo los subdominios de Google Tag Manager (Google Analytics).
+    // Zoho SalesIQ (chat) va con dominios exactos.
     expect(script.replace("https://*.googletagmanager.com", "")).not.toMatch(/\*/);
+    expect(script).toContain("https://salesiq.zoho.com https://static.zohocdn.com");
     expect(csp).toMatch(/default-src 'self'/);
     expect(csp).toMatch(/frame-ancestors 'none'/);
     expect(csp).toMatch(/object-src 'none'/);
@@ -134,9 +136,12 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
       "https://*.analytics.google.com", // Google Analytics 4 (src/lib/analytics.ts)
       "https://*.google-analytics.com",
       "https://*.googletagmanager.com",
+      "https://*.zohopublic.com", // chat de Zoho SalesIQ (src/lib/crmChat.ts)
       "https://fonts.googleapis.com", // tipografías (src/styles/index.css)
       "https://fonts.gstatic.com",
       "https://i.ytimg.com", // portadas de los videos
+      "https://salesiq.zoho.com", // chat de Zoho SalesIQ
+      "https://static.zohocdn.com",
       "https://www.google.com", // mapa de contacto
       "https://www.youtube-nocookie.com", // videos (sin cookies)
     ]);

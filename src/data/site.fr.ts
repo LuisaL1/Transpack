@@ -465,7 +465,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 export const PRIVACY = {
   title: "Politique de traitement des données personnelles",
   intro: "Chez Transpack S.A.S., nous traitons vos données personnelles conformément à la loi colombienne 1581 de 2012 et au décret 1377 de 2013 (compilé dans le décret 1074 de 2015). Nous vous expliquons ici quelles données nous collectons sur ce site, à quoi elles servent, comment elles sont transmises et comment exercer vos droits.",
-  updated: "Dernière mise à jour : 7 octobre 2026",
+  updated: "Dernière mise à jour : 8 octobre 2026",
   notice: "Ceci est une traduction fournie pour votre commodité. La version espagnole fait foi.",
   sections: [
     {
@@ -500,6 +500,11 @@ export const PRIVACY = {
             "Vous orienter et préparer votre demande. La conversation n'est pas envoyée à Transpack : elle ne nous parvient que si vous l'envoyez par WhatsApp ou via le formulaire.",
           ],
           [
+            "Chat avec un conseiller (Zoho SalesIQ)",
+            "Ce que vous écrivez dans la conversation et les informations que vous choisissez de nous donner (par exemple nom, e-mail ou téléphone), ainsi que des données techniques de la visite : pages consultées, localisation approximative, navigateur et appareil.",
+            "Traiter votre demande avec un conseiller de notre équipe. Il ne se charge que si vous choisissez « Discuter avec un conseiller » dans le chat de Joel.",
+          ],
+          [
             "WhatsApp et téléphone",
             "Votre numéro et ce que vous choisissez de nous dire.",
             "Répondre à votre question ou à votre demande.",
@@ -530,6 +535,7 @@ export const PRIVACY = {
         "Formulaire de contact et devis par e-mail : vos données sont transmises de façon chiffrée (HTTPS) à une fonction du site lui-même, qui les envoie par e-mail à Transpack via Brevo, notre prestataire d'e-mails, agissant comme sous-traitant. Brevo vous envoie aussi une confirmation de réception de votre demande. Le site ne conserve aucune copie de ce que vous envoyez.",
         "WhatsApp : si vous choisissez d'envoyer votre demande par WhatsApp, cette conversation est également régie par les conditions et la politique de confidentialité de WhatsApp (Meta).",
         "Dans votre navigateur : les préférences du conseiller virtuel et votre choix concernant les cookies sont enregistrés uniquement dans votre navigateur (stockage local) et ne sont jamais envoyés à Transpack. Vous pouvez les supprimer à tout moment en effaçant les données de ce site dans votre navigateur.",
+        "Chat avec un conseiller : si vous le choisissez dans le chat de Joel, Zoho SalesIQ se charge. C'est l'outil de chat de notre CRM, qui agit comme sous-traitant. La conversation et les données de la visite sont conservées sur les serveurs de Zoho, qui peuvent se trouver hors de Colombie, et dans notre CRM. Tant que vous ne choisissez pas ce chat, Zoho ne se charge pas et ne dépose aucun cookie.",
         "Conservation : nous conservons les demandes reçues le temps nécessaire pour les traiter et fournir le service, puis la durée exigée par les règles comptables, fiscales et légales.",
       ],
     },
@@ -538,7 +544,7 @@ export const PRIVACY = {
       title: "Avec qui nous partageons vos données",
       items: [
         "Pour les déménagements internationaux, avec nos agents et partenaires dans le pays de départ ou d'arrivée et avec les autorités douanières, uniquement dans la mesure nécessaire au déménagement. Cela peut impliquer un transfert de vos données hors de Colombie.",
-        "Avec les prestataires qui nous aident à faire fonctionner le site et à communiquer avec vous, en tant que sous-traitants : Vercel (hébergement du site), Brevo (envoi d'e-mails) et Google (mesure d'audience, uniquement si vous l'acceptez). Certains sont situés hors de Colombie : vos données peuvent donc être transmises à d'autres pays.",
+        "Avec les prestataires qui nous aident à faire fonctionner le site et à communiquer avec vous, en tant que sous-traitants : Vercel (hébergement du site), Brevo (envoi d'e-mails), Zoho (chat avec un conseiller et CRM) et Google (mesure d'audience, uniquement si vous l'acceptez). Certains sont situés hors de Colombie : vos données peuvent donc être transmises à d'autres pays.",
         "Avec les autorités, lorsque la loi l'exige.",
       ],
     },
@@ -546,7 +552,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies et mesure d'audience",
       text: [
-        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon.",
+        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon. Si vous choisissez de discuter avec un conseiller, Zoho SalesIQ dépose les cookies nécessaires au fonctionnement de la conversation.",
       ],
     },
     {
@@ -582,7 +588,7 @@ export const PRIVACY = {
       id: "autorizacion",
       title: "Autorisation",
       text: [
-        "En cochant la case d'autorisation du formulaire de contact ou du formulaire de devis, vous nous autorisez à traiter vos données pour les finalités de cette politique. Si vous nous écrivez par WhatsApp ou nous appelez, vous nous donnez votre autorisation par ce geste, afin que nous traitions votre demande. Vous pouvez la révoquer à tout moment par les moyens indiqués dans « Comment exercer vos droits ».",
+        "En cochant la case d'autorisation du formulaire de contact ou du formulaire de devis, vous nous autorisez à traiter vos données pour les finalités de cette politique. Si vous nous écrivez sur le chat avec un conseiller ou par WhatsApp, ou nous appelez, vous nous donnez votre autorisation par ce geste, afin que nous traitions votre demande. Vous pouvez la révoquer à tout moment par les moyens indiqués dans « Comment exercer vos droits ».",
       ],
     },
     {

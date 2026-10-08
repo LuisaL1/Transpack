@@ -170,6 +170,9 @@ Además:
     solicitud (`/api/contact` simulado con `page.route`);
   - segmento abierto desde el menú;
   - chat de Joel con texto libre y sin precios;
+  - chat con un asesor (Zoho simulado): Joel funciona sin cargar Zoho; se
+    carga solo al elegir "Chatear con un asesor", en español y con el diseño
+    del sitio; si no carga, Joel ofrece WhatsApp y el formulario;
   - el texto del visitante se muestra como texto, nunca como HTML;
   - cambio de idioma conservando la página.
 

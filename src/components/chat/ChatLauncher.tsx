@@ -4,13 +4,23 @@ import { Bi } from "@/components/ui";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
 
 // Botón flotante que abre y cierra el chat
-export function ChatLauncher({ open, onToggle }: { open: boolean; onToggle: () => void }) {
+export function ChatLauncher({
+  open,
+  onToggle,
+  busy = false,
+}: {
+  open: boolean;
+  onToggle: () => void;
+  /** Cargando el chat (Zoho SalesIQ): muestra un indicador en lugar del avatar */
+  busy?: boolean;
+}) {
   const { tr } = useLang();
   const t = chatText(tr);
   return (
     <button
       onClick={onToggle}
       aria-expanded={open}
+      aria-busy={busy || undefined}
       aria-label={open ? t.closeChat : t.openChat}
       data-chat-launcher
       className="group fixed bottom-4 right-4 z-[60] flex items-center gap-2.5 rounded-full bg-azul p-1.5 text-white shadow-[0_16px_34px_-10px_rgba(39,43,124,.6)] transition-transform hover:-translate-y-0.5 md:bottom-6 md:right-6 md:pr-4"
@@ -18,6 +28,10 @@ export function ChatLauncher({ open, onToggle }: { open: boolean; onToggle: () =
       {open ? (
         <span className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-lg">
           <Bi n="x-lg" />
+        </span>
+      ) : busy ? (
+        <span className="grid h-10 w-10 place-items-center rounded-full bg-white/15">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-naranja" />
         </span>
       ) : (
         <span className="relative">

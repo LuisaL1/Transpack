@@ -17,6 +17,8 @@ export type ChatAction = {
   icon: string;
   href?: string;
   to?: string;
+  /** Abre el chat con un asesor (Zoho SalesIQ, src/lib/crmChat.ts) */
+  crm?: boolean;
   /** Evento de Google Analytics al pulsar la acción (p. ej. la solicitud enviada) */
   event?: { name: string; params?: Record<string, string> };
 };
@@ -533,8 +535,13 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
     human: {
       say: () => [
         tr(
-          "¡Claro! Nuestro equipo te atiende por WhatsApp, teléfono o correo.",
-          "Of course! Our team is available on WhatsApp, by phone or by email.",
+          "¡Claro! Puedes chatear ahora con un asesor de nuestro equipo o, si prefieres, escribirnos por WhatsApp, llamarnos o enviarnos un correo.",
+          "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.",
+        ),
+        // Aviso antes de cargar Zoho (Ley 1581): se carga solo si elige el chat
+        tr(
+          "El chat con un asesor se abre en nuestra plataforma de atención (Zoho SalesIQ) y se atiende en español. Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
+          "The advisor chat opens in our customer service platform (Zoho SalesIQ) and is handled in Spanish. Your messages are stored in our customer system, in line with our privacy policy.",
         ),
         tr(
           `También puedes visitarnos en ${CONTACT.address}.`,
@@ -548,6 +555,11 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         ),
       ],
       actions: () => [
+        {
+          label: tr("Chatear con un asesor", "Chat with an advisor (in Spanish)"),
+          icon: "headset",
+          crm: true,
+        },
         {
           label: tr("Escribir por WhatsApp", "Message on WhatsApp"),
           icon: "whatsapp",
@@ -626,6 +638,13 @@ export const chatText = (tr: Tr) => ({
   placeholder: tr("Escribe tu mensaje…", "Type your message…"),
   message: tr("Mensaje", "Message"),
   send: tr("Enviar", "Send"),
+  // Chat con un asesor (Zoho SalesIQ)
+  crmError: tr(
+    "No pudimos abrir el chat con un asesor en este momento. Escríbenos por otro canal:",
+    "We couldn't open the advisor chat right now. Reach us another way:",
+  ),
+  crmWhatsapp: tr("Escribir por WhatsApp", "Message on WhatsApp"),
+  crmForm: tr("Dejar un mensaje", "Leave a message"),
 });
 
 // ─── Íconos de las opciones ─────────────────────────────────────────────────

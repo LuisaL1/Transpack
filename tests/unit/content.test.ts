@@ -83,10 +83,17 @@ describe("Traducciones", () => {
   it("la política de datos cubre todos los canales del sitio y no inventa el NIT", () => {
     const table = es.PRIVACY.sections.find((s) => s.id === "datos")!.table!;
     const where = table.rows.map((r) => r[0]).join(" ");
-    for (const c of ["Formulario de contacto", "Cotizador", "Joel", "WhatsApp", "Analítica"])
+    for (const c of [
+      "Formulario de contacto",
+      "Cotizador",
+      "Joel",
+      "Chat con un asesor (Zoho SalesIQ)",
+      "WhatsApp",
+      "Analítica",
+    ])
       expect(where).toContain(c);
     const all = JSON.stringify(es.PRIVACY);
-    for (const k of ["Brevo", "Meta", "navegador", "Superintendencia", "10 días hábiles", "15 días hábiles"])
+    for (const k of ["Brevo", "Zoho", "Meta", "navegador", "Superintendencia", "10 días hábiles", "15 días hábiles"])
       expect(all).toContain(k);
     // El NIT no está en los documentos del cliente: queda vacío hasta que lo entreguen
     expect(es.CONTACT.nit).toMatch(/^(\d{3}\.?\d{3}\.?\d{3}-\d)?$/);

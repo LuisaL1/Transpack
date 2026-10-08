@@ -441,7 +441,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 export const PRIVACY = {
   title: "Informativa sul trattamento dei dati personali",
   intro: "Transpack S.A.S. tratta i tuoi dati personali in conformità con la legge colombiana 1581 del 2012 e il decreto 1377 del 2013 (raccolto nel decreto 1074 del 2015). Qui ti spieghiamo quali dati raccogliamo su questo sito, a cosa servono, come vengono trasmessi e come puoi esercitare i tuoi diritti.",
-  updated: "Ultimo aggiornamento: 7 ottobre 2026",
+  updated: "Ultimo aggiornamento: 8 ottobre 2026",
   notice: "Questa è una traduzione a scopo informativo. Fa fede la versione in spagnolo.",
   sections: [
     {
@@ -476,6 +476,11 @@ export const PRIVACY = {
             "Orientarti e preparare la tua richiesta. La conversazione non viene inviata a Transpack: ci arriva solo se la invii tu tramite WhatsApp o il modulo.",
           ],
           [
+            "Chat con un consulente (Zoho SalesIQ)",
+            "Ciò che scrivi nella conversazione e i dati che decidi di darci (per esempio nome, e-mail o telefono), insieme a dati tecnici della visita: pagine visitate, posizione approssimativa, browser e dispositivo.",
+            "Gestire la tua richiesta con un consulente del nostro team. Si carica solo se scegli «Chatta con un consulente» nella chat di Joel.",
+          ],
+          [
             "WhatsApp e telefono",
             "Il tuo numero e ciò che decidi di raccontarci.",
             "Rispondere alla tua domanda o richiesta.",
@@ -506,6 +511,7 @@ export const PRIVACY = {
         "Modulo di contatto e preventivo via e-mail: i tuoi dati viaggiano cifrati (HTTPS) verso una funzione del sito stesso, che li invia via e-mail a Transpack tramite Brevo, il nostro fornitore di e-mail, che agisce come responsabile del trattamento. Brevo ti invia anche una conferma di ricezione della richiesta. Il sito non conserva alcuna copia di ciò che invii.",
         "WhatsApp: se scegli di inviare la richiesta tramite WhatsApp, quella conversazione è regolata anche dai termini e dall'informativa privacy di WhatsApp (Meta).",
         "Nel tuo browser: le preferenze del consulente virtuale e la tua scelta sui cookie sono salvate solo nel tuo browser (archiviazione locale) e non vengono mai inviate a Transpack. Puoi cancellarle quando vuoi eliminando i dati di questo sito dal browser.",
+        "Chat con un consulente: se la scegli nella chat di Joel, si carica Zoho SalesIQ, lo strumento di chat del nostro CRM, che agisce come responsabile del trattamento. La conversazione e i dati della visita sono conservati sui server di Zoho, che possono trovarsi fuori dalla Colombia, e nel nostro CRM. Finché non scegli questa chat, Zoho non si carica e non salva cookie.",
         "Conservazione: conserviamo le richieste ricevute per il tempo necessario a gestirle e a fornire il servizio e, in seguito, per quello richiesto dalle norme contabili, fiscali e di legge.",
       ],
     },
@@ -514,7 +520,7 @@ export const PRIVACY = {
       title: "Con chi condividiamo i tuoi dati",
       items: [
         "Nei traslochi internazionali, con i nostri agenti e partner nel paese di partenza o di arrivo e con le autorità doganali, solo nella misura necessaria per il trasloco. Ciò può comportare il trasferimento dei tuoi dati fuori dalla Colombia.",
-        "Con i fornitori che ci aiutano a gestire il sito e a comunicare con te, come responsabili del trattamento: Vercel (hosting del sito), Brevo (invio di e-mail) e Google (statistiche, solo se le accetti). Alcuni si trovano fuori dalla Colombia, quindi i tuoi dati possono essere trasmessi ad altri paesi.",
+        "Con i fornitori che ci aiutano a gestire il sito e a comunicare con te, come responsabili del trattamento: Vercel (hosting del sito), Brevo (invio di e-mail), Zoho (chat con un consulente e CRM) e Google (statistiche, solo se le accetti). Alcuni si trovano fuori dalla Colombia, quindi i tuoi dati possono essere trasmessi ad altri paesi.",
         "Con le autorità, quando la legge lo richiede.",
       ],
     },
@@ -522,7 +528,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookie e statistiche",
       text: [
-        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo.",
+        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo. Se scegli di chattare con un consulente, Zoho SalesIQ salva i cookie necessari al funzionamento della conversazione.",
       ],
     },
     {
@@ -558,7 +564,7 @@ export const PRIVACY = {
       id: "autorizacion",
       title: "Consenso",
       text: [
-        "Selezionando la casella di consenso nel modulo di contatto o nel modulo di preventivo, ci autorizzi a trattare i tuoi dati per le finalità di questa informativa. Se ci scrivi su WhatsApp o ci chiami, ci dai il consenso con questa azione, così possiamo gestire la tua richiesta. Puoi revocarlo in qualsiasi momento tramite i canali indicati in «Come esercitare i tuoi diritti».",
+        "Selezionando la casella di consenso nel modulo di contatto o nel modulo di preventivo, ci autorizzi a trattare i tuoi dati per le finalità di questa informativa. Se ci scrivi nella chat con un consulente o su WhatsApp, o ci chiami, ci dai il consenso con questa azione, così possiamo gestire la tua richiesta. Puoi revocarlo in qualsiasi momento tramite i canali indicati in «Come esercitare i tuoi diritti».",
       ],
     },
     {

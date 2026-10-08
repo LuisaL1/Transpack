@@ -172,3 +172,12 @@ describe("Aprendizaje y perfil del visitante", () => {
     }
   });
 });
+
+describe("Chat con un asesor (Zoho SalesIQ)", () => {
+  it("al pedir un asesor, la primera opción es el chat con un asesor y avisa del uso de datos", () => {
+    const r = ask("quiero hablar con un asesor");
+    expect(r.actions?.[0]).toMatchObject({ label: "Chatear con un asesor", crm: true });
+    expect(all(r)).toMatch(/Zoho SalesIQ/);
+  });
+});
+

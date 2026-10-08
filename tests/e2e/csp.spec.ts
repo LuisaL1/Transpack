@@ -73,3 +73,35 @@ test("CSP permite reproducir un video de YouTube", async ({ page, isMobile }) =>
   await page.waitForTimeout(1000);
   expect(blocked).toEqual([]);
 });
+
+test("CSP permite cargar el chat con un asesor (Zoho SalesIQ)", async ({ page, isMobile }) => {
+  test.skip(isMobile, "Basta con revisarlo una vez");
+  const blocked: string[] = [];
+  page.on("console", (m) => {
+    if (/Content Security Policy|Refused to/i.test(m.text())) blocked.push(m.text());
+  });
+  let loaded = false;
+  await page.route("**/*", async (r) => {
+    const url = r.request().url();
+    // Script de Zoho simulado (no se carga el real en las pruebas)
+    if (url.startsWith("https://salesiq.zoho.com/")) {
+      loaded = true;
+      return r.fulfill({
+        contentType: "text/javascript",
+        body: "window.$zoho.salesiq.floatwindow={visible(){}};window.$zoho.salesiq.ready();",
+      });
+    }
+    if (r.request().resourceType() !== "document" || !url.startsWith("http://localhost"))
+      return r.continue();
+    const res = await r.fetch();
+    await r.fulfill({ response: res, headers: { ...res.headers(), ...headers } });
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ }).click();
+  const chat = page.getByRole("region", { name: "Chat con Joel" });
+  await chat.getByRole("button", { name: "Hablar con un asesor" }).click({ timeout: 10_000 });
+  await chat.getByRole("button", { name: "Chatear con un asesor" }).click({ timeout: 10_000 });
+  await expect.poll(() => loaded).toBe(true);
+  await page.waitForTimeout(500);
+  expect(blocked).toEqual([]);
+});

@@ -17,6 +17,7 @@ export function AdvisorChat() {
   const {
     open,
     setOpen,
+    advisor,
     teaser,
     setTeaser,
     msgs,
@@ -34,10 +35,17 @@ export function AdvisorChat() {
 
   return (
     <>
-      {teaser && !open && (
+      {teaser && !open && advisor === "idle" && (
         <ChatTeaser onOpen={() => setOpen(true)} onClose={() => setTeaser(false)} />
       )}
-      <ChatLauncher open={open} onToggle={() => setOpen((o) => !o)} />
+      {/* Con el chat de un asesor (Zoho) abierto se usa su propio botón de cierre */}
+      {advisor !== "open" && (
+        <ChatLauncher
+          open={open}
+          busy={advisor === "loading"}
+          onToggle={() => setOpen((o) => !o)}
+        />
+      )}
 
       {/* Ventana */}
       {open && (
