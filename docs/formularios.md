@@ -32,9 +32,16 @@ formularios de terceros (FormSubmit, Formspree, etc.).
 ## Cómo viaja la información
 
 ```
-Navegador ──POST /api/contact──► Función de Vercel (api/contact.ts) ──API de Brevo──► servicioalcliente@transpacksas.com
-                                                                         └──────────► confirmación al visitante
+Navegador ──POST /api/contact──► Función de Vercel (api/contact.ts) ──API de Brevo──┬─► mercadeo@transpacksas.com (cotizaciones)
+                                                                                     ├─► servicioalcliente@transpacksas.com (lo demás)
+                                                                                     └─► confirmación al visitante
 ```
+
+| Solicitud | Llega a | Variable para cambiarlo |
+| --- | --- | --- |
+| Cotizador (`kind: "cotizacion"`) | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
+| Formulario de contacto con motivo "Cotización" (también el "Enviar por correo" del resumen del chat de Joel) | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
+| Formulario de contacto con cualquier otro motivo | servicioalcliente@transpacksas.com | `LEADS_TO` |
 
 - **Protección:**
   - rechaza envíos desde otros dominios (403);
@@ -51,8 +58,9 @@ Navegador ──POST /api/contact──► Función de Vercel (api/contact.ts) �
   Transpack" **en su idioma** (los seis del sitio; en español, de "usted"), con
   su primer nombre, el servicio o motivo, "a la mayor brevedad", un botón de
   WhatsApp, los teléfonos y el enlace a la política de datos. El remitente se
-  llama "Transpack". Si responde, la respuesta llega a `LEADS_TO`. Si esta confirmación
-  falla, la solicitud igual se da por enviada.
+  llama "Transpack". Si responde, la respuesta llega al mismo correo que recibió
+  la solicitud (mercadeo o servicio al cliente). Si esta confirmación falla, la
+  solicitud igual se da por enviada.
 - **Secretos:** la clave de Brevo solo existe en el servidor y nunca llega al
   navegador. El navegador solo llama a `/api/contact`, por eso la CSP no cambia
   (`connect-src 'self'`).
@@ -117,7 +125,8 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
    | Variable | Valor | Obligatoria |
    | --- | --- | --- |
    | `BREVO_API_KEY` | La clave de API de Brevo. **Secreta**: nunca con prefijo `VITE_` | Sí |
-   | `LEADS_TO` | Correo que recibe las solicitudes (por defecto `servicioalcliente@transpacksas.com`) | No |
+   | `LEADS_TO` | Correo que recibe el formulario de contacto (por defecto `servicioalcliente@transpacksas.com`) | No |
+   | `LEADS_TO_QUOTES` | Correo que recibe las solicitudes de cotización (por defecto `mercadeo@transpacksas.com`) | No |
    | `LEADS_FROM` | Remitente verificado en Brevo (por defecto `no-reply@transpacksas.com`) | No |
    | `LEADS_FROM_NAME` | Nombre del remitente (por defecto "Transpack") | No |
 
@@ -150,7 +159,9 @@ No se envía ningún correo real en las pruebas.
   - campo trampa → OK sin enviar;
   - destino correcto, "Responder a" del visitante y HTML escapado;
   - variables `LEADS_*`;
-  - confirmación al visitante (2 llamadas, "Responder a" = `LEADS_TO`, en su
+  - cotizaciones a mercadeo y formulario de contacto a servicio al cliente
+    (también con `LEADS_TO_QUOTES`);
+  - confirmación al visitante (2 llamadas, "Responder a" = el correo que recibió la solicitud, en su
     idioma, remitente "Transpack");
   - ambos correos con el banner desde el dominio de la solicitud, la plantilla
     (`color-scheme`, tablas, color de marca) y el pie con los datos del sitio;

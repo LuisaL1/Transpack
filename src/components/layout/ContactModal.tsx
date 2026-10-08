@@ -109,7 +109,7 @@ export function ContactModal() {
       },
       { email: form.email.trim(), name: form.nombre.trim() },
       form.website,
-      { lang, about: reasons[form.motivo] },
+      { lang, about: reasons[form.motivo], topic: form.motivo },
     );
     setStatus(r.ok ? "sent" : "error");
     if (r.ok) trackEvent("generate_lead", { method: "form", reason: form.motivo, lang });

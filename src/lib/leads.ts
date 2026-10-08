@@ -14,13 +14,18 @@ export async function sendLead(
   website = "",
   // Idioma del visitante y servicio o motivo en ese idioma: la confirmación
   // automática que recibe sale en su idioma.
-  { lang = "es", about = "" }: { lang?: Lang; about?: string } = {},
+  // topic: motivo del formulario de contacto ("cotizacion" llega a mercadeo)
+  {
+    lang = "es",
+    about = "",
+    topic = "",
+  }: { lang?: Lang; about?: string; topic?: string } = {},
 ): Promise<LeadResult> {
   try {
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind, subject, fields, replyTo, website, lang, about }),
+      body: JSON.stringify({ kind, subject, fields, replyTo, website, lang, about, topic }),
     });
     const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
     return res.ok && data.ok ? { ok: true } : { ok: false, error: data.error || `http-${res.status}` };

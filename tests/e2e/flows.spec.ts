@@ -251,6 +251,7 @@ test("formulario de contacto: se abre desde soporte, exige autorización y enví
   await expect(dlg.getByText(/Un asesor te responderá a ana@empresa.com/)).toBeVisible();
   expect(sent).toMatchObject({
     kind: "contacto",
+    topic: "pqrs",
     replyTo: { email: "ana@empresa.com", name: "Ana Prueba" },
     website: "",
     fields: { Motivo: "Peticiones, quejas, reclamos o sugerencias (PQRS)", "Autorización de datos": "Sí" },

@@ -5,7 +5,8 @@
 //
 // Variables de entorno (Vercel → Settings → Environment Variables, Production):
 //   BREVO_API_KEY     clave de API de Brevo (obligatoria, secreta: nunca VITE_)
-//   LEADS_TO          correo que recibe las solicitudes (por defecto servicioalcliente@transpacksas.com)
+//   LEADS_TO          correo que recibe el formulario de contacto (por defecto servicioalcliente@transpacksas.com)
+//   LEADS_TO_QUOTES   correo que recibe las solicitudes de cotización (por defecto mercadeo@transpacksas.com)
 //   LEADS_FROM        remitente verificado en Brevo (por defecto no-reply@transpacksas.com)
 //   LEADS_FROM_NAME   nombre del remitente (por defecto "Transpack")
 //
@@ -28,6 +29,8 @@ type Payload = {
   lang?: string;
   /** Servicio o motivo en el idioma del visitante (para su confirmación) */
   about?: string;
+  /** Motivo del formulario de contacto ("cotizacion" se envía a mercadeo) */
+  topic?: string;
 };
 
 export const BRAND = {
@@ -47,7 +50,10 @@ const C = {
   linea: "#E1E5EE",
   gris: "#F0F6F6",
 };
+/** Destino del formulario de contacto */
 export const DEFAULT_LEADS_TO = "servicioalcliente@transpacksas.com";
+/** Destino de las solicitudes de cotización (cotizador y formulario con motivo "Cotización") */
+export const DEFAULT_QUOTES_TO = "mercadeo@transpacksas.com";
 const LANGS: Lang[] = ["es", "en", "fr", "de", "it", "ar"];
 /** Política de datos en cada idioma (mismas rutas que src/i18n) */
 export const PRIVACY_PATH: Record<Lang, string> = {
@@ -325,7 +331,12 @@ export async function POST(req: Request): Promise<Response> {
     email: process.env.LEADS_FROM || "no-reply@transpacksas.com",
     name: process.env.LEADS_FROM_NAME || BRAND.name,
   };
-  const leadsTo = process.env.LEADS_TO || DEFAULT_LEADS_TO;
+  // Cotizaciones a mercadeo; lo demás a servicio al cliente
+  const isQuote = kind === "cotizacion" || body.topic === "cotizacion";
+  const leadsTo = isQuote
+    ? process.env.LEADS_TO_QUOTES || DEFAULT_QUOTES_TO
+    : process.env.LEADS_TO || DEFAULT_LEADS_TO;
+  const team = isQuote ? "Mercadeo Transpack" : "Servicio al cliente Transpack";
   const send = (payload: Record<string, unknown>) =>
     fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
@@ -338,7 +349,7 @@ export async function POST(req: Request): Promise<Response> {
   let res: Response;
   try {
     res = await send({
-      to: [{ email: leadsTo, name: "Servicio al cliente Transpack" }],
+      to: [{ email: leadsTo, name: team }],
       replyTo: { email: replyEmail, name: name || replyEmail },
       subject,
       htmlContent: html,

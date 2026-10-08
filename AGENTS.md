@@ -150,6 +150,9 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   `"Autorización de datos": "Sí"`; el servidor la vuelve a verificar.
 - El correo al equipo va en español (motivos y etiquetas); la confirmación al
   visitante va en su idioma (`lang`).
+- Destinos: las cotizaciones (cotizador y formulario con motivo "Cotización")
+  van a mercadeo@transpacksas.com (`LEADS_TO_QUOTES`); lo demás a
+  servicioalcliente@transpacksas.com (`LEADS_TO`).
 - Las pruebas nunca envían correos reales: simulan `fetch` o `/api/contact`.
 
 ## Reglas de contenido

@@ -68,7 +68,7 @@ push y pull request corre además la integración continua de GitHub Actions
 | `VITE_SITE_INDEXABLE` | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`) | Solo Production |
 | `VITE_GOOGLE_SITE_VERIFICATION` | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS) | Solo Production |
 | `BREVO_API_KEY` | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`) | Production |
-| `LEADS_TO` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino, remitente y nombre del remitente (ver `docs/formularios.md`) | Production |
+| `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production |
 
 - **Después de crear o cambiar una variable:** Deployments → último despliegue
   → **Redeploy**. Las variables se leen al compilar.
@@ -87,8 +87,9 @@ push y pull request corre además la integración continua de GitHub Actions
     en `CONTACT.nit` (`src/data/site.ts`) y la política lo muestra sola;
   - confirmar el área que atiende las solicitudes, la fecha de vigencia y el
     registro de bases de datos ante la SIC, si aplica.
-- **Envío de formularios por correo (Brevo)**: el formulario de contacto y el
-  cotizador envían por `api/contact.ts` a servicioalcliente@transpacksas.com.
+- **Envío de formularios por correo (Brevo)**: por `api/contact.ts`, las
+  cotizaciones llegan a mercadeo@transpacksas.com y el formulario de contacto a
+  servicioalcliente@transpacksas.com.
   Falta que el área encargada verifique el dominio en Brevo (SPF, DKIM, DMARC),
   cree la clave y configure las variables en Vercel (ver `docs/formularios.md`).
   Mientras tanto, el formulario muestra el aviso con WhatsApp.

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import {
   BRAND,
   DEFAULT_LEADS_TO,
+  DEFAULT_QUOTES_TO,
   GET,
   POST,
   PRIVACY_PATH,
@@ -92,6 +93,33 @@ describe("/api/contact", () => {
     expect(sent.htmlContent).toContain("Hola &lt;b&gt;");
     expect(sent.htmlContent).not.toContain("<b>");
     expect(sent.textContent).toContain("Mensaje: Hola <b>");
+  });
+
+  it("las cotizaciones llegan a mercadeo y el formulario de contacto a servicio al cliente", async () => {
+    const f = vi.fn().mockResolvedValue(ok());
+    vi.stubGlobal("fetch", f);
+    vi.stubEnv("BREVO_API_KEY", "k");
+    // Cotizador
+    await POST(req({ ...valid, kind: "cotizacion" }));
+    expect(sentBody(f).to[0]).toEqual({ email: "mercadeo@transpacksas.com", name: "Mercadeo Transpack" });
+    // La confirmación al visitante responde a quien recibió la solicitud
+    expect(sentBody(f, 1).replyTo.email).toBe("mercadeo@transpacksas.com");
+    // Formulario de contacto con motivo "Cotización"
+    f.mockClear();
+    await POST(req({ ...valid, topic: "cotizacion" }));
+    expect(sentBody(f).to[0].email).toBe(DEFAULT_QUOTES_TO);
+    // Formulario de contacto con otro motivo
+    f.mockClear();
+    await POST(req({ ...valid, topic: "pqrs" }));
+    expect(sentBody(f).to[0]).toEqual({
+      email: "servicioalcliente@transpacksas.com",
+      name: "Servicio al cliente Transpack",
+    });
+    // LEADS_TO_QUOTES cambia solo el destino de las cotizaciones
+    vi.stubEnv("LEADS_TO_QUOTES", "ventas@transpacksas.com");
+    f.mockClear();
+    await POST(req({ ...valid, kind: "cotizacion" }));
+    expect(sentBody(f).to[0].email).toBe("ventas@transpacksas.com");
   });
 
   it("usa LEADS_TO, LEADS_FROM y LEADS_FROM_NAME si están definidas", async () => {
