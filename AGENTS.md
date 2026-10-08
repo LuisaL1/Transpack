@@ -86,10 +86,11 @@ src/
 ├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
-                            zoho-chat.css (diseño del sitio dentro del chat de Zoho)
+                            zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
 api/contact.ts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 api/advisor.ts              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
-public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg)
+public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
+                            chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
@@ -244,6 +245,8 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 - **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
   chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de
   `src/styles/index.css`. Solo colores de la marca.
-- Dominios de Zoho en la CSP de `vercel.json`: si se agrega otro, súmelo
-  también a la lista de `tests/security/static.test.ts`.
+- **Zoho nunca se carga en las páginas del sitio:** vive en
+  `public/chat-asesor.html` (iframe escondido), que tiene su propia CSP en
+  `vercel.json` (con los scripts en línea que Zoho exige). La CSP del sitio no
+  autoriza nada de Zoho; no la relaje para Zoho.
 - Las pruebas simulan el script de Zoho: nunca cargan el real.

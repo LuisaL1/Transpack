@@ -109,7 +109,8 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
         .find((h: { source: string }) => h.source === src)
         .headers.map((h: { key: string; value: string }) => [h.key, h.value]),
     ) as Record<string, string>;
-  const headers = block("/(.*)");
+  // Todo el sitio, salvo la página aislada del chat con un asesor (abajo)
+  const headers = block("/((?!chat-asesor).*)");
   const csp = headers["Content-Security-Policy"];
 
   it("define CSP, HSTS, nosniff, anti-clickjacking, referrer, permisos y COOP", () => {
@@ -129,9 +130,9 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
     const script = csp.match(/script-src ([^;]+)/)![1];
     expect(script).not.toMatch(/unsafe-inline|unsafe-eval/);
     // Ningún comodín, salvo los subdominios de Google Tag Manager (Google Analytics).
-    // Zoho SalesIQ (chat) va con dominios exactos.
     expect(script.replace("https://*.googletagmanager.com", "")).not.toMatch(/\*/);
-    expect(script).toContain("https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com");
+    // Zoho no se autoriza en el sitio: vive en la página aislada
+    expect(csp).not.toMatch(/zoho/);
     expect(csp).toMatch(/default-src 'self'/);
     expect(csp).toMatch(/frame-ancestors 'none'/);
     expect(csp).toMatch(/object-src 'none'/);
@@ -144,16 +145,35 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
       "https://*.analytics.google.com", // Google Analytics 4 (src/lib/analytics.ts)
       "https://*.google-analytics.com",
       "https://*.googletagmanager.com",
-      "https://*.zohopublic.com", // chat de Zoho SalesIQ (src/lib/crmChat.ts)
       "https://fonts.googleapis.com", // tipografías (src/styles/index.css)
       "https://fonts.gstatic.com",
       "https://i.ytimg.com", // portadas de los videos
-      "https://salesiq.zoho.com", // chat de Zoho SalesIQ
-      "https://salesiq.zohopublic.com", // widget de Zoho SalesIQ
-      "https://static.zohocdn.com",
       "https://www.google.com", // mapa de contacto
       "https://www.youtube-nocookie.com", // videos (sin cookies)
     ]);
+  });
+
+  it("la página aislada del chat (Zoho) solo relaja lo que Zoho necesita", () => {
+    for (const src of ["/chat-asesor", "/chat-asesor.html"]) {
+      const h = block(src);
+      const c = h["Content-Security-Policy"];
+      const script = c.match(/script-src ([^;]+)/)![1];
+      // Zoho ejecuta scripts en línea propios de cada visitante: se permiten solo aquí
+      expect(script).toContain("'unsafe-inline'");
+      expect(script).not.toMatch(/unsafe-eval/);
+      expect(script.replace("'self' 'unsafe-inline' ", "").split(" ").sort()).toEqual([
+        "https://salesiq.zoho.com",
+        "https://salesiq.zohopublic.com",
+        "https://static.zohocdn.com",
+      ]);
+      // Solo el propio sitio puede mostrarla
+      expect(c).toMatch(/frame-ancestors 'self'/);
+      expect(h["X-Frame-Options"]).toBe("SAMEORIGIN");
+      expect(h["X-Robots-Tag"]).toMatch(/noindex/);
+      expect(c).toMatch(/object-src 'none'/);
+    }
+    // El sitio puede mostrarla en un iframe
+    expect(csp).toMatch(/frame-src 'self'/);
   });
 
   it("HSTS de al menos un año y la página no puede embeberse", () => {

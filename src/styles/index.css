@@ -232,45 +232,34 @@ p {
   }
 }
 
-/* ─── Chat de Zoho SalesIQ: marco de la ventana y botón de cerrar ──────────────
-   Lo de adentro de la ventana está en src/styles/zoho-chat.css. Mismo marco
-   del chat de Joel: esquinas de 24 px, borde azul muy suave y sombra. */
-#zsiq_chat_wrap {
-  border-radius: 24px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(39, 43, 124, 0.1) !important;
-  box-shadow: 0 40px 80px -30px rgba(39, 43, 124, 0.5) !important;
+/* ─── Chat con un asesor (Zoho SalesIQ) ──────────────────────────────────────
+   Zoho vive en una página aislada (public/chat-asesor.html) dentro de este
+   iframe. Escondido fuera de la pantalla mientras trabaja como puente; visible
+   en la esquina solo cuando se abre su ventana (clase tp-zoho-open). El marco
+   de la ventana de Zoho está en src/styles/zoho-host.css. */
+#tp-zoho-frame {
+  position: fixed;
+  left: -10000px;
+  bottom: 0;
+  width: 440px;
+  height: min(800px, 100vh);
+  border: 0;
+  background: transparent;
+  color-scheme: normal;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 70;
 }
-#zsiq_chat_wrap iframe {
-  border-radius: 24px !important;
+html.tp-zoho-open #tp-zoho-frame {
+  left: auto;
+  right: 0;
+  opacity: 1;
+  pointer-events: auto;
 }
-#zsiq_float {
-  background: var(--color-azul) !important;
-  box-shadow: 0 16px 34px -10px rgba(39, 43, 124, 0.6) !important;
-}
-#zsiq_float,
-#zsiq_float * {
-  color: #fff !important;
-}
-#zs_fl_close {
-  background-color: var(--color-azul) !important;
-}
-/* En celular la ventana de Zoho ocupa toda la pantalla: sin esquinas ni borde */
 @media (max-width: 639px) {
-  #zsiq_chat_wrap,
-  #zsiq_chat_wrap iframe {
-    border-radius: 0 !important;
-    border: 0 !important;
+  html.tp-zoho-open #tp-zoho-frame {
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
-}
-
-/* Puente con Zoho (src/lib/zohoBridge.ts): la ventana de Zoho trabaja fuera de
-   la pantalla mientras la conversación se ve en el chat de Joel */
-html.tp-zoho-hidden #zsiq_chat_wrap,
-html.tp-zoho-hidden #zsiq_float {
-  position: fixed !important;
-  left: -10000px !important;
-  top: 0 !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }

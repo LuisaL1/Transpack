@@ -25,7 +25,8 @@ async function send(chat: Locator, text: string) {
 }
 
 // Chat con un asesor (Zoho SalesIQ) simulado: nunca se carga el script real.
-// Imita la API que usa src/lib/crmChat.ts y deja registro en window.__zoho.
+// Imita la API que usa src/lib/crmChat.ts y deja registro en window.__zoho
+// (de la página aislada public/chat-asesor.html, donde corre el widget).
 const ZOHO_STUB = `(() => {
   const z = window.$zoho.salesiq, log = (window.__zoho = { calls: [], sent: [] }), cb = {};
   z.language = (l) => log.calls.push("language:" + l);
@@ -156,14 +157,20 @@ test("sin API, el chat con un asesor va por el puente con Zoho, dentro de Joel",
   // La pregunta abre la conversación en el Zoho escondido
   await send(chat, "Quiero cotizar una mudanza");
   await expect.poll(() => requests.length).toBe(1);
+  // Registro del Zoho simulado, dentro de la página aislada
   const zoho = () =>
     page.evaluate(
-      () => (window as unknown as { __zoho?: { calls: string[]; sent: string[] } }).__zoho,
+      () =>
+        (
+          (document.getElementById("tp-zoho-frame") as HTMLIFrameElement | null)
+            ?.contentWindow as unknown as { __zoho?: { calls: string[]; sent: string[] } } | null
+        )?.__zoho,
     );
   await expect.poll(async () => (await zoho())?.sent).toEqual(["Quiero cotizar una mudanza"]);
   expect((await zoho())?.calls).toEqual(expect.arrayContaining(["language:es", "button:hide"]));
-  // La ventana de Zoho trabaja fuera de la pantalla; Joel sigue a la vista
-  await expect(page.locator("html")).toHaveClass(/tp-zoho-hidden/);
+  // Zoho trabaja en la página aislada, escondida; Joel sigue a la vista
+  await expect(page.locator("#tp-zoho-frame")).toBeAttached();
+  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
   await expect(chat).toBeVisible();
   // La respuesta de Zoho aparece en Joel, con el nombre y sus opciones
   await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({ timeout: 10_000 });
@@ -172,9 +179,10 @@ test("sin API, el chat con un asesor va por el puente con Zoho, dentro de Joel",
   // Lo que el visitante escribe después va a Zoho
   await send(chat, "Somos dos personas");
   await expect.poll(async () => (await zoho())?.sent.at(-1)).toBe("Somos dos personas");
-  // Volver con Joel termina el puente
+  // Volver con Joel termina el puente (la ventana de Zoho no se muestra)
   await chat.getByRole("button", { name: "Volver con Joel" }).click();
-  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-hidden/);
+  await expect(chat.getByText(/Volviste conmigo/)).toBeVisible();
+  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
 });
 
 test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", async ({

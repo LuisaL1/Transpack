@@ -14,21 +14,31 @@ panel de SalesIQ como cualquier chat:
 ## Modo "puente" (activo)
 
 1. "Chatear con un asesor" → Joel pide la pregunta.
-2. Se carga el widget de Zoho fuera de la pantalla (`html.tp-zoho-hidden`,
-   `src/styles/index.css`), se pulsa "Chatee con nosotros ahora" y se escribe
-   la pregunta en su campo de texto.
+2. Se carga el widget de Zoho en la página aislada, escondida fuera de la
+   pantalla (`#tp-zoho-frame`, `src/styles/index.css`), se pulsa "Chatee con
+   nosotros ahora" y se escribe la pregunta en su campo de texto.
 3. Un observador lee los mensajes nuevos del bot o del asesor de Zoho
    (`[data-zsqa="agent_msg message_bubble"]`) y los muestra en Joel con su
    nombre; los botones de sugerencia de Zoho aparecen como opciones en Joel.
 4. Lo que la persona escribe después va al campo de texto de Zoho.
-5. Si Zoho pide un **formulario** (nombre, correo, medio de contacto), Joel
-   ofrece "Completar mis datos" (muestra la ventana de Zoho; al cerrarla se
-   vuelve a esconder) u "Omitir este paso" (pulsa "Omitir" en Zoho).
+5. Las **preguntas de datos del visitante** que hace Zoho ("¿Cómo quiere que
+   le contactemos?", "¿Podemos enviarle un correo electrónico?"…) se **omiten
+   solas**: mientras no se respondan, Zoho no pasa la conversación a los
+   asesores, y Joel ya tiene la consulta. Si una pregunta no se puede omitir,
+   Joel ofrece "Completar mis datos" (muestra la ventana de Zoho; al cerrarla
+   se vuelve a esconder).
 6. "Volver con Joel" deja de escuchar y esconde Zoho.
 
-**Recomendación:** apagar o simplificar el bot de Zoho ("Joel Transpack",
-SalesIQ → Bot → Zobot) en el sitio web, o hacer que pase directo a un asesor:
-Joel ya cumple ese papel, y así no aparecen sus formularios ni dos "Joel".
+**Configuración de Zoho para este modo (8 de octubre de 2026):**
+- El bot de Zoho ("Joel Transpack", SalesIQ → Bot → Zobot) está **apagado**:
+  Joel cumple ese papel en el sitio. Si se vuelve a encender, sus mensajes
+  aparecen en Joel y la conversación no llega a los asesores hasta que el bot
+  la transfiera.
+- Las preguntas de datos del visitante de la ventana de chat de Zoho se omiten
+  solas (paso 5). Si se quieren quitar en Zoho, están en la configuración de
+  la ventana de chat de la marca.
+- Probado con Zoho real: la conversación entra a la bandeja de SalesIQ
+  ("conectada", atiende Transpack) con la pregunta del visitante.
 
 **Cuidado:** depende de la estructura interna de la ventana de Zoho (clases y
 atributos `data-zsqa`). Si Zoho la cambia, el puente falla y Joel abre la
@@ -170,7 +180,7 @@ La ventana de Zoho tiene el diseño del chat de Joel:
 | Qué | Archivo |
 | --- | --- |
 | Lo de adentro de la ventana | `src/styles/zoho-chat.css` (se inyecta desde `src/lib/crmChat.ts`) |
-| Marco (esquinas, sombra) y botón de cerrar | final de `src/styles/index.css` |
+| Marco (esquinas, sombra) y botón de cerrar | `src/styles/zoho-host.css` (se inyecta en la página aislada) |
 
 - **Por qué funciona:** la ventana de Zoho es un iframe del mismo origen que la
   página, así que el sitio puede agregarle una hoja de estilos. Los colores se
@@ -183,22 +193,34 @@ La ventana de Zoho tiene el diseño del chat de Joel:
   → Marca → Personalización → CSS personalizado), cambiando la foto por la
   dirección completa `https://www.transpacksas.com/brand/joel-avatar.png`.
 
-## CSP (vercel.json)
+## Página aislada y CSP (vercel.json)
 
-Dominios observados al cargar y abrir el widget el 8 de octubre de 2026:
+Zoho **no se carga en las páginas del sitio**. Vive en una página propia y
+vacía, `public/chat-asesor.html`, que el sitio abre en un iframe escondido
+(`#tp-zoho-frame`, `src/lib/crmChat.ts`) solo cuando la persona elige
+"Chatear con un asesor".
 
-| Directiva | Dominios de Zoho |
-| --- | --- |
-| `script-src` | `https://salesiq.zohopublic.com` (widget), `https://salesiq.zoho.com`, `https://static.zohocdn.com` |
-| `style-src`, `font-src`, `media-src` | `https://static.zohocdn.com` |
-| `img-src` | `https://static.zohocdn.com`, `https://*.zohopublic.com` |
-| `connect-src` | `https://salesiq.zoho.com`, `https://*.zohopublic.com`, `wss://*.zohopublic.com`, `https://static.zohocdn.com` |
-| `frame-src` | `https://*.zohopublic.com` |
+**Por qué:** el widget de Zoho ejecuta un script en línea distinto para cada
+visitante (incluye su identificador), así que no se puede autorizar con una
+huella fija. La CSP estricta del sitio lo bloqueaba (la ventana de Zoho quedaba
+vacía). Con la página aislada:
+
+| Cabeceras | Para | Scripts permitidos |
+| --- | --- | --- |
+| `/((?!chat-asesor).*)` | Todo el sitio | Solo los del propio sitio y Google Tag Manager. Nada de Zoho. `frame-src 'self'` para mostrar la página aislada. |
+| `/chat-asesor` y `/chat-asesor.html` | La página aislada | `'unsafe-inline'` más `salesiq.zohopublic.com`, `salesiq.zoho.com` y `static.zohocdn.com`. Solo el sitio la puede mostrar (`frame-ancestors 'self'`, `X-Frame-Options: SAMEORIGIN`) y no se indexa. |
+
+Otros dominios de Zoho permitidos en la página aislada:
+- `style-src`, `font-src` y `media-src`: `static.zohocdn.com`;
+- `img-src`: `static.zohocdn.com` y `*.zohopublic.com`;
+- `connect-src`: `salesiq.zoho.com`, `*.zohopublic.com` (también por `wss:`) y
+  `static.zohocdn.com`;
+- `frame-src`: `*.zohopublic.com`.
 
 Si algo del chat no funciona en producción (por ejemplo, adjuntar archivos o
 llamadas), abra la consola del navegador: un mensaje "Refused to …" indica el
-dominio que falta. Agréguelo a `vercel.json` y a la lista de
-`tests/security/static.test.ts`.
+dominio que falta. Agréguelo en las reglas de `/chat-asesor` de `vercel.json` y
+revise `tests/security/static.test.ts`.
 
 ## Configuración del widget en Zoho (modo ventana)
 

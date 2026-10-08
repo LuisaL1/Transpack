@@ -7,6 +7,9 @@ vi.mock("@/lib/crmChat", () => ({
   loadCrmChat: vi.fn(async () => z),
   setBridging: vi.fn(),
   styleChatWindow: vi.fn(),
+  announce: vi.fn(),
+  // La página aislada de Zoho: aquí, la misma ventana de prueba
+  zohoWindow: () => window,
 }));
 const { startBridge } = await import("@/lib/zohoBridge");
 const { setBridging } = await import("@/lib/crmChat");
@@ -38,7 +41,8 @@ function agentSays(id: string, name: string, text: string, extra = "") {
   grp.innerHTML = `<div class="siqcw-name-div">${name}</div><div class="chat-bubble-cont" id="${id}" data-zsqa="agent_msg message_bubble"><span data-zsqa="msg">${text}</span>${extra}</div>`;
   doc.getElementById("scroll-container")!.appendChild(grp);
 }
-const tick = () => new Promise((r) => setTimeout(r, 30));
+// El puente procesa cada mensaje cuando ya está completo (unos 700 ms)
+const tick = () => new Promise((r) => setTimeout(r, 1300));
 
 beforeEach(() => {
   sent.length = 0;
@@ -85,24 +89,36 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
     await tick();
     agentSays("m2", "Laura", "¿En qué te ayudo?");
     await tick();
+    await tick();
     expect(onMessage.mock.calls.map((c) => c[0].id)).toEqual(["m1", "m2"]);
   });
 
-  it("si Zoho pide un formulario, avisa y permite omitirlo", async () => {
+  it("omite solas las preguntas opcionales de datos de Zoho (para que pase a los asesores)", async () => {
     const onForm = vi.fn();
-    const b = await startBridge("Hola", { onMessage: vi.fn(), onForm });
+    const onMessage = vi.fn();
+    await startBridge("Hola", { onMessage, onForm });
+    const skipped = vi.fn();
     agentSays(
       "f1",
-      "Joel Transpack",
+      "Transpack",
       "¿Cómo quiere que le contactemos?",
       `<input class="siqcw-input"><span data-zsqa="skip_btn">Omitir</span>`,
     );
-    await tick();
-    expect(onForm).toHaveBeenCalledWith({ canSkip: true });
-    const skipped = vi.fn();
     doc.querySelector('[data-zsqa="skip_btn"]')!.addEventListener("click", skipped);
-    expect(b.skip()).toBe(true);
+    // También cuando la pregunta usa el campo de texto de Zoho (solo trae "Omitir")
+    agentSays("f2", "Transpack", "¿Podemos enviarle un correo electrónico?", `<span data-zsqa="skip_btn">Omitir</span>`);
+    await tick();
     expect(skipped).toHaveBeenCalled();
+    expect(onMessage).not.toHaveBeenCalled();
+    expect(onForm).not.toHaveBeenCalled();
+  });
+
+  it("si un formulario no se puede omitir, Joel ofrece llenarlo en la ventana de Zoho", async () => {
+    const onForm = vi.fn();
+    await startBridge("Hola", { onMessage: vi.fn(), onForm });
+    agentSays("f3", "Transpack", "Indique su nombre", `<input class="siqcw-input">`);
+    await tick();
+    expect(onForm).toHaveBeenCalledWith({ canSkip: false });
   });
 
   it("al terminar deja de escuchar y esconde la ventana", async () => {

@@ -8,11 +8,11 @@
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/((?!chat-asesor).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://*.googletagmanager.com https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://static.zohocdn.com; font-src 'self' https://fonts.gstatic.com https://static.zohocdn.com data:; img-src 'self' data: blob: https://i.ytimg.com https://static.zohocdn.com https://*.zohopublic.com https://*.google-analytics.com https://*.googletagmanager.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.youtube-nocookie.com https://www.google.com https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://i.ytimg.com https://*.google-analytics.com https://*.googletagmanager.com; media-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src 'self' https://www.youtube-nocookie.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         },
         {
           "key": "Strict-Transport-Security",
@@ -37,6 +37,80 @@
         {
           "key": "Cross-Origin-Opener-Policy",
           "value": "same-origin"
+        }
+      ]
+    },
+    {
+      "source": "/chat-asesor",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/chat-asesor.html",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     },

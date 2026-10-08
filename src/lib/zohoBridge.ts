@@ -1,18 +1,19 @@
 // ─── Puente con Zoho SalesIQ ─────────────────────────────────────────────────
 // Chat con un asesor DENTRO de la ventana de Joel sin la API de organización de
-// Zoho: el widget de SalesIQ se carga escondido (fuera de la pantalla) y este
+// Zoho: el widget de SalesIQ se carga escondido (en la página aislada
+// public/chat-asesor.html, fuera de la pantalla) y este
 // módulo escribe en su ventana y lee lo que responden el bot o el asesor de
 // Zoho, para mostrarlo en Joel. Ver docs/chat-crm.md.
 //
 // · Textos y opciones (botones de sugerencia) pasan a Joel.
-// · Si Zoho pide un formulario (nombre, correo, medio de contacto…), Joel ofrece
-//   llenarlo en la ventana de Zoho o, si Zoho lo permite, omitirlo (onForm):
-//   esos controles no se replican.
+// · Las preguntas opcionales de datos del visitante que hace Zoho (nombre,
+//   correo, teléfono) se omiten solas: Joel ya tiene la consulta y así Zoho
+//   pasa la conversación a los asesores. Si un formulario no se puede omitir,
+//   Joel ofrece llenarlo en la ventana de Zoho (onForm).
 // · Depende de la estructura interna de la ventana de Zoho (clases y atributos
 //   data-zsqa). Si Zoho la cambia, startBridge falla y Joel abre la ventana de
 //   Zoho como respaldo.
-import { CRM_CHAT_EVENT } from "@/lib/advisorEvents";
-import { loadCrmChat, setBridging, styleChatWindow } from "@/lib/crmChat";
+import { announce, loadCrmChat, setBridging, styleChatWindow, zohoWindow } from "@/lib/crmChat";
 
 export type BridgeMessage = {
   id: string;
@@ -42,8 +43,9 @@ export type Bridge = {
 const AGENT = '[data-zsqa="agent_msg message_bubble"]';
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/** Documento de la ventana de Zoho (dentro de la página aislada) */
 function chatDoc(): Document | null {
-  const f = document.getElementById("siq_chatwindow") as HTMLIFrameElement | null;
+  const f = zohoWindow()?.document.getElementById("siq_chatwindow") as HTMLIFrameElement | null;
   return f?.contentDocument ?? null;
 }
 
@@ -106,27 +108,45 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   doc.querySelectorAll<HTMLElement>(AGENT).forEach((el) => el.id && seen.add(el.id));
   let asked = false;
 
+  // Un mensaje de Zoho se procesa cuando ya está completo: el texto llega a
+  // veces antes que sus botones o su formulario.
+  const firstSeen = new Map<string, number>();
+  const STABLE_MS = 700;
+
   const scan = () => {
     for (const el of Array.from(doc.querySelectorAll<HTMLElement>(AGENT))) {
       if (!el.id || seen.has(el.id)) continue;
+      const t0 = firstSeen.get(el.id) ?? Date.now();
+      firstSeen.set(el.id, t0);
+      if (Date.now() - t0 < STABLE_MS) continue;
+      seen.add(el.id);
       const text = el.querySelector('[data-zsqa="msg"]')?.textContent?.trim() ?? "";
       const form = el.querySelector("input, select, .siqcw-dropdown-cont, .siqcw-btn");
-      // El texto llega a veces antes que las opciones: se espera al siguiente cambio
-      if (!text && !form) continue;
-      seen.add(el.id);
+      const skip = el.querySelector<HTMLElement>('[data-zsqa="skip_btn"]');
+      // Preguntas opcionales de datos del visitante (nombre, correo, teléfono):
+      // Joel ya tiene la consulta, así que se omiten para que Zoho pase la
+      // conversación a los asesores sin esperar.
+      // (a veces con formulario, a veces en el campo de texto de Zoho)
+      if (skip) {
+        skip.click();
+        continue;
+      }
       const name =
         el.closest(".siqcw-agentmsg-grp")?.querySelector(".siqcw-name-div")?.textContent?.trim() ?? "";
       const options = Array.from(el.querySelectorAll(".tag-div"))
         .map((t) => t.textContent?.trim() ?? "")
         .filter(Boolean);
       if (text) h.onMessage({ id: el.id, name, text, options });
-      if (form) h.onForm({ canSkip: !!el.querySelector('[data-zsqa="skip_btn"]') });
+      // Un formulario obligatorio (sin "Omitir") solo se puede llenar en la ventana de Zoho
+      if (form) h.onForm({ canSkip: false });
     }
     // La pregunta se envía cuando el campo de texto está listo
     if (!asked && type(doc, question)) asked = true;
   };
   const obs = new MutationObserver(() => scan());
   obs.observe(doc.body, { childList: true, subtree: true, characterData: true });
+  // Revisión periódica: procesa los mensajes que ya quedaron completos
+  const timer = window.setInterval(scan, 400);
   scan();
 
   return {
@@ -147,7 +167,7 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
     showWindow: () => {
       setBridging(false);
       z.floatwindow?.visible("show");
-      window.dispatchEvent(new CustomEvent(CRM_CHAT_EVENT, { detail: { open: true } }));
+      announce(true);
     },
     hideWindow: () => {
       setBridging(true);
@@ -155,8 +175,10 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
     },
     stop: () => {
       obs.disconnect();
+      window.clearInterval(timer);
       z.floatwindow?.visible("hide");
       setBridging(false);
+      document.documentElement.classList.remove("tp-zoho-open");
     },
   };
 }

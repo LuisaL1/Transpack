@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Chat con un asesor · Transpack</title>
+    <!--
+      Página aislada para el widget de Zoho SalesIQ (chat con un asesor). El
+      sitio la carga escondida en un iframe (src/lib/crmChat.ts) solo cuando la
+      persona elige "Chatear con un asesor". Tiene su propia CSP en vercel.json,
+      que permite los scripts en línea que Zoho necesita, sin relajar la del
+      resto del sitio. No tiene contenido propio: no se indexa.
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: transparent;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>
