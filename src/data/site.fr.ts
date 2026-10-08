@@ -552,7 +552,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies et mesure d'audience",
       text: [
-        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon. Si le chat avec un conseiller s'ouvre dans la fenêtre de Zoho SalesIQ, Zoho dépose les cookies nécessaires à son fonctionnement.",
+        "Nous utilisons Google Analytics uniquement si vous acceptez les cookies d'analyse dans l'avis affiché à votre arrivée. Google agit comme sous-traitant. Nous n'utilisons pas de cookies publicitaires et, si vous les refusez, le site fonctionne de la même façon. Si vous choisissez de discuter avec un conseiller, Zoho SalesIQ se charge et dépose les cookies nécessaires au fonctionnement de la conversation.",
       ],
     },
     {

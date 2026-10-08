@@ -75,6 +75,7 @@ src/
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
 │   ├── advisorChat.ts      Chat con un asesor DENTRO de Joel (habla con /api/advisor)
 │   ├── advisorEvents.ts    Eventos del chat con un asesor
+│   ├── zohoBridge.ts       Puente: chat con un asesor dentro de Joel con Zoho escondido
 │   ├── crmChat.ts          Respaldo: ventana de Zoho SalesIQ, solo al elegirla (docs/chat-crm.md)
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
@@ -231,7 +232,11 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
     en la misma ventana y el asesor responde desde SalesIQ (API REST, sin
     cargar Zoho en el navegador). Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo
     en el servidor; cada conversación con un pase firmado;
-  - si no, se abre la **ventana de Zoho** (respaldo, abajo).
+  - si no, por el **puente** (`src/lib/zohoBridge.ts`, el que se usa hoy): el
+    widget de Zoho se carga escondido y Joel escribe en él y muestra sus
+    respuestas; si Zoho pide un formulario, Joel ofrece completarlo en la
+    ventana de Zoho u omitirlo;
+  - si el puente falla, se abre la **ventana de Zoho** (respaldo, abajo).
 - `src/lib/crmChat.ts` carga el script de Zoho **solo en ese momento** (nunca
   al entrar: sin cookies de Zoho antes), una sola vez, en español y con el
   botón de Zoho oculto. Antes de ofrecerlo, Joel avisa del uso de los datos.

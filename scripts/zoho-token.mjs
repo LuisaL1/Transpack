@@ -22,12 +22,26 @@ if (!fs.existsSync(FILE)) {
   process.exit(1);
 }
 let text = fs.readFileSync(FILE, "utf8");
-const get = (k) => text.match(new RegExp(`^\\s*${k}\\s*=\\s*(.*)\\s*$`, "m"))?.[1]?.replace(/^["']|["']$/g, "").trim() ?? "";
+// Lectura y escritura de "CLAVE=valor" por líneas (sin expresiones armadas con texto)
+const lineOf = (k) => text.split("\n").findIndex((l) => l.trim().startsWith(`${k}=`));
+const get = (k) => {
+  const i = lineOf(k);
+  if (i < 0) return "";
+  const l = text.split("\n")[i];
+  return l.slice(l.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
+};
 const set = (k, v) => {
-  const line = `${k}=${v}`;
-  text = new RegExp(`^\\s*${k}\\s*=.*$`, "m").test(text)
-    ? text.replace(new RegExp(`^\\s*${k}\\s*=.*$`, "m"), line)
-    : `${text.replace(/\n*$/, "\n")}${line}\n`;
+  const lines = text.split("\n");
+  const i = lineOf(k);
+  if (i >= 0) lines[i] = `${k}=${v}`;
+  else lines.splice(lines.length - (lines.at(-1) === "" ? 1 : 0), 0, `${k}=${v}`);
+  text = lines.join("\n");
+};
+const remove = (k) => {
+  text = text
+    .split("\n")
+    .filter((l) => !l.trim().startsWith(`${k}=`))
+    .join("\n");
 };
 
 // Permiso de organización para abrir, escribir y leer conversaciones. La marca y
@@ -87,7 +101,7 @@ if (!get("ADVISOR_SECRET")) set("ADVISOR_SECRET", randomBytes(48).toString("base
 if (d.api_domain && !get("ZOHO_ACCOUNTS_URL") && !d.api_domain.endsWith(".com"))
   console.log(`Ojo: la cuenta está en ${d.api_domain}; ajuste ZOHO_ACCOUNTS_URL y ZOHO_SALESIQ_URL.`);
 // El código ya no sirve: se quita del archivo
-text = text.replace(/^\s*ZOHO_AUTH_CODE\s*=.*\n?/m, "");
+remove("ZOHO_AUTH_CODE");
 fs.writeFileSync(FILE, text, { mode: 0o600 });
 console.log(`Listo: refresh token guardado en ${FILE} (alcances: ${d.scope ?? "no informados"}).`);
 console.log("Siguiente paso: pnpm advisor:check");

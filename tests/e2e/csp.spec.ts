@@ -102,6 +102,8 @@ test("CSP permite cargar el chat con un asesor (Zoho SalesIQ)", async ({ page, i
   const chat = page.getByRole("region", { name: "Chat con Joel" });
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click({ timeout: 10_000 });
   await chat.getByRole("button", { name: "Chatear con un asesor" }).click({ timeout: 10_000 });
+  await chat.getByRole("textbox", { name: "Mensaje" }).fill("Hola");
+  await chat.getByRole("button", { name: "Enviar" }).click();
   await expect.poll(() => loaded).toBe(true);
   await page.waitForTimeout(500);
   expect(blocked).toEqual([]);

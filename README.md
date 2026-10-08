@@ -103,11 +103,11 @@ push y pull request corre además la integración continua de GitHub Actions
   de cancelación. Si el cliente las entrega, se agregan a `src/lib/joel.ts` y
   al contenido.
 - **Chat con un asesor (Zoho SalesIQ)**: Joel atiende primero y ofrece
-  "Chatear con un asesor". Ya está listo el chat **dentro de la ventana de
-  Joel** (`api/advisor.ts`), pero falta que el área encargada cree las
-  credenciales de la API de Zoho y las configure en Vercel; mientras tanto se
-  abre la ventana de Zoho. Pasos y prueba con `pnpm advisor:check` en
-  `docs/chat-crm.md`. En el panel
+  "Chatear con un asesor". Hoy funciona **dentro de la ventana de Joel** con el
+  puente (Zoho escondido, `src/lib/zohoBridge.ts`). Pendiente: apagar o
+  simplificar el bot de Zoho en el sitio (pide formularios) y, si Zoho habilita
+  el permiso de organización, pasar a la API (`api/advisor.ts`, sin cargar
+  Zoho en el navegador). Ver `docs/chat-crm.md`. En el panel
   de Zoho falta autorizar el dominio `www.transpacksas.com` y decidir si el bot
   de Zoho saluda o pasa directo a un asesor. Hay que verificar en producción
   que la CSP no bloquee funciones del chat (adjuntos o llamadas). Si Zoho

@@ -137,11 +137,17 @@ export function useAdvisorChat() {
 
   // ─── Chat con un asesor ────────────────────────────────────────────────
   // advisor: ventana de Zoho ("loading"/"open") cuando no hay chat integrado.
-  // live: chat con el asesor dentro de Joel (/api/advisor):
+  // live: chat con el asesor dentro de Joel:
   //   "ask" (Joel pide la pregunta) → "connecting" (esperando asesor) → "live".
+  //   Por la API (/api/advisor) si está configurada; si no, por el puente con
+  //   el widget de Zoho escondido (src/lib/zohoBridge.ts).
   const [advisor, setAdvisor] = useState<"idle" | "loading" | "open">("idle");
   const [live, setLive] = useState<"off" | "ask" | "connecting" | "live">("off");
   const pass = useRef<{ token: string; after: number } | null>(null);
+  const mode = useRef<"api" | "bridge">("api");
+  const bridge = useRef<import("@/lib/zohoBridge").Bridge | null>(null);
+  // Respuestas sugeridas por el bot o el asesor de Zoho (modo puente)
+  const [liveOptions, setLiveOptions] = useState<string[]>([]);
   const t = useMemo(() => chatText(makeTr(lang)), [lang]);
   const otherChannels = () => [
     { label: t.crmWhatsapp, icon: "whatsapp", href: siteFor(lang).waLink() },
@@ -166,7 +172,7 @@ export function useAdvisorChat() {
     const onRequest = () => {
       trackEvent("contact_click", { method: "advisor_chat" });
       void advisorAvailable().then((ok) => {
-        if (!ok) return openZohoWindow();
+        mode.current = ok ? "api" : "bridge";
         setLive("ask");
         say(t.advisorAsk);
       });
@@ -175,6 +181,12 @@ export function useAdvisorChat() {
       const isOpen = (e as CustomEvent<{ open: boolean }>).detail.open;
       setAdvisor(isOpen ? "open" : "idle");
       if (isOpen) setOpen(false);
+      // Puente: al cerrar la ventana de Zoho, vuelve a esconderse y la
+      // conversación sigue en Joel
+      else if (bridge.current) {
+        bridge.current.hideWindow();
+        setOpen(true);
+      }
     };
     window.addEventListener(ADVISOR_EVENT, onRequest);
     window.addEventListener(CRM_CHAT_EVENT, onChange);
@@ -198,6 +210,9 @@ export function useAdvisorChat() {
   const endAdvisor = (text = t.advisorBack) => {
     pass.current = null;
     save(null);
+    bridge.current?.stop();
+    bridge.current = null;
+    setLiveOptions([]);
     setLive("off");
     dyn.current = {
       say: () => [text],
@@ -255,7 +270,41 @@ export function useAdvisorChat() {
   }, [live]);
 
   // Mensaje del visitante en el chat con el asesor
+  // Puente: abre la conversación en el Zoho escondido y pasa sus mensajes a Joel
+  const startViaBridge = async (question: string) => {
+    try {
+      const { startBridge } = await import("@/lib/zohoBridge");
+      bridge.current = await startBridge(question, {
+        onMessage: (m) => {
+          setLive("live");
+          setMsgs((list) => [
+            ...list,
+            { from: "agent", text: m.text, name: m.name || t.advisorLabel },
+          ]);
+          setLiveOptions(m.options);
+        },
+        onForm: ({ canSkip }) => {
+          say(t.advisorForm);
+          setLiveOptions(canSkip ? [t.advisorFormFill, t.advisorFormSkip] : [t.advisorFormFill]);
+        },
+      });
+      trackEvent("generate_lead", { method: "advisor_chat", lang });
+      setLive("connecting");
+      say(t.advisorConnecting);
+    } catch {
+      // Si el puente no funciona, la ventana de Zoho de siempre
+      setLive("off");
+      openZohoWindow();
+    }
+  };
+
   const sendLive = async (value: string) => {
+    if (live === "ask" && mode.current === "bridge") return startViaBridge(value);
+    if (mode.current === "bridge") {
+      setLiveOptions([]);
+      if (!bridge.current?.send(value)) say(t.advisorSendError);
+      return;
+    }
     if (live === "ask") {
       const r = await startAdvisor(value, data.nombre);
       if (!r.ok || !r.token) {
@@ -322,6 +371,16 @@ export function useAdvisorChat() {
   }, [open, step, typing, live]);
 
   const choose = (o: ChatOption) => {
+    // Respuesta sugerida por Zoho (modo puente)
+    if (live !== "off" && o.next === "live") {
+      setMsgs((m) => [...m, { from: "user", text: o.label }]);
+      setLiveOptions([]);
+      if (o.label === t.advisorFormFill) bridge.current?.showWindow();
+      else if (o.label === t.advisorFormSkip) {
+        if (!bridge.current?.skip()) bridge.current?.showWindow();
+      } else if (!bridge.current?.choose(o.label)) say(t.advisorSendError);
+      return;
+    }
     const d = { ...data, ...o.set };
     setMsgs((m) => [...m, { from: "user", text: o.label }]);
     const next = typeof o.next === "function" ? o.next(d) : o.next;
@@ -360,10 +419,11 @@ export function useAdvisorChat() {
     }
   };
 
-  // Durante el chat con un asesor no se muestran las opciones de Joel
-  const options =
+  // Durante el chat con un asesor no se muestran las opciones de Joel, solo las
+  // respuestas sugeridas por Zoho
+  const options: ChatOption[] =
     live !== "off"
-      ? []
+      ? liveOptions.map((label) => ({ label, next: "live", icon: "chat-dots" }))
       : typeof step.options === "function"
         ? step.options(data)
         : (step.options ?? []);

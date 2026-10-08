@@ -72,8 +72,17 @@ function watchChatWindow() {
   obs.observe(document.body, { childList: true, subtree: true });
   window.setTimeout(() => obs.disconnect(), 30_000);
 }
-const emit = (open: boolean) =>
+// En modo puente (src/lib/zohoBridge.ts) la ventana de Zoho trabaja escondida:
+// no se avisa al sitio para que Joel siga a la vista.
+let bridging = false;
+export const setBridging = (on: boolean) => {
+  bridging = on;
+  document.documentElement.classList.toggle("tp-zoho-hidden", on);
+};
+const emit = (open: boolean) => {
+  if (bridging) return;
   window.dispatchEvent(new CustomEvent(CRM_CHAT_EVENT, { detail: { open } }));
+};
 
 /** Carga el script de Zoho una sola vez y resuelve cuando está listo. */
 export function loadCrmChat(): Promise<SalesIQ> {

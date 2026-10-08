@@ -697,6 +697,12 @@ export const chatText = (tr: Tr) => ({
   }),
   advisorPlaceholder: tr("Escribe tu mensaje al asesor…", "Write your message to the advisor…"),
   advisorLabel: tr("Asesor", "Advisor"),
+  advisorForm: tr(
+    "Nuestro equipo te pide unos datos de contacto. Puedes completarlos en la ventana de atención o seguir sin ellos.",
+    "Our team is asking for some contact details. You can fill them in the support window or continue without them.",
+  ),
+  advisorFormFill: tr("Completar mis datos", "Fill in my details"),
+  advisorFormSkip: tr("Omitir este paso", "Skip this step"),
   backToStart: tr("Volver al inicio", "Back to start"),
 });
 

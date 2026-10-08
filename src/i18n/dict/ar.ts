@@ -612,5 +612,12 @@ const dict: Record<string, string> = {
     "ما زلت في المحادثة مع مستشار ترانسباك.",
   "Your message couldn't be sent. Please try again.":
     "تعذّر إرسال رسالتك. حاول مرة أخرى.",
+  // ─── Puente con Zoho: formularios ───
+  "Fill in my details":
+    "إكمال بياناتي",
+  "Our team is asking for some contact details. You can fill them in the support window or continue without them.":
+    "يطلب فريقنا بعض بيانات التواصل. يمكنك إكمالها في نافذة خدمة العملاء أو المتابعة من دونها.",
+  "Skip this step":
+    "تخطي هذه الخطوة",
 };
 export default dict;

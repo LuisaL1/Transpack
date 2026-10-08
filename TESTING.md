@@ -46,6 +46,10 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
+- `zohoBridge.test.ts` — el puente con una ventana de Zoho falsa: envía la
+  pregunta, pasa los mensajes nuevos (sin repetir) con nombre y opciones,
+  formularios con "Omitir", deja de escuchar al terminar y falla si la ventana
+  no aparece.
 - `advisor-api.test.ts` — la función `api/advisor.ts` (chat con un asesor
   dentro de Joel) con `fetch` simulado: sin credenciales 503; pase firmado por
   conversación (sin pase, alterado o vencido → 403); envía y lee mensajes de
@@ -178,6 +182,9 @@ Además:
   - chat de Joel con texto libre y sin precios;
   - chat con un asesor dentro de Joel (`/api/advisor` simulado): se escribe y
     se responde en la misma ventana, con el nombre del asesor;
+  - chat con un asesor por el puente (ventana de Zoho falsa): Zoho trabaja
+    escondido, la pregunta y los mensajes llegan a Zoho y sus respuestas y
+    opciones aparecen en Joel;
   - chat con un asesor en la ventana de Zoho (Zoho simulado): Joel funciona sin cargar Zoho; se
     carga solo al elegir "Chatear con un asesor", en español y con el diseño
     del sitio; si no carga, Joel ofrece WhatsApp y el formulario;

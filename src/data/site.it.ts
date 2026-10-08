@@ -528,7 +528,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookie e statistiche",
       text: [
-        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo. Se la chat con un consulente si apre nella finestra di Zoho SalesIQ, Zoho salva i cookie necessari al suo funzionamento.",
+        "Usiamo Google Analytics solo se accetti i cookie analitici nell'avviso che appare all'ingresso. Google agisce come responsabile del trattamento. Non usiamo cookie pubblicitari e, se li rifiuti, il sito funziona allo stesso modo. Se scegli di chattare con un consulente, Zoho SalesIQ si carica e salva i cookie necessari al funzionamento della conversazione.",
       ],
     },
     {

@@ -263,3 +263,14 @@ p {
     border: 0 !important;
   }
 }
+
+/* Puente con Zoho (src/lib/zohoBridge.ts): la ventana de Zoho trabaja fuera de
+   la pantalla mientras la conversación se ve en el chat de Joel */
+html.tp-zoho-hidden #zsiq_chat_wrap,
+html.tp-zoho-hidden #zsiq_float {
+  position: fixed !important;
+  left: -10000px !important;
+  top: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

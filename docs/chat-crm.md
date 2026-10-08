@@ -2,12 +2,37 @@
 
 **Joel atiende primero.** El chat del sitio es Joel, el asesor virtual propio.
 Cuando la persona quiere hablar con alguien del equipo, Joel ofrece
-**"Chatear con un asesor"**. Hay dos modos:
+**"Chatear con un asesor"**. En los tres modos el asesor atiende desde su
+panel de SalesIQ como cualquier chat:
 
 | Modo | Cuándo | Cómo se ve |
 | --- | --- | --- |
-| **Dentro de Joel** (preferido) | Cuando las credenciales de la API de Zoho están configuradas en Vercel | El visitante escribe en la misma ventana de Joel; el asesor responde desde su panel de SalesIQ y la respuesta aparece en Joel con su nombre. El navegador nunca carga Zoho. |
-| **Ventana de Zoho** (respaldo) | Mientras no estén las credenciales | Se abre la ventana del widget de SalesIQ, con el diseño del sitio. |
+| **API** (`api/advisor.ts`) | Si las credenciales de la API de Zoho están en Vercel. **Hoy bloqueado:** Zoho no da el permiso de organización (ver "Estado") | Todo dentro de Joel; el navegador nunca carga Zoho. |
+| **Puente** (`src/lib/zohoBridge.ts`) — **el que se usa hoy** | Si la API no está configurada | Todo dentro de Joel: el widget de Zoho se carga **escondido** y Joel escribe en él y muestra sus respuestas. Si Zoho pide un formulario, Joel ofrece completarlo en la ventana de Zoho u omitirlo. |
+| **Ventana de Zoho** (respaldo) | Si el puente falla (por ejemplo, Zoho cambió su ventana) | Se abre la ventana del widget de SalesIQ, con el diseño del sitio. |
+
+## Modo "puente" (activo)
+
+1. "Chatear con un asesor" → Joel pide la pregunta.
+2. Se carga el widget de Zoho fuera de la pantalla (`html.tp-zoho-hidden`,
+   `src/styles/index.css`), se pulsa "Chatee con nosotros ahora" y se escribe
+   la pregunta en su campo de texto.
+3. Un observador lee los mensajes nuevos del bot o del asesor de Zoho
+   (`[data-zsqa="agent_msg message_bubble"]`) y los muestra en Joel con su
+   nombre; los botones de sugerencia de Zoho aparecen como opciones en Joel.
+4. Lo que la persona escribe después va al campo de texto de Zoho.
+5. Si Zoho pide un **formulario** (nombre, correo, medio de contacto), Joel
+   ofrece "Completar mis datos" (muestra la ventana de Zoho; al cerrarla se
+   vuelve a esconder) u "Omitir este paso" (pulsa "Omitir" en Zoho).
+6. "Volver con Joel" deja de escuchar y esconde Zoho.
+
+**Recomendación:** apagar o simplificar el bot de Zoho ("Joel Transpack",
+SalesIQ → Bot → Zobot) en el sitio web, o hacer que pase directo a un asesor:
+Joel ya cumple ese papel, y así no aparecen sus formularios ni dos "Joel".
+
+**Cuidado:** depende de la estructura interna de la ventana de Zoho (clases y
+atributos `data-zsqa`). Si Zoho la cambia, el puente falla y Joel abre la
+ventana de Zoho (respaldo). Probado con el widget real el 8 de octubre de 2026.
 
 ## Modo "dentro de Joel"
 

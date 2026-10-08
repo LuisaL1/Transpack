@@ -25,15 +25,22 @@ export default defineConfig({
       },
     },
     {
-      // En desarrollo, /api/advisor se simula: un "asesor" de prueba responde a
-      // los pocos segundos. No se conecta con Zoho (ver docs/chat-crm.md).
+      // En desarrollo, /api/advisor responde "no configurado" (como el sitio
+      // publicado hoy: se usa el puente con Zoho). Con ADVISOR_MOCK=1 pnpm dev
+      // se simula la API: un "asesor" de prueba responde a los pocos segundos.
+      // Ver docs/chat-crm.md.
       name: "dev-advisor-mock",
       configureServer(server) {
+        const mock = process.env.ADVISOR_MOCK === "1";
         let started = 0;
         let sent = false;
         server.middlewares.use("/api/advisor", (req, res) => {
           res.setHeader("Content-Type", "application/json");
-          if (req.method === "GET") return res.end(JSON.stringify({ configured: true }));
+          if (req.method === "GET") return res.end(JSON.stringify({ configured: mock }));
+          if (!mock) {
+            res.statusCode = 503;
+            return res.end(JSON.stringify({ ok: false, error: "not-configured" }));
+          }
           let body = "";
           req.on("data", (c) => (body += c));
           req.on("end", () => {

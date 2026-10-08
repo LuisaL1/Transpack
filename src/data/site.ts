@@ -645,7 +645,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies y analítica",
       text: [
-        "Usamos Google Analytics solo si aceptas las cookies analíticas en el aviso que aparece al entrar. Google actúa como encargado del tratamiento. No usamos cookies con fines publicitarios y, si las rechazas, el sitio funciona igual. Si el chat con un asesor se abre en la ventana de Zoho SalesIQ, Zoho guarda las cookies necesarias para que funcione.",
+        "Usamos Google Analytics solo si aceptas las cookies analíticas en el aviso que aparece al entrar. Google actúa como encargado del tratamiento. No usamos cookies con fines publicitarios y, si las rechazas, el sitio funciona igual. Si eliges chatear con un asesor, Zoho SalesIQ se carga y guarda las cookies necesarias para que la conversación funcione.",
       ],
     },
     {

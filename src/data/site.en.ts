@@ -526,7 +526,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies and analytics",
       text: [
-        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same. If the advisor chat opens in the Zoho SalesIQ window, Zoho stores the cookies needed for it to work.",
+        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same. If you choose to chat with an advisor, Zoho SalesIQ loads and stores the cookies needed for the conversation to work.",
       ],
     },
     {

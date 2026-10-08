@@ -538,7 +538,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies und Website-Analyse",
       text: [
-        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso. Wenn sich der Chat mit einem Berater im Fenster von Zoho SalesIQ öffnet, setzt Zoho die dafür nötigen Cookies.",
+        "Wir verwenden Google Analytics nur, wenn Sie Analyse-Cookies im Hinweis beim Aufruf der Website akzeptieren. Google handelt als Auftragsverarbeiter. Wir verwenden keine Werbe-Cookies, und wenn Sie ablehnen, funktioniert die Website genauso. Wenn Sie mit einem Berater chatten, wird Zoho SalesIQ geladen und setzt die Cookies, die für das Gespräch nötig sind.",
       ],
     },
     {

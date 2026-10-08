@@ -27,7 +27,7 @@ async function send(chat: Locator, text: string) {
 // Chat con un asesor (Zoho SalesIQ) simulado: nunca se carga el script real.
 // Imita la API que usa src/lib/crmChat.ts y deja registro en window.__zoho.
 const ZOHO_STUB = `(() => {
-  const z = window.$zoho.salesiq, log = (window.__zoho = { calls: [] }), cb = {};
+  const z = window.$zoho.salesiq, log = (window.__zoho = { calls: [], sent: [] }), cb = {};
   z.language = (l) => log.calls.push("language:" + l);
   z.floatbutton = { visible: (v) => log.calls.push("button:" + v) };
   z.floatwindow = {
@@ -35,7 +35,24 @@ const ZOHO_STUB = `(() => {
     open: (f) => (cb.open = f), close: (f) => (cb.close = f), minimize: (f) => (cb.min = f),
   };
   window.__closeZoho = () => cb.close && cb.close();
+  // Ventana de Zoho falsa (iframe del mismo origen, como la real): inicio con
+  // "Chatee con nosotros ahora"; al escribir, responde una asesora de prueba.
   const f = document.createElement("iframe"); f.id = "siq_chatwindow"; document.body.appendChild(f);
+  const d = f.contentDocument;
+  d.body.innerHTML = '<div class="home-icon-optns"><em class="siqico-chat-start"></em>Chatee con nosotros ahora</div><div id="scroll-container"></div>';
+  d.querySelector(".home-icon-optns").addEventListener("click", () => {
+    const ta = d.createElement("textarea"); ta.className = "siqcw-textarea"; d.body.appendChild(ta);
+    ta.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      log.sent.push(ta.value);
+      if (log.sent.length > 1) return;
+      setTimeout(() => {
+        const g = d.createElement("div"); g.className = "siqcw-agentmsg-grp";
+        g.innerHTML = '<div class="siqcw-name-div">Laura</div><div class="chat-bubble-cont" id="a1" data-zsqa="agent_msg message_bubble"><span data-zsqa="msg">¡Hola! Soy Laura. ¿En qué te ayudo?</span><div class="tag-div">Mudanza local</div></div>';
+        d.getElementById("scroll-container").appendChild(g);
+      }, 300);
+    });
+  });
   setTimeout(() => z.ready && z.ready(), 50);
 })();`;
 
@@ -120,7 +137,9 @@ test("chat: el texto del visitante se muestra como texto, nunca como HTML", asyn
   ).toBeUndefined();
 });
 
-test("sin chat integrado, Joel abre la ventana de Zoho solo si se elige", async ({ page }) => {
+test("sin API, el chat con un asesor va por el puente con Zoho, dentro de Joel", async ({
+  page,
+}) => {
   await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
   const requests = await mockZoho(page);
   await page.goto("/");
@@ -131,31 +150,31 @@ test("sin chat integrado, Joel abre la ventana de Zoho solo si se elige", async 
   await expect(chat.getByText(/nuestra plataforma de atención \(Zoho SalesIQ\)/)).toBeVisible({
     timeout: 10_000,
   });
-  expect(requests).toEqual([]);
   await chat.getByRole("button", { name: "Chatear con un asesor" }).click();
+  await expect(chat.getByText(/Cuéntame en un mensaje/)).toBeVisible();
+  expect(requests).toEqual([]);
+  // La pregunta abre la conversación en el Zoho escondido
+  await send(chat, "Quiero cotizar una mudanza");
   await expect.poll(() => requests.length).toBe(1);
-  await expect
-    .poll(() =>
-      page.evaluate(() => (window as unknown as { __zoho?: { calls: string[] } }).__zoho?.calls),
-    )
-    .toEqual(expect.arrayContaining(["language:es", "button:hide", "window:show"]));
-  // La ventana de Zoho recibe el diseño del sitio
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          !!(
-            document.getElementById("siq_chatwindow") as HTMLIFrameElement | null
-          )?.contentDocument?.getElementById("tp-chat-style"),
-      ),
-    )
-    .toBe(true);
-  // Con Zoho abierto se ocultan la ventana y el botón de Joel; al cerrarlo vuelve el botón
-  const launcher = page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ });
-  await expect(chat).toBeHidden();
-  await expect(launcher).toBeHidden();
-  await page.evaluate(() => (window as unknown as { __closeZoho: () => void }).__closeZoho());
-  await expect(launcher).toBeVisible();
+  const zoho = () =>
+    page.evaluate(
+      () => (window as unknown as { __zoho?: { calls: string[]; sent: string[] } }).__zoho,
+    );
+  await expect.poll(async () => (await zoho())?.sent).toEqual(["Quiero cotizar una mudanza"]);
+  expect((await zoho())?.calls).toEqual(expect.arrayContaining(["language:es", "button:hide"]));
+  // La ventana de Zoho trabaja fuera de la pantalla; Joel sigue a la vista
+  await expect(page.locator("html")).toHaveClass(/tp-zoho-hidden/);
+  await expect(chat).toBeVisible();
+  // La respuesta de Zoho aparece en Joel, con el nombre y sus opciones
+  await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({ timeout: 10_000 });
+  await expect(chat.getByText("Laura", { exact: true })).toBeVisible();
+  await chat.getByRole("button", { name: "Mudanza local" }).click();
+  // Lo que el visitante escribe después va a Zoho
+  await send(chat, "Somos dos personas");
+  await expect.poll(async () => (await zoho())?.sent.at(-1)).toBe("Somos dos personas");
+  // Volver con Joel termina el puente
+  await chat.getByRole("button", { name: "Volver con Joel" }).click();
+  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-hidden/);
 });
 
 test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", async ({
@@ -167,7 +186,10 @@ test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", 
   const chat = await openChat(page);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
   await chat.getByRole("button", { name: "Chatear con un asesor" }).click();
-  await expect(chat.getByText("No pudimos abrir el chat con un asesor")).toBeVisible();
+  await send(chat, "Hola");
+  await expect(chat.getByText("No pudimos abrir el chat con un asesor")).toBeVisible({
+    timeout: 15_000,
+  });
   await expect(chat.getByRole("link", { name: /Escribir por WhatsApp/ }).last()).toHaveAttribute(
     "href",
     /wa\.me/,

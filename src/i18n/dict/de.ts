@@ -630,5 +630,12 @@ const dict: Record<string, string> = {
     "Sie sind weiterhin im Chat mit einem Transpack-Berater.",
   "Your message couldn't be sent. Please try again.":
     "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+  // ─── Puente con Zoho: formularios ───
+  "Fill in my details":
+    "Meine Daten ausfüllen",
+  "Our team is asking for some contact details. You can fill them in the support window or continue without them.":
+    "Unser Team bittet um einige Kontaktdaten. Sie können sie im Kundenservice-Fenster ausfüllen oder ohne sie fortfahren.",
+  "Skip this step":
+    "Diesen Schritt überspringen",
 };
 export default dict;
