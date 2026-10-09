@@ -356,15 +356,23 @@ export async function POST(req: Request): Promise<Response> {
       textContent: text,
       tags: [`sitio-${kind}`],
     });
-  } catch {
+  } catch (e) {
+    console.error("[contact] Brevo no respondió:", e instanceof Error ? e.message : e);
     return json({ ok: false, error: "provider" }, 502);
   }
-  if (!res.ok) return json({ ok: false, error: "provider", status: res.status }, 502);
+  if (!res.ok) {
+    // El motivo de Brevo (p. ej. "unauthorized": IP no autorizada o clave
+    // inválida; remitente sin verificar) queda en los registros de Vercel y en
+    // la respuesta, para diagnosticar. Nunca incluye la clave.
+    const why = (await res.json().catch(() => ({}))) as { code?: string; message?: string };
+    console.error(`[contact] Brevo rechazó el envío (HTTP ${res.status}):`, why.code, why.message);
+    return json({ ok: false, error: "provider", status: res.status, reason: why.code ?? "" }, 502);
+  }
 
   // 2) Confirmación automática al visitante (si falla, la solicitud ya llegó: no se reporta error)
   try {
     const c = confirmation(kind, name, fields, lang, String(body.about ?? "").slice(0, 200), base);
-    await send({
+    const r = await send({
       to: [{ email: replyEmail, name: name || replyEmail }],
       replyTo: { email: leadsTo, name: "Transpack" },
       subject: c.subject,
@@ -372,6 +380,7 @@ export async function POST(req: Request): Promise<Response> {
       textContent: c.text,
       tags: [`sitio-${kind}-confirmacion`],
     });
+    if (!r.ok) console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status})`);
   } catch {
     /* sin confirmación */
   }
