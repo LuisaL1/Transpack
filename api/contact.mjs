@@ -352,6 +352,10 @@ async function handle(req) {
     return json({ ok: false, error: "provider", status: res.status, reason: why.code ?? "" }, 502);
   }
 
+  // Registro para rastrear el envío en Brevo (número de mensaje, sin datos personales)
+  const sent = await res.json().catch(() => ({}));
+  console.log(`[contact] Solicitud enviada a ${leadsTo} (Brevo ${sent.messageId ?? "sin id"})`);
+
   // 2) Confirmación automática al visitante (si falla, la solicitud ya llegó: no se reporta error)
   try {
     const c = confirmation(kind, name, fields, lang, String(body.about ?? "").slice(0, 200), base);
@@ -363,10 +367,9 @@ async function handle(req) {
       textContent: c.text,
       tags: [`sitio-${kind}-confirmacion`],
     });
-    if (!r.ok) {
-      const why = await r.json().catch(() => ({}));
-      console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status}):`, why.code, why.message);
-    }
+    const why = await r.json().catch(() => ({}));
+    if (r.ok) console.log(`[contact] Confirmación enviada al visitante (Brevo ${why.messageId ?? "sin id"})`);
+    else console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status}):`, why.code, why.message);
   } catch (e) {
     console.error("[contact] Falló la confirmación:", e instanceof Error ? e.message : e);
   }
