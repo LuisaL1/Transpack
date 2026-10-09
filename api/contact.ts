@@ -279,6 +279,19 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
+  try {
+    return await handle(req);
+  } catch (e) {
+    // Error inesperado: queda en los registros de Vercel con su causa (sin la
+    // clave de Brevo) y el navegador recibe una respuesta clara, no un 500 vacío.
+    const key = process.env.BREVO_API_KEY;
+    const msg = e instanceof Error ? `${e.name}: ${e.message}\n${e.stack ?? ""}` : String(e);
+    console.error("[contact] Error inesperado:", key ? msg.split(key).join("***") : msg);
+    return json({ ok: false, error: "server", type: e instanceof Error ? e.name : "unknown" }, 500);
+  }
+}
+
+async function handle(req: Request): Promise<Response> {
   // Solo desde el propio sitio
   const origin = req.headers.get("origin");
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
