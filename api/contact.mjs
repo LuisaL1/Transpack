@@ -363,9 +363,12 @@ async function handle(req) {
       textContent: c.text,
       tags: [`sitio-${kind}-confirmacion`],
     });
-    if (!r.ok) console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status})`);
-  } catch {
-    /* sin confirmación */
+    if (!r.ok) {
+      const why = await r.json().catch(() => ({}));
+      console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status}):`, why.code, why.message);
+    }
+  } catch (e) {
+    console.error("[contact] Falló la confirmación:", e instanceof Error ? e.message : e);
   }
   return json({ ok: true });
 }
