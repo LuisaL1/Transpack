@@ -57,9 +57,15 @@ describe("Código", () => {
     for (const [f, s] of code) expect(s, f).not.toMatch(/mailto:/);
   });
 
+  it("las funciones de Vercel (api/) son .mts: con .ts Vercel las cargaba como CommonJS y se caían (500)", () => {
+    const fns = readdirSync("api");
+    expect(fns.length).toBeGreaterThan(0);
+    for (const f of fns) expect(f, `api/${f}`).toMatch(/\.mts$/);
+  });
+
   it("la clave de Brevo solo existe en el servidor (api/), nunca en el navegador", () => {
     for (const [f, s] of code) expect(s, f).not.toMatch(/BREVO|api\.brevo\.com/);
-    const api = readFileSync("api/contact.ts", "utf8");
+    const api = readFileSync("api/contact.mts", "utf8");
     expect(api).toContain("process.env.BREVO_API_KEY");
     expect(api).not.toMatch(/VITE_BREVO/);
   });
@@ -67,7 +73,7 @@ describe("Código", () => {
   it("las credenciales de Zoho solo existen en el servidor (api/), nunca en el navegador", () => {
     for (const [f, s] of code)
       expect(s, f).not.toMatch(/ZOHO_(CLIENT_SECRET|REFRESH_TOKEN|CLIENT_ID)|ADVISOR_SECRET|oauth\/v2\/token/);
-    const api = readFileSync("api/advisor.ts", "utf8");
+    const api = readFileSync("api/advisor.mts", "utf8");
     expect(api).toContain('env("ZOHO_REFRESH_TOKEN")');
     expect(api).not.toMatch(/VITE_ZOHO/);
   });

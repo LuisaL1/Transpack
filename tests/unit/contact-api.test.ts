@@ -10,7 +10,7 @@ import {
   baseUrl,
   confirmation,
   layout,
-} from "../../api/contact";
+} from "../../api/contact.mts";
 import { CONTACT } from "@/data/site";
 import { LANGS, localize } from "@/i18n";
 

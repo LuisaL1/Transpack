@@ -87,8 +87,8 @@ src/
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
                             zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
-api/contact.ts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
-api/advisor.ts              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
+api/contact.mts              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
+api/advisor.mts              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
 scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
@@ -147,7 +147,7 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   correo" use un enlace a `#contacto` o `contactHref({ motivo, mensaje, nombre,
   empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `App`.
-- Los envíos pasan por `sendLead()` (`src/lib/leads.ts`) → `api/contact.ts` →
+- Los envíos pasan por `sendLead()` (`src/lib/leads.ts`) → `api/contact.mts` →
   Brevo. Nunca a servicios de formularios de terceros. La clave
   (`BREVO_API_KEY`) es del servidor: jamás con prefijo `VITE_` ni en `src/`.
 - Todo formulario que pida datos personales lleva la casilla de autorización

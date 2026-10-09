@@ -1,5 +1,5 @@
 // Genera public/brand/email-header.png: el banner de los correos del sitio
-// (api/contact.ts). Es una IMAGEN porque Gmail en modo oscuro invierte los
+// (api/contact.mts). Es una IMAGEN porque Gmail en modo oscuro invierte los
 // colores del HTML y los clientes de correo ignoran las transformaciones CSS
 // (el cuadrado girado no se puede hacer en el correo). Ver docs/formularios.md.
 //

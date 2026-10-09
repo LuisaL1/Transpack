@@ -4,6 +4,10 @@
 // respuestas del asesor. El asesor atiende desde su panel de SalesIQ como
 // cualquier otro chat. Documentación: docs/chat-crm.md.
 //
+// Extensión .mts (no .ts): Vercel la compila a .mjs, que Node siempre carga
+// como módulo ES. Con .ts, Vercel la cargaba como CommonJS y la función se
+// caía al arrancar ("Unexpected token 'export'", error 500).
+//
 // Variables de entorno (Vercel → Settings → Environment Variables, Production):
 //   ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN  credenciales OAuth
 //       (Self Client de api-console.zoho.com). SECRETAS: nunca con prefijo VITE_.

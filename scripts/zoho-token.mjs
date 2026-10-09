@@ -1,4 +1,4 @@
-// Credenciales de Zoho para el chat con un asesor (api/advisor.ts). La API de
+// Credenciales de Zoho para el chat con un asesor (api/advisor.mts). La API de
 // visitante de SalesIQ exige un token de ORGANIZACIÓN ("Org OAuth"): cliente
 // "Server-based Applications" + autorización en /oauth/v2/org/auth.
 //

@@ -50,12 +50,12 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   pregunta, pasa los mensajes nuevos (sin repetir) con nombre y opciones,
   formularios con "Omitir", deja de escuchar al terminar y falla si la ventana
   no aparece.
-- `advisor-api.test.ts` — la función `api/advisor.ts` (chat con un asesor
+- `advisor-api.test.ts` — la función `api/advisor.mts` (chat con un asesor
   dentro de Joel) con `fetch` simulado: sin credenciales 503; pase firmado por
   conversación (sin pase, alterado o vencido → 403); envía y lee mensajes de
   la conversación correcta; solo devuelve lo nuevo del asesor; errores de Zoho
   → 502 sin detalle. Ver `docs/chat-crm.md`.
-- `contact-api.test.ts` — la función `api/contact.ts` con `fetch` simulado (sin
+- `contact-api.test.ts` — la función `api/contact.mts` con `fetch` simulado (sin
   correos reales): 503 sin clave, 422 por correo o autorización, 403 desde otro
   dominio, campo trampa, destino y "responder a", HTML escapado, confirmación
   al visitante en su idioma, fallas de Brevo (502) y de la confirmación (200).

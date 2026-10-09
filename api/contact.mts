@@ -3,6 +3,10 @@
 // nunca llega al navegador y el sitio no guarda copia de los datos.
 // Documentación: docs/formularios.md.
 //
+// Extensión .mts (no .ts): Vercel la compila a .mjs, que Node siempre carga
+// como módulo ES. Con .ts, Vercel la cargaba como CommonJS y la función se
+// caía al arrancar ("Unexpected token 'export'", error 500).
+//
 // Variables de entorno (Vercel → Settings → Environment Variables, Production):
 //   BREVO_API_KEY     clave de API de Brevo (obligatoria, secreta: nunca VITE_)
 //   LEADS_TO          correo que recibe el formulario de contacto (por defecto servicioalcliente@transpacksas.com)

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { GET, POST, makePass, mapMessages, readPass, resetZohoCache } from "../../api/advisor";
+import { GET, POST, makePass, mapMessages, readPass, resetZohoCache } from "../../api/advisor.mts";
 
 // Función /api/advisor (chat con un asesor dentro de Joel → Zoho SalesIQ).
 // Nunca se llama a Zoho de verdad: fetch se simula.

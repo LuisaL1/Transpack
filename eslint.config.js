@@ -19,7 +19,7 @@ export default tseslint.config(
     ],
   },
   {
-    files: ["**/*.{ts,tsx,js,mjs}"],
+    files: ["**/*.{ts,mts,tsx,js,mjs}"],
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
