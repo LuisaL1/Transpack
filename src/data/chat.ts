@@ -632,6 +632,13 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
 
 // Textos de la interfaz del chat (invitación, botón, ventana y campo de texto)
 export const chatText = (tr: Tr) => ({
+  // En los mensajes de Joel, esta frase enlaza a /privacidad (ChatBubble)
+  policyPhrase: tr("política de datos", "privacy policy", {
+    fr: "politique de données",
+    de: "Datenschutzrichtlinie",
+    it: "informativa privacy",
+    ar: "سياسة البيانات",
+  }),
   closeTeaser: tr("Cerrar invitación", "Close invitation"),
   teaserHello: tr(`¡Hola! Soy ${NAME}.`, `Hi! I'm ${NAME}.`, {
     fr: `Bonjour ! Je suis ${NAME}.`,

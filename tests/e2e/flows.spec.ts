@@ -200,6 +200,10 @@ test("al terminar una cotización con Joel, llega al chat de los asesores para s
   await chat.getByRole("button", { name: "En 1–2 semanas" }).click({ timeout: 10_000 });
   await chat.getByRole("button", { name: "Apartaestudio" }).click({ timeout: 10_000 });
   await chat.getByRole("button", { name: "Integral: que se encarguen de todo" }).click({ timeout: 10_000 });
+  // "política de datos" enlaza a la política, en otra pestaña
+  const policy = chat.getByRole("link", { name: "política de datos" });
+  await expect(policy).toHaveAttribute("href", "/privacidad", { timeout: 10_000 });
+  await expect(policy).toHaveAttribute("target", "_blank");
   await send(chat, "Luisa");
   await expect(chat.getByText(/¿A qué número de celular o WhatsApp/)).toBeVisible({ timeout: 10_000 });
   await send(chat, "123");

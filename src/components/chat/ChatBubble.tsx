@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import type { ChatMsg } from "@/data/chat";
+import { chatText, type ChatMsg } from "@/data/chat";
+import { useLang } from "@/i18n";
 import { trackEvent } from "@/lib/analytics";
 import { ChatAvatar } from "@/components/chat/ChatAvatar";
 import { Bi } from "@/components/ui";
@@ -34,7 +35,7 @@ export function ChatBubble({ msg }: { msg: ChatMsg }) {
               : "rounded-[16px_16px_4px_16px] bg-azul text-white"
           }`}
         >
-          {msg.text}
+          {msg.from === "bot" ? <BotText text={msg.text} /> : msg.text}
         </div>
         {msg.actions && (
           <ChatList className="mt-2">
@@ -98,5 +99,29 @@ export function TypingIndicator() {
         ))}
       </div>
     </div>
+  );
+}
+
+// Texto de Joel: "política de datos" enlaza a la política (en otra pestaña,
+// para no perder la conversación). Los mensajes del asesor y del visitante
+// se muestran tal cual.
+function BotText({ text }: { text: string }) {
+  const { tr, lp } = useLang();
+  const phrase = chatText(tr).policyPhrase;
+  const i = text.toLowerCase().indexOf(phrase.toLowerCase());
+  if (i < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <a
+        href={lp("/privacidad")}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-azul underline underline-offset-2 hover:text-naranja"
+      >
+        {text.slice(i, i + phrase.length)}
+      </a>
+      {text.slice(i + phrase.length)}
+    </>
   );
 }
