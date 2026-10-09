@@ -138,6 +138,15 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
      carpeta de spam la primera vez);
    - revise que llegue la confirmación al correo de prueba.
 
+## Diagnóstico de envíos
+
+- **Vercel → Logs:** cada envío deja `[contact] Solicitud enviada a … (Brevo <id>)`
+  y `[contact] Confirmación enviada al visitante (Brevo <id>)`; si Brevo lo
+  rechaza, la línea trae el motivo. Sin datos personales ni la clave.
+- **`pnpm brevo:events [días]`:** muestra los eventos recientes de Brevo
+  (enviado, entregado, error…) con el **motivo** de cada error, para cuando no
+  se puede abrir el detalle en el panel. Lee `BREVO_API_KEY` de `.env.local`.
+
 ## Comportamiento sin clave y en desarrollo
 
 - **Sin `BREVO_API_KEY`:** la función responde 503 `not-configured` y el
