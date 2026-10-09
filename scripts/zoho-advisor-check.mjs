@@ -1,5 +1,5 @@
 // Verifica la conexión con Zoho SalesIQ para el chat con un asesor dentro de Joel
-// (api/advisor.mts). Lee las credenciales de .env.local (NO versionado).
+// (api/advisor.mjs). Lee las credenciales de .env.local (NO versionado).
 //
 //   pnpm advisor:check                 → token, marcas (app_id) y departamentos
 //   pnpm advisor:check --conversacion  → además abre una conversación DE PRUEBA,
@@ -78,7 +78,7 @@ if (process.argv.includes("--conversacion")) {
     show(`Leer mensajes (con el id de la API de visitante) · HTTP ${msgs.status}`, msgs.data);
     if (msgs.status >= 400)
       console.log(
-        "\n⚠ La API v2 no aceptó el id de la API de visitante: hay que ajustar la lectura de mensajes en api/advisor.mts (ver docs/chat-crm.md).",
+        "\n⚠ La API v2 no aceptó el id de la API de visitante: hay que ajustar la lectura de mensajes en api/advisor.mjs (ver docs/chat-crm.md).",
       );
   }
 }

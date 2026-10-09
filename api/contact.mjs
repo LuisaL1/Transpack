@@ -3,9 +3,10 @@
 // nunca llega al navegador y el sitio no guarda copia de los datos.
 // Documentación: docs/formularios.md.
 //
-// Extensión .mts (no .ts): Vercel la compila a .mjs, que Node siempre carga
-// como módulo ES. Con .ts, Vercel la cargaba como CommonJS y la función se
-// caía al arrancar ("Unexpected token 'export'", error 500).
+// JavaScript .mjs (no TypeScript): Node siempre lo carga como módulo ES. Con
+// .ts, Vercel lo compilaba a ES pero lo cargaba como CommonJS y la función se
+// caía al arrancar ("Unexpected token 'export'", error 500); .mts no lo
+// reconoce como función (404). Las pruebas la verifican (tests/unit).
 //
 // Variables de entorno (Vercel → Settings → Environment Variables, Production):
 //   BREVO_API_KEY     clave de API de Brevo (obligatoria, secreta: nunca VITE_)
@@ -22,20 +23,6 @@
 // IMAGEN (public/brand/email-header.png, generado con `pnpm email:header`).
 // Gmail en modo oscuro invierte los colores del HTML y los clientes de correo
 // ignoran las transformaciones CSS, así que el encabezado no puede ser HTML.
-
-type Lang = "es" | "en" | "fr" | "de" | "it" | "ar";
-type Payload = {
-  kind?: string;
-  subject?: string;
-  fields?: Record<string, unknown>;
-  replyTo?: { email?: string; name?: string };
-  website?: string;
-  lang?: string;
-  /** Servicio o motivo en el idioma del visitante (para su confirmación) */
-  about?: string;
-  /** Motivo del formulario de contacto ("cotizacion" se envía a mercadeo) */
-  topic?: string;
-};
 
 export const BRAND = {
   name: "Transpack",
@@ -58,9 +45,9 @@ const C = {
 export const DEFAULT_LEADS_TO = "servicioalcliente@transpacksas.com";
 /** Destino de las solicitudes de cotización (cotizador y formulario con motivo "Cotización") */
 export const DEFAULT_QUOTES_TO = "mercadeo@transpacksas.com";
-const LANGS: Lang[] = ["es", "en", "fr", "de", "it", "ar"];
+const LANGS = ["es", "en", "fr", "de", "it", "ar"];
 /** Política de datos en cada idioma (mismas rutas que src/i18n) */
-export const PRIVACY_PATH: Record<Lang, string> = {
+export const PRIVACY_PATH = {
   es: "/privacidad",
   en: "/en/privacy",
   fr: "/fr/confidentialite",
@@ -69,12 +56,12 @@ export const PRIVACY_PATH: Record<Lang, string> = {
   ar: "/ar/privacy",
 };
 
-const json = (data: unknown, status = 200) =>
+const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
     status,
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
-const esc = (s: string) =>
+const esc = (s) =>
   s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -85,21 +72,7 @@ const EMAIL = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 
 // Textos de la confirmación al visitante, en el idioma del formulario. En
 // español el correo va de "usted" (registro formal pedido para los correos).
-const CONFIRM: Record<
-  Lang,
-  {
-    subject: string;
-    title: string;
-    hello: (n: string) => string;
-    quote: (s: string) => string;
-    message: (m: string) => string;
-    body: (about: string) => string;
-    urgent: string;
-    phones: string;
-    auto: string;
-    policy: string;
-  }
-> = {
+const CONFIRM = {
   es: {
     subject: "Recibimos su solicitud · Transpack",
     title: "¡Recibimos su solicitud!",
@@ -181,7 +154,7 @@ const CONFIRM: Record<
 };
 
 /** Dominio desde el que llegó la solicitud: el banner carga desde ahí (producción o vista previa de Vercel). */
-export function baseUrl(req: Request): string {
+export function baseUrl(req) {
   const host = (req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "").trim();
   const [name, port, ...rest] = host.split(":");
   const valid =
@@ -198,7 +171,7 @@ export function baseUrl(req: Request): string {
  * Tablas con estilos en línea (Gmail, Outlook y Apple Mail), 560 px de ancho.
  * `content` debe venir ya escapado.
  */
-export function layout(base: string, title: string, content: string, lang: Lang = "es"): string {
+export function layout(base, title, content, lang = "es") {
   const dir = lang === "ar" ? "rtl" : "ltr";
   const align = dir === "rtl" ? "right" : "left";
   return `<!doctype html>
@@ -226,7 +199,7 @@ export function layout(base: string, title: string, content: string, lang: Lang 
 }
 
 /** Correo al equipo: tabla con los campos de la solicitud */
-export function leadEmail(base: string, subject: string, fields: Record<string, string>) {
+export function leadEmail(base, subject, fields) {
   const rows = Object.entries(fields)
     .map(
       ([k, v]) =>
@@ -247,14 +220,7 @@ export function leadEmail(base: string, subject: string, fields: Record<string, 
 }
 
 /** Correo de confirmación para el visitante ("recibimos su solicitud") */
-export function confirmation(
-  kind: "contacto" | "cotizacion",
-  name: string,
-  fields: Record<string, string>,
-  lang: Lang = "es",
-  about?: string,
-  base: string = BRAND.site,
-) {
+export function confirmation(kind, name, fields, lang = "es", about, base = BRAND.site) {
   const c = CONFIRM[lang];
   const first = name.trim().split(/\s+/)[0] ?? "";
   const topic =
@@ -278,11 +244,11 @@ export function confirmation(
 }
 
 /** Diagnóstico para el área encargada: ¿está configurada la clave? (no la revela) */
-export async function GET(): Promise<Response> {
+export async function GET() {
   return json({ configured: Boolean(process.env.BREVO_API_KEY) });
 }
 
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req) {
   try {
     return await handle(req);
   } catch (e) {
@@ -295,7 +261,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 }
 
-async function handle(req: Request): Promise<Response> {
+async function handle(req) {
   // Solo desde el propio sitio
   const origin = req.headers.get("origin");
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
@@ -309,9 +275,9 @@ async function handle(req: Request): Promise<Response> {
     if (originHost !== host) return json({ ok: false, error: "origin" }, 403);
   }
 
-  let body: Payload;
+  let body;
   try {
-    body = (await req.json()) as Payload;
+    body = await req.json();
   } catch {
     return json({ ok: false, error: "json" }, 400);
   }
@@ -321,15 +287,14 @@ async function handle(req: Request): Promise<Response> {
   if (body.website) return json({ ok: true });
 
   const kind = body.kind === "cotizacion" ? "cotizacion" : "contacto";
-  const lang: Lang = LANGS.includes(body.lang as Lang) ? (body.lang as Lang) : "es";
+  const lang = LANGS.includes(body.lang) ? body.lang : "es";
   const entries = Object.entries(body.fields ?? {});
-  if (entries.length === 0 || entries.length > 40)
-    return json({ ok: false, error: "fields" }, 422);
+  if (entries.length === 0 || entries.length > 40) return json({ ok: false, error: "fields" }, 422);
   const fields = Object.fromEntries(
     entries
       .filter(([k, v]) => typeof v === "string" && k.length > 0 && k.length <= 60)
-      .map(([k, v]) => [k, (v as string).trim().slice(0, 4000)]),
-  ) as Record<string, string>;
+      .map(([k, v]) => [k, v.trim().slice(0, 4000)]),
+  );
   const replyEmail = String(body.replyTo?.email ?? "").trim();
   if (replyEmail.length > 160 || !EMAIL.test(replyEmail))
     return json({ ok: false, error: "email" }, 422);
@@ -339,7 +304,8 @@ async function handle(req: Request): Promise<Response> {
   if (!key) return json({ ok: false, error: "not-configured" }, 503);
 
   const subject = String(
-    body.subject || (kind === "cotizacion" ? "Solicitud de cotización" : "Nuevo mensaje de contacto"),
+    body.subject ||
+      (kind === "cotizacion" ? "Solicitud de cotización" : "Nuevo mensaje de contacto"),
   ).slice(0, 150);
   const base = baseUrl(req);
   const { html, text } = leadEmail(base, subject, fields);
@@ -354,7 +320,7 @@ async function handle(req: Request): Promise<Response> {
     ? process.env.LEADS_TO_QUOTES || DEFAULT_QUOTES_TO
     : process.env.LEADS_TO || DEFAULT_LEADS_TO;
   const team = isQuote ? "Mercadeo Transpack" : "Servicio al cliente Transpack";
-  const send = (payload: Record<string, unknown>) =>
+  const send = (payload) =>
     fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: { "api-key": key, "Content-Type": "application/json", Accept: "application/json" },
@@ -363,7 +329,7 @@ async function handle(req: Request): Promise<Response> {
 
   // 1) Solicitud al equipo de Transpack ("responder a" = el visitante)
   const name = String(body.replyTo?.name ?? "").slice(0, 120);
-  let res: Response;
+  let res;
   try {
     res = await send({
       to: [{ email: leadsTo, name: team }],
@@ -381,7 +347,7 @@ async function handle(req: Request): Promise<Response> {
     // El motivo de Brevo (p. ej. "unauthorized": IP no autorizada o clave
     // inválida; remitente sin verificar) queda en los registros de Vercel y en
     // la respuesta, para diagnosticar. Nunca incluye la clave.
-    const why = (await res.json().catch(() => ({}))) as { code?: string; message?: string };
+    const why = await res.json().catch(() => ({}));
     console.error(`[contact] Brevo rechazó el envío (HTTP ${res.status}):`, why.code, why.message);
     return json({ ok: false, error: "provider", status: res.status, reason: why.code ?? "" }, 502);
   }

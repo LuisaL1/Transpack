@@ -88,7 +88,7 @@ push y pull request corre además la integración continua de GitHub Actions
     en `CONTACT.nit` (`src/data/site.ts`) y la política lo muestra sola;
   - confirmar el área que atiende las solicitudes, la fecha de vigencia y el
     registro de bases de datos ante la SIC, si aplica.
-- **Envío de formularios por correo (Brevo)**: por `api/contact.mts`, las
+- **Envío de formularios por correo (Brevo)**: por `api/contact.mjs`, las
   cotizaciones llegan a mercadeo@transpacksas.com y el formulario de contacto a
   servicioalcliente@transpacksas.com.
   Falta que el área encargada verifique el dominio en Brevo (SPF, DKIM, DMARC),
@@ -106,7 +106,7 @@ push y pull request corre además la integración continua de GitHub Actions
   "Chatear con un asesor". Hoy funciona **dentro de la ventana de Joel** con el
   puente (Zoho escondido, `src/lib/zohoBridge.ts`). Pendiente: apagar o
   simplificar el bot de Zoho en el sitio (pide formularios) y, si Zoho habilita
-  el permiso de organización, pasar a la API (`api/advisor.mts`, sin cargar
+  el permiso de organización, pasar a la API (`api/advisor.mjs`, sin cargar
   Zoho en el navegador). Ver `docs/chat-crm.md`. En el panel
   de Zoho falta autorizar el dominio `www.transpacksas.com` y decidir si el bot
   de Zoho saluda o pasa directo a un asesor. Hay que verificar en producción

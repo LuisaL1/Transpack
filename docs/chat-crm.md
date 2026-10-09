@@ -11,7 +11,7 @@ panel de SalesIQ como cualquier chat:
 
 | Modo | Cuándo | Cómo se ve |
 | --- | --- | --- |
-| **API** (`api/advisor.mts`) | Si las credenciales de la API de Zoho están en Vercel. **Hoy bloqueado:** Zoho no da el permiso de organización (ver "Estado") | Todo dentro de Joel; el navegador nunca carga Zoho. |
+| **API** (`api/advisor.mjs`) | Si las credenciales de la API de Zoho están en Vercel. **Hoy bloqueado:** Zoho no da el permiso de organización (ver "Estado") | Todo dentro de Joel; el navegador nunca carga Zoho. |
 | **Puente** (`src/lib/zohoBridge.ts`) — **el que se usa hoy** | Si la API no está configurada | Todo dentro de Joel: el widget de Zoho se carga **escondido** y Joel escribe en él y muestra sus respuestas. Si Zoho pide un formulario, Joel ofrece completarlo en la ventana de Zoho u omitirlo. |
 | **Ventana de Zoho** (respaldo) | Si el puente falla (por ejemplo, Zoho cambió su ventana) | Se abre la ventana del widget de SalesIQ, con el diseño del sitio. |
 
@@ -83,7 +83,7 @@ ventana de Zoho (respaldo). Probado con el widget real el 8 de octubre de 2026.
 ## Modo "dentro de Joel"
 
 ```
-Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mts) ──API REST──► Zoho SalesIQ ◄── asesor (panel de SalesIQ)
+Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mjs) ──API REST──► Zoho SalesIQ ◄── asesor (panel de SalesIQ)
 ```
 
 1. "Hablar con un asesor" → Joel pide el mensaje.
@@ -103,7 +103,7 @@ Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mts
 
 | Pieza | Archivo |
 | --- | --- |
-| Función (abrir, enviar, leer) | `api/advisor.mts` |
+| Función (abrir, enviar, leer) | `api/advisor.mjs` |
 | Cliente del navegador | `src/lib/advisorChat.ts` |
 | Lógica en el chat | `src/hooks/useAdvisorChat.ts` (`live`: `ask` → `connecting` → `live`) |
 | Mensaje del asesor y franja "Chat con un asesor" | `src/components/chat/ChatBubble.tsx`, `AdvisorChat.tsx` |
@@ -136,7 +136,7 @@ Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mts
 **Por confirmar en la primera prueba real:** la API de visitante devuelve un
 `id` de conversación largo (por ejemplo `d2e4771b…`) y la lectura de mensajes
 usa la API v2. Si la v2 no acepta ese `id`, `pnpm advisor:check --conversacion`
-lo muestra y se ajusta `api/advisor.mts` (acción `poll`).
+lo muestra y se ajusta `api/advisor.mjs` (acción `poll`).
 
 ### Configuración (área encargada de Zoho)
 
@@ -274,7 +274,7 @@ revise `tests/security/static.test.ts`.
 
 Las pruebas **nunca se conectan con Zoho**: simulan el script y la API.
 
-- `tests/unit/advisor-api.test.ts` (`api/advisor.mts` con `fetch` simulado):
+- `tests/unit/advisor-api.test.ts` (`api/advisor.mjs` con `fetch` simulado):
   - sin credenciales → 503 y GET `configured: false`;
   - otro dominio → 403;
   - abre la conversación con marca, departamento y nombre, y entrega el pase;

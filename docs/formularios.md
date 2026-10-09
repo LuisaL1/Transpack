@@ -32,7 +32,7 @@ formularios de terceros (FormSubmit, Formspree, etc.).
 ## Cómo viaja la información
 
 ```
-Navegador ──POST /api/contact──► Función de Vercel (api/contact.mts) ──API de Brevo──┬─► mercadeo@transpacksas.com (cotizaciones)
+Navegador ──POST /api/contact──► Función de Vercel (api/contact.mjs) ──API de Brevo──┬─► mercadeo@transpacksas.com (cotizaciones)
                                                                                      ├─► servicioalcliente@transpacksas.com (lo demás)
                                                                                      └─► confirmación al visitante
 ```
@@ -70,7 +70,7 @@ Navegador ──POST /api/contact──► Función de Vercel (api/contact.mts) 
 ## Diseño de los correos
 
 Los dos correos usan la plantilla común `layout(base, título, contenido)` de
-`api/contact.mts`:
+`api/contact.mjs`:
 
 1. **Banner** (imagen, ver abajo);
 2. **título** en azul de marca;
