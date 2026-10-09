@@ -46,6 +46,9 @@ const ZOHO_STUB = `(() => {
     ta.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
       log.sent.push(ta.value);
+      const v = d.createElement("div"); v.setAttribute("data-zsqa", "visitor_msg message_bubble");
+      v.innerHTML = '<span data-zsqa="msg"></span>'; v.firstChild.textContent = ta.value;
+      d.getElementById("scroll-container").appendChild(v);
       if (log.sent.length > 1) return;
       setTimeout(() => {
         const g = d.createElement("div"); g.className = "siqcw-agentmsg-grp";
@@ -182,6 +185,49 @@ test("sin API, el chat con un asesor va por el puente con Zoho, dentro de Joel",
   // Volver con Joel termina el puente (la ventana de Zoho no se muestra)
   await chat.getByRole("button", { name: "Volver con Joel" }).click();
   await expect(chat.getByText(/Volviste conmigo/)).toBeVisible();
+  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
+});
+
+test("al terminar una cotización con Joel, llega al chat de los asesores para seguimiento", async ({
+  page,
+}) => {
+  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
+  const requests = await mockZoho(page);
+  await page.goto("/");
+  const chat = await openChat(page);
+  await chat.getByRole("button", { name: "Quiero cotizar una mudanza" }).click();
+  await chat.getByRole("button", { name: "Mudanza local (en la misma ciudad)" }).click();
+  await send(chat, "Chapinero");
+  await send(chat, "Usaquén");
+  await chat.getByRole("button", { name: "En 1–2 semanas" }).click({ timeout: 10_000 });
+  await chat.getByRole("button", { name: "Apartaestudio" }).click({ timeout: 10_000 });
+  await chat.getByRole("button", { name: "Integral: que se encarguen de todo" }).click({ timeout: 10_000 });
+  await send(chat, "Luisa");
+  await expect(chat.getByText(/¿A qué número de celular o WhatsApp/)).toBeVisible({ timeout: 10_000 });
+  await send(chat, "123");
+  await expect(chat.getByText(/Ese número no parece completo/)).toBeVisible({ timeout: 10_000 });
+  await send(chat, "300 123 4567");
+  await expect(chat.getByText(/Este es el resumen de tu solicitud/)).toBeVisible({ timeout: 10_000 });
+  // Joel envía la cotización al chat de los asesores (Zoho escondido)
+  await expect.poll(() => requests.length, { timeout: 15_000 }).toBe(1);
+  const sent = () =>
+    page.evaluate(
+      () =>
+        (
+          (document.getElementById("tp-zoho-frame") as HTMLIFrameElement | null)
+            ?.contentWindow as unknown as { __zoho?: { sent: string[] } } | null
+        )?.__zoho?.sent ?? [],
+    );
+  await expect.poll(async () => (await sent())[0] ?? "", { timeout: 15_000 }).toContain(
+    "NUEVA COTIZACIÓN para seguimiento",
+  );
+  const msg = (await sent())[0];
+  expect(msg).toContain("Cliente: Luisa");
+  expect(msg).toContain("Celular / WhatsApp: 300 123 4567");
+  expect(msg).toContain("• Origen: Chapinero");
+  await expect(chat.getByText(/Un asesor te contactará al 300 123 4567/)).toBeVisible();
+  // La ventana queda escuchando: la respuesta del asesor aparece en Joel
+  await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({ timeout: 10_000 });
   await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
 });
 

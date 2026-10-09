@@ -11,6 +11,36 @@ panel de SalesIQ como cualquier chat:
 | **Puente** (`src/lib/zohoBridge.ts`) — **el que se usa hoy** | Si la API no está configurada | Todo dentro de Joel: el widget de Zoho se carga **escondido** y Joel escribe en él y muestra sus respuestas. Si Zoho pide un formulario, Joel ofrece completarlo en la ventana de Zoho u omitirlo. |
 | **Ventana de Zoho** (respaldo) | Si el puente falla (por ejemplo, Zoho cambió su ventana) | Se abre la ventana del widget de SalesIQ, con el diseño del sitio. |
 
+## Cotización terminada → seguimiento del equipo comercial
+
+Cuando el visitante termina la cotización guiada de Joel:
+
+1. Joel pide el **celular o WhatsApp** después del nombre (valida que tenga al
+   menos 7 dígitos; si no, lo vuelve a pedir).
+2. En el resumen, Joel **envía la cotización al chat de los asesores** (por la
+   API o el puente, el que esté activo) como una conversación nueva. El primer
+   mensaje es `teamQuoteMessage` (`src/data/chat.ts`), siempre en español:
+
+   ```
+   🆕 NUEVA COTIZACIÓN para seguimiento (chat de Joel en el sitio web)
+   Cliente: <nombre>
+   Celular / WhatsApp: <número>
+
+   • Servicio: …
+   • Origen: … (todas las respuestas)
+   [Idioma del cliente: …]   (si no es español)
+
+   Por favor, contactar al cliente para dar seguimiento o cerrar la venta.
+   ```
+
+3. Joel confirma al cliente ("Un asesor te contactará al <número>…") y se queda
+   escuchando: si el asesor responde mientras el cliente sigue en la página, la
+   respuesta aparece en Joel. Si el envío falla, Joel sugiere WhatsApp.
+4. Siguen disponibles los botones de WhatsApp, correo y cotizador.
+
+Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
+(fila del chat de Joel) lo explica en los seis idiomas.
+
 ## Modo "puente" (activo)
 
 1. "Chatear con un asesor" → Joel pide la pregunta.

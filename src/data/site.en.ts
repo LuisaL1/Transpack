@@ -470,8 +470,8 @@ export const PRIVACY = {
           ],
           [
             "Joel chat (virtual advisor)",
-            "The options you choose and what you write in the conversation, including your name and, if applicable, your company's.",
-            "To guide you and prepare your request. The conversation is not sent to Transpack: it only reaches us if you send it on WhatsApp or through the form.",
+            "The options you choose and what you write in the conversation, including your name, your mobile or WhatsApp number and, if applicable, your company's name.",
+            "To guide you and prepare your request. If you complete a quote with Joel, the summary (with your name and mobile number) is sent to our sales team through Zoho SalesIQ so they can contact you and follow up. The rest of the conversation stays in your browser.",
           ],
           [
             "Advisor chat (Zoho SalesIQ)",

@@ -28,8 +28,11 @@ export type BridgeHandlers = {
   /** Zoho pide un formulario (nombre, contacto…): Joel ofrece completarlo en
    *  la ventana de Zoho o, si Zoho lo permite, omitirlo */
   onForm: (f: { canSkip: boolean }) => void;
+  /** Un mensaje no se pudo entregar a Zoho en un minuto */
+  onSendFailed?: (text: string) => void;
 };
 export type Bridge = {
+  /** Envía (o deja en cola si Zoho tiene el campo bloqueado un momento) */
   send: (text: string) => boolean;
   choose: (option: string) => boolean;
   /** Pulsa "Omitir" en el formulario de Zoho */
@@ -106,7 +109,43 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   // Lo que ya estaba en la ventana (de otra visita) no se repite en Joel
   const seen = new Set<string>();
   doc.querySelectorAll<HTMLElement>(AGENT).forEach((el) => el.id && seen.add(el.id));
-  let asked = false;
+
+  // Mensajes del visitante en cola: después del primero, Zoho bloquea su campo
+  // de texto unos segundos mientras pasa la conversación a los asesores.
+  // Se envía uno a la vez y se confirma que aparezca en la conversación de Zoho
+  // antes de seguir (Zoho pierde envíos muy seguidos).
+  const queue: { text: string; at: number }[] = [{ text: question, at: Date.now() }];
+  const QUEUE_MS = 60_000;
+  const VISITOR = '[data-zsqa="visitor_msg message_bubble"]';
+  // Cuántas veces aparece un texto entre los mensajes del visitante en Zoho
+  const shown = (text: string) =>
+    Array.from(doc.querySelectorAll(VISITOR)).filter(
+      (el) => el.querySelector('[data-zsqa="msg"]')?.textContent?.trim() === text.trim(),
+    ).length;
+  // El campo de Zoho en su estado normal (no pidiendo nombre, correo o teléfono)
+  const ta = doc.querySelector<HTMLTextAreaElement>("textarea.siqcw-textarea");
+  const normalPlaceholder = ta?.placeholder ?? "";
+  const ready = () => {
+    const t = doc.querySelector<HTMLTextAreaElement>("textarea.siqcw-textarea");
+    return !!t && !t.disabled && (!normalPlaceholder || t.placeholder === normalPlaceholder);
+  };
+  let inFlight: { before: number; at: number } | null = null;
+  const flush = () => {
+    if (!queue.length) return;
+    // Esperando que Zoho muestre el último envío (se confirma por su texto)
+    if (inFlight) {
+      if (shown(queue[0].text) > inFlight.before) {
+        queue.shift();
+        inFlight = null;
+      } else if (Date.now() - inFlight.at > 5000) inFlight = null; // se reintenta
+      else return;
+      if (!queue.length) return;
+    }
+    if (ready()) {
+      const before = shown(queue[0].text);
+      if (type(doc, queue[0].text)) inFlight = { before, at: Date.now() };
+    } else if (Date.now() - queue[0].at > QUEUE_MS) h.onSendFailed?.(queue.shift()!.text);
+  };
 
   // Un mensaje de Zoho se procesa cuando ya está completo: el texto llega a
   // veces antes que sus botones o su formulario.
@@ -140,8 +179,8 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
       // Un formulario obligatorio (sin "Omitir") solo se puede llenar en la ventana de Zoho
       if (form) h.onForm({ canSkip: false });
     }
-    // La pregunta se envía cuando el campo de texto está listo
-    if (!asked && type(doc, question)) asked = true;
+    // Lo que esté en cola se envía cuando el campo de texto está libre
+    flush();
   };
   const obs = new MutationObserver(() => scan());
   obs.observe(doc.body, { childList: true, subtree: true, characterData: true });
@@ -150,7 +189,11 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   scan();
 
   return {
-    send: (text) => type(doc, text),
+    send: (text) => {
+      queue.push({ text, at: Date.now() });
+      flush();
+      return true;
+    },
     choose: (option) => {
       const tag = Array.from(doc.querySelectorAll<HTMLElement>(".tag-div")).find(
         (t) => t.textContent?.trim() === option,

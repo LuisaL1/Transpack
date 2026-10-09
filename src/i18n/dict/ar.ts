@@ -619,5 +619,14 @@ const dict: Record<string, string> = {
     "يطلب فريقنا بعض بيانات التواصل. يمكنك إكمالها في نافذة خدمة العملاء أو المتابعة من دونها.",
   "Skip this step":
     "تخطي هذه الخطوة",
+  // ─── Cotización del chat → seguimiento del equipo comercial ───
+  "E.g. +1 555 123 4567":
+    "مثال: +971 50 123 4567",
+  "I couldn't send your request to our team right now. Send it on WhatsApp with the button above and an advisor will reply.":
+    "لم أتمكن من إرسال طلبك إلى فريقنا الآن. أرسله عبر واتساب باستخدام الزر أعلاه وسيرد عليك أحد المستشارين.",
+  "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.":
+    "يبدو أن هذا الرقم غير مكتمل. هل يمكنك كتابته مرة أخرى؟ إذا كان من بلد آخر، فأضف رمز الدولة.",
+  "With your request, our sales team will contact you to follow up.":
+    "بناءً على طلبك، سيتواصل معك فريق المبيعات لدينا للمتابعة.",
 };
 export default dict;

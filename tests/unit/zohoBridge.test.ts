@@ -28,7 +28,13 @@ function fakeZoho() {
     const ta = doc.createElement("textarea");
     ta.className = "siqcw-textarea";
     ta.addEventListener("keydown", (e) => {
-      if ((e as KeyboardEvent).key === "Enter") sent.push(ta.value);
+      if ((e as KeyboardEvent).key !== "Enter") return;
+      sent.push(ta.value);
+      // Zoho muestra el mensaje del visitante en la conversación
+      const v = doc.createElement("div");
+      v.setAttribute("data-zsqa", "visitor_msg message_bubble");
+      v.innerHTML = `<span data-zsqa="msg">${ta.value}</span>`;
+      doc.getElementById("scroll-container")!.appendChild(v);
     });
     doc.body.appendChild(ta);
   });
@@ -77,9 +83,11 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
     doc.querySelectorAll(".tag-div")[1].addEventListener("click", clicked);
     expect(b.choose("Bodegaje")).toBe(true);
     expect(clicked).toHaveBeenCalled();
-    // Lo que el visitante escribe después va a Zoho
+    // Lo que el visitante escribe después va a Zoho (uno a la vez, confirmado)
     expect(b.send("Somos dos")).toBe(true);
-    expect(sent.at(-1)).toBe("Somos dos");
+    expect(b.send("Y un piano")).toBe(true);
+    await tick();
+    expect(sent).toEqual(["Hola", "Somos dos", "Y un piano"]);
   });
 
   it("no repite mensajes ya vistos", async () => {

@@ -53,20 +53,15 @@ const opts = (
 
 // ─── Conversación (en el idioma de la página) ─────────────────────────────────
 
-export function buildChat(lang: Lang): Record<string, ChatStep> {
-  const { CONTACT, FAQS, SERVICES, waLink } = siteFor(lang);
-  const tr = makeTr(lang);
-  const lp = (path: string) => localize(path, lang);
-
-  const SERVICE_NAMES: ChatData = {
+const serviceNamesFor = (tr: Tr): ChatData => ({
     local: tr("Mudanza local", "Local move"),
     nacional: tr("Mudanza nacional", "National move"),
     internacional: tr("Mudanza internacional", "International move"),
     bodegaje: tr("Bodegaje", "Storage"),
-    empresarial: tr("Traslado empresarial / institucional", "Corporate / institutional move"),
-  };
+  empresarial: tr("Traslado empresarial / institucional", "Corporate / institutional move"),
+});
 
-  const LABELS: [string, string][] = [
+const labelsFor = (tr: Tr): [string, string][] => [
     ["servicio", tr("Servicio", "Service")],
     ["tipo_corp", tr("Tipo de solicitud", "Type of request")],
     ["empresa", tr("Empresa o entidad", "Company or institution")],
@@ -80,13 +75,45 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
     ["bodega_que", tr("Qué se almacena", "What is stored")],
     ["bodega_tiempo", tr("Tiempo de bodegaje", "Storage time")],
     ["volumen", tr("Volumen", "Volume")],
-    ["nivel", tr("Nivel de servicio", "Service level")],
-  ];
+  ["nivel", tr("Nivel de servicio", "Service level")],
+  ["telefono", tr("Celular / WhatsApp", "Mobile / WhatsApp")],
+];
 
-  const summary = (d: ChatData) =>
-    LABELS.filter(([k]) => d[k])
-      .map(([k, l]) => `• ${l}: ${k === "servicio" ? SERVICE_NAMES[d[k]] : d[k]}`)
-      .join("\n");
+/** Resumen de la cotización ("• Dato: valor") con los textos de un idioma */
+const summaryWith = (tr: Tr, d: ChatData) => {
+  const names = serviceNamesFor(tr);
+  return labelsFor(tr)
+    .filter(([k]) => d[k])
+    .map(([k, l]) => `• ${l}: ${k === "servicio" ? names[d[k]] : d[k]}`)
+    .join("\n");
+};
+
+/** Celular con al menos 7 dígitos (también con indicativo de otro país) */
+export const validPhone = (v: string) => v.replace(/\D/g, "").length >= 7;
+
+/**
+ * Mensaje para el equipo comercial cuando el visitante termina una cotización
+ * con Joel: llega al chat de los asesores (Zoho SalesIQ) para dar seguimiento.
+ * Siempre en español (las respuestas de opciones quedan en el idioma del cliente).
+ */
+export function teamQuoteMessage(d: ChatData, lang: Lang): string {
+  return [
+    "🆕 NUEVA COTIZACIÓN para seguimiento (chat de Joel en el sitio web)",
+    `Cliente: ${d.nombre || "—"}`,
+    `Celular / WhatsApp: ${d.telefono || "—"}`,
+    "",
+    summaryWith(makeTr("es"), { ...d, telefono: "" }),
+    ...(lang !== "es" ? ["", `[Idioma del cliente: ${LANG_INFO[lang].name}]`] : []),
+    "",
+    "Por favor, contactar al cliente para dar seguimiento o cerrar la venta.",
+  ].join("\n");
+}
+
+export function buildChat(lang: Lang): Record<string, ChatStep> {
+  const { CONTACT, FAQS, SERVICES, waLink } = siteFor(lang);
+  const tr = makeTr(lang);
+  const lp = (path: string) => localize(path, lang);
+  const summary = (d: ChatData) => summaryWith(tr, d);
 
   const waMessage = (d: ChatData) =>
     [
@@ -424,7 +451,44 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           "We will use your data only to handle this request, in line with our privacy policy.",
         ),
       ],
-      input: { key: "nombre", placeholder: tr("Tu nombre", "Your name"), next: () => "resumen" },
+      input: { key: "nombre", placeholder: tr("Tu nombre", "Your name"), next: () => "telefono" },
+    },
+    // Número para que el equipo comercial dé seguimiento a la cotización
+    telefono: {
+      say: (d) => [
+        tr(
+          `Gracias, ${d.nombre}. ¿A qué número de celular o WhatsApp te puede contactar un asesor?`,
+          `Thank you, ${d.nombre}. What mobile or WhatsApp number can an advisor reach you at?`,
+          {
+            fr: `Merci, ${d.nombre}. À quel numéro de portable ou WhatsApp un conseiller peut-il vous joindre ?`,
+            de: `Danke, ${d.nombre}. Unter welcher Handy- oder WhatsApp-Nummer kann Sie ein Berater erreichen?`,
+            it: `Grazie, ${d.nombre}. A quale numero di cellulare o WhatsApp può contattarti un consulente?`,
+            ar: `شكرًا يا ${d.nombre}. على أي رقم هاتف محمول أو واتساب يمكن لمستشار التواصل معك؟`,
+          },
+        ),
+        tr(
+          "Con tu solicitud, nuestro equipo comercial te contactará para darte seguimiento.",
+          "With your request, our sales team will contact you to follow up.",
+        ),
+      ],
+      input: {
+        key: "telefono",
+        placeholder: tr("Ej. 300 123 4567", "E.g. +1 555 123 4567"),
+        next: (d) => (validPhone(d.telefono ?? "") ? "resumen" : "telefono_otra"),
+      },
+    },
+    telefono_otra: {
+      say: () => [
+        tr(
+          "Ese número no parece completo. ¿Me lo escribes de nuevo? Si es de otro país, incluye el indicativo.",
+          "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.",
+        ),
+      ],
+      input: {
+        key: "telefono",
+        placeholder: tr("Ej. 300 123 4567", "E.g. +1 555 123 4567"),
+        next: (d) => (validPhone(d.telefono ?? "") ? "resumen" : "telefono_otra"),
+      },
     },
     resumen: {
       say: (d) => [
@@ -439,20 +503,8 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           },
         ),
         summary(d),
-        d.servicio === "internacional"
-          ? tr(
-              "Envíala por WhatsApp y un asesor especializado en mudanzas internacionales te contactará para revisar tu caso.",
-              "Send it on WhatsApp and an international moving specialist will contact you to review your case.",
-            )
-          : d.servicio === "empresarial"
-            ? tr(
-                "Envíala por WhatsApp y un ejecutivo de cuenta te contactará con una propuesta.",
-                "Send it on WhatsApp and an account executive will contact you with a proposal.",
-              )
-            : tr(
-                "Envíala por WhatsApp y un asesor te responderá con un estimado. Si hace falta, coordinamos una visita técnica.",
-                "Send it on WhatsApp and an advisor will reply with an estimate. If needed, we'll arrange an on-site survey.",
-              ),
+        // Después de este paso, useAdvisorChat envía la cotización al chat de
+        // los asesores y Joel confirma (o sugiere WhatsApp si no se pudo).
       ],
       actions: (d) => [
         {
@@ -704,6 +756,22 @@ export const chatText = (tr: Tr) => ({
   advisorFormFill: tr("Completar mis datos", "Fill in my details"),
   advisorFormSkip: tr("Omitir este paso", "Skip this step"),
   backToStart: tr("Volver al inicio", "Back to start"),
+  // Cotización enviada al chat de los asesores para seguimiento
+  quoteSent: (phone: string) =>
+    tr(
+      `Listo, le envié tu solicitud a nuestro equipo comercial. Un asesor te contactará al ${phone} para darte seguimiento; si sigues aquí, también puede escribirte en este chat.`,
+      `Done, I sent your request to our sales team. An advisor will contact you at ${phone} to follow up; if you're still here, they can also write to you in this chat.`,
+      {
+        fr: `C'est fait, j'ai envoyé votre demande à notre équipe commerciale. Un conseiller vous contactera au ${phone} pour assurer le suivi ; si vous êtes encore là, il peut aussi vous écrire dans ce chat.`,
+        de: `Erledigt, ich habe Ihre Anfrage an unser Vertriebsteam gesendet. Ein Berater kontaktiert Sie unter ${phone}; wenn Sie noch hier sind, kann er Ihnen auch in diesem Chat schreiben.`,
+        it: `Fatto, ho inviato la tua richiesta al nostro team commerciale. Un consulente ti contatterà al ${phone} per il seguito; se sei ancora qui, può scriverti anche in questa chat.`,
+        ar: `تم، أرسلت طلبك إلى فريق المبيعات لدينا. سيتواصل معك أحد المستشارين على الرقم ${phone} للمتابعة، وإذا كنت لا تزال هنا يمكنه أيضًا مراسلتك في هذه المحادثة.`,
+      },
+    ),
+  quoteSendFail: tr(
+    "No pude enviarle tu solicitud a nuestro equipo en este momento. Envíala por WhatsApp con el botón de arriba y un asesor te responderá.",
+    "I couldn't send your request to our team right now. Send it on WhatsApp with the button above and an advisor will reply.",
+  ),
 });
 
 // ─── Íconos de las opciones ─────────────────────────────────────────────────

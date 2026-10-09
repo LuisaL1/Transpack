@@ -589,8 +589,8 @@ export const PRIVACY = {
           ],
           [
             "Chat de Joel (asesor virtual)",
-            "Las opciones que eliges y lo que escribes en la conversación, incluido tu nombre y, si aplica, el de tu empresa.",
-            "Orientarte y preparar tu solicitud. La conversación no se envía a Transpack: solo nos llega si tú la envías por WhatsApp o por el formulario.",
+            "Las opciones que eliges y lo que escribes en la conversación, incluido tu nombre, tu celular o WhatsApp y, si aplica, el nombre de tu empresa.",
+            "Orientarte y preparar tu solicitud. Si terminas una cotización con Joel, el resumen (con tu nombre y celular) se envía a nuestro equipo comercial por Zoho SalesIQ para contactarte y darte seguimiento. Lo demás de la conversación se queda en tu navegador.",
           ],
           [
             "Chat con un asesor (Zoho SalesIQ)",

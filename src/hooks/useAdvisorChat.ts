@@ -9,6 +9,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildChat,
   chatText,
+  teamQuoteMessage,
   type ChatData,
   type ChatMsg,
   type ChatOption,
@@ -148,6 +149,8 @@ export function useAdvisorChat() {
   const bridge = useRef<import("@/lib/zohoBridge").Bridge | null>(null);
   // Respuestas sugeridas por el bot o el asesor de Zoho (modo puente)
   const [liveOptions, setLiveOptions] = useState<string[]>([]);
+  // Mensajes escritos mientras el puente se conecta (se envían al estar listo)
+  const pending = useRef<string[] | null>(null);
   const t = useMemo(() => chatText(makeTr(lang)), [lang]);
   const otherChannels = () => [
     { label: t.crmWhatsapp, icon: "whatsapp", href: siteFor(lang).waLink() },
@@ -208,7 +211,9 @@ export function useAdvisorChat() {
   }, []);
 
   const endAdvisor = (text = t.advisorBack) => {
+    followUp.current = false;
     pass.current = null;
+    pending.current = null;
     save(null);
     bridge.current?.stop();
     bridge.current = null;
@@ -263,7 +268,8 @@ export function useAdvisorChat() {
 
   // Si nadie responde a tiempo, Joel ofrece otros canales (una vez)
   useEffect(() => {
-    if (live !== "connecting") return;
+    // En el seguimiento de una cotización el asesor contacta al cliente después
+    if (live !== "connecting" || followUp.current) return;
     const id = window.setTimeout(() => say(t.advisorBusy, otherChannels()), WAIT_MS);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -271,7 +277,11 @@ export function useAdvisorChat() {
 
   // Mensaje del visitante en el chat con el asesor
   // Puente: abre la conversación en el Zoho escondido y pasa sus mensajes a Joel
-  const startViaBridge = async (question: string) => {
+  // quiet: para la cotización enviada al equipo (sin el mensaje de "ya le avisé"
+  // ni la ventana de Zoho de respaldo si falla). Devuelve si se conectó.
+  const startViaBridge = async (question: string, quiet = false): Promise<boolean> => {
+    pending.current = [];
+    setLive("connecting");
     try {
       const { startBridge } = await import("@/lib/zohoBridge");
       bridge.current = await startBridge(question, {
@@ -283,22 +293,69 @@ export function useAdvisorChat() {
           ]);
           setLiveOptions(m.options);
         },
+        onSendFailed: () => say(t.advisorSendError),
         onForm: ({ canSkip }) => {
           say(t.advisorForm);
           setLiveOptions(canSkip ? [t.advisorFormFill, t.advisorFormSkip] : [t.advisorFormFill]);
         },
       });
-      trackEvent("generate_lead", { method: "advisor_chat", lang });
-      setLive("connecting");
-      say(t.advisorConnecting);
+      if (!quiet) {
+        trackEvent("generate_lead", { method: "advisor_chat", lang });
+        say(t.advisorConnecting);
+      }
+      for (const text of pending.current ?? []) bridge.current.send(text);
+      pending.current = null;
+      return true;
     } catch {
-      // Si el puente no funciona, la ventana de Zoho de siempre
+      pending.current = null;
       setLive("off");
-      openZohoWindow();
+      // Si el puente no funciona, la ventana de Zoho de siempre
+      if (!quiet) openZohoWindow();
+      return false;
     }
   };
 
+  // ─── Cotización terminada → chat de los asesores para seguimiento ────────
+  // Al llegar al resumen, Joel envía la cotización (con nombre y celular) a
+  // Zoho SalesIQ marcada como "NUEVA COTIZACIÓN para seguimiento", y se queda
+  // escuchando por si el asesor responde mientras el cliente sigue en la página.
+  const quoteSent = useRef("");
+  const followUp = useRef(false);
+  const sendQuoteToTeam = async (d: ChatData) => {
+    const message = teamQuoteMessage(d, lang);
+    const viaApi = await advisorAvailable();
+    mode.current = viaApi ? "api" : "bridge";
+    followUp.current = true;
+    let ok = false;
+    if (viaApi) {
+      const r = await startAdvisor(message, d.nombre);
+      if (r.ok && r.token) {
+        pass.current = { token: r.token, after: 0 };
+        save(pass.current);
+        setLive("connecting");
+        ok = true;
+      }
+    } else ok = await startViaBridge(message, true);
+    if (ok) {
+      trackEvent("generate_lead", { method: "chat_advisor", service: d.servicio ?? "", lang });
+      say(t.quoteSent(d.telefono ?? ""));
+    } else {
+      followUp.current = false;
+      say(t.quoteSendFail);
+    }
+  };
+  useEffect(() => {
+    if (stepId !== "resumen" || typing) return;
+    const key = JSON.stringify(data);
+    if (quoteSent.current === key) return;
+    quoteSent.current = key;
+    void sendQuoteToTeam(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stepId, typing]);
+
   const sendLive = async (value: string) => {
+    // Puente conectándose: lo que se escriba queda en cola, en orden
+    if (mode.current === "bridge" && pending.current) return void pending.current.push(value);
     if (live === "ask" && mode.current === "bridge") return startViaBridge(value);
     if (mode.current === "bridge") {
       setLiveOptions([]);
