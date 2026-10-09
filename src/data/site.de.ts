@@ -483,7 +483,7 @@ export const PRIVACY = {
           [
             "Chat mit Joel (virtueller Berater)",
             "Die Optionen, die Sie wählen, und was Sie im Gespräch schreiben, einschließlich Ihres Namens, Ihrer Handy- oder WhatsApp-Nummer und gegebenenfalls des Namens Ihres Unternehmens.",
-            "Sie beraten und Ihre Anfrage vorbereiten. Wenn Sie mit Joel ein Angebot abschließen, wird die Zusammenfassung (mit Ihrem Namen und Ihrer Handynummer) über Zoho SalesIQ an unser Vertriebsteam gesendet, damit es Sie kontaktieren und nachfassen kann. Der Rest des Gesprächs bleibt in Ihrem Browser.",
+            "Sie beraten und Ihre Anfrage vorbereiten. Wenn Sie Ihr Angebot an einen Berater senden, wird die Zusammenfassung (mit Ihrem Namen und Ihrer Handynummer) über Zoho SalesIQ an unser Vertriebsteam gesendet, damit es Sie kontaktieren und nachfassen kann. Der Rest des Gesprächs bleibt in Ihrem Browser.",
           ],
           [
             "Chat mit einem Berater (Zoho SalesIQ)",

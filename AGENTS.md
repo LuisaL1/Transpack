@@ -226,9 +226,11 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 
 ### Chat con un asesor (Zoho SalesIQ)
 
-- **Joel atiende primero.** "Hablar con un asesor" (y, en español, cualquier
-  pedido de contacto) ofrece como primera opción **"Chatear con un asesor"**
-  (`docs/chat-crm.md`):
+- **Joel atiende primero.** "Hablar con un asesor" (o escribir que se quiere
+  un asesor) **conecta de una vez**, sin pasos intermedios ni mencionar Zoho;
+  un pedido de contacto ofrece **"Chatear con un asesor"** como primera opción.
+  El resumen de la cotización trae **"Enviar a un asesor"**, que la manda al
+  chat de los asesores (`docs/chat-crm.md`):
   - **dentro de Joel** si `/api/advisor` está configurado: la persona escribe
     en la misma ventana y el asesor responde desde SalesIQ (API REST, sin
     cargar Zoho en el navegador). Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo
@@ -240,7 +242,7 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   - si el puente falla, se abre la **ventana de Zoho** (respaldo, abajo).
 - `src/lib/crmChat.ts` carga el script de Zoho **solo en ese momento** (nunca
   al entrar: sin cookies de Zoho antes), una sola vez, en español y con el
-  botón de Zoho oculto. Antes de ofrecerlo, Joel avisa del uso de los datos.
+  botón de Zoho oculto. El uso de los datos lo explica la política (`/privacidad`).
 - Acciones con `crm: true` (`ChatAction` y `JoelAction`) abren ese chat.
 - **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
   chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de

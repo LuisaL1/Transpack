@@ -7,3 +7,6 @@ export const CRM_CHAT_EVENT = "tp:crm-chat";
 /** Pedido de abrir el chat con un asesor (botón en el chat de Joel; lo atiende useAdvisorChat) */
 export const ADVISOR_EVENT = "tp:open-advisor";
 export const requestAdvisorChat = () => window.dispatchEvent(new Event(ADVISOR_EVENT));
+/** Pedido de enviar la cotización del chat a un asesor (botón del resumen) */
+export const QUOTE_EVENT = "tp:send-quote";
+export const requestQuoteToAdvisor = () => window.dispatchEvent(new Event(QUOTE_EVENT));

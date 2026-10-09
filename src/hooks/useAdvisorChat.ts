@@ -20,7 +20,7 @@ import { makeTr, useLang } from "@/i18n";
 import { routeChat } from "@/lib/chatRoute";
 import { createJoel, newMemory, QUOTE_TOPIC, track, type JoelReply } from "@/lib/joel";
 import { trackEvent } from "@/lib/analytics";
-import { ADVISOR_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
+import { ADVISOR_EVENT, CRM_CHAT_EVENT, QUOTE_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 import {
@@ -78,6 +78,12 @@ export function useAdvisorChat() {
   const think = (value: string, d: ChatData) => {
     const r = getJoel().respond(value, mem.current);
     track("chat", r.intent);
+    // Pidió hablar con un asesor: se le pasa de una vez
+    if (r.handoff) {
+      trackEvent("chat_message", { intent: r.intent, lang });
+      requestAdvisorChat();
+      return;
+    }
     if (r.service) track("chat", `svc-${r.service}`);
     trackEvent("chat_message", { intent: r.intent, service: r.service, lang });
     dyn.current = toStep(r);
@@ -86,6 +92,14 @@ export function useAdvisorChat() {
 
   // Muestra los mensajes de un paso uno a uno, con indicador de "escribiendo"
   const goTo = (id: string, d: ChatData) => {
+    // "Hablar con un asesor": se conecta de una vez, sin más explicaciones
+    if (id === "human") {
+      setData(d);
+      requestAdvisorChat();
+      return;
+    }
+    // Cotización nueva: su resumen se podrá enviar a un asesor
+    if (id === "reset" || QUOTE_STEPS.has(id)) quoteSent.current = "";
     let target = id === "reset" ? "start" : id;
     const nextData = id === "reset" ? {} : d;
     if (id === "reset") {
@@ -316,18 +330,22 @@ export function useAdvisorChat() {
   };
 
   // ─── Cotización terminada → chat de los asesores para seguimiento ────────
-  // Al llegar al resumen, Joel envía la cotización (con nombre y celular) a
-  // Zoho SalesIQ marcada como "NUEVA COTIZACIÓN para seguimiento", y se queda
-  // escuchando por si el asesor responde mientras el cliente sigue en la página.
+  // Con "Enviar a un asesor" (resumen), Joel envía la cotización (con nombre y
+  // celular) a Zoho SalesIQ marcada como "NUEVA COTIZACIÓN para seguimiento", y
+  // se queda escuchando por si el asesor responde mientras el cliente sigue aquí.
   const quoteSent = useRef("");
   const followUp = useRef(false);
   const sendQuoteToTeam = async (d: ChatData) => {
     const message = teamQuoteMessage(d, lang);
-    const viaApi = await advisorAvailable();
-    mode.current = viaApi ? "api" : "bridge";
+    const busy = !!bridge.current || !!pass.current;
+    const viaApi = busy ? mode.current === "api" : await advisorAvailable();
+    if (!busy) mode.current = viaApi ? "api" : "bridge";
     followUp.current = true;
     let ok = false;
-    if (viaApi) {
+    // Ya hay una conversación con un asesor abierta: la cotización va por ahí
+    if (bridge.current) ok = bridge.current.send(message);
+    else if (pass.current) ok = (await sendToAdvisor(pass.current.token, message)).ok;
+    else if (viaApi) {
       const r = await startAdvisor(message, d.nombre);
       if (r.ok && r.token) {
         pass.current = { token: r.token, after: 0 };
@@ -343,15 +361,25 @@ export function useAdvisorChat() {
       followUp.current = false;
       say(t.quoteSendFail);
     }
+    return ok;
   };
+  // Botón "Enviar a un asesor" del resumen: una vez por cotización (se puede
+  // volver a enviar si falló o si se hace otra cotización, aunque sea igual)
+  const dataRef = useRef(data);
+  dataRef.current = data;
   useEffect(() => {
-    if (stepId !== "resumen" || typing) return;
-    const key = JSON.stringify(data);
-    if (quoteSent.current === key) return;
-    quoteSent.current = key;
-    void sendQuoteToTeam(data);
+    const onQuote = () => {
+      if (quoteSent.current) return;
+      quoteSent.current = "sending";
+      setMsgs((m) => [...m, { from: "user", text: t.sendToAdvisor }]);
+      void sendQuoteToTeam(dataRef.current).then((ok) => {
+        quoteSent.current = ok ? "sent" : "";
+      });
+    };
+    window.addEventListener(QUOTE_EVENT, onQuote);
+    return () => window.removeEventListener(QUOTE_EVENT, onQuote);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepId, typing]);
+  }, [lang]);
 
   const sendLive = async (value: string) => {
     // Puente conectándose: lo que se escriba queda en cola, en orden

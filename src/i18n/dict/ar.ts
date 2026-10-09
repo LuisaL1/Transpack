@@ -106,7 +106,6 @@ const dict: Record<string, string> = {
   "Send it on WhatsApp and an advisor will reply with an estimate. If needed, we'll arrange an on-site survey.":
     "أرسله عبر واتساب، وسيرد عليك أحد مستشارينا بتقدير للتكلفة. وعند الحاجة سننسق لمعاينة ميدانية.",
   "Send on WhatsApp": "إرسال عبر واتساب",
-  "Complete it in the quote form": "إكماله في نموذج عرض السعر",
   "Start over": "البدء من جديد",
   "These are the questions we're asked most often:": "هذه أكثر الأسئلة التي تصلنا:",
   "What services do you offer?": "ما الخدمات التي تقدمونها؟",
@@ -585,10 +584,6 @@ const dict: Record<string, string> = {
     "المحادثة مع مستشار (بالإسبانية)",
   "Leave a message":
     "اترك رسالة",
-  "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
-    "بالتأكيد! يمكنك الآن المحادثة مع أحد مستشاري فريقنا، أو إن كنت تفضل، مراسلتنا عبر واتساب أو الاتصال بنا أو إرسال بريد إلكتروني.",
-  "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.":
-    "سيساعدك أحد مستشاري فريقنا باللغة الإسبانية عبر منصة خدمة العملاء لدينا (Zoho SalesIQ). تُحفظ رسائلك في نظام العملاء لدينا وفقًا لسياسة البيانات.",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "تعذّر فتح المحادثة مع مستشار الآن. تواصل معنا بطريقة أخرى:",
   // ─── Chat con un asesor dentro de Joel ───
@@ -596,12 +591,8 @@ const dict: Record<string, string> = {
     "مستشار",
   "Chat with a Transpack advisor":
     "محادثة مع مستشار ترانسباك",
-  "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.":
-    "تم، أبلغنا فريقنا. سيرد عليك أحد المستشارين هنا قريبًا، ويمكنك متابعة الكتابة.",
   "Our advisors are busy right now. You can keep waiting here or reach us another way:":
     "مستشارونا مشغولون الآن. يمكنك مواصلة الانتظار هنا أو التواصل معنا بطريقة أخرى:",
-  "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).":
-    "أخبرني في رسالة واحدة بما تحتاج إليه وسأوصلك بأحد مستشاري فريقنا. سيرد عليك هنا مباشرة (يرد فريقنا باللغة الإسبانية).",
   "The advisor ended the conversation. Thank you for writing to us!":
     "أنهى المستشار المحادثة. شكرًا لتواصلك معنا!",
   "Write your message to the advisor…":
@@ -622,11 +613,22 @@ const dict: Record<string, string> = {
   // ─── Cotización del chat → seguimiento del equipo comercial ───
   "E.g. +1 555 123 4567":
     "مثال: +971 50 123 4567",
-  "I couldn't send your request to our team right now. Send it on WhatsApp with the button above and an advisor will reply.":
-    "لم أتمكن من إرسال طلبك إلى فريقنا الآن. أرسله عبر واتساب باستخدام الزر أعلاه وسيرد عليك أحد المستشارين.",
   "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.":
     "يبدو أن هذا الرقم غير مكتمل. هل يمكنك كتابته مرة أخرى؟ إذا كان من بلد آخر، فأضف رمز الدولة.",
   "With your request, our sales team will contact you to follow up.":
     "بناءً على طلبك، سيتواصل معك فريق المبيعات لدينا للمتابعة.",
+  // ─── Asesor directo y cotización a un asesor ───
+  "Done, an advisor will reply here shortly.":
+    "تم، سيرد عليك أحد المستشارين هنا قريبًا.",
+  "I couldn't send it right now. Send it on WhatsApp with the button above and an advisor will reply.":
+    "لم أتمكن من إرساله الآن. أرسله عبر واتساب باستخدام الزر أعلاه وسيرد عليك أحد المستشارين.",
+  "I'll connect you with an advisor.":
+    "سأوصلك بأحد المستشارين.",
+  "I'll connect you with an advisor. Write your message and they'll reply right here (in Spanish).":
+    "سأوصلك بأحد المستشارين. اكتب رسالتك وسيرد عليك هنا مباشرة (بالإسبانية).",
+  "Send it to an advisor and they'll contact you with an estimate.":
+    "أرسله إلى أحد المستشارين وسيتواصل معك بتقدير مبدئي.",
+  "Send to an advisor":
+    "أرسل إلى مستشار",
 };
 export default dict;

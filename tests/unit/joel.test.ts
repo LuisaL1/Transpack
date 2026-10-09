@@ -173,11 +173,23 @@ describe("Aprendizaje y perfil del visitante", () => {
   });
 });
 
-describe("Chat con un asesor (Zoho SalesIQ)", () => {
-  it("al pedir un asesor, la primera opción es el chat con un asesor y avisa del uso de datos", () => {
-    const r = ask("quiero hablar con un asesor");
+describe("Chat con un asesor", () => {
+  it("si pide un asesor, lo pasa de una vez (sin texto ni explicaciones)", () => {
+    for (const q of ["quiero hablar con un asesor", "necesito un asesor", "pásame con una persona real"]) {
+      const r = ask(q);
+      expect(r.intent, q).toBe("asesor");
+      expect(r.handoff, q).toBe(true);
+      expect(r.say, q).toEqual([]);
+    }
+  });
+
+  it("asesoría, agentes o datos de contacto no lo pasan al asesor", () => {
+    expect(ask("necesito asesoria para mudarme a canada").handoff).toBeFalsy();
+    expect(ask("cuantos agentes tienen").handoff).toBeFalsy();
+    const r = ask("cual es su telefono");
+    expect(r.intent).toBe("contacto");
+    // Corto, sin nombrar la plataforma de chat, con el chat con un asesor entre las opciones
+    expect(all(r)).not.toMatch(/Zoho/i);
     expect(r.actions?.[0]).toMatchObject({ label: "Chatear con un asesor", crm: true });
-    expect(all(r)).toMatch(/Zoho SalesIQ/);
   });
 });
-

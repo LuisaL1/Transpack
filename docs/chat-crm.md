@@ -1,8 +1,12 @@
 # Chat con un asesor: Zoho SalesIQ (CRM)
 
 **Joel atiende primero.** El chat del sitio es Joel, el asesor virtual propio.
-Cuando la persona quiere hablar con alguien del equipo, Joel ofrece
-**"Chatear con un asesor"**. En los tres modos el asesor atiende desde su
+Cuando la persona pide un asesor ("Hablar con un asesor", o escribe "quiero
+hablar con un asesor", "con una persona"…), **Joel la conecta de una vez**:
+"Te conecto con un asesor. Escríbele tu mensaje y te responderá aquí mismo."
+Sin pasos intermedios y **sin mencionar Zoho** ni la plataforma. Si pide
+contacto en general (teléfono, WhatsApp), Joel lo da en una línea y ofrece
+"Chatear con un asesor" como primera opción. En los tres modos el asesor atiende desde su
 panel de SalesIQ como cualquier chat:
 
 | Modo | Cuándo | Cómo se ve |
@@ -17,8 +21,9 @@ Cuando el visitante termina la cotización guiada de Joel:
 
 1. Joel pide el **celular o WhatsApp** después del nombre (valida que tenga al
    menos 7 dígitos; si no, lo vuelve a pedir).
-2. En el resumen, Joel **envía la cotización al chat de los asesores** (por la
-   API o el puente, el que esté activo) como una conversación nueva. El primer
+2. El resumen trae como primer botón **"Enviar a un asesor"**. Al pulsarlo
+   (nada se envía antes), Joel **manda la cotización al chat de los asesores**
+   (por la API o el puente, el que esté activo) como una conversación nueva. El primer
    mensaje es `teamQuoteMessage` (`src/data/chat.ts`), siempre en español:
 
    ```
@@ -33,17 +38,18 @@ Cuando el visitante termina la cotización guiada de Joel:
    Por favor, contactar al cliente para dar seguimiento o cerrar la venta.
    ```
 
-3. Joel confirma al cliente ("Un asesor te contactará al <número>…") y se queda
+3. Joel confirma al cliente ("Listo, tu cotización ya está con un asesor. Te
+   contactará al <número>…") y se queda
    escuchando: si el asesor responde mientras el cliente sigue en la página, la
    respuesta aparece en Joel. Si el envío falla, Joel sugiere WhatsApp.
-4. Siguen disponibles los botones de WhatsApp, correo y cotizador.
+4. Siguen disponibles los botones de WhatsApp y correo (no el cotizador: la cotización ya se hizo en el chat).
 
 Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
 (fila del chat de Joel) lo explica en los seis idiomas.
 
 ## Modo "puente" (activo)
 
-1. "Chatear con un asesor" → Joel pide la pregunta.
+1. "Hablar con un asesor" → Joel dice "Te conecto con un asesor" y pide el mensaje.
 2. Se carga el widget de Zoho en la página aislada, escondida fuera de la
    pantalla (`#tp-zoho-frame`, `src/styles/index.css`), se pulsa "Chatee con
    nosotros ahora" y se escribe la pregunta en su campo de texto.
@@ -80,7 +86,7 @@ ventana de Zoho (respaldo). Probado con el widget real el 8 de octubre de 2026.
 Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.ts) ──API REST──► Zoho SalesIQ ◄── asesor (panel de SalesIQ)
 ```
 
-1. "Chatear con un asesor" → Joel pide la pregunta en un mensaje.
+1. "Hablar con un asesor" → Joel pide el mensaje.
 2. Con esa pregunta, la función abre la conversación en SalesIQ (API de
    visitante) y le entrega al navegador un **pase firmado** que solo sirve para
    esa conversación.
@@ -157,7 +163,7 @@ lo muestra y se ajusta `api/advisor.ts` (acción `poll`).
    variables (`ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`,
    `ADVISOR_SECRET` y, si se quiere fijar, `ZOHO_SALESIQ_APP_ID` y
    `ZOHO_SALESIQ_DEPARTMENT_ID`). **Redeploy**.
-7. Pruebe en el sitio: "Hablar con un asesor" → "Chatear con un asesor".
+7. Pruebe en el sitio: "Hablar con un asesor" y escriba un mensaje.
 
 Notas:
 - El portal se llama `transpacksas` (aparece en la dirección de SalesIQ); se
@@ -171,24 +177,25 @@ Notas:
 
 | Pieza | Archivo | Qué hace |
 | --- | --- | --- |
-| Opción en Joel | `src/data/chat.ts` (paso `human`) y `src/lib/joel.ts` (`ADVISOR_CHAT`) | "Hablar con un asesor" muestra el aviso de datos y, como primera opción, "Chatear con un asesor". |
+| Opción en Joel | `src/data/chat.ts` (paso `human`) y `src/lib/joel.ts` (`ADVISOR_CHAT`) | "Hablar con un asesor" (o pedir un asesor por escrito: intención `asesor`, `handoff`) conecta de una vez; pedir contacto ofrece "Chatear con un asesor" como primera opción. |
 | Lógica | `src/hooks/useAdvisorChat.ts` | Si `/api/advisor` no está configurado, carga y abre la ventana de Zoho; mientras está abierta se ocultan la ventana y el botón de Joel. Si Zoho no carga, Joel ofrece WhatsApp y el formulario. |
 | Cargador | `src/lib/crmChat.ts` (archivo aparte, se descarga solo al usarlo) | Carga el script de Zoho una sola vez, en español, sin su botón y con el diseño del sitio. |
 
 - **Código del widget:** `SALESIQ_WIDGET` en `src/lib/crmChat.ts` (no es secreto).
 - **Vista inicial:** la ventana abre en el inicio de Zoho ("Chatee con nosotros
   ahora"); Zoho no permite abrirla directo en la conversación.
-- **Analítica:** "Chatear con un asesor" registra `contact_click` con
+- **Analítica:** abrir el chat con un asesor registra `contact_click` con
   `method: "advisor_chat"`. En el modo dentro de Joel, abrir la conversación
   registra además `generate_lead` con `method: "advisor_chat"`. Lo que se
   escribe nunca llega a Google Analytics.
 
 ## Protección de datos
 
-- Mientras la persona no elija "Chatear con un asesor", no se envía nada a
-  Zoho. En el modo dentro de Joel, el navegador nunca carga Zoho ni sus cookies.
-- Antes de ofrecer el chat, Joel avisa que un asesor atiende desde Zoho
-  SalesIQ y que los mensajes quedan en el sistema de clientes.
+- Mientras la persona no pida un asesor (o no pulse "Enviar a un asesor" en
+  la cotización), no se envía nada a Zoho. En el modo dentro de Joel, el
+  navegador nunca carga Zoho ni sus cookies.
+- Para que el paso al asesor sea directo, Joel no muestra un aviso previo
+  ni nombra la plataforma: el uso de los datos lo explica la política.
 - La política (`/privacidad`, seis idiomas) lo explica:
   - fila "Chat con un asesor (Zoho SalesIQ)";
   - Zoho como encargado del tratamiento, con servidores que pueden estar fuera
@@ -227,8 +234,8 @@ La ventana de Zoho tiene el diseño del chat de Joel:
 
 Zoho **no se carga en las páginas del sitio**. Vive en una página propia y
 vacía, `public/chat-asesor.html`, que el sitio abre en un iframe escondido
-(`#tp-zoho-frame`, `src/lib/crmChat.ts`) solo cuando la persona elige
-"Chatear con un asesor".
+(`#tp-zoho-frame`, `src/lib/crmChat.ts`) solo cuando la persona pide
+un asesor.
 
 **Por qué:** el widget de Zoho ejecuta un script en línea distinto para cada
 visitante (incluye su identificador), así que no se puede autorizar con una
@@ -288,12 +295,13 @@ Las pruebas **nunca se conectan con Zoho**: simulan el script y la API.
   - abre la ventana;
   - maneja el error y el tiempo de espera;
   - aplica el diseño del sitio, con la foto de Joel.
-- `tests/unit/joel.test.ts`: al pedir un asesor, la primera opción es el chat
-  con un asesor y Joel avisa del uso de datos.
+- `tests/unit/joel.test.ts`: pedir un asesor pasa directo (sin texto previo);
+  "asesoría", agentes o el teléfono no; el contacto no menciona Zoho y su
+  primera opción es el chat con un asesor.
 - `tests/e2e/flows.spec.ts`:
   - Joel funciona sin cargar Zoho;
-  - "Hablar con un asesor" → aviso → "Chatear con un asesor" carga Zoho en
-    español con el diseño del sitio;
+  - "Hablar con un asesor" conecta de una vez (sin mencionar Zoho);
+  - la cotización solo se envía al pulsar "Enviar a un asesor";
   - se ocultan la ventana y el botón de Joel, y el botón vuelve al cerrar Zoho;
   - si Zoho no carga, Joel ofrece WhatsApp y el formulario.
 - `tests/e2e/csp.spec.ts`: con las cabeceras de `vercel.json`, abrir el chat

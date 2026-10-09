@@ -16,6 +16,8 @@ const { setBridging } = await import("@/lib/crmChat");
 
 let doc: Document;
 const sent: string[] = [];
+// Cómo muestra Zoho el mensaje del visitante (null: no lo muestra)
+let render: (v: string) => string | null = (v) => v;
 
 // Ventana falsa: inicio con "Chatee con nosotros ahora"; al pulsarlo, campo de texto
 function fakeZoho() {
@@ -31,9 +33,11 @@ function fakeZoho() {
       if ((e as KeyboardEvent).key !== "Enter") return;
       sent.push(ta.value);
       // Zoho muestra el mensaje del visitante en la conversación
+      const shownText = render(ta.value);
+      if (shownText === null) return;
       const v = doc.createElement("div");
       v.setAttribute("data-zsqa", "visitor_msg message_bubble");
-      v.innerHTML = `<span data-zsqa="msg">${ta.value}</span>`;
+      v.innerHTML = `<span data-zsqa="msg">${shownText}</span>`;
       doc.getElementById("scroll-container")!.appendChild(v);
     });
     doc.body.appendChild(ta);
@@ -52,6 +56,7 @@ const tick = () => new Promise((r) => setTimeout(r, 1300));
 
 beforeEach(() => {
   sent.length = 0;
+  render = (v) => v;
   fakeZoho();
 });
 afterEach(() => {
@@ -88,6 +93,44 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
     expect(b.send("Y un piano")).toBe(true);
     await tick();
     expect(sent).toEqual(["Hola", "Somos dos", "Y un piano"]);
+  });
+
+  it("envía UNA sola vez un mensaje de varias líneas con emoji (Zoho lo muestra distinto)", async () => {
+    // Zoho cambia los saltos de línea por <br> y el emoji por una imagen
+    render = (v) => v.replace(/\n/g, "<br>").replace("🆕", '<img alt="">');
+    await startBridge("🆕 NUEVA COTIZACIÓN\nCliente: Ana\n\n• Servicio: Mudanza", {
+      onMessage: vi.fn(),
+      onForm: vi.fn(),
+    });
+    await new Promise((r) => setTimeout(r, 6500));
+    expect(sent).toHaveLength(1);
+  }, 10_000);
+
+  it("si Zoho nunca confirma la pregunta, reintenta pocas veces y falla (sin bucle ni falso 'Listo')", async () => {
+    render = () => null;
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const p = startBridge("Hola", { onMessage: vi.fn(), onForm: vi.fn() });
+    const check = expect(p).rejects.toThrow("bridge-send");
+    await vi.advanceTimersByTimeAsync(60_000);
+    await check;
+    expect(sent).toEqual(["Hola", "Hola", "Hola"]);
+    // Después de fallar no sigue enviando
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(sent).toHaveLength(3);
+    vi.useRealTimers();
+  });
+
+  it("si un mensaje posterior no se confirma, avisa a Joel y sigue con los demás", async () => {
+    const onSendFailed = vi.fn();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const b = await startBridge("Hola", { onMessage: vi.fn(), onForm: vi.fn(), onSendFailed });
+    render = () => null;
+    b.send("Perdido");
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(sent).toEqual(["Hola", "Perdido", "Perdido", "Perdido"]);
+    expect(onSendFailed).toHaveBeenCalledWith("Perdido");
+    b.stop();
+    vi.useRealTimers();
   });
 
   it("no repite mensajes ya vistos", async () => {

@@ -150,12 +150,10 @@ test("sin API, el chat con un asesor va por el puente con Zoho, dentro de Joel",
   const chat = await openChat(page);
   // Joel funciona sin cargar Zoho
   expect(requests).toEqual([]);
+  // "Hablar con un asesor" conecta de una vez, sin explicaciones ni la plataforma
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
-  await expect(chat.getByText(/nuestra plataforma de atención \(Zoho SalesIQ\)/)).toBeVisible({
-    timeout: 10_000,
-  });
-  await chat.getByRole("button", { name: "Chatear con un asesor" }).click();
-  await expect(chat.getByText(/Cuéntame en un mensaje/)).toBeVisible();
+  await expect(chat.getByText(/Te conecto con un asesor/)).toBeVisible({ timeout: 10_000 });
+  await expect(chat).not.toContainText(/Zoho/);
   expect(requests).toEqual([]);
   // La pregunta abre la conversación en el Zoho escondido
   await send(chat, "Quiero cotizar una mudanza");
@@ -208,6 +206,10 @@ test("al terminar una cotización con Joel, llega al chat de los asesores para s
   await expect(chat.getByText(/Ese número no parece completo/)).toBeVisible({ timeout: 10_000 });
   await send(chat, "300 123 4567");
   await expect(chat.getByText(/Este es el resumen de tu solicitud/)).toBeVisible({ timeout: 10_000 });
+  // Nada se envía hasta que la persona elige "Enviar a un asesor"
+  await page.waitForTimeout(1000);
+  expect(requests).toEqual([]);
+  await chat.getByRole("button", { name: "Enviar a un asesor" }).click({ timeout: 10_000 });
   // Joel envía la cotización al chat de los asesores (Zoho escondido)
   await expect.poll(() => requests.length, { timeout: 15_000 }).toBe(1);
   const sent = () =>
@@ -225,7 +227,7 @@ test("al terminar una cotización con Joel, llega al chat de los asesores para s
   expect(msg).toContain("Cliente: Luisa");
   expect(msg).toContain("Celular / WhatsApp: 300 123 4567");
   expect(msg).toContain("• Origen: Chapinero");
-  await expect(chat.getByText(/Un asesor te contactará al 300 123 4567/)).toBeVisible();
+  await expect(chat.getByText(/Te contactará al 300 123 4567/)).toBeVisible();
   // La ventana queda escuchando: la respuesta del asesor aparece en Joel
   await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({ timeout: 10_000 });
   await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
@@ -239,7 +241,6 @@ test("si el chat con un asesor no carga, Joel ofrece WhatsApp y el formulario", 
   await page.goto("/");
   const chat = await openChat(page);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
-  await chat.getByRole("button", { name: "Chatear con un asesor" }).click();
   await send(chat, "Hola");
   await expect(chat.getByText("No pudimos abrir el chat con un asesor")).toBeVisible({
     timeout: 15_000,
@@ -280,12 +281,11 @@ test("chat con un asesor dentro de Joel: se escribe y se responde ahí mismo", a
   await page.goto("/");
   const chat = await openChat(page);
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click();
-  await chat.getByRole("button", { name: "Chatear con un asesor" }).click({ timeout: 10_000 });
-  await expect(chat.getByText(/Cuéntame en un mensaje qué necesitas/)).toBeVisible();
+  await expect(chat.getByText(/Te conecto con un asesor/)).toBeVisible({ timeout: 10_000 });
   await expect(chat.getByText("Chat con un asesor de Transpack")).toBeVisible();
   // La primera pregunta abre la conversación
   await send(chat, "Quiero cotizar una mudanza a Canadá");
-  await expect(chat.getByText(/ya le avisé a nuestro equipo/)).toBeVisible();
+  await expect(chat.getByText(/un asesor te responderá aquí/)).toBeVisible();
   expect(calls.find((c) => c.action === "start")?.question).toBe("Quiero cotizar una mudanza a Canadá");
   // La respuesta del asesor aparece en la ventana de Joel, con su nombre
   await expect(chat.getByText("Laura se unió a la conversación.")).toBeVisible({ timeout: 15_000 });

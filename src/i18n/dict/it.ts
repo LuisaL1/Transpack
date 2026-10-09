@@ -109,7 +109,6 @@ const dict: Record<string, string> = {
   "Send it on WhatsApp and an advisor will reply with an estimate. If needed, we'll arrange an on-site survey.":
     "Inviala via WhatsApp: un consulente ti risponderà con una stima. Se necessario, organizzeremo un sopralluogo.",
   "Send on WhatsApp": "Invia su WhatsApp",
-  "Complete it in the quote form": "Completala nel modulo di preventivo",
   "Start over": "Ricomincia",
   "These are the questions we're asked most often:": "Ecco le domande che ci fanno più spesso:",
   "What services do you offer?": "Quali servizi offrite?",
@@ -602,10 +601,6 @@ const dict: Record<string, string> = {
     "Chatta con un consulente (in spagnolo)",
   "Leave a message":
     "Lascia un messaggio",
-  "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.":
-    "Certo! Puoi chattare ora con un consulente del nostro team oppure, se preferisci, scriverci su WhatsApp, chiamarci o inviarci un'e-mail.",
-  "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.":
-    "Un consulente del nostro team ti assisterà in spagnolo dalla nostra piattaforma di assistenza clienti (Zoho SalesIQ). I tuoi messaggi vengono conservati nel nostro sistema clienti, secondo la nostra informativa privacy.",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "Non siamo riusciti ad aprire la chat con un consulente in questo momento. Contattaci in un altro modo:",
   // ─── Chat con un asesor dentro de Joel ───
@@ -613,12 +608,8 @@ const dict: Record<string, string> = {
     "Consulente",
   "Chat with a Transpack advisor":
     "Chat con un consulente Transpack",
-  "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.":
-    "Fatto, il nostro team è stato avvisato. Un consulente ti risponderà qui a breve; puoi continuare a scrivere.",
   "Our advisors are busy right now. You can keep waiting here or reach us another way:":
     "I nostri consulenti sono occupati in questo momento. Puoi continuare ad aspettare qui o contattarci in un altro modo:",
-  "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).":
-    "Dimmi in un messaggio di cosa hai bisogno e ti metto in contatto con un consulente del nostro team. Ti risponderà proprio qui (il nostro team risponde in spagnolo).",
   "The advisor ended the conversation. Thank you for writing to us!":
     "Il consulente ha terminato la conversazione. Grazie per averci scritto!",
   "Write your message to the advisor…":
@@ -639,11 +630,22 @@ const dict: Record<string, string> = {
   // ─── Cotización del chat → seguimiento del equipo comercial ───
   "E.g. +1 555 123 4567":
     "Es. +39 312 345 6789",
-  "I couldn't send your request to our team right now. Send it on WhatsApp with the button above and an advisor will reply.":
-    "Non sono riuscito a inviare la tua richiesta al nostro team in questo momento. Inviala su WhatsApp con il pulsante qui sopra e un consulente ti risponderà.",
   "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.":
     "Questo numero non sembra completo. Puoi riscriverlo? Se è di un altro paese, includi il prefisso internazionale.",
   "With your request, our sales team will contact you to follow up.":
     "Con la tua richiesta, il nostro team commerciale ti contatterà per darti seguito.",
+  // ─── Asesor directo y cotización a un asesor ───
+  "Done, an advisor will reply here shortly.":
+    "Fatto, un consulente ti risponderà qui a breve.",
+  "I couldn't send it right now. Send it on WhatsApp with the button above and an advisor will reply.":
+    "Non sono riuscito a inviarla in questo momento. Inviala su WhatsApp con il pulsante qui sopra e un consulente ti risponderà.",
+  "I'll connect you with an advisor.":
+    "Ti metto in contatto con un consulente.",
+  "I'll connect you with an advisor. Write your message and they'll reply right here (in Spanish).":
+    "Ti metto in contatto con un consulente. Scrivi il tuo messaggio e ti risponderà proprio qui (in spagnolo).",
+  "Send it to an advisor and they'll contact you with an estimate.":
+    "Inviala a un consulente e ti contatterà con una stima.",
+  "Send to an advisor":
+    "Invia a un consulente",
 };
 export default dict;

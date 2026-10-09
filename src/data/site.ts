@@ -590,7 +590,7 @@ export const PRIVACY = {
           [
             "Chat de Joel (asesor virtual)",
             "Las opciones que eliges y lo que escribes en la conversación, incluido tu nombre, tu celular o WhatsApp y, si aplica, el nombre de tu empresa.",
-            "Orientarte y preparar tu solicitud. Si terminas una cotización con Joel, el resumen (con tu nombre y celular) se envía a nuestro equipo comercial por Zoho SalesIQ para contactarte y darte seguimiento. Lo demás de la conversación se queda en tu navegador.",
+            "Orientarte y preparar tu solicitud. Si eliges enviar tu cotización a un asesor, el resumen (con tu nombre y celular) se envía a nuestro equipo comercial por Zoho SalesIQ para contactarte y darte seguimiento. Lo demás de la conversación se queda en tu navegador.",
           ],
           [
             "Chat con un asesor (Zoho SalesIQ)",

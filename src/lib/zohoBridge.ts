@@ -117,11 +117,15 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   const queue: { text: string; at: number }[] = [{ text: question, at: Date.now() }];
   const QUEUE_MS = 60_000;
   const VISITOR = '[data-zsqa="visitor_msg message_bubble"]';
+  // Zoho cambia el texto al mostrarlo (saltos de línea, emojis como imagen…):
+  // se compara solo con letras y números.
+  const norm = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
   // Cuántas veces aparece un texto entre los mensajes del visitante en Zoho
   const shown = (text: string) =>
     Array.from(doc.querySelectorAll(VISITOR)).filter(
-      (el) => el.querySelector('[data-zsqa="msg"]')?.textContent?.trim() === text.trim(),
+      (el) => norm(el.querySelector('[data-zsqa="msg"]')?.textContent ?? "") === norm(text),
     ).length;
+  const visitorCount = () => doc.querySelectorAll(VISITOR).length;
   // El campo de Zoho en su estado normal (no pidiendo nombre, correo o teléfono)
   const ta = doc.querySelector<HTMLTextAreaElement>("textarea.siqcw-textarea");
   const normalPlaceholder = ta?.placeholder ?? "";
@@ -129,22 +133,44 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
     const t = doc.querySelector<HTMLTextAreaElement>("textarea.siqcw-textarea");
     return !!t && !t.disabled && (!normalPlaceholder || t.placeholder === normalPlaceholder);
   };
-  let inFlight: { before: number; at: number } | null = null;
+  // Un envío no confirmado se reintenta, pero pocas veces: si Zoho lo recibió y
+  // no se pudo confirmar, reintentar sin límite lo repetiría sin fin.
+  const MAX_TRIES = 3;
+  let tries = 0;
+  // El primer mensaje (la pregunta): startBridge espera a que Zoho lo confirme
+  let first: "pending" | "ok" | "failed" = "pending";
+  let inFlight: { before: number; total: number; at: number } | null = null;
   const flush = () => {
     if (!queue.length) return;
-    // Esperando que Zoho muestre el último envío (se confirma por su texto)
+    // Esperando que Zoho muestre el último envío: aparece su texto o, al
+    // menos, un mensaje nuevo del visitante
     if (inFlight) {
-      if (shown(queue[0].text) > inFlight.before) {
+      if (shown(queue[0].text) > inFlight.before || visitorCount() > inFlight.total) {
         queue.shift();
         inFlight = null;
-      } else if (Date.now() - inFlight.at > 5000) inFlight = null; // se reintenta
-      else return;
+        tries = 0;
+        if (first === "pending") first = "ok";
+      } else if (Date.now() - inFlight.at > 5000) {
+        inFlight = null;
+        if (tries >= MAX_TRIES) {
+          tries = 0;
+          fail(queue.shift()!.text);
+        }
+      } else return;
       if (!queue.length) return;
     }
     if (ready()) {
       const before = shown(queue[0].text);
-      if (type(doc, queue[0].text)) inFlight = { before, at: Date.now() };
-    } else if (Date.now() - queue[0].at > QUEUE_MS) h.onSendFailed?.(queue.shift()!.text);
+      const total = visitorCount();
+      if (type(doc, queue[0].text)) {
+        tries++;
+        inFlight = { before, total, at: Date.now() };
+      }
+    } else if (Date.now() - queue[0].at > QUEUE_MS) fail(queue.shift()!.text);
+  };
+  const fail = (text: string) => {
+    if (first === "pending") first = "failed";
+    else h.onSendFailed?.(text);
   };
 
   // Un mensaje de Zoho se procesa cuando ya está completo: el texto llega a
@@ -188,6 +214,23 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   const timer = window.setInterval(scan, 400);
   scan();
 
+  // Solo hay conversación si Zoho recibió la pregunta: si no, se deja todo
+  // como estaba y Joel ofrece otro canal (en vez de decir "Listo").
+  const stopAll = () => {
+    obs.disconnect();
+    window.clearInterval(timer);
+    queue.length = 0;
+  };
+  try {
+    await until(() => (first === "pending" ? null : first), 30_000);
+  } catch {
+    first = "failed";
+  }
+  if (first === "failed") {
+    stopAll();
+    throw new Error("bridge-send");
+  }
+
   return {
     send: (text) => {
       queue.push({ text, at: Date.now() });
@@ -217,8 +260,7 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
       z.floatwindow?.visible("show");
     },
     stop: () => {
-      obs.disconnect();
-      window.clearInterval(timer);
+      stopAll();
       z.floatwindow?.visible("hide");
       setBridging(false);
       document.documentElement.classList.remove("tp-zoho-open");

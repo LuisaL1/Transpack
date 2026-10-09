@@ -471,7 +471,7 @@ export const PRIVACY = {
           [
             "Joel chat (virtual advisor)",
             "The options you choose and what you write in the conversation, including your name, your mobile or WhatsApp number and, if applicable, your company's name.",
-            "To guide you and prepare your request. If you complete a quote with Joel, the summary (with your name and mobile number) is sent to our sales team through Zoho SalesIQ so they can contact you and follow up. The rest of the conversation stays in your browser.",
+            "To guide you and prepare your request. If you choose to send your quote to an advisor, the summary (with your name and mobile number) is sent to our sales team through Zoho SalesIQ so they can contact you and follow up. The rest of the conversation stays in your browser.",
           ],
           [
             "Advisor chat (Zoho SalesIQ)",

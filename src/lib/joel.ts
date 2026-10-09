@@ -40,6 +40,8 @@ export type JoelReply = {
   options?: JoelOption[];
   intent: string;
   service?: string;
+  /** Pasar de una vez al chat con un asesor (el chat lo hace, sin más texto) */
+  handoff?: boolean;
 };
 
 type QuoteKind = "local" | "nacional" | "internacional" | "empresarial" | "bodegaje";
@@ -719,13 +721,19 @@ const RULES: Rule[] = [
       "correo",
       "email",
       "whatsapp",
+    ],
+  },
+  {
+    // Quiere hablar con una persona: se le pasa al asesor de una vez
+    id: "asesor",
+    kws: [
       "asesor",
+      "asesora",
       "humano",
       "persona real",
+      "con una persona",
       "hablar con alguien",
-      "comercial",
       "vendedor",
-      "agente",
     ],
   },
   {
@@ -2376,12 +2384,11 @@ export function createJoel(kb: JoelKB) {
     contacto: () => ({
       intent: "contacto",
       say: [
-        "¡Claro! Puedes chatear ahora con un asesor de nuestro equipo o, si prefieres, escribirnos por WhatsApp, llamarnos o enviarnos un correo.",
-        "Un asesor de nuestro equipo te atiende desde nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
-        `También puedes visitarnos en ${kb.contact.address}.`,
+        `Escríbenos por WhatsApp o llámanos al ${phone}. También puedes chatear aquí mismo con un asesor.`,
       ],
       actions: CONTACT,
     }),
+    asesor: () => ({ intent: "asesor", say: [], handoff: true }),
     certificaciones: () => ({
       intent: "certificaciones",
       say: [
@@ -2572,6 +2579,10 @@ export function createJoel(kb: JoelKB) {
       mem.rude++;
       return RESP.ofensa(mem, asked, t, words);
     }
+
+    // Quiere hablar con una persona: se le pasa de una vez
+    // ("asesoría" es pedir orientación, no un asesor: Joel la da primero)
+    if (scores.asesor && !/asesori/.test(t)) return RESP.asesor(mem, asked, t, words);
 
     // Pregunta específica conocida (la respuesta más precisa)
     const fact = matchFact(t, words, mem);

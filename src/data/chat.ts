@@ -19,6 +19,8 @@ export type ChatAction = {
   to?: string;
   /** Abre el chat con un asesor (Zoho SalesIQ, src/lib/crmChat.ts) */
   crm?: boolean;
+  /** Envía la cotización del chat a un asesor (useAdvisorChat) */
+  sendQuote?: boolean;
   /** Evento de Google Analytics al pulsar la acción (p. ej. la solicitud enviada) */
   event?: { name: string; params?: Record<string, string> };
 };
@@ -131,9 +133,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
       summary(d),
       ...(lang !== "es" ? ["", `[Idioma del cliente: ${LANG_INFO[lang].name}]`] : []),
     ].join("\n");
-
-  const quoteService = (d: ChatData) =>
-    d.servicio === "empresarial" ? "empresarial" : d.servicio || "local";
 
   const MAIN: ChatOption[] = [
     {
@@ -503,10 +502,18 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           },
         ),
         summary(d),
-        // Después de este paso, useAdvisorChat envía la cotización al chat de
-        // los asesores y Joel confirma (o sugiere WhatsApp si no se pudo).
+        tr(
+          "Envíala a un asesor y te contactará para darte el estimado.",
+          "Send it to an advisor and they'll contact you with an estimate.",
+        ),
       ],
       actions: (d) => [
+        {
+          // Le llega al asesor en su chat (useAdvisorChat → Zoho SalesIQ)
+          label: tr("Enviar a un asesor", "Send to an advisor"),
+          icon: "headset",
+          sendQuote: true,
+        },
         {
           label: tr("Enviar por WhatsApp", "Send on WhatsApp"),
           icon: "whatsapp",
@@ -526,16 +533,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
             empresa: d.empresa,
             mensaje: waMessage(d),
           }),
-        },
-        {
-          label: tr("Completar en el cotizador", "Complete it in the quote form"),
-          icon: "ui-checks",
-          to: lp(`/?servicio=${quoteService(d)}#cotizar`),
-        },
-        {
-          label: tr("Política de datos", "Privacy policy"),
-          icon: "shield-lock",
-          to: lp("/privacidad"),
         },
       ],
       options: [
@@ -591,28 +588,10 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         SERVICES.map((s) => ({ label: s.title, icon: s.icon, to: lp(`/servicios/${s.slug}`) })),
       options: [QUOTE, BACK],
     },
+    // "Hablar con un asesor": useAdvisorChat conecta de una vez con el asesor.
+    // Este paso solo se muestra si eso no es posible.
     human: {
-      say: () => [
-        tr(
-          "¡Claro! Puedes chatear ahora con un asesor de nuestro equipo o, si prefieres, escribirnos por WhatsApp, llamarnos o enviarnos un correo.",
-          "Of course! You can chat now with an advisor from our team or, if you prefer, message us on WhatsApp, call us or send us an email.",
-        ),
-        // Aviso antes de cargar Zoho (Ley 1581): se carga solo si elige el chat
-        tr(
-          "Un asesor de nuestro equipo te atiende en español desde nuestra plataforma de atención (Zoho SalesIQ). Tus mensajes quedan en nuestro sistema de clientes, según nuestra política de datos.",
-          "An advisor from our team will assist you in Spanish from our customer service platform (Zoho SalesIQ). Your messages are stored in our customer system, in line with our privacy policy.",
-        ),
-        tr(
-          `También puedes visitarnos en ${CONTACT.address}.`,
-          `You can also visit us at ${CONTACT.address}.`,
-          {
-            fr: `Vous pouvez aussi nous rendre visite : ${CONTACT.address}.`,
-            de: `Sie können uns auch besuchen: ${CONTACT.address}.`,
-            it: `Puoi anche venirci a trovare: ${CONTACT.address}.`,
-            ar: `يمكنك أيضًا زيارتنا في: ${CONTACT.address}.`,
-          },
-        ),
-      ],
+      say: () => [tr("Te conecto con un asesor.", "I'll connect you with an advisor.")],
       actions: () => [
         {
           label: tr("Chatear con un asesor", "Chat with an advisor (in Spanish)"),
@@ -633,11 +612,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           }),
           icon: "telephone",
           href: `tel:+57${CONTACT.phones[0].replace(/\s/g, "")}`,
-        },
-        {
-          label: tr("Enviar un correo", "Send an email"),
-          icon: "envelope",
-          href: contactHref(),
         },
       ],
       options: [BACK],
@@ -706,12 +680,12 @@ export const chatText = (tr: Tr) => ({
   crmForm: tr("Dejar un mensaje", "Leave a message"),
   // Chat con un asesor dentro de la ventana de Joel (src/lib/advisorChat.ts)
   advisorAsk: tr(
-    "Cuéntame en un mensaje qué necesitas y te conecto con un asesor de nuestro equipo. Te responderá aquí mismo.",
-    "Tell me in one message what you need and I'll connect you with an advisor from our team. They will reply right here (our team answers in Spanish).",
+    "Te conecto con un asesor. Escríbele tu mensaje y te responderá aquí mismo.",
+    "I'll connect you with an advisor. Write your message and they'll reply right here (in Spanish).",
   ),
   advisorConnecting: tr(
-    "Listo, ya le avisé a nuestro equipo. Un asesor te responderá aquí en unos momentos; puedes seguir escribiendo.",
-    "Done, our team has been notified. An advisor will reply here shortly; you can keep writing.",
+    "Listo, un asesor te responderá aquí en unos momentos.",
+    "Done, an advisor will reply here shortly.",
   ),
   advisorJoined: (name: string) =>
     tr(`${name} se unió a la conversación.`, `${name} joined the conversation.`, {
@@ -759,18 +733,19 @@ export const chatText = (tr: Tr) => ({
   // Cotización enviada al chat de los asesores para seguimiento
   quoteSent: (phone: string) =>
     tr(
-      `Listo, le envié tu solicitud a nuestro equipo comercial. Un asesor te contactará al ${phone} para darte seguimiento; si sigues aquí, también puede escribirte en este chat.`,
-      `Done, I sent your request to our sales team. An advisor will contact you at ${phone} to follow up; if you're still here, they can also write to you in this chat.`,
+      `Listo, tu cotización ya está con un asesor. Te contactará al ${phone}; si sigues aquí, también te puede escribir en este chat.`,
+      `Done, your quote is now with an advisor. They'll contact you at ${phone}; if you're still here, they can also write to you in this chat.`,
       {
-        fr: `C'est fait, j'ai envoyé votre demande à notre équipe commerciale. Un conseiller vous contactera au ${phone} pour assurer le suivi ; si vous êtes encore là, il peut aussi vous écrire dans ce chat.`,
-        de: `Erledigt, ich habe Ihre Anfrage an unser Vertriebsteam gesendet. Ein Berater kontaktiert Sie unter ${phone}; wenn Sie noch hier sind, kann er Ihnen auch in diesem Chat schreiben.`,
-        it: `Fatto, ho inviato la tua richiesta al nostro team commerciale. Un consulente ti contatterà al ${phone} per il seguito; se sei ancora qui, può scriverti anche in questa chat.`,
-        ar: `تم، أرسلت طلبك إلى فريق المبيعات لدينا. سيتواصل معك أحد المستشارين على الرقم ${phone} للمتابعة، وإذا كنت لا تزال هنا يمكنه أيضًا مراسلتك في هذه المحادثة.`,
+        fr: `C'est fait, votre devis est entre les mains d'un conseiller. Il vous contactera au ${phone} ; si vous êtes encore là, il peut aussi vous écrire dans ce chat.`,
+        de: `Erledigt, Ihr Angebot liegt jetzt bei einem Berater. Er kontaktiert Sie unter ${phone}; wenn Sie noch hier sind, kann er Ihnen auch in diesem Chat schreiben.`,
+        it: `Fatto, il tuo preventivo è ora nelle mani di un consulente. Ti contatterà al ${phone}; se sei ancora qui, può scriverti anche in questa chat.`,
+        ar: `تم، أصبح طلب عرض السعر لدى أحد المستشارين. سيتواصل معك على الرقم ${phone}، وإذا كنت لا تزال هنا يمكنه أيضًا مراسلتك في هذه المحادثة.`,
       },
     ),
+  sendToAdvisor: tr("Enviar a un asesor", "Send to an advisor"),
   quoteSendFail: tr(
-    "No pude enviarle tu solicitud a nuestro equipo en este momento. Envíala por WhatsApp con el botón de arriba y un asesor te responderá.",
-    "I couldn't send your request to our team right now. Send it on WhatsApp with the button above and an advisor will reply.",
+    "No pude enviarla en este momento. Envíala por WhatsApp con el botón de arriba y un asesor te responderá.",
+    "I couldn't send it right now. Send it on WhatsApp with the button above and an advisor will reply.",
   ),
 });
 
