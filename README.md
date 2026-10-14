@@ -122,15 +122,21 @@ push y pull request corre además la integración continua de GitHub Actions
 - **Contraste de color (accesibilidad AA)**: el texto blanco sobre el naranja de
   marca y el "+" naranja de las cifras no alcanzan el mínimo (tabla en
   `TESTING.md`). Requiere aprobación de diseño.
-- **Traducciones**: faltan dos etiquetas de accesibilidad de la franja de
-  idiomas en francés, alemán, italiano y árabe (ver `TESTING.md`).
+- **Idiomas**: solo se publican español e inglés. Francés, alemán, italiano y
+  árabe quedaron desactivados (octubre de 2026) por errores de gramática que
+  encontró el cliente; sus textos se conservan y no viajan en el JS. Para
+  volver a publicarlos hay que revisar la traducción completa (incluidas las
+  dos etiquetas de la franja de idiomas que faltan, ver `TESTING.md`).
 - **Rendimiento**:
-  - JS principal de ~670 KB (218 KB comprimido) con los seis idiomas; las
-    librerías van aparte (~260 KB, `vite.config.ts`) y el chat con un asesor se
-    descarga solo al usarlo. Conviene dividir por idioma o por ruta con
-    `React.lazy`. El CI falla si un archivo JS pasa de 800 KB;
-  - fotos en JPG de hasta 425 KB (`cargue.jpg`, `equipo.jpg`, `global.jpg`;
-    convertir a WebP/AVIF y servir tamaños según pantalla).
+  - JS principal de ~330 KB (106 KB comprimido): las librerías van aparte
+    (~260 KB, `vite.config.ts`), el cerebro de Joel (~48 KB) y el chat con un
+    asesor se descargan solo al usarlos. El CI falla si un archivo JS pasa de
+    450 KB. Siguiente paso posible: `React.lazy` por página;
+  - fotos en JPG de hasta 360 KB (`cargue.jpg`, `equipo.jpg`): convertir a
+    WebP/AVIF y servir tamaños según pantalla (`srcset`) cuando el cliente
+    entregue las fotos definitivas;
+  - los íconos (Bootstrap Icons) cargan la fuente completa (~130 KB) y su CSS
+    (~85 KB): se puede pasar a un subconjunto en SVG.
 - **Fotos**: las actuales se reemplazarán cuando el cliente entregue nuevas.
 - **Por confirmar con el cliente**:
   - los 13 destinos de ejemplo del mapa en Suramérica, África y Asia;

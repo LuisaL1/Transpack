@@ -5,7 +5,7 @@ import { segmentsText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
 import { Bi, btn, Checks, Reveal, SectionHead } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
-import { SEGMENT_TOPIC, track } from "@/lib/joel";
+import { SEGMENT_TOPIC, track } from "@/lib/joelProfile";
 
 // Soluciones por segmento (SEGMENTS de src/data/site.ts), en pestañas
 export function Segments() {

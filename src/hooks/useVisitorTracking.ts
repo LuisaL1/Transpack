@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { track, trackVisit } from "@/lib/joel";
+import { track, trackVisit } from "@/lib/joelProfile";
 
 // Perfil del visitante para Joel: registra la visita y las secciones que se
 // quedan al menos 1,5 s en pantalla (solo en el navegador, nunca sale del equipo)

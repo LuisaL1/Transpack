@@ -19,6 +19,28 @@
 // los documentos de la empresa (precios, pólizas, horarios de atención,
 // artículos restringidos…) Joel no lo inventa: lo dice y da el contacto.
 // Responde en español; en los otros idiomas el chat sigue el flujo guiado.
+// Este archivo pesa ~120 KB: el chat lo carga aparte (import dinámico en
+// src/hooks/useAdvisorChat.ts). El perfil del visitante está en joelProfile.ts.
+
+import {
+  loadProfile,
+  QUOTE_TOPIC,
+  saveProfile,
+  SEGMENT_TOPIC,
+  type Memory,
+  type QuoteKind,
+} from "@/lib/joelProfile";
+// El perfil y la memoria viven en joelProfile.ts (ligero). Se reexportan para
+// las pruebas; el sitio debe importarlos desde "@/lib/joelProfile".
+export {
+  newMemory,
+  QUOTE_TOPIC,
+  SEGMENT_TOPIC,
+  track,
+  trackSearch,
+  trackVisit,
+  type Memory,
+} from "@/lib/joelProfile";
 
 export type JoelAction = {
   label: string;
@@ -44,7 +66,7 @@ export type JoelReply = {
   handoff?: boolean;
 };
 
-type QuoteKind = "local" | "nacional" | "internacional" | "empresarial" | "bodegaje";
+
 
 export type JoelKB = {
   services: {
@@ -77,89 +99,6 @@ export type JoelKB = {
   posts: { slug: string; title: string; cat: string; excerpt: string }[];
 };
 
-// ─── 1. Perfil del visitante ────────────────────────────────────────────────
-
-type Profile = {
-  visits: number;
-  first: number;
-  last: number;
-  counts: Record<string, number>; // "section:faq", "service:slug", "article:slug", "quote:tipo", "chat:intent"
-  searches: string[];
-  learned: Record<string, string>; // palabra → destino ("service:clave" | "intent:id")
-  unknown: string[]; // preguntas que no supo responder (para revisar)
-};
-const KEY = "tp-joel-profile";
-const empty = (): Profile => ({
-  visits: 0,
-  first: Date.now(),
-  last: Date.now(),
-  counts: {},
-  searches: [],
-  learned: {},
-  unknown: [],
-});
-
-function load(): Profile {
-  try {
-    const p = JSON.parse(localStorage.getItem(KEY) || "null");
-    if (p && typeof p === "object") return { ...empty(), ...p };
-  } catch {
-    /* sin almacenamiento */
-  }
-  return empty();
-}
-function save(p: Profile) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(p));
-  } catch {
-    /* sin almacenamiento */
-  }
-}
-
-/** Registra una visita (una vez por sesión del navegador). */
-export function trackVisit() {
-  try {
-    if (sessionStorage.getItem("tp-joel-visit")) return;
-    sessionStorage.setItem("tp-joel-visit", "1");
-  } catch {
-    /* sin almacenamiento */
-  }
-  const p = load();
-  p.visits += 1;
-  p.last = Date.now();
-  save(p);
-}
-/** Registra un evento: track("section", "faq"), track("service", slug)… */
-export function track(kind: "section" | "service" | "article" | "quote" | "chat", key: string) {
-  const p = load();
-  const k = `${kind}:${key}`;
-  p.counts[k] = (p.counts[k] || 0) + 1;
-  p.last = Date.now();
-  save(p);
-}
-export function trackSearch(q: string) {
-  const t = q.trim();
-  if (t.length < 3) return;
-  const p = load();
-  p.searches = [t, ...p.searches.filter((x) => x !== t)].slice(0, 15);
-  save(p);
-}
-
-// Tipo de cotización (cotizador y chat) → tema de Joel
-export const QUOTE_TOPIC: Record<QuoteKind, string> = {
-  local: "mudanzas-locales",
-  nacional: "mudanzas-nacionales",
-  internacional: "mudanzas-internacionales",
-  empresarial: "empresas",
-  bodegaje: "bodegaje",
-};
-// Segmento de la sección "Soluciones" → tema de Joel
-export const SEGMENT_TOPIC: Record<string, string> = {
-  corporate: "empresas",
-  diplomatic: "embajadas",
-  diaspora: "mudanzas-internacionales",
-};
-
 type Insight = {
   returning: boolean;
   segment: "tecnico" | "comprador" | "explorador";
@@ -171,7 +110,7 @@ function getInsight(
   topicOf: (text: string) => string | undefined,
   articleTopic: (slug: string) => string | undefined,
 ): Insight {
-  const p = load();
+  const p = loadProfile();
   const c = p.counts;
   const sum = (prefix: string) =>
     Object.entries(c)
@@ -413,14 +352,6 @@ function daysIn(t: string): number | undefined {
 
 // ─── 3. Motor ──────────────────────────────────────────────────────────────
 
-export type Memory = {
-  lastService?: string;
-  lastIntent?: string;
-  unknownStreak: number;
-  rude: number;
-  pendingWords: string[];
-};
-export const newMemory = (): Memory => ({ unknownStreak: 0, rude: 0, pendingWords: [] });
 
 // Pasos del chat guiado (AdvisorChat) en los que empieza cada cotización
 const ENTRY: Record<QuoteKind, string> = {
@@ -2514,7 +2445,7 @@ export function createJoel(kb: JoelKB) {
 
   // Tema más probable de un texto (también para clasificar búsquedas y artículos)
   function topicScores(t: string, words: string[]): [string, number][] {
-    const learned = load().learned;
+    const learned = loadProfile().learned;
     const s: Record<string, number> = {};
     const add = (k: string, n: number) => (s[k] = (s[k] || 0) + n);
     for (const [key, kws] of Object.entries(TOPIC_KEYWORDS))
@@ -2553,7 +2484,7 @@ export function createJoel(kb: JoelKB) {
   function think(text: string, mem: Memory): JoelReply {
     const t = norm(text);
     const words = t.split(" ").filter(Boolean);
-    const learned = load().learned;
+    const learned = loadProfile().learned;
 
     // Puntuar intenciones
     const scores: Record<string, number> = {};
@@ -2675,9 +2606,9 @@ export function createJoel(kb: JoelKB) {
     // No entendió: guarda la pregunta y las palabras para aprender de la siguiente elección
     mem.unknownStreak++;
     mem.pendingWords = kw;
-    const p = load();
+    const p = loadProfile();
     p.unknown = [text, ...p.unknown.filter((u) => u !== text)].slice(0, 30);
-    save(p);
+    saveProfile(p);
     if (mem.unknownStreak >= 2)
       return {
         intent: "fallback2",
@@ -2701,9 +2632,9 @@ export function createJoel(kb: JoelKB) {
    *  elige un servicio concreto, se queda con ese, que es más preciso. */
   function learn(mem: Memory, dest: string) {
     if (!mem.pendingWords.length) return;
-    const p = load();
+    const p = loadProfile();
     for (const w of mem.pendingWords) if (w.length >= 4 && !STOP.has(w)) p.learned[w] = dest;
-    save(p);
+    saveProfile(p);
     if (dest.startsWith("service:")) mem.pendingWords = [];
     mem.unknownStreak = 0;
   }

@@ -19,7 +19,7 @@ import { useSite } from "@/hooks/useContent";
 import { LANG_INFO, makeTr, useLang, type Lang } from "@/i18n";
 import { Bi, btn } from "@/components/ui";
 import { Chips, Field, inputCls, Label } from "@/components/home/QuoteFields";
-import { track } from "@/lib/joel";
+import { track } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
 import { sendLead } from "@/lib/leads";
 import { contactFormText } from "@/data/contact";

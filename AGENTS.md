@@ -18,6 +18,16 @@ publica en Vercel.
 - `pnpm check:all` — lo anterior + auditoría de dependencias + extremo a extremo
 - `pnpm map` — regenera `src/data/worldMap.ts` (países y destinos del mapamundi)
 - `pnpm format` — formatea con oxfmt
+- `pnpm brevo:events` — motivo de cada error de envío en Brevo (`docs/formularios.md`)
+
+### Rendimiento (límites que vigila el CI)
+
+- El JS principal debe quedar **por debajo de 450 KB** sin comprimir
+  (`.github/workflows/ci.yml`). Lo pesado va aparte: React y React Router en el
+  chunk `vendor` (`vite.config.ts`), el cerebro de Joel y Zoho con `import()`.
+- Fotos: JPG de **máximo 1200 px** en el lado largo (900 px en la galería),
+  calidad ~72, idealmente **menos de 200 KB** cada una. Los originales del
+  cliente van en `RecursosTranspack/Imagenes/`, no en la raíz del proyecto.
 
 ## Arquitectura (`src/`)
 
@@ -69,7 +79,10 @@ src/
 │   ├── clientLogos.ts      Logos de clientes
 │   └── worldMap.ts         Mapamundi (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
-│   ├── joel.ts             "Cerebro" del asesor virtual (sin IA externa)
+│   ├── joel.ts             "Cerebro" del asesor virtual (sin IA externa; ~120 KB,
+│   │                       se descarga aparte al abrir el chat)
+│   ├── joelProfile.ts      Perfil del visitante (localStorage) y memoria del chat:
+│   │                       la parte ligera de Joel que usan las páginas (track…)
 │   ├── chatRoute.ts        Chat en en/fr/de/it/ar: palabras clave → paso
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
@@ -91,7 +104,9 @@ api/contact.mjs              Función de Vercel: formularios → Brevo → corre
 api/advisor.mjs              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs (pnpm map) y prerender.mjs (HTML por ruta, sitemap, robots)
+scripts/                    generate-world-map.mjs (pnpm map), prerender.mjs (HTML por ruta, sitemap,
+                            robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
+                            (diagnóstico de envíos) y zoho-token.mjs / zoho-advisor-check.mjs (API de Zoho)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
@@ -120,8 +135,11 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   2026 porque la revisión del cliente encontró errores de gramática: sus
   textos se conservan (`dict/` y `site.<idioma>.ts`, `ALL_LANGS`), pero no
   tienen rutas, no aparecen en el selector ni en el sitemap, y sus URLs
-  antiguas redirigen a `/en` (`vercel.json`). No los borre. Para volver a
-  publicar uno, revise su traducción y agréguelo a `LANGS`.
+  antiguas redirigen a `/en` (`vercel.json`). No los borre. Su contenido
+  tampoco viaja en el JS del sitio: `src/data/content.ts` y el `DICT` de
+  `src/i18n/index.ts` solo importan los idiomas publicados. Para volver a
+  publicar uno, revise su traducción y agréguelo a `LANGS`, a `content.ts`
+  (`SITES`, `POSTS`) y a `DICT`.
 
 - Español en la raíz (`/`, `/nosotros`, `/servicios/...`); los demás con prefijo
   y URLs traducidas (`/en/about`, `/fr/services/...`, `/de/leistungen/...`).
@@ -208,7 +226,10 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 
 ## Joel (asesor virtual)
 
-- `src/lib/joel.ts` (cerebro, solo en español):
+- `src/lib/joel.ts` (cerebro, solo en español; **pesa ~120 KB y se carga con
+  `import()` desde `useAdvisorChat`**, nunca con import estático desde las
+  páginas: lo ligero —`track`, `trackVisit`, `trackSearch`, `newMemory`,
+  `QUOTE_TOPIC`— se importa de `src/lib/joelProfile.ts`):
   - entiende texto libre: palabras clave, sinónimos, raíces y errores de tipeo;
   - responde preguntas específicas (FACTS) antes que el resumen del servicio;
   - recuerda de qué servicio se venía hablando;

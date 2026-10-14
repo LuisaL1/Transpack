@@ -6,7 +6,7 @@ import { SEARCH_SUGGESTIONS, searchIndex, searchText } from "@/data/search";
 import { search, type SearchEntry } from "@/lib/search";
 import { useLang } from "@/i18n";
 import { Bi } from "@/components/ui";
-import { trackSearch } from "@/lib/joel";
+import { trackSearch } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
 import { openChat } from "@/components/layout/MenuLink";
 

@@ -1,40 +1,29 @@
 // Contenido del sitio en cada idioma (los hooks que lo leen según la URL están
 // en src/hooks/useContent.ts).
+//
+// Solo se importan los idiomas PUBLICADOS (LANGS en src/i18n/index.ts): así el
+// contenido de los idiomas desactivados no viaja en el JS del sitio. Para
+// volver a publicar uno, agréguelo a LANGS y a SITES y POSTS aquí
+// (por ejemplo `import * as fr from "@/data/site.fr"`) y su diccionario en
+// src/i18n/index.ts. Los archivos site.<idioma>.ts y blogData.<idioma>.ts de
+// los idiomas desactivados se conservan.
 import * as es from "@/data/site";
 import * as en from "@/data/site.en";
-import * as fr from "@/data/site.fr";
-import * as de from "@/data/site.de";
-import * as it from "@/data/site.it";
-import * as ar from "@/data/site.ar";
 import { blogPosts as postsEs, type Post } from "@/data/blogData";
 import { blogPosts as postsEn } from "@/data/blogData.en";
-import { blogPosts as postsFr } from "@/data/blogData.fr";
-import { blogPosts as postsDe } from "@/data/blogData.de";
-import { blogPosts as postsIt } from "@/data/blogData.it";
-import { blogPosts as postsAr } from "@/data/blogData.ar";
 import type { Lang } from "@/i18n";
 
 export type SiteContent = typeof es;
 
-const SITES: Record<Lang, SiteContent> = {
+const SITES: Partial<Record<Lang, SiteContent>> = {
   es,
   en: en as unknown as SiteContent,
-  fr: fr as unknown as SiteContent,
-  de: de as unknown as SiteContent,
-  it: it as unknown as SiteContent,
-  ar: ar as unknown as SiteContent,
 };
-const POSTS: Record<Lang, Post[]> = {
-  es: postsEs,
-  en: postsEn,
-  fr: postsFr,
-  de: postsDe,
-  it: postsIt,
-  ar: postsAr,
-};
+const POSTS: Partial<Record<Lang, Post[]>> = { es: postsEs, en: postsEn };
 
-export const siteFor = (lang: Lang): SiteContent => SITES[lang];
-export const postsFor = (lang: Lang) => POSTS[lang];
+/** Contenido del idioma (un idioma no publicado cae al español) */
+export const siteFor = (lang: Lang): SiteContent => SITES[lang] ?? es;
+export const postsFor = (lang: Lang): Post[] => POSTS[lang] ?? postsEs;
 
 // Nombres de los destinos del mapa en cada idioma (clave = nombre en español)
 export const DESTINATION_NAMES: Record<string, Record<Exclude<Lang, "es">, string>> = {

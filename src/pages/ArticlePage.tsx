@@ -6,7 +6,7 @@ import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import { track } from "@/lib/joel";
+import { track } from "@/lib/joelProfile";
 
 function ListItem({ item }: { item: Item }) {
   if (typeof item === "string") return <li>{item}</li>;

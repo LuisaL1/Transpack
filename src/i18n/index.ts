@@ -8,10 +8,6 @@
 // idioma: tr(`Hola ${n}`, `Hi ${n}`, { fr: `Bonjour ${n}`, ... }).
 import { useCallback } from "react";
 import { useLocation } from "react-router-dom";
-import fr from "@/i18n/dict/fr";
-import de from "@/i18n/dict/de";
-import it from "@/i18n/dict/it";
-import ar from "@/i18n/dict/ar";
 
 export type Lang = "es" | "en" | "fr" | "de" | "it" | "ar";
 /** Idiomas con traducción en el código (se conservan aunque no se publiquen) */
@@ -35,7 +31,10 @@ export const LANG_INFO: Record<
   ar: { name: "العربية", locale: "ar", hreflang: "ar", dir: "rtl" },
 };
 
-const DICT: Partial<Record<Lang, Record<string, string>>> = { fr, de, it, ar };
+// Diccionarios de los idiomas publicados que los necesitan (el español y el
+// inglés van en el propio tr()). Al publicar francés, alemán, italiano o árabe,
+// importe su diccionario aquí: `import fr from "@/i18n/dict/fr"` → `{ fr }`.
+const DICT: Partial<Record<Lang, Record<string, string>>> = {};
 
 export type Others = Partial<Record<Exclude<Lang, "es" | "en">, string>>;
 export type Tr = (es: string, en: string, others?: Others) => string;

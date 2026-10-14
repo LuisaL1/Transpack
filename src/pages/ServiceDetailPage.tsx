@@ -5,7 +5,7 @@ import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import { track } from "@/lib/joel";
+import { track } from "@/lib/joelProfile";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";

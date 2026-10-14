@@ -15,10 +15,10 @@ import {
   type ChatOption,
   type ChatStep,
 } from "@/data/chat";
-import { joelKnowledge } from "@/data/joelKnowledge";
 import { makeTr, useLang } from "@/i18n";
 import { routeChat } from "@/lib/chatRoute";
-import { createJoel, newMemory, QUOTE_TOPIC, track, type JoelReply } from "@/lib/joel";
+import type { JoelReply } from "@/lib/joel";
+import { newMemory, QUOTE_TOPIC, track } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
 import { ADVISOR_EVENT, CRM_CHAT_EVENT, QUOTE_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
@@ -34,9 +34,17 @@ import {
   WAIT_MS,
 } from "@/lib/advisorChat";
 
-// El cerebro se crea al usarse por primera vez (solo en español).
-let joelBrain: ReturnType<typeof createJoel> | null = null;
-const getJoel = () => (joelBrain ??= createJoel(joelKnowledge()));
+// El cerebro de Joel (src/lib/joel.ts, ~120 KB, solo en español) se descarga
+// APARTE del resto del sitio: se pide en un momento libre al cargar la página
+// y, si todavía no llegó cuando se abre el chat, se espera. Así el JS principal
+// queda más liviano y la primera pintura es más rápida.
+type Brain = ReturnType<typeof import("@/lib/joel").createJoel>;
+let joelBrain: Brain | null = null;
+let joelLoading: Promise<Brain> | null = null;
+const loadJoel = () =>
+  (joelLoading ??= Promise.all([import("@/lib/joel"), import("@/data/joelKnowledge")]).then(
+    ([j, k]) => (joelBrain = j.createJoel(k.joelKnowledge())),
+  ));
 
 // Pasos que inician una cotización en el chat
 const QUOTE_STEPS = new Set(["origen", "int_info", "bod_que", "empresa"]);
@@ -76,7 +84,11 @@ export function useAdvisorChat() {
 
   // Pasa un texto libre por el cerebro de Joel y muestra su respuesta
   const think = (value: string, d: ChatData) => {
-    const r = getJoel().respond(value, mem.current);
+    if (!joelBrain) {
+      void loadJoel().then(() => think(value, d));
+      return;
+    }
+    const r = joelBrain.respond(value, mem.current);
     track("chat", r.intent);
     // Pidió hablar con un asesor: se le pasa de una vez
     if (r.handoff) {
@@ -92,6 +104,12 @@ export function useAdvisorChat() {
 
   // Muestra los mensajes de un paso uno a uno, con indicador de "escribiendo"
   const goTo = (id: string, d: ChatData) => {
+    // El saludo en español lo arma el cerebro: si aún no se descargó, se espera
+    if (brain && !joelBrain && (id === "start" || id === "reset")) {
+      setTyping(true);
+      void loadJoel().then(() => goTo(id, d));
+      return;
+    }
     // "Hablar con un asesor": se conecta de una vez, sin más explicaciones
     if (id === "human") {
       setData(d);
@@ -108,7 +126,7 @@ export function useAdvisorChat() {
     }
     // En español, el saludo se arma según lo que el visitante ha hecho en el sitio
     if (target === "start" && brain) {
-      dyn.current = toStep(getJoel().greeting());
+      dyn.current = toStep(joelBrain!.greeting());
       target = "dyn";
     }
     setData(nextData);
@@ -133,6 +151,21 @@ export function useAdvisorChat() {
   };
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  // Precarga del cerebro cuando el navegador está libre (o a los 3 s)
+  useEffect(() => {
+    if (!brain || joelBrain) return;
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(() => void loadJoel(), { timeout: 3000 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => void loadJoel(), 3000);
+    return () => clearTimeout(id);
+  }, [brain]);
 
   // Si cambia el idioma, la conversación se reinicia en el idioma nuevo
   const firstLang = useRef(lang);
@@ -473,7 +506,7 @@ export function useAdvisorChat() {
       // Aprende de la elección si venía de algo que no entendió
       const svc = o.set?.servicio as keyof typeof QUOTE_TOPIC | undefined;
       const dest = svc && QUOTE_TOPIC[svc] ? `service:${QUOTE_TOPIC[svc]}` : LEARN_DEST[next];
-      if (dest) getJoel().learn(mem.current, dest);
+      if (dest) joelBrain?.learn(mem.current, dest);
       if (next.startsWith("brain:")) {
         think(next.slice(6), d);
         return;
