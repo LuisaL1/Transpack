@@ -11,9 +11,12 @@ const nodes = (path: string) => getPageMeta(path).jsonLd.flatMap((g) => g["@grap
 const types = (path: string) => nodes(path).map((n) => n["@type"]);
 
 describe("SEO · metadatos por página", () => {
-  it("cubre inicio, nosotros, política de datos, 6 servicios y 3 artículos en los seis idiomas (72 rutas)", () => {
-    expect(PUBLIC_ROUTES).toHaveLength(72);
-    expect(new Set(PUBLIC_ROUTES).size).toBe(72);
+  it("cubre inicio, nosotros, política de datos, 6 servicios y 3 artículos en español e inglés (24 rutas)", () => {
+    expect(LANGS).toEqual(["es", "en"]);
+    expect(PUBLIC_ROUTES).toHaveLength(24);
+    expect(new Set(PUBLIC_ROUTES).size).toBe(24);
+    // Francés, alemán, italiano y árabe no se publican (traducciones en revisión)
+    expect(PUBLIC_ROUTES.some((r) => /^\/(fr|de|it|ar)(\/|$)/.test(r))).toBe(false);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));
     expect(PUBLIC_ROUTES.filter((r) => r.startsWith("/servicios/"))).toHaveLength(6);
     expect(metas.every((m) => !m.notFound)).toBe(true);

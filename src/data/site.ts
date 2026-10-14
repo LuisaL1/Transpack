@@ -1,13 +1,14 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
 import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
-import imgProteccion from "@/assets/images/proteccion.jpg";
+import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgBarco from "@/assets/images/barco.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
@@ -15,7 +16,7 @@ import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
-import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 
 export const CONTACT = {
@@ -379,7 +380,9 @@ export const SEGMENTS = [
     ],
     cta: "Cotizar mudanza de hogar",
     quote: "local" as QuoteService,
-    image: imgEquipoSala,
+    image: imgInspeccionCanina,
+    // Recorte desde la derecha: que no se corte el perro
+    imageRight: true,
   },
   {
     id: "corporate",
@@ -532,10 +535,10 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
   { src: imgGuacalExportacion, caption: "Guacal de exportación" },
   { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
-  { src: imgBodegaMuebles, caption: "Muebles protegidos en bodega" },
+  { src: imgEmbalajeCarton, caption: "Embalaje con cartón y plástico protector" },
 ];
 
-export const ABOUT_IMAGES = { a: imgCargue, b: imgProteccion };
+export const ABOUT_IMAGES = { a: imgCargue, b: imgEquipoCaja };
 
 // ─── Política de tratamiento de datos personales ─────────────────────────────
 // Ley 1581 de 2012 y Decreto 1377 de 2013 (compilado en el Decreto 1074 de

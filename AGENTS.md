@@ -113,7 +113,15 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   `const t = heroText(tr);` → `{t.title}`. Así el buscador, el chat y las
   páginas leen la misma fuente.
 
-### Idiomas (es / en / fr / de / it / ar)
+### Idiomas (publicados: es / en)
+
+- **Solo se publican español e inglés** (`LANGS` en `src/i18n/index.ts`).
+  Francés, alemán, italiano y árabe están **desactivados** desde octubre de
+  2026 porque la revisión del cliente encontró errores de gramática: sus
+  textos se conservan (`dict/` y `site.<idioma>.ts`, `ALL_LANGS`), pero no
+  tienen rutas, no aparecen en el selector ni en el sitemap, y sus URLs
+  antiguas redirigen a `/en` (`vercel.json`). No los borre. Para volver a
+  publicar uno, revise su traducción y agréguelo a `LANGS`.
 
 - Español en la raíz (`/`, `/nosotros`, `/servicios/...`); los demás con prefijo
   y URLs traducidas (`/en/about`, `/fr/services/...`, `/de/leistungen/...`).

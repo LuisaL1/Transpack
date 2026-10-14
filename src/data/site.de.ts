@@ -3,6 +3,7 @@
 // Codes (slug, quote, id) bleiben spanisch, da sie URLs und Anfrageformular
 // steuern.
 import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
@@ -16,7 +17,7 @@ import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
-import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT, type PrivacySection } from "@/data/site";
@@ -291,7 +292,9 @@ export const SEGMENTS = [
     ],
     cta: "Angebot für meinen Umzug anfordern",
     quote: "local" as QuoteService,
-    image: imgEquipoSala,
+    image: imgInspeccionCanina,
+    // Recorte desde la derecha: que no se corte el perro
+    imageRight: true,
   },
   {
     id: "corporate",
@@ -443,7 +446,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeHogar, caption: "Verpackung des Hausrats vor Ort" },
   { src: imgGuacalExportacion, caption: "Exportkiste" },
   { src: imgDespachoBodega, caption: "Versand aus dem Lager" },
-  { src: imgBodegaMuebles, caption: "Geschützte Möbel im Lager" },
+  { src: imgEmbalajeCarton, caption: "Verpackung mit Karton und Schutzfolie" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

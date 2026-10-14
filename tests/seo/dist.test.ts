@@ -24,7 +24,7 @@ describe("HTML pre-generado", () => {
       expect(head.match(/<title/g)).toHaveLength(1);
       expect(head).toContain(`<link data-seo rel="canonical" href="${m.canonical}"`);
       expect(head.match(/name="description"/g)).toHaveLength(1);
-      expect(head.match(/rel="alternate" hreflang=/g)).toHaveLength(7);
+      expect(head.match(/rel="alternate" hreflang=/g)).toHaveLength(3);
       for (const p of [
         "og:title",
         "og:description",

@@ -1,5 +1,5 @@
 // Idiomas del sitio. Español en la raíz ("/") y los demás con prefijo
-// ("/en", "/fr", "/de", "/it", "/ar"). El idioma sale de la URL, así cada
+// ("/en"; desactivados: "/fr", "/de", "/it", "/ar", ver LANGS). El idioma sale de la URL, así cada
 // versión tiene sus propias direcciones para Google (hreflang).
 //
 // Textos cortos: tr("español", "English") → en francés, alemán, italiano y
@@ -14,7 +14,14 @@ import it from "@/i18n/dict/it";
 import ar from "@/i18n/dict/ar";
 
 export type Lang = "es" | "en" | "fr" | "de" | "it" | "ar";
-export const LANGS: Lang[] = ["es", "en", "fr", "de", "it", "ar"];
+/** Idiomas con traducción en el código (se conservan aunque no se publiquen) */
+export const ALL_LANGS: Lang[] = ["es", "en", "fr", "de", "it", "ar"];
+/** Idiomas PUBLICADOS: rutas, selector de idioma, hreflang y sitemap.
+ *  Francés, alemán, italiano y árabe están desactivados (octubre de 2026): la
+ *  revisión del cliente encontró errores de gramática. Sus textos siguen en
+ *  dict/ y en site.<idioma>.ts; para volver a publicar uno, agréguelo aquí
+ *  después de revisar su traducción. */
+export const LANGS: Lang[] = ["es", "en"];
 
 export const LANG_INFO: Record<
   Lang,

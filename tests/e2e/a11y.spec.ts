@@ -15,7 +15,7 @@ for (const route of [
   "/servicios/mudanzas-internacionales",
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",
   "/en",
-  "/ar",
+  "/en/about",
 ]) {
   test(`accesibilidad ${route}`, async ({ page }, info) => {
     // Sin animaciones: así axe revisa todo el contenido, ya visible.

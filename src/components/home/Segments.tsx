@@ -60,7 +60,7 @@ export function Segments() {
                 decoding="async"
                 src={seg.image}
                 alt=""
-                className="h-full w-full object-cover"
+                className={`h-full w-full object-cover ${"imageRight" in seg && seg.imageRight ? "object-right" : ""}`}
               />
             </div>
             <div className="px-2 py-2 lg:pr-6">

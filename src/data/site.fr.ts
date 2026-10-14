@@ -3,6 +3,7 @@
 // internes (slug, quote, id) restent en espagnol : ils pilotent les URL et le
 // formulaire de devis.
 import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
@@ -16,7 +17,7 @@ import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
-import imgBodegaMuebles from "@/assets/images/galeria/bodega-muebles.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT, type PrivacySection } from "@/data/site";
@@ -305,7 +306,9 @@ export const SEGMENTS = [
     ],
     cta: "Demander un devis pour mon déménagement",
     quote: "local" as QuoteService,
-    image: imgEquipoSala,
+    image: imgInspeccionCanina,
+    // Recorte desde la derecha: que no se corte el perro
+    imageRight: true,
   },
   {
     id: "corporate",
@@ -457,7 +460,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgEmbalajeHogar, caption: "Emballage du mobilier à domicile" },
   { src: imgGuacalExportacion, caption: "Caisse d'exportation" },
   { src: imgDespachoBodega, caption: "Expédition depuis l'entrepôt" },
-  { src: imgBodegaMuebles, caption: "Meubles protégés en entrepôt" },
+  { src: imgEmbalajeCarton, caption: "Emballage avec carton et film protecteur" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

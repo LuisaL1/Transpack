@@ -451,7 +451,7 @@ const dict: Record<string, string> = {
     "Chaque déménagement suit une méthode éprouvée depuis des décennies. Nous limitons ainsi les imprévus et vous savez toujours quelle est la prochaine étape.",
   "Transpack crew loading boxes onto a truck":
     "Équipe Transpack chargeant des cartons dans un camion",
-  "Protected furniture ready to move": "Meubles protégés prêts à être transportés",
+  "Two Transpack crew members carrying a moving box": "Deux collaborateurs de Transpack portant un carton de déménagement",
   Since: "Depuis",
   "We are an established company founded in 1968, specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world. We have exported more than 60,000 tons of household goods and personal effects to 176 countries.":
     "Fondée en 1968, notre entreprise est spécialisée dans le déménagement local, national et international et le garde-meubles, avec un emballage de grande qualité et des transferts partout en Colombie et dans le monde. Nous avons exporté plus de 60 000 tonnes de mobilier et d'effets personnels vers 176 pays.",

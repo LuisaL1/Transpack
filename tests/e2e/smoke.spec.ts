@@ -12,10 +12,9 @@ const ROUTES = [
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",
   "/en",
   "/en/about",
-  "/de/datenschutz",
-  "/fr/services/demenagement-international",
-  "/de/blog/warum-ein-internationaler-seeumzug-laenger-dauern-kann",
-  "/ar",
+  "/en/privacy",
+  "/en/services/international-moving",
+  "/en/blog/why-an-international-sea-move-can-take-longer",
 ];
 
 for (const route of ROUTES) {
@@ -37,10 +36,13 @@ for (const route of ROUTES) {
   });
 }
 
-test("el árabe se muestra de derecha a izquierda", async ({ page }) => {
-  await page.goto("/ar");
-  await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(page.locator("html")).toHaveAttribute("lang", /^ar/);
+test("solo se publican español e inglés (los demás idiomas están desactivados)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Elegir región e idioma" }).click();
+  const options = page.getByRole("option");
+  await expect(options).toHaveCount(2);
+  await expect(options.nth(0)).toContainText("Español");
+  await expect(options.nth(1)).toContainText("English");
 });
 
 test("una ruta inexistente muestra la página 404", async ({ page }) => {

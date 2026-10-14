@@ -13,8 +13,6 @@ test.describe("sin JavaScript", () => {
     ["/blog/por-que-una-mudanza-maritima-internacional-puede-tardar", /tardar/, "es-CO"],
     ["/en/services/international-moving", /abroad/, "en-US"],
     ["/privacidad", /Política de tratamiento de datos personales/, "es-CO"],
-    ["/de/datenschutz", /personenbezogener Daten/, "de-DE"],
-    ["/ar", /.+/, "ar"],
   ] as const) {
     test(`${route} trae idioma, título, H1, canónica y JSON-LD en el HTML`, async ({ page }) => {
       await page.goto(route);
@@ -26,7 +24,7 @@ test.describe("sin JavaScript", () => {
         route === "/" ? `${SITE}/` : `${SITE}${route}`,
       );
       expect(await page.locator('script[type="application/ld+json"]').count()).toBeGreaterThan(0);
-      expect(await page.locator('link[rel="alternate"][hreflang]').count()).toBe(7);
+      expect(await page.locator('link[rel="alternate"][hreflang]').count()).toBe(3);
     });
   }
 });
@@ -43,7 +41,7 @@ test("al navegar se actualizan título, descripción, canónica e idioma", async
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `${SITE}${path}`);
   await expect(page.locator('head meta[name="description"]')).toHaveCount(1);
   await expect(page.locator("head title")).toHaveCount(1);
-  await expect(page.locator('head link[rel="alternate"][hreflang]')).toHaveCount(7);
+  await expect(page.locator('head link[rel="alternate"][hreflang]')).toHaveCount(3);
 });
 
 test("una ruta desconocida muestra la 404 útil (inicio, cotizar y servicios) con noindex", async ({

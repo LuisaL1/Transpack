@@ -432,7 +432,7 @@ const dict: Record<string, string> = {
   "Every move follows a methodology proven over decades. That way we reduce surprises and you always know what comes next.":
     "تتبع كل عملية نقل منهجية أثبتت فعاليتها على مدى عقود. بهذا نقلل المفاجآت وتعرف دائمًا الخطوة التالية.",
   "Transpack crew loading boxes onto a truck": "فريق ترانسباك يحمّل الصناديق في شاحنة",
-  "Protected furniture ready to move": "أثاث محمي جاهز للنقل",
+  "Two Transpack crew members carrying a moving box": "اثنان من فريق ترانسباك يحملان صندوق نقل",
   Since: "منذ",
   "We are an established company founded in 1968, specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world. We have exported more than 60,000 tons of household goods and personal effects to 176 countries.":
     "نحن شركة راسخة تأسست عام 1968، متخصصة في النقل داخل المدينة وبين المدن والنقل الدولي والتخزين، مع تغليف عالي الجودة ونقل إلى أي مكان في كولومبيا والعالم. وقد صدّرنا أكثر من 60,000 طن من الأمتعة المنزلية والمقتنيات الشخصية إلى 176 دولة.",

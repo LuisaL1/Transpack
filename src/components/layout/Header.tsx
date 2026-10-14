@@ -119,10 +119,10 @@ export function Header() {
             scrolled ? "h-[66px]" : "h-[76px]"
           }`}
         >
-          <Logo light={!solid} compact />
+          <Logo light={!solid} compact className="xl:-ms-6" />
 
           {/* Escritorio */}
-          <nav className="hidden items-center gap-4 lg:flex xl:gap-6" aria-label={t.mainNav}>
+          <nav className="hidden items-center gap-4 lg:flex xl:gap-5" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
               return (
@@ -133,7 +133,7 @@ export function Header() {
                   onClick={() => setActive(open ? null : m.key)}
                   aria-expanded={open}
                   aria-haspopup="true"
-                  className={`relative inline-flex items-center gap-1 py-1.5 text-[0.86rem] font-medium xl:text-[0.92rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${
+                  className={`relative inline-flex items-center gap-1 py-1.5 text-[0.985rem] font-bold xl:text-[1.045rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${
                     open || sectionOf(m) ? "after:scale-x-100" : "after:scale-x-0"
                   } ${solid ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`}
                 >
@@ -173,7 +173,7 @@ export function Header() {
             </div>
             <Link
               to={lp("/#cotizar")}
-              className={`${btn.primary} px-4 py-2 text-[0.85rem]`}
+              className={`${btn.primary} px-4 py-2 text-[0.975rem] font-bold!`}
               onMouseEnter={hoverClose}
             >
               {t.quote}

@@ -6,6 +6,18 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:lang(fr|de|it|ar)",
+      "destination": "/en",
+      "permanent": false
+    },
+    {
+      "source": "/:lang(fr|de|it|ar)/:path*",
+      "destination": "/en",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/((?!chat-asesor).*)",

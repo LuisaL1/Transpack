@@ -4,13 +4,21 @@ import { headerText } from "@/data/navigation";
 import { useLang } from "@/i18n";
 
 // Logo con enlace al inicio (claro sobre fondos oscuros, azul sobre blanco)
-export function Logo({ light = true, compact = false }: { light?: boolean; compact?: boolean }) {
+export function Logo({
+  light = true,
+  compact = false,
+  className = "",
+}: {
+  light?: boolean;
+  compact?: boolean;
+  className?: string;
+}) {
   const { lp, tr } = useLang();
   const t = headerText(tr);
   return (
     <Link
       to={lp("/")}
-      className="relative z-10 inline-flex items-center gap-3"
+      className={`relative z-10 inline-flex shrink-0 items-center gap-3 ${className}`}
       aria-label={t.logoLabel}
     >
       <img
@@ -21,7 +29,7 @@ export function Logo({ light = true, compact = false }: { light?: boolean; compa
         className={`h-10 w-10 rounded-[4px] md:h-11 md:w-11 ${light ? "ring-[1.5px] ring-white/50" : ""}`}
       />
       <span
-        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-lg font-bold tracking-[0.08em] transition-colors md:text-[1.3rem] ${
+        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-xl font-bold tracking-[0.08em] transition-colors md:text-[1.425rem] ${
           light ? "text-white" : "text-azul"
         }`}
       >

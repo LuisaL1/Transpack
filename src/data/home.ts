@@ -122,8 +122,8 @@ export const aboutTeaserText = (tr: Tr) => ({
     "Transpack crew loading boxes onto a truck",
   ),
   furnitureAlt: tr(
-    "Muebles protegidos listos para el traslado",
-    "Protected furniture ready to move",
+    "Dos colaboradores de Transpack cargando una caja de mudanza",
+    "Two Transpack crew members carrying a moving box",
   ),
   since: tr("Desde", "Since"),
   year: "1968",
