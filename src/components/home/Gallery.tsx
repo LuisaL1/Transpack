@@ -19,7 +19,7 @@ export function Gallery() {
       {GALLERY.map((g) => (
         <figure
           key={g.caption}
-          className={`group relative m-0 overflow-hidden rounded-[10px] ${g.tall ? "row-span-2" : ""}`}
+          className={`group relative m-0 overflow-hidden ${g.tall ? "row-span-2" : ""}`}
         >
           <img
             decoding="async"

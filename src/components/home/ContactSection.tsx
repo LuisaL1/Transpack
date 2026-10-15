@@ -81,7 +81,7 @@ export function ContactSection() {
         </Reveal>
         <Reveal
           delay={100}
-          className="min-h-[380px] overflow-hidden rounded-[22px] bg-gris shadow-[var(--shadow-card)]"
+          className="min-h-[380px] overflow-hidden bg-gris shadow-[var(--shadow-card)]"
         >
           <iframe
             title={t.mapTitle}

@@ -96,7 +96,7 @@ export function ArticlePage() {
               <Reveal key={o.slug} delay={i * 80}>
                 <Link
                   to={lp(`/blog/${o.slug}`)}
-                  className="group grid h-full overflow-hidden rounded-[22px] bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)] sm:grid-cols-[200px_1fr]"
+                  className="group grid h-full overflow-hidden bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)] sm:grid-cols-[200px_1fr]"
                 >
                   <div className="aspect-[16/10] overflow-hidden sm:aspect-auto">
                     <img

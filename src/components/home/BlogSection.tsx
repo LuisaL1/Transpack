@@ -25,7 +25,7 @@ export function BlogSection() {
             <Reveal key={p.slug} delay={i * 80}>
               <Link
                 to={lp(`/blog/${p.slug}`)}
-                className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card)]"
+                className="group flex h-full flex-col overflow-hidden bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card)]"
               >
                 <div className="aspect-[16/10] overflow-hidden">
                   <img

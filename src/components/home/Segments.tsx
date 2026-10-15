@@ -54,7 +54,7 @@ export function Segments() {
             role="tabpanel"
             className="animate-fade-up grid items-center gap-8 rounded-[22px] bg-white p-4 shadow-sm md:p-6 lg:grid-cols-2 lg:gap-16"
           >
-            <div className="aspect-[4/3.3] overflow-hidden rounded-2xl">
+            <div className="aspect-[4/3.3] overflow-hidden">
               <img
                 loading="lazy"
                 decoding="async"

@@ -64,14 +64,14 @@ export function Coverage() {
               decoding="async"
               src={imgGlobal}
               alt={t.imageAlt}
-              className="absolute left-0 top-0 h-[78%] w-[82%] rounded-[22px] object-cover shadow-[var(--shadow-float)]"
+              className="absolute left-0 top-0 h-[78%] w-[82%] object-cover shadow-[var(--shadow-float)]"
             />
             <img
               loading="lazy"
               decoding="async"
               src={imgBarco}
               alt={t.shipAlt}
-              className="absolute bottom-0 right-0 h-[58%] w-[44%] rounded-[22px] border-[6px] border-violeta object-cover shadow-[var(--shadow-float)]"
+              className="absolute bottom-0 right-0 h-[58%] w-[44%] border-[6px] border-violeta object-cover shadow-[var(--shadow-float)]"
             />
             <div className="absolute bottom-[6%] left-[4%] rounded-2xl bg-white px-5 py-4 shadow-[var(--shadow-float)]">
               <strong className="block font-title text-[2rem] leading-none text-azul">

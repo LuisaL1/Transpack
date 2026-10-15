@@ -19,14 +19,14 @@ export function AboutTeaser() {
             decoding="async"
             src={ABOUT_IMAGES.a}
             alt={t.crewAlt}
-            className="absolute left-0 top-0 h-[86%] w-[76%] rounded-[22px] object-cover shadow-[var(--shadow-card)]"
+            className="absolute left-0 top-0 h-[86%] w-[76%] object-cover shadow-[var(--shadow-card)]"
           />
           <img
             loading="lazy"
             decoding="async"
             src={ABOUT_IMAGES.b}
             alt={t.furnitureAlt}
-            className="absolute bottom-0 right-0 h-[56%] w-[50%] rounded-[22px] border-[6px] border-gris object-cover shadow-[var(--shadow-card)]"
+            className="absolute bottom-0 right-0 h-[56%] w-[50%] border-[6px] border-gris object-cover shadow-[var(--shadow-card)]"
           />
           <div className="absolute bottom-[2%] left-[6%] rounded-2xl bg-naranja px-6 py-4 text-white shadow-[var(--shadow-card)]">
             <span className="block text-[0.75rem] font-semibold uppercase tracking-[0.14em]">

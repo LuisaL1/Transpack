@@ -46,7 +46,7 @@ export function MobileMenu({ menus }: { menus: Menu[] }) {
                         decoding="async"
                         src={p.cover}
                         alt=""
-                        className="h-10 w-14 shrink-0 rounded-lg object-cover"
+                        className="h-10 w-14 shrink-0 object-cover"
                       />
                       <span className="line-clamp-2 text-[0.88rem] font-medium text-tinta">
                         {p.title}

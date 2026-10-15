@@ -54,7 +54,7 @@ export function MegaMenuPanel({ menu }: { menu: Menu }) {
                   decoding="async"
                   src={p.cover}
                   alt=""
-                  className="h-12 w-16 shrink-0 rounded-lg object-cover"
+                  className="h-12 w-16 shrink-0 object-cover"
                 />
                 <span className="min-w-0">
                   <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-naranja">

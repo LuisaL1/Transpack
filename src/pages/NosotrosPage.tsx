@@ -188,14 +188,14 @@ export function NosotrosPage() {
               decoding="async"
               src={imgEmbalaje}
               alt={t.equipoTranspackEmpacandoSala}
-              className="aspect-[3/4] h-full w-full rounded-[22px] object-cover"
+              className="aspect-[3/4] h-full w-full object-cover"
             />
             <img
               loading="lazy"
               decoding="async"
               src={imgGuacales}
               alt={t.guacalesMaderaExportacion}
-              className="mt-10 aspect-[3/4] h-full w-full rounded-[22px] object-cover"
+              className="mt-10 aspect-[3/4] h-full w-full object-cover"
             />
           </Reveal>
           <Reveal delay={100}>

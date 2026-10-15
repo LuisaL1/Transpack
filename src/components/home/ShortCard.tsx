@@ -21,7 +21,7 @@ export function ShortCard({
   const [playing, setPlaying] = useState(false);
   return (
     <div
-      className={`group relative aspect-[9/16] w-[72vw] max-w-[260px] shrink-0 snap-center overflow-hidden rounded-[26px] border border-white/15 bg-azul-900 shadow-[var(--shadow-float)] sm:w-auto sm:max-w-none ${
+      className={`group relative aspect-[9/16] w-[72vw] max-w-[260px] shrink-0 snap-center overflow-hidden border border-white/15 bg-azul-900 shadow-[var(--shadow-float)] sm:w-auto sm:max-w-none ${
         offset ? "lg:translate-y-10" : ""
       }`}
     >
