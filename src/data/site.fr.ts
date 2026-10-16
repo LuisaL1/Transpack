@@ -2,7 +2,6 @@
 // texte change en espagnol, il faut aussi le mettre à jour ici. Les codes
 // internes (slug, quote, id) restent en espagnol : ils pilotent les URL et le
 // formulaire de devis.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -75,7 +74,7 @@ export const SERVICES: Service[] = [
       "Déménagements dans Bogota et son agglomération, avec des équipes formées, la protection du mobilier et des véhicules adaptés au volume.",
     quote: "local",
     cta: "Demander un devis",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "Déménager à Bogota",
     headline: "Votre déménagement en ville, sans stress et sans surprise",
     intro:
@@ -448,19 +447,18 @@ export const FAQS = [
 ];
 
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "Emballage à domicile" },
   { src: imgContenedor, caption: "Chargement de conteneur", tall: true },
+  { src: imgEmbalajeCuadro, caption: "Emballage d'un tableau", tall: true },
+  { src: imgBarco, caption: "Lignes maritimes", tall: true },
+  { src: imgEmbalajeCarton, caption: "Emballage avec carton et film protecteur", tall: true },
+  { src: imgEmbalajeSala, caption: "Emballage à domicile" },
   { src: imgArteHogar, caption: "Protection d'œuvres d'art à domicile" },
   { src: imgCargueCajas, caption: "Chargement des cartons Transpack" },
   { src: imgGuacales, caption: "Caisses en bois sur mesure" },
-  { src: imgEmbalajeCuadro, caption: "Emballage d'un tableau", tall: true },
   { src: imgBodegaGuacales, caption: "Entrepôt avec caisses de stockage" },
-  { src: imgEquipoSala, caption: "Protection du mobilier" },
-  { src: imgBarco, caption: "Lignes maritimes", tall: true },
   { src: imgEmbalajeHogar, caption: "Emballage du mobilier à domicile" },
   { src: imgGuacalExportacion, caption: "Caisse d'exportation" },
   { src: imgDespachoBodega, caption: "Expédition depuis l'entrepôt" },
-  { src: imgEmbalajeCarton, caption: "Emballage avec carton et film protecteur" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

@@ -5,7 +5,7 @@ import imgGuacales from "@/assets/images/guacales.jpg";
 import lacmaImg from "@/assets/images/lacma.jpg";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
-import { aboutText, aboutTimeline, aboutValues } from "@/data/about";
+import { aboutText, aboutTimeline, aboutValues, ceoInfo } from "@/data/about";
 import { container, section } from "@/components/ui/layout";
 import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
 import { Bi, btn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
@@ -19,6 +19,7 @@ export function NosotrosPage() {
   const { EMBASSIES, SLOGAN, STATS } = useSite();
   const VALUES = aboutValues(tr);
   const TIMELINE = aboutTimeline(tr);
+  const CEO = ceoInfo(tr);
   return (
     <>
       <PageHero image={imgEquipo}>
@@ -54,6 +55,41 @@ export function NosotrosPage() {
           ))}
         </div>
       </section>
+
+      {/* Nuestro CEO (solo cuando el cliente entregue los datos: src/data/about.ts) */}
+      {CEO.name && (
+        <section id="ceo" className={section}>
+          <div className={`${container} grid items-center gap-12 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20`}>
+            <Reveal>
+              <img
+                loading="lazy"
+                decoding="async"
+                src={CEO.photo}
+                alt={CEO.name}
+                className="aspect-square w-full max-w-[420px] object-cover shadow-[var(--shadow-card)]"
+              />
+            </Reveal>
+            <Reveal delay={100}>
+              <Eyebrow>{CEO.eyebrow}</Eyebrow>
+              <h2 className="mb-1 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">{CEO.name}</h2>
+              <p className="mb-6 font-title text-[0.95rem] font-semibold uppercase tracking-[0.12em] text-naranja">
+                {CEO.role}
+              </p>
+              <p className="mb-8 whitespace-pre-line text-[1.05rem]">{CEO.bio}</p>
+              {CEO.website && (
+                <a
+                  href={CEO.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${btn.secondary} ${btn.md}`}
+                >
+                  <Bi n="box-arrow-up-right" /> {CEO.visit}
+                </a>
+              )}
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Historia */}
       <section id="historia" className={section}>

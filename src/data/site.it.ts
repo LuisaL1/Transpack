@@ -1,7 +1,6 @@
 // Versione italiana dei contenuti del sito. Stessa struttura di site.ts: quando
 // un testo cambia in spagnolo va aggiornato anche qui. I codici interni (slug,
 // quote, id) restano in spagnolo perché guidano URL e modulo di preventivo.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -69,7 +68,7 @@ export const SERVICES: Service[] = [
       "Traslochi all'interno di Bogotá e della sua area metropolitana, con personale qualificato, protezione dei mobili e mezzi adatti al volume.",
     quote: "local",
     cta: "Richiedi un preventivo",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "Traslochi a Bogotá",
     headline: "Il tuo trasloco in città, senza stress e senza sorprese",
     intro:
@@ -424,19 +423,18 @@ export const FAQS = [
 ];
 
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "Imballaggio a domicilio" },
   { src: imgContenedor, caption: "Carico del container", tall: true },
+  { src: imgEmbalajeCuadro, caption: "Imballaggio di un quadro", tall: true },
+  { src: imgBarco, caption: "Rotte marittime", tall: true },
+  { src: imgEmbalajeCarton, caption: "Imballaggio con cartone e pellicola protettiva", tall: true },
+  { src: imgEmbalajeSala, caption: "Imballaggio a domicilio" },
   { src: imgArteHogar, caption: "Protezione di opere d'arte a domicilio" },
   { src: imgCargueCajas, caption: "Carico degli scatoloni Transpack" },
   { src: imgGuacales, caption: "Casse in legno su misura" },
-  { src: imgEmbalajeCuadro, caption: "Imballaggio di un quadro", tall: true },
   { src: imgBodegaGuacales, caption: "Magazzino con casse di deposito" },
-  { src: imgEquipoSala, caption: "Protezione dei mobili" },
-  { src: imgBarco, caption: "Rotte marittime", tall: true },
   { src: imgEmbalajeHogar, caption: "Imballaggio degli arredi a domicilio" },
   { src: imgGuacalExportacion, caption: "Cassa per l'esportazione" },
   { src: imgDespachoBodega, caption: "Spedizione dal magazzino" },
-  { src: imgEmbalajeCarton, caption: "Imballaggio con cartone e pellicola protettiva" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

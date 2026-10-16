@@ -1,7 +1,6 @@
 // English version of the site content. Same structure as site.ts: when a text
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -70,7 +69,7 @@ export const SERVICES: Service[] = [
       "Moves within Bogotá and its metropolitan area, with trained crews, furniture protection and vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, with no stress and no surprises",
     intro:
@@ -422,19 +421,18 @@ export const FAQS = [
 ];
 
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "On-site packing" },
   { src: imgContenedor, caption: "Container loading", tall: true },
+  { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
+  { src: imgBarco, caption: "Sea routes", tall: true },
+  { src: imgEmbalajeCarton, caption: "Packing with cardboard and protective film", tall: true },
+  { src: imgEmbalajeSala, caption: "On-site packing" },
   { src: imgArteHogar, caption: "Protecting artwork at home" },
   { src: imgCargueCajas, caption: "Loading Transpack boxes" },
   { src: imgGuacales, caption: "Custom wooden crates" },
-  { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
   { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
-  { src: imgEquipoSala, caption: "Furniture protection" },
-  { src: imgBarco, caption: "Sea routes", tall: true },
   { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
   { src: imgGuacalExportacion, caption: "Export crate" },
   { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
-  { src: imgEmbalajeCarton, caption: "Packing with cardboard and protective film" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

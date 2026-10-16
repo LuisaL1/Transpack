@@ -1,7 +1,6 @@
 // النسخة العربية من محتوى الموقع. البنية نفسها الموجودة في site.ts: عند تغيير
 // أي نص بالإسبانية يجب تحديثه هنا أيضًا. تبقى الرموز الداخلية (slug وquote وid)
 // بالإسبانية لأنها تتحكم في الروابط ونموذج عرض السعر.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -68,7 +67,7 @@ export const SERVICES: Service[] = [
     short: "نقل داخل بوغوتا ومنطقتها الحضرية، بفرق مدربة وحماية للأثاث ومركبات تناسب حجم المنقولات.",
     quote: "local",
     cta: "اطلب عرض سعر",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "النقل في بوغوتا",
     headline: "انتقالك داخل المدينة، بلا توتر وبلا مفاجآت",
     intro:
@@ -392,19 +391,18 @@ export const FAQS = [
 ];
 
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "التغليف في الموقع" },
   { src: imgContenedor, caption: "تحميل الحاويات", tall: true },
+  { src: imgEmbalajeCuadro, caption: "تغليف لوحة فنية", tall: true },
+  { src: imgBarco, caption: "المسارات البحرية", tall: true },
+  { src: imgEmbalajeCarton, caption: "تغليف بالكرتون والغلاف الواقي", tall: true },
+  { src: imgEmbalajeSala, caption: "التغليف في الموقع" },
   { src: imgArteHogar, caption: "حماية الأعمال الفنية في المنزل" },
   { src: imgCargueCajas, caption: "تحميل صناديق ترانسباك" },
   { src: imgGuacales, caption: "صناديق خشبية حسب المقاس" },
-  { src: imgEmbalajeCuadro, caption: "تغليف لوحة فنية", tall: true },
   { src: imgBodegaGuacales, caption: "مستودع بصناديق تخزين خشبية" },
-  { src: imgEquipoSala, caption: "حماية الأثاث" },
-  { src: imgBarco, caption: "المسارات البحرية", tall: true },
   { src: imgEmbalajeHogar, caption: "تغليف الأثاث في المنزل" },
   { src: imgGuacalExportacion, caption: "صندوق تصدير خشبي" },
   { src: imgDespachoBodega, caption: "الشحن من المستودع" },
-  { src: imgEmbalajeCarton, caption: "تغليف بالكرتون والغلاف الواقي" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

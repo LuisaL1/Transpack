@@ -2,7 +2,6 @@
 // sich ein Text auf Spanisch, muss er auch hier angepasst werden. Interne
 // Codes (slug, quote, id) bleiben spanisch, da sie URLs und Anfrageformular
 // steuern.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -70,7 +69,7 @@ export const SERVICES: Service[] = [
       "Umzüge innerhalb Bogotás und des Großraums – mit geschultem Personal, Möbelschutz und Fahrzeugen in passender Größe.",
     quote: "local",
     cta: "Angebot anfordern",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "Umziehen in Bogotá",
     headline: "Ihr Umzug innerhalb der Stadt – ohne Stress und ohne Überraschungen",
     intro:
@@ -434,19 +433,18 @@ export const FAQS = [
 ];
 
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "Verpackung vor Ort" },
   { src: imgContenedor, caption: "Containerbeladung", tall: true },
+  { src: imgEmbalajeCuadro, caption: "Verpackung eines Gemäldes", tall: true },
+  { src: imgBarco, caption: "Seewege", tall: true },
+  { src: imgEmbalajeCarton, caption: "Verpackung mit Karton und Schutzfolie", tall: true },
+  { src: imgEmbalajeSala, caption: "Verpackung vor Ort" },
   { src: imgArteHogar, caption: "Schutz von Kunstwerken zu Hause" },
   { src: imgCargueCajas, caption: "Verladen von Transpack-Kartons" },
   { src: imgGuacales, caption: "Maßgefertigte Holzkisten" },
-  { src: imgEmbalajeCuadro, caption: "Verpackung eines Gemäldes", tall: true },
   { src: imgBodegaGuacales, caption: "Lager mit Aufbewahrungskisten" },
-  { src: imgEquipoSala, caption: "Möbelschutz" },
-  { src: imgBarco, caption: "Seewege", tall: true },
   { src: imgEmbalajeHogar, caption: "Verpackung des Hausrats vor Ort" },
   { src: imgGuacalExportacion, caption: "Exportkiste" },
   { src: imgDespachoBodega, caption: "Versand aus dem Lager" },
-  { src: imgEmbalajeCarton, caption: "Verpackung mit Karton und Schutzfolie" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

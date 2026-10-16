@@ -2,6 +2,7 @@
 // textos de la cabecera. Cada menú tiene una tarjeta destacada (izquierda) y
 // una lista de enlaces: "to" = ruta interna, "href" = enlace externo,
 // "chat" = abre a Joel.
+import { ceoInfo } from "@/data/about";
 import { privacyLink } from "@/data/pages";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
@@ -30,6 +31,55 @@ export function menusFor(lang: Lang): Menu[] {
   const tr = makeTr(lang);
   const lp = (path: string) => localize(path, lang);
   return [
+    {
+      key: "nosotros",
+      label: tr("Nosotros", "About"),
+      feature: {
+        kicker: tr("Desde 1968", "Since 1968"),
+        title: tr(
+          "Más de cinco décadas cuidando lo que más quieres",
+          "More than five decades caring for what you love most",
+        ),
+        text: tr(
+          "Más de 60 mil toneladas de menaje exportadas a 176 países.",
+          "More than 60,000 tons of household goods exported to 176 countries.",
+        ),
+        cta: tr("Conoce Transpack", "Meet Transpack"),
+        to: lp("/nosotros"),
+      },
+      items: [
+        ...(ceoInfo(tr).name
+          ? [{ label: tr("Nuestro CEO", "Our CEO"), icon: "person-badge", to: lp("/nosotros#ceo") }]
+          : []),
+        {
+          label: tr("Nuestra historia", "Our story"),
+          icon: "clock-history",
+          to: lp("/nosotros#historia"),
+        },
+        {
+          label: tr("Misión y visión", "Mission and vision"),
+          icon: "bullseye",
+          to: lp("/nosotros#mision-vision"),
+        },
+        { label: tr("Valores", "Values"), icon: "heart", to: lp("/nosotros#valores") },
+        {
+          label: tr("Clientes y embajadas", "Clients and embassies"),
+          icon: "people",
+          to: lp("/nosotros#clientes"),
+        },
+        {
+          label: tr("Certificaciones", "Certifications"),
+          icon: "patch-check",
+          to: lp("/nosotros#certificaciones"),
+        },
+        {
+          label: tr("Transpack en video", "Transpack on video"),
+          icon: "play-btn",
+          to: lp("/#videos"),
+        },
+      ],
+      cols: 2,
+    },
     {
       key: "servicios",
       label: tr("Servicios", "Services"),
@@ -150,52 +200,6 @@ export function menusFor(lang: Lang): Menu[] {
         },
       ],
       chips: true,
-      cols: 2,
-    },
-    {
-      key: "nosotros",
-      label: tr("Nosotros", "About"),
-      feature: {
-        kicker: tr("Desde 1968", "Since 1968"),
-        title: tr(
-          "Más de cinco décadas cuidando lo que más quieres",
-          "More than five decades caring for what you love most",
-        ),
-        text: tr(
-          "Más de 60 mil toneladas de menaje exportadas a 176 países.",
-          "More than 60,000 tons of household goods exported to 176 countries.",
-        ),
-        cta: tr("Conoce Transpack", "Meet Transpack"),
-        to: lp("/nosotros"),
-      },
-      items: [
-        {
-          label: tr("Nuestra historia", "Our story"),
-          icon: "clock-history",
-          to: lp("/nosotros#historia"),
-        },
-        {
-          label: tr("Misión y visión", "Mission and vision"),
-          icon: "bullseye",
-          to: lp("/nosotros#mision-vision"),
-        },
-        { label: tr("Valores", "Values"), icon: "heart", to: lp("/nosotros#valores") },
-        {
-          label: tr("Clientes y embajadas", "Clients and embassies"),
-          icon: "people",
-          to: lp("/nosotros#clientes"),
-        },
-        {
-          label: tr("Certificaciones", "Certifications"),
-          icon: "patch-check",
-          to: lp("/nosotros#certificaciones"),
-        },
-        {
-          label: tr("Transpack en video", "Transpack on video"),
-          icon: "play-btn",
-          to: lp("/#videos"),
-        },
-      ],
       cols: 2,
     },
     {

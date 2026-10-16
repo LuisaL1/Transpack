@@ -119,10 +119,10 @@ export function Header() {
             scrolled ? "h-[66px]" : "h-[76px]"
           }`}
         >
-          <Logo light={!solid} compact className="xl:-ms-6" />
+          <Logo light={!solid} compact className="xl:-ms-6 2xl:-ms-16" />
 
           {/* Escritorio */}
-          <nav className="hidden items-center gap-4 lg:flex xl:gap-5" aria-label={t.mainNav}>
+          <nav className="hidden items-center gap-4 lg:flex xl:ms-6 xl:gap-4" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
               return (

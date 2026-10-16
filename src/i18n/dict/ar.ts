@@ -171,6 +171,9 @@ const dict: Record<string, string> = {
   "More than 60,000 tons of household goods exported to 176 countries.":
     "أكثر من 60,000 طن من الأمتعة المنزلية صُدّرت إلى 176 دولة.",
   "Meet Transpack": "تعرّف على ترانسباك",
+  "CEO of Transpack": "الرئيس التنفيذي لترانسباك",
+  "Our CEO": "رئيسنا التنفيذي",
+  "Visit his website": "زيارة موقعه الإلكتروني",
   "Our story": "قصتنا",
   "Mission and vision": "الرسالة والرؤية",
   Values: "القيم",

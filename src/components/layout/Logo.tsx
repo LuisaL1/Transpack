@@ -24,12 +24,12 @@ export function Logo({
       <img
         src={logoImg}
         alt=""
-        width={44}
-        height={44}
-        className={`h-10 w-10 rounded-[4px] md:h-11 md:w-11 ${light ? "ring-[1.5px] ring-white/50" : ""}`}
+        width={56}
+        height={56}
+        className={`h-12 w-12 rounded-[4px] md:h-14 md:w-14 ${light ? "ring-[1.5px] ring-white/50" : ""}`}
       />
       <span
-        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-xl font-bold tracking-[0.08em] transition-colors md:text-[1.425rem] ${
+        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-2xl font-bold tracking-[0.08em] transition-colors md:text-[1.7rem] ${
           light ? "text-white" : "text-azul"
         }`}
       >

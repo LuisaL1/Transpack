@@ -1,6 +1,5 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
-import imgEquipoSala from "@/assets/images/equipo-sala.jpg";
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
@@ -125,7 +124,7 @@ export const SERVICES: Service[] = [
       "Trasteos dentro de Bogotá y su área urbana, con personal capacitado, protección del mobiliario y vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
-    image: imgEquipoSala,
+    image: imgEmbalajeHogar,
     kicker: "Trasteos en Bogotá",
     headline: "Tu trasteo en la ciudad, sin estrés y sin sorpresas",
     intro:
@@ -523,19 +522,18 @@ export const FAQS = [
 
 // Galería (mosaico del inicio). "tall": foto vertical que ocupa dos filas.
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
-  { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
   { src: imgContenedor, caption: "Cargue de contenedor", tall: true },
+  { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
+  { src: imgBarco, caption: "Rutas marítimas", tall: true },
+  { src: imgEmbalajeCarton, caption: "Embalaje con cartón y plástico protector", tall: true },
+  { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
   { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
   { src: imgCargueCajas, caption: "Cargue de cajas Transpack" },
   { src: imgGuacales, caption: "Guacales a la medida" },
-  { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
   { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
-  { src: imgEquipoSala, caption: "Protección del mobiliario" },
-  { src: imgBarco, caption: "Rutas marítimas", tall: true },
   { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
   { src: imgGuacalExportacion, caption: "Guacal de exportación" },
   { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
-  { src: imgEmbalajeCarton, caption: "Embalaje con cartón y plástico protector" },
 ];
 
 export const ABOUT_IMAGES = { a: imgCargue, b: imgEquipoCaja };
