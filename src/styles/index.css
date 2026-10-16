@@ -2,6 +2,8 @@
 
 /* Tokens de marca — Manual de Marca Transpack (agosto 2026) */
 @theme inline {
+  /* Pantallas anchas (1440 px+): logo y cabecera más grandes */
+  --breakpoint-wide: 90rem; /* 1440 px, en rem como los demás para que se ordene */
   /* Principales */
   --color-azul: #272b7c; /* Azul profundo: voz principal */
   --color-naranja: #ff7619; /* Naranja ámbar: acción, debe guiar, no dominar */

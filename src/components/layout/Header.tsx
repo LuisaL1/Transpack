@@ -115,11 +115,11 @@ export function Header() {
         <div
           ref={navRef}
           onMouseLeave={hoverClose}
-          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-6 transition-all ${
-            scrolled ? "h-[66px]" : "h-[76px]"
+          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-6 transition-all wide:w-[min(100%-120px,1320px)] ${
+            scrolled ? "h-[66px] wide:h-[76px]" : "h-[76px] wide:h-[92px]"
           }`}
         >
-          <Logo light={!solid} compact className="xl:-ms-6 2xl:-ms-16" />
+          <Logo light={!solid} compact className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
           <nav className="hidden items-center gap-4 lg:flex xl:ms-6 xl:gap-4" aria-label={t.mainNav}>

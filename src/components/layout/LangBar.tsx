@@ -44,7 +44,7 @@ export function LangBar({ hidden }: { hidden: boolean }) {
       }`}
       aria-hidden={hidden}
     >
-      <div className="mx-auto flex h-9 w-[min(100%-32px,1200px)] items-center justify-end gap-5">
+      <div className="mx-auto flex h-9 w-[min(100%-32px,1200px)] items-center justify-end gap-5 wide:w-[min(100%-120px,1320px)]">
         <div ref={ref} className="relative">
           <button
             type="button"
