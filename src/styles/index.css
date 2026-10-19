@@ -23,6 +23,33 @@
   input:disabled {
     cursor: not-allowed;
   }
+
+  /* Textos justificados (pedido del cliente): párrafos y listas quedan
+     alineados a ambos márgenes, con división de palabras para que no queden
+     huecos. Lo que está centrado a propósito (titulares, introducciones de
+     sección, tarjetas centradas) sigue centrado, y una clase de alineación
+     puesta en el propio elemento siempre manda. */
+  p,
+  li,
+  blockquote {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    /* Solo se dividen palabras largas (10+ letras) y nunca dejan menos de 4
+       letras a cada lado: "Colombia" o "urbana" no se cortan, "documentación"
+       sí puede ("documen-tación"). text-wrap: pretty reparte mejor las líneas. */
+    hyphenate-limit-chars: 10 4 4;
+    -webkit-hyphenate-limit-before: 4;
+    -webkit-hyphenate-limit-after: 4;
+    text-wrap: pretty;
+  }
+  .text-center p,
+  .text-center li,
+  .text-center blockquote {
+    text-align: center;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
 }
 
 /* Tokens de marca — Manual de Marca Transpack (agosto 2026) */

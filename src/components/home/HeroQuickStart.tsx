@@ -13,7 +13,14 @@ import { Bi } from "@/components/ui";
 export function HeroQuickStart() {
   const { lp, tr } = useLang();
   const t = quickPickText(tr);
-  const { SERVICES } = useSite();
+  const { SERVICES: ALL } = useSite();
+  // Orden pedido por el cliente: primero internacional, luego nacional y local;
+  // después el resto en el orden del sitio
+  const FIRST = ["mudanzas-internacionales", "mudanzas-nacionales", "mudanzas-locales"];
+  const SERVICES = [
+    ...FIRST.map((slug) => ALL.find((x) => x.slug === slug)).filter((x) => x !== undefined),
+    ...ALL.filter((x) => !FIRST.includes(x.slug)),
+  ];
   const [sel, setSel] = useState(0);
   const s = SERVICES[sel];
   return (
@@ -88,7 +95,9 @@ export function HeroQuickStart() {
                   <p className="font-title text-[1rem] font-semibold leading-tight text-azul">
                     {o.title}
                   </p>
-                  <p className="mt-1 text-[0.8rem] leading-[1.5] text-suave">{o.short}</p>
+                  <p className="mt-1 text-justify text-[0.8rem] leading-[1.5] text-suave [hyphens:auto]">
+                    {o.short}
+                  </p>
                 </div>
               </div>
             ))}
