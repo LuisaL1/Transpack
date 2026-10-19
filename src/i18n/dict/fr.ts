@@ -432,6 +432,7 @@ const dict: Record<string, string> = {
   "International": "Internationaux",
   "Packing": "Emballage",
   "Customs": "Douane",
+  "From Bogotá to the world": "De Bogotá vers le monde",
   "View service": "Voir le service",
   "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.":
     "Particuliers, entreprises et institutions n'ont pas les mêmes besoins. C'est pourquoi nous travaillons avec trois unités spécialisées et un accompagnement dédié pour ceux qui commencent une nouvelle vie à l'étranger.",

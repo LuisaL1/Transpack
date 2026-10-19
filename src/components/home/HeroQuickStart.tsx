@@ -18,14 +18,18 @@ export function HeroQuickStart() {
   const s = SERVICES[sel];
   return (
     <div className="mx-auto w-full max-w-[520px] text-start lg:mx-0">
-      <p className="mb-3 flex items-center justify-center gap-2 font-title text-[0.95rem] font-semibold text-white lg:justify-start">
+      <p className="mb-3 flex items-center justify-center gap-2 font-title text-[0.95rem] font-semibold text-tinta lg:justify-start">
         <span className="h-2 w-2 rounded-full bg-naranja shadow-[0_0_0_4px_rgba(255,118,25,.25)]" />
         {t.title}
       </p>
-      {/* Panel de vidrio: borde de luz arriba y sombra en dos capas (cercana y
-          lejana) para que flote sobre el fondo azul */}
-      <div className="relative rounded-[28px] border border-white/15 bg-white/[0.08] p-2.5 shadow-[0_2px_0_0_rgba(255,255,255,.08)_inset,0_10px_24px_-10px_rgba(13,15,51,.45),0_40px_80px_-30px_rgba(13,15,51,.7)] backdrop-blur-md">
-        <div role="tablist" aria-label={t.title} className="grid grid-cols-3 gap-1.5">
+      {/* Panel azul de marca (va sobre el tablero blanco): borde de luz arriba,
+          cuadrado naranja girado de los menús y sombra en dos capas */}
+      <div className="relative overflow-hidden rounded-[28px] bg-azul p-2.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,.12),0_14px_30px_-12px_rgba(39,43,124,.55),0_40px_80px_-30px_rgba(13,15,51,.55)]">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-16 -left-16 h-32 w-32 rotate-45 rounded-[22%] bg-naranja/15"
+        />
+        <div role="tablist" aria-label={t.title} className="relative grid grid-cols-3 gap-1.5">
           {SERVICES.map((o, i) => {
             const on = i === sel;
             return (
@@ -62,14 +66,14 @@ export function HeroQuickStart() {
           role="tabpanel"
           id="qs-panel"
           aria-labelledby={`qs-tab-${s.slug}`}
-          className="mt-2.5 overflow-hidden rounded-[20px] bg-white shadow-[0_18px_40px_-18px_rgba(13,15,51,.55)] ring-1 ring-azul/5"
+          className="relative mt-2.5 overflow-hidden rounded-[20px] bg-white shadow-[0_18px_40px_-18px_rgba(13,15,51,.55)]"
         >
           <div className="grid">
             {SERVICES.map((o, i) => (
               <div
                 key={o.slug}
                 aria-hidden={i !== sel}
-                className={`flex items-center gap-4 px-5 py-5 [grid-area:1/1] ${
+                className={`flex items-center gap-3.5 px-4 py-4 [grid-area:1/1] ${
                   i === sel ? "animate-fade-up" : "invisible"
                 }`}
               >
@@ -89,10 +93,10 @@ export function HeroQuickStart() {
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-between gap-3 border-t border-linea bg-gris/60 px-5 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-linea bg-gris/60 px-5 py-3">
             <Link
               to={lp(`/servicios/${s.slug}`)}
-              className="group inline-flex items-center gap-1 text-[0.82rem] font-semibold text-azul transition-colors hover:text-naranja"
+              className="group inline-flex items-center gap-1 whitespace-nowrap text-[0.82rem] font-semibold text-azul transition-colors hover:text-naranja"
             >
               {t.more}
               <Bi
@@ -102,7 +106,7 @@ export function HeroQuickStart() {
             </Link>
             <Link
               to={lp(`/?servicio=${s.quote}#cotizar`)}
-              className="group inline-flex items-center gap-2 rounded-full bg-azul py-1.5 pe-1.5 ps-4 text-[0.82rem] font-bold text-white shadow-[0_10px_22px_-10px_rgba(39,43,124,.8)] transition-all hover:-translate-y-0.5 hover:bg-azul-700"
+              className="group ms-auto inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-azul py-1.5 pe-1.5 ps-4 text-[0.82rem] font-bold text-white shadow-[0_10px_22px_-10px_rgba(39,43,124,.8)] transition-all hover:-translate-y-0.5 hover:bg-azul-700"
             >
               {t.cta}
               <span className="grid h-7 w-7 place-items-center rounded-full bg-naranja text-white transition-transform group-hover:translate-x-0.5">

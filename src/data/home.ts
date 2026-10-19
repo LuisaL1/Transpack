@@ -207,6 +207,8 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
+  eyebrow: tr("Cobertura global", "Global coverage"),
+  title: tr("Desde Bogotá hacia el mundo", "From Bogotá to the world"),
 });
 
 // "¿Qué necesitas hoy?" (portada): selector de los seis servicios. Las

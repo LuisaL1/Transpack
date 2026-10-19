@@ -77,7 +77,7 @@ src/
 │   ├── consent.ts          Textos del aviso de cookies
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes
-│   └── worldMap.ts         Mapamundi (GENERADO con `pnpm map`, no editar a mano)
+│   └── worldMap.ts         Mapamundi: siluetas de los países y destinos (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
 │   ├── joel.ts             "Cerebro" del asesor virtual (sin IA externa; ~120 KB,
 │   │                       se descarga aparte al abrir el chat)

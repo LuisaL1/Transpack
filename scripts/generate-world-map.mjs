@@ -1,4 +1,4 @@
-import { geoNaturalEarth1, geoContains, geoBounds } from "d3-geo";
+import { geoNaturalEarth1, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import { createRequire } from "module";
 import fs from "fs";
@@ -7,8 +7,7 @@ const world = require("world-atlas/countries-110m.json");
 const countries = feature(world, world.objects.countries).features.filter((f) => f.id !== "010"); // sin Antártida
 
 const W = 1000,
-  H = 500,
-  STEP = 7.2;
+  H = 500;
 const proj = geoNaturalEarth1().fitExtent(
   [
     [0, 8],
@@ -167,48 +166,35 @@ const ASIA = [
 ];
 const hotIds = new Set([...DEST.map((d) => d.id), ...SOUTH_AMERICA, ...AFRICA, ...ASIA]);
 const keyOf = (f) => f.id ?? f.properties.name;
-const bounds = countries.map((f) => geoBounds(f));
 
-let base = "",
-  hot = "",
-  origin = "",
-  n = 0;
-for (let y = STEP / 2; y < H; y += STEP) {
-  for (let x = STEP / 2; x < W; x += STEP) {
-    const ll = proj.invert([x, y]);
-    if (!ll || !isFinite(ll[0])) continue;
-    let hit = null;
-    for (let i = 0; i < countries.length; i++) {
-      const [[x0, y0], [x1, y1]] = bounds[i];
-      const inLon = x0 <= x1 ? ll[0] >= x0 && ll[0] <= x1 : ll[0] >= x0 || ll[0] <= x1;
-      if (!inLon || ll[1] < y0 || ll[1] > y1) continue;
-      if (geoContains(countries[i], ll)) {
-        hit = countries[i];
-        break;
-      }
-    }
-    if (!hit) continue;
-    n++;
-    const seg = `M${x.toFixed(1)} ${y.toFixed(1)}h0`;
-    if (hit.id === ORIGIN.id) origin += seg;
-    else if (hotIds.has(keyOf(hit))) hot += seg;
-    else base += seg;
-  }
-}
+// Siluetas de los países (rellenos sólidos, como un mapa político), agrupadas
+// en tres capas: resto del mundo, países y regiones donde opera, y Colombia.
+// Coordenadas con un decimal: suficiente a este tamaño y mantiene el archivo liviano.
+const path = geoPath(proj).digits(1);
+const layer = (pick) =>
+  countries
+    .filter(pick)
+    .map((f) => path(f))
+    .join("");
+const base = layer((f) => f.id !== ORIGIN.id && !hotIds.has(keyOf(f)));
+const hot = layer((f) => f.id !== ORIGIN.id && hotIds.has(keyOf(f)));
+const origin = layer((f) => f.id === ORIGIN.id);
+const n = countries.length;
 const pt = (ll) => proj(ll).map((v) => +v.toFixed(1));
-const out = `// Mapa mundial de puntos, generado a partir de Natural Earth (world-atlas, 1:110m)
-// con proyección Natural Earth. No editar a mano: los puntos están precalculados.
-// Para cambiar los países resaltados hay que regenerar el archivo.
+const out = `// Mapa mundial (siluetas de los países), generado a partir de Natural Earth
+// (world-atlas, 1:110m) con proyección Natural Earth. No editar a mano: lo genera
+// \`pnpm map\` (scripts/generate-world-map.mjs). Para cambiar los países
+// resaltados hay que regenerar el archivo.
 
 export const MAP_W = ${W};
 export const MAP_H = ${H};
 
-/** Puntos de tierra (resto del mundo) */
-export const DOTS_BASE = "${base}";
-/** Puntos de los países y regiones con operación (destinos, Suramérica, África y Asia) */
-export const DOTS_HOT = "${hot}";
-/** Puntos de Colombia */
-export const DOTS_ORIGIN = "${origin}";
+/** Siluetas del resto del mundo */
+export const LAND_BASE = "${base}";
+/** Siluetas de los países y regiones con operación (destinos, Suramérica, África y Asia) */
+export const LAND_HOT = "${hot}";
+/** Silueta de Colombia */
+export const LAND_ORIGIN = "${origin}";
 
 export const ORIGIN = { name: "${ORIGIN.name}", x: ${pt(ORIGIN.lonlat)[0]}, y: ${pt(ORIGIN.lonlat)[1]} };
 
@@ -221,4 +207,4 @@ ${DEST.map((d) => {
 ];
 `;
 fs.writeFileSync(process.argv[2], out);
-console.log("dots", n, "bytes", out.length);
+console.log("países", n, "bytes", out.length);
