@@ -9,9 +9,9 @@ export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
   certifications: tr("Certificados LACMA, IAM y PAIMA", "LACMA, IAM and PAIMA certified"),
   certificationsShort: "LACMA · IAM · PAIMA",
-  title: tr("Movemos lo que más importa,", "We move what matters most,"),
-  titlePrefix: tr("a ", ""),
-  titleHighlight: tr("cualquier lugar del mundo", "anywhere in the world"),
+  title: tr("Cuidamos lo que más te importa", "We take care of what matters most to you"),
+  titlePrefix: tr("y lo llevamos ", "and take it "),
+  titleHighlight: tr("a donde vayas.", "wherever you go."),
   sub: tr(
     "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
     "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.",

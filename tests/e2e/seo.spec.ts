@@ -7,7 +7,7 @@ const SITE = "https://www.transpacksas.com";
 test.describe("sin JavaScript", () => {
   test.use({ javaScriptEnabled: false });
   for (const [route, h1, lang] of [
-    ["/", /Movemos lo que más importa/, "es-CO"],
+    ["/", /Cuidamos lo que más te importa/, "es-CO"],
     ["/nosotros", /cinco décadas/, "es-CO"],
     ["/servicios/mudanzas-internacionales", /otro país/, "es-CO"],
     ["/blog/por-que-una-mudanza-maritima-internacional-puede-tardar", /tardar/, "es-CO"],

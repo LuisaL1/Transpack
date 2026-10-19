@@ -395,8 +395,9 @@ const dict: Record<string, string> = {
   "Keep reading": "اقرأ أيضًا",
   "Read article": "اقرأ المقال",
   "LACMA, IAM and PAIMA certified": "معتمدون من LACMA وIAM وPAIMA",
-  "We move what matters most,": "ننقل أغلى ما تملك",
-  "anywhere in the world": "إلى أي مكان في العالم",
+  "We take care of what matters most to you": "نعتني بما يهمك أكثر",
+  "and take it ": "ونأخذه ",
+  "wherever you go.": "أينما ذهبت.",
   "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.":
     "نقل داخل المدينة وبين المدن ونقل دولي، وتخزين، وخدمات تنقّل للشركات، بخبرة تمتد 58 عامًا.",
   "Bogotá, point of origin": "بوغوتا، نقطة الانطلاق",

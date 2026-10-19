@@ -51,7 +51,7 @@ export function HeroQuickStart() {
                   setSel(i);
                   trackEvent("hero_service_pick", { service: o.quote });
                 }}
-                className={`group flex flex-col items-center gap-1.5 rounded-2xl px-2 py-3 text-[0.74rem] font-bold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                className={`group flex flex-col items-center gap-1.5 rounded-2xl px-1 py-3 text-[0.66rem] font-bold sm:px-2 sm:text-[0.74rem] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
                   on
                     ? "bg-naranja text-white shadow-[0_12px_24px_-10px_rgba(255,118,25,.85),inset_0_1px_0_rgba(255,255,255,.25)]"
                     : "text-white/75 hover:-translate-y-0.5 hover:bg-white/10 hover:text-white"
