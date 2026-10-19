@@ -408,6 +408,13 @@ const dict: Record<string, string> = {
   "Transpack in numbers": "ترانسباك بالأرقام",
   "Moving is at the heart of what we do. Around it we combine packing, storage, documentation and specialized coordination so you don't have to worry about a thing.":
     "النقل هو جوهر عملنا. ومن حوله نجمع التغليف والتخزين والمستندات والتنسيق المتخصص، حتى لا تقلق بشأن أي شيء.",
+  "What do you need today?": "ماذا تحتاج اليوم؟",
+  "Quote this service": "اطلب عرض سعر لهذه الخدمة",
+  "Local": "محلية",
+  "National": "وطنية",
+  "International": "دولية",
+  "Packing": "تغليف",
+  "Customs": "جمارك",
   "View service": "عرض الخدمة",
   "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.":
     "للأفراد والشركات والمؤسسات احتياجات مختلفة. لذلك نعمل من خلال ثلاث وحدات متخصصة، ونوفر مرافقة مخصصة لمن يبدأ حياة جديدة في بلد آخر.",

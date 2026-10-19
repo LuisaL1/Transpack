@@ -55,6 +55,7 @@
 | `chat_open` | Al abrir el chat de Joel (botón, invitación, menú o buscador) | `lang` |
 | `chat_message` | Cada mensaje escrito al chat. **Nunca se envía el texto del visitante**, solo lo que Joel entendió | `intent` (p. ej. `precio`, `fact-seguro`, `pain-exterior`, `obj-caro`; en otros idiomas `step-<paso>`), `service`, `lang` |
 | `search` | Al elegir un resultado del buscador | `search_term`, `result` (ruta elegida), `lang` |
+| `hero_service_pick` | Pestaña elegida en "¿Qué necesitas hoy?" (portada) | `service` |
 | `quote_step` | Cada paso del cotizador (para medir en qué paso se abandona) | `step` (2 a 6 o `resumen`), `service` |
 
 ## Recomendaciones en GA4

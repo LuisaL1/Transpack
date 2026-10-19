@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* Puntero: Tailwind v4 deja los botones con la flecha normal. Todo lo que se
+   puede pulsar muestra la mano; lo deshabilitado, el cursor de "no permitido". */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  [role="option"],
+  summary,
+  select:not(:disabled),
+  label:has(> input[type="checkbox"]),
+  label:has(> input[type="radio"]),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="submit"],
+  input[type="button"] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [aria-disabled="true"],
+  select:disabled,
+  input:disabled {
+    cursor: not-allowed;
+  }
+}
+
 /* Tokens de marca — Manual de Marca Transpack (agosto 2026) */
 @theme inline {
   /* Pantallas anchas (1440 px+): logo y cabecera más grandes */

@@ -16,7 +16,6 @@ export const heroText = (tr: Tr) => ({
     "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
     "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.",
   ),
-  cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   legend: {
     origin: tr("Bogotá, punto de origen", "Bogotá, point of origin"),
     operate: tr("Países donde operamos", "Countries where we operate"),
@@ -208,4 +207,20 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
+});
+
+// "¿Qué necesitas hoy?" (portada): selector de los seis servicios. Las
+// etiquetas cortas van por slug del servicio (SERVICES en site.ts).
+export const quickPickText = (tr: Tr) => ({
+  title: tr("¿Qué necesitas hoy?", "What do you need today?"),
+  more: tr("Ver servicio", "View service"),
+  cta: tr("Cotizar este servicio", "Quote this service"),
+  labels: {
+    "mudanzas-locales": tr("Locales", "Local"),
+    "mudanzas-nacionales": tr("Nacionales", "National"),
+    "mudanzas-internacionales": tr("Internacionales", "International"),
+    bodegaje: tr("Bodegaje", "Storage"),
+    "embalaje-especializado": tr("Embalaje", "Packing"),
+    "gestion-aduanera": tr("Aduanas", "Customs"),
+  } as Record<string, string>,
 });

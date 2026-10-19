@@ -101,6 +101,18 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);
 });
 
+test("portada: '¿Qué necesitas hoy?' muestra el servicio y lleva al cotizador con ese servicio", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await closeCookies(page);
+  await page.getByRole("tab", { name: "Bodegaje" }).click();
+  await expect(page.locator("#qs-panel")).toContainText("Almacenamiento seguro en Bogotá");
+  await page.getByRole("link", { name: /Cotizar este servicio/ }).click();
+  await expect(page).toHaveURL(/servicio=bodegaje#cotizar/);
+  await expect(page.locator("#cotizar")).toContainText("Bodegaje");
+});
+
 test("cotizador: preselección por URL y validación", async ({ page }) => {
   await page.goto("/?servicio=internacional#cotizar");
   const form = page.locator("#cotizar form");

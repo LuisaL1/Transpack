@@ -421,6 +421,13 @@ const dict: Record<string, string> = {
   "Transpack in numbers": "Transpack in cifre",
   "Moving is at the heart of what we do. Around it we combine packing, storage, documentation and specialized coordination so you don't have to worry about a thing.":
     "Il trasloco è il cuore del nostro lavoro. Intorno ad esso combiniamo imballaggio, deposito, documentazione e coordinamento specializzato, così non devi preoccuparti di nulla.",
+  "What do you need today?": "Di cosa hai bisogno oggi?",
+  "Quote this service": "Richiedi un preventivo per questo servizio",
+  "Local": "Locali",
+  "National": "Nazionali",
+  "International": "Internazionali",
+  "Packing": "Imballaggio",
+  "Customs": "Dogana",
   "View service": "Vedi il servizio",
   "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.":
     "Privati, aziende ed enti hanno esigenze diverse. Per questo lavoriamo con tre divisioni specializzate e un'assistenza dedicata a chi inizia una nuova vita all'estero.",

@@ -2,17 +2,19 @@ import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { heroText } from "@/data/home";
 import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
-import { Bi, btn } from "@/components/ui";
+import { Bi } from "@/components/ui";
 import { WorldMap } from "@/components/home/WorldMap";
+import { HeroQuickStart } from "@/components/home/HeroQuickStart";
 import { container } from "@/components/ui/layout";
 
-// Degradado de azul profundo (arriba) a blanco (abajo), con el mapamundi de
-// rutas reales y los clientes al pie, sobre la zona clara.
+// Degradado de azul profundo (arriba) a blanco (abajo). Bajo el titular, el
+// mapamundi de rutas reales (izquierda) y el selector "¿Qué necesitas hoy?"
+// (derecha, HeroQuickStart); los clientes al pie, sobre la zona clara.
 export function Hero() {
   const { lp, tr } = useLang();
   const t = heroText(tr);
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0d0f33_0%,#1b1e5c_20%,#272b7c_40%,#4248c4_60%,#9b9fe6_78%,#e9eafa_90%,#ffffff_100%)] pt-[136px] text-white/80 md:pt-[150px]">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0d0f33_0%,#1b1e5c_18%,#272b7c_45%,#3a40b0_68%,#9b9fe6_84%,#e9eafa_93%,#ffffff_100%)] pt-[136px] text-white/80 md:pt-[150px]">
       {/* Retícula sutil */}
       <div
         aria-hidden="true"
@@ -50,33 +52,40 @@ export function Hero() {
           {t.titlePrefix}
           <span className="text-naranja">{t.titleHighlight}</span>
         </h1>
-        <p className="mx-auto mb-8 max-w-[560px] text-[clamp(.98rem,.94rem+.2vw,1.08rem)] text-white/70">
+        <p className="mx-auto max-w-[560px] text-[clamp(.98rem,.94rem+.2vw,1.08rem)] text-white/70">
           {t.sub}
         </p>
-        <Link to={lp("/#cotizar")} className={`${btn.primary} ${btn.md}`}>
-          {t.cta}
-        </Link>
       </div>
 
-      {/* Mapamundi con rutas reales desde Bogotá (en móvil se recorta lo justo para
-          que se vean de las Américas a Japón) */}
+      {/* Mapamundi con rutas reales desde Bogotá (izquierda; en móvil se recorta
+          lo justo para que se vean de las Américas a Japón) y el selector de
+          servicios (derecha; en móvil va primero) */}
       <div
-        dir="ltr"
-        className="relative mx-auto -mb-6 mt-12 w-[125%] max-w-[1180px] -translate-x-[10%] md:mt-8 md:w-full md:translate-x-0"
+        className={`${container} relative mt-10 grid items-center gap-10 md:mt-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-12`}
       >
-        <WorldMap />
-      </div>
-      <div className="relative flex flex-wrap justify-center gap-x-6 gap-y-2 px-4 pt-2 text-[0.8rem] font-medium text-tinta/80">
-        <span className="inline-flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-naranja" /> {t.legend.origin}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ffb27a]" /> {t.legend.operate}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-white ring-1 ring-tinta/20" />{" "}
-          {t.legend.network}
-        </span>
+        <div className="order-2 min-w-0 lg:order-1">
+          <div
+            dir="ltr"
+            className="relative mx-auto w-[125%] max-w-[1180px] -translate-x-[10%] md:w-full md:translate-x-0"
+          >
+            <WorldMap />
+          </div>
+          <div className="relative flex flex-wrap justify-center gap-x-6 gap-y-2 px-4 pt-4 text-[0.8rem] font-medium text-white/80 lg:justify-start">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-naranja" /> {t.legend.origin}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ffb27a]" /> {t.legend.operate}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-white ring-1 ring-white/40" />{" "}
+              {t.legend.network}
+            </span>
+          </div>
+        </div>
+        <div className="order-1 animate-fade-up lg:order-2">
+          <HeroQuickStart />
+        </div>
       </div>
 
       {/* Clientes */}
