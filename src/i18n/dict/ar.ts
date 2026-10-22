@@ -26,8 +26,8 @@ const dict: Record<string, string> = {
   "I'm a company or embassy": "أمثل شركة أو سفارة",
   "Talk to an advisor": "التحدث إلى مستشار",
   "Back to start": "العودة إلى البداية",
-  "I can help you plan your move, answer questions or connect you with our team. What do you need?":
-    "يمكنني مساعدتك في التخطيط لانتقالك، والإجابة عن أسئلتك، أو توصيلك بفريقنا. كيف يمكنني مساعدتك؟",
+  "Moving and not sure where to start? Tell me where you're going and when: I'll answer your questions and help you get a quote in a few minutes.":
+    "هل ستنتقل ولا تعرف من أين تبدأ؟ أخبرني إلى أين ومتى: أجيب عن أسئلتك وأساعدك في الحصول على عرض سعر خلال دقائق.",
   "What else can I help you with?": "هل هناك ما يمكنني مساعدتك فيه أيضًا؟",
   "Happy to help! What kind of move do you need?": "بكل سرور! ما نوع النقل الذي تحتاجه؟",
   "Local move (same city)": "نقل داخل المدينة نفسها",
@@ -191,10 +191,10 @@ const dict: Record<string, string> = {
   "Message us on WhatsApp": "راسلنا عبر واتساب",
   "Call us": "اتصل بنا",
   Email: "البريد الإلكتروني",
-  "Talk to Joel": "تحدث مع جويل",
+  "Talk to Joelito": "تحدث مع جويليتو",
   "AI advisor, answers instantly": "مستشار بالذكاء الاصطناعي، يرد فورًا",
   "Embassies served in": "سفارات خدمناها في",
-  "Chat with Joel": "دردش مع جويل",
+  "Chat with Joelito": "دردش مع جويليتو",
   "Hello Transpack, I need help": "مرحبًا ترانسباك، أحتاج إلى مساعدة",
   "Email us": "راسلنا بالبريد",
   "Transpack support": "دعم ترانسباك",
@@ -372,7 +372,7 @@ const dict: Record<string, string> = {
   Search: "بحث",
   "Popular searches": "عمليات بحث شائعة",
   "No results for": "لا توجد نتائج لـ",
-  "Try another word or ask Joel.": "جرّب كلمة أخرى أو اسأل جويل.",
+  "Try another word or ask Joelito.": "جرّب كلمة أخرى أو اسأل جويليتو.",
   navigate: "للتنقل",
   open: "للفتح",
   close: "للإغلاق",
@@ -395,14 +395,14 @@ const dict: Record<string, string> = {
   "Keep reading": "اقرأ أيضًا",
   "Read article": "اقرأ المقال",
   "LACMA, IAM and PAIMA certified": "معتمدون من LACMA وIAM وPAIMA",
-  "We take care of what matters most to you": "نعتني بما يهمك أكثر",
-  "and take it ": "ونأخذه ",
-  "wherever you go.": "أينما ذهبت.",
+  "We promise from the heart": "نعد من القلب",
+  "and deliver ": "ونفي ",
+  "with excellence.": "بامتياز.",
   "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.":
     "نقل داخل المدينة وبين المدن ونقل دولي، وتخزين، وخدمات تنقّل للشركات، بخبرة تمتد 58 عامًا.",
   "Bogotá, point of origin": "بوغوتا، نقطة الانطلاق",
   "Countries where we operate": "دول نعمل فيها",
-  "Agent network in 176 countries": "شبكة وكلاء في 176 دولة",
+  "Network of representatives in 176 countries": "شبكة ممثلين في 176 دولة",
   "Companies that trust Transpack": "شركات تثق في ترانسباك",
   "Companies, embassies and institutions that have trusted Transpack with their mobility":
     "شركات وسفارات ومنظمات أوكلت إلى ترانسباك عمليات انتقالها",
@@ -411,11 +411,11 @@ const dict: Record<string, string> = {
     "النقل هو جوهر عملنا. ومن حوله نجمع التغليف والتخزين والمستندات والتنسيق المتخصص، حتى لا تقلق بشأن أي شيء.",
   "What do you need today?": "ماذا تحتاج اليوم؟",
   "Quote this service": "اطلب عرض سعر لهذه الخدمة",
-  "Local": "محلية",
-  "National": "وطنية",
-  "International": "دولية",
-  "Packing": "تغليف",
-  "Customs": "جمارك",
+  Local: "محلية",
+  National: "وطنية",
+  International: "دولية",
+  Packing: "تغليف",
+  Customs: "جمارك",
   "From Bogotá to the world": "من بوغوتا إلى العالم",
   "View service": "عرض الخدمة",
   "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.":
@@ -428,8 +428,8 @@ const dict: Record<string, string> = {
   Choose: "اختر",
   "From Colombia to the world, with a network you can't improvise":
     "من كولومبيا إلى العالم، بشبكة لا تُبنى ارتجالًا",
-  "Almost six decades building an operating network of more than 2,000 international agents in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.":
-    "قرابة ستة عقود في بناء شبكة تشغيلية تضم أكثر من 2,000 وكيل دولي في 176 دولة: الولايات المتحدة وكندا والاتحاد الأوروبي وآسيا وأمريكا اللاتينية كلها. وتُنفَّذ عملية نقلك بالمعايير نفسها في بلد المغادرة وبلد الوصول.",
+  "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.":
+    "قرابة ستة عقود في بناء شبكة تشغيلية تضم أكثر من 2,000 ممثل في 176 دولة: الولايات المتحدة وكندا والاتحاد الأوروبي وآسيا وأمريكا اللاتينية كلها. وتُنفَّذ عملية نقلك بالمعايير نفسها في بلد المغادرة وبلد الوصول.",
   "Sea freight": "الشحن البحري",
   "Ideal for large volumes and full households.": "مثالي للأحجام الكبيرة ونقل المنازل بالكامل.",
   "Air freight": "الشحن الجوي",
@@ -437,8 +437,8 @@ const dict: Record<string, string> = {
   "LACMA Certified Packers seal": "شعار LACMA Certified Packers",
   "International certifications": "شهادات دولية",
   "Airplane and container ship in port": "طائرة وسفينة حاويات في الميناء",
-  "Cargo ship at sea": "سفينة شحن في عرض البحر",
-  "agents in 176 countries": "وكيل في 176 دولة",
+  "Loading a moving container": "تحميل حاوية نقل",
+  "representatives in 176 countries": "ممثل في 176 دولة",
   "How we work": "كيف نعمل",
   "A structured process, with no improvisation": "منهجية منظمة بلا ارتجال",
   "Every move follows a methodology proven over decades. That way we reduce surprises and you always know what comes next.":
@@ -476,8 +476,8 @@ const dict: Record<string, string> = {
   "Transpack is founded in Bogotá, specializing in moving services.":
     "تأسيس ترانسباك في بوغوتا، متخصصةً في خدمات النقل.",
   "Decades of network": "عقود من بناء الشبكة",
-  "We built a network of more than 2,000 international agents in 176 countries.":
-    "بنينا شبكة تضم أكثر من 2,000 وكيل دولي في 176 دولة.",
+  "We built a network of more than 2,000 representatives in 176 countries.":
+    "بنينا شبكة تضم أكثر من 2,000 ممثل في 176 دولة.",
   Today: "اليوم",
   "We run local, national and international moves, storage and corporate mobility.":
     "ننفذ النقل داخل المدينة وبين المدن والنقل الدولي، والتخزين، وخدمات تنقّل الشركات.",
@@ -543,104 +543,74 @@ const dict: Record<string, string> = {
   "What data we use, why, and how to exercise your rights":
     "البيانات التي نستخدمها والغرض منها وكيفية ممارسة حقوقك",
   // ─── Formulario de contacto y envío por correo ───
-  "Change my cookie choice":
-    "تغيير قراري بشأن ملفات تعريف الارتباط",
-  "Close form":
-    "إغلاق النموذج",
-  "Contact form":
-    "نموذج التواصل",
-  "Data authorization":
-    "الموافقة على معالجة البيانات",
-  "Enter your email to get the reply this way:":
-    "أدخل بريدك الإلكتروني لتلقي الرد بهذه الطريقة:",
-  "General information":
-    "معلومات عامة",
+  "Change my cookie choice": "تغيير قراري بشأن ملفات تعريف الارتباط",
+  "Close form": "إغلاق النموذج",
+  "Contact form": "نموذج التواصل",
+  "Data authorization": "الموافقة على معالجة البيانات",
+  "Enter your email to get the reply this way:": "أدخل بريدك الإلكتروني لتلقي الرد بهذه الطريقة:",
+  "Information about a service": "معلومات عن خدمة",
   "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
     "أوافق على أن تعالج Transpack S.A.S. بياناتي الشخصية للرد على هذا الطلب، وفقًا لـ",
   "Leave your details and a Transpack advisor will get back to you.":
     "اترك بياناتك وسيرد عليك أحد مستشاري ترانسباك.",
-  "Message sent!":
-    "تم إرسال الرسالة!",
-  "Moving or storage quote":
-    "عرض سعر للنقل أو التخزين",
-  "Open the contact form":
-    "افتح نموذج التواصل",
-  "Personal data (Law 1581)":
-    "البيانات الشخصية (القانون 1581)",
-  "Phone":
-    "الهاتف",
-  "Phone numbers":
-    "أرقام الهاتف",
-  "Requests, complaints or suggestions":
-    "طلبات أو شكاوى أو اقتراحات",
-  "Send message":
-    "إرسال الرسالة",
-  "Sending…":
-    "جارٍ الإرسال…",
-  "Support with an ongoing service":
-    "دعم لخدمة جارية",
-  "Tell us what you need…":
-    "أخبرنا بما تحتاج إليه…",
+  "Message sent!": "تم إرسال الرسالة!",
+  "Moving or storage quote": "عرض سعر للنقل أو التخزين",
+  "Open the contact form": "افتح نموذج التواصل",
+  "Personal data (Law 1581)": "البيانات الشخصية (القانون 1581)",
+  Phone: "الهاتف",
+  "Phone numbers": "أرقام الهاتف",
+  "Requests, complaints or suggestions": "طلبات أو شكاوى أو اقتراحات",
+  "Send message": "إرسال الرسالة",
+  "Sending…": "جارٍ الإرسال…",
+  "Support with an ongoing service": "دعم لخدمة جارية",
+  "Tell us what you need…": "أخبرنا بما تحتاج إليه…",
   "We couldn't send your message right now. Please try again or message us on":
     "تعذّر إرسال رسالتك الآن. حاول مرة أخرى أو راسلنا عبر",
-  "Work with us":
-    "اعمل معنا",
-  "Write to us":
-    "راسلنا",
-  "You can change your choice at any time.":
-    "يمكنك تغيير قرارك في أي وقت.",
-  "data processing policy":
-    "سياسة معالجة البيانات",
+  "Work with us": "اعمل معنا",
+  "Write to us": "راسلنا",
+  "You can change your choice at any time.": "يمكنك تغيير قرارك في أي وقت.",
+  "data processing policy": "سياسة معالجة البيانات",
   // ─── Chat con un asesor (Zoho SalesIQ) ───
-  "Chat with an advisor (in Spanish)":
-    "المحادثة مع مستشار (بالإسبانية)",
-  "Leave a message":
-    "اترك رسالة",
+  "Chat with an advisor (in Spanish)": "المحادثة مع مستشار (بالإسبانية)",
+  "Leave a message": "اترك رسالة",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "تعذّر فتح المحادثة مع مستشار الآن. تواصل معنا بطريقة أخرى:",
   // ─── Chat con un asesor dentro de Joel ───
-  "Advisor":
-    "مستشار",
-  "Chat with a Transpack advisor":
-    "محادثة مع مستشار ترانسباك",
+  Advisor: "مستشار",
+  "Chat with a Transpack advisor": "محادثة مع مستشار ترانسباك",
   "Our advisors are busy right now. You can keep waiting here or reach us another way:":
     "مستشارونا مشغولون الآن. يمكنك مواصلة الانتظار هنا أو التواصل معنا بطريقة أخرى:",
   "The advisor ended the conversation. Thank you for writing to us!":
     "أنهى المستشار المحادثة. شكرًا لتواصلك معنا!",
-  "Write your message to the advisor…":
-    "اكتب رسالتك إلى المستشار…",
+  "Write your message to the advisor…": "اكتب رسالتك إلى المستشار…",
   "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.":
     "عدت إليّ. إذا أردت التحدث مع مستشار مرة أخرى، اختر «التحدث مع مستشار».",
-  "You're still in the chat with a Transpack advisor.":
-    "ما زلت في المحادثة مع مستشار ترانسباك.",
-  "Your message couldn't be sent. Please try again.":
-    "تعذّر إرسال رسالتك. حاول مرة أخرى.",
+  "You're still in the chat with a Transpack advisor.": "ما زلت في المحادثة مع مستشار ترانسباك.",
+  "Your message couldn't be sent. Please try again.": "تعذّر إرسال رسالتك. حاول مرة أخرى.",
   // ─── Puente con Zoho: formularios ───
-  "Fill in my details":
-    "إكمال بياناتي",
+  "Fill in my details": "إكمال بياناتي",
   "Our team is asking for some contact details. You can fill them in the support window or continue without them.":
     "يطلب فريقنا بعض بيانات التواصل. يمكنك إكمالها في نافذة خدمة العملاء أو المتابعة من دونها.",
-  "Skip this step":
-    "تخطي هذه الخطوة",
+  "Skip this step": "تخطي هذه الخطوة",
   // ─── Cotización del chat → seguimiento del equipo comercial ───
-  "E.g. +1 555 123 4567":
-    "مثال: +971 50 123 4567",
+  "E.g. +1 555 123 4567": "مثال: +971 50 123 4567",
   "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.":
     "يبدو أن هذا الرقم غير مكتمل. هل يمكنك كتابته مرة أخرى؟ إذا كان من بلد آخر، فأضف رمز الدولة.",
   "With your request, our sales team will contact you to follow up.":
     "بناءً على طلبك، سيتواصل معك فريق المبيعات لدينا للمتابعة.",
   // ─── Asesor directo y cotización a un asesor ───
-  "Done, an advisor will reply here shortly.":
-    "تم، سيرد عليك أحد المستشارين هنا قريبًا.",
+  "Done, an advisor will reply here shortly.": "تم، سيرد عليك أحد المستشارين هنا قريبًا.",
   "I couldn't send it right now. Send it on WhatsApp with the button above and an advisor will reply.":
     "لم أتمكن من إرساله الآن. أرسله عبر واتساب باستخدام الزر أعلاه وسيرد عليك أحد المستشارين.",
-  "I'll connect you with an advisor.":
-    "سأوصلك بأحد المستشارين.",
+  "I'll connect you with an advisor.": "سأوصلك بأحد المستشارين.",
   "I'll connect you with an advisor. Write your message and they'll reply right here (in Spanish).":
     "سأوصلك بأحد المستشارين. اكتب رسالتك وسيرد عليك هنا مباشرة (بالإسبانية).",
   "Send it to an advisor and they'll contact you with an estimate.":
     "أرسله إلى أحد المستشارين وسيتواصل معك بتقدير مبدئي.",
-  "Send to an advisor":
-    "أرسل إلى مستشار",
+  "Send to an advisor": "أرسل إلى مستشار",
+  // Carrusel de cifras
+  carousel: "عرض دوّار",
+  figure: "رقم",
+  "Committed entrepreneur": "رجل أعمال ملتزم",
 };
 export default dict;

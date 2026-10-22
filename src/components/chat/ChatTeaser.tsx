@@ -10,7 +10,7 @@ export function ChatTeaser({ onOpen, onClose }: { onOpen: () => void; onClose: (
   return (
     <div
       data-chat-launcher
-      className="animate-fade-up fixed bottom-[76px] right-3 z-[60] flex items-end md:bottom-[88px] md:right-6"
+      className="animate-fade-up fixed bottom-[56px] right-3 z-[60] flex items-end md:bottom-[64px] md:right-6"
     >
       <div className="relative mb-16 mr-[-18px] max-w-[220px] rounded-2xl rounded-br-sm bg-white px-4 py-3 text-[0.85rem] text-texto shadow-[var(--shadow-float)]">
         <button

@@ -21,7 +21,9 @@ const KEY = "tp-advisor";
 
 type Saved = { token: string; after: number };
 
-async function call<T>(body: Record<string, unknown>): Promise<T & { ok: boolean; error?: string }> {
+async function call<T>(
+  body: Record<string, unknown>,
+): Promise<T & { ok: boolean; error?: string }> {
   try {
     const r = await fetch("/api/advisor", {
       method: "POST",

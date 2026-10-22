@@ -28,7 +28,10 @@ const get = (k) => {
   const i = lineOf(k);
   if (i < 0) return "";
   const l = text.split("\n")[i];
-  return l.slice(l.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
+  return l
+    .slice(l.indexOf("=") + 1)
+    .trim()
+    .replace(/^["']|["']$/g, "");
 };
 const set = (k, v) => {
   const lines = text.split("\n");
@@ -75,7 +78,9 @@ if (missing.length) {
 
 // Acepta el código solo o la dirección completa (…?code=1000.xxx&location=…)
 const rawCode = get("ZOHO_AUTH_CODE");
-const code = rawCode.includes("code=") ? new URL(rawCode).searchParams.get("code") ?? "" : rawCode;
+const code = rawCode.includes("code=")
+  ? (new URL(rawCode).searchParams.get("code") ?? "")
+  : rawCode;
 const q = new URLSearchParams({
   grant_type: "authorization_code",
   client_id: get("ZOHO_CLIENT_ID"),
@@ -86,11 +91,14 @@ const q = new URLSearchParams({
 const r = await fetch(`${accountsUrl}/oauth/v2/token?${q}`, { method: "POST" });
 const d = await r.json().catch(() => ({}));
 if (!d.refresh_token) {
-  const why = {
-    invalid_code: "el código venció o ya se usó: abra de nuevo el enlace de autorización (pnpm advisor:token --url) y avise enseguida",
-    invalid_redirect_uri: "ZOHO_REDIRECT_URI no coincide con el 'Authorized Redirect URI' del cliente en la consola de Zoho",
-    invalid_client: "el Client ID o el Client Secret no son correctos",
-  }[d.error] ?? "revise los datos";
+  const why =
+    {
+      invalid_code:
+        "el código venció o ya se usó: abra de nuevo el enlace de autorización (pnpm advisor:token --url) y avise enseguida",
+      invalid_redirect_uri:
+        "ZOHO_REDIRECT_URI no coincide con el 'Authorized Redirect URI' del cliente en la consola de Zoho",
+      invalid_client: "el Client ID o el Client Secret no son correctos",
+    }[d.error] ?? "revise los datos";
   console.error(`Zoho no entregó la clave (${d.error ?? `HTTP ${r.status}`}): ${why}.`);
   process.exit(1);
 }
@@ -99,7 +107,9 @@ set("ZOHO_REFRESH_TOKEN", d.refresh_token);
 if (!get("ADVISOR_SECRET")) set("ADVISOR_SECRET", randomBytes(48).toString("base64"));
 // La dirección de Zoho para leer y escribir en SalesIQ (según su centro de datos)
 if (d.api_domain && !get("ZOHO_ACCOUNTS_URL") && !d.api_domain.endsWith(".com"))
-  console.log(`Ojo: la cuenta está en ${d.api_domain}; ajuste ZOHO_ACCOUNTS_URL y ZOHO_SALESIQ_URL.`);
+  console.log(
+    `Ojo: la cuenta está en ${d.api_domain}; ajuste ZOHO_ACCOUNTS_URL y ZOHO_SALESIQ_URL.`,
+  );
 // El código ya no sirve: se quita del archivo
 remove("ZOHO_AUTH_CODE");
 fs.writeFileSync(FILE, text, { mode: 0o600 });

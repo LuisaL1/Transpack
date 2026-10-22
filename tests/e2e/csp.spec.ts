@@ -41,7 +41,10 @@ for (const route of [
       )
         return r.continue();
       const res = await r.fetch();
-      await r.fulfill({ response: res, headers: { ...res.headers(), ...headersFor(r.request().url()) } });
+      await r.fulfill({
+        response: res,
+        headers: { ...res.headers(), ...headersFor(r.request().url()) },
+      });
     });
     await page.goto(route);
     // Recorre la página para cargar imágenes diferidas, mapa y videos
@@ -67,7 +70,10 @@ test("CSP permite reproducir un video de YouTube", async ({ page, isMobile }) =>
     )
       return r.continue();
     const res = await r.fetch();
-    await r.fulfill({ response: res, headers: { ...res.headers(), ...headersFor(r.request().url()) } });
+    await r.fulfill({
+      response: res,
+      headers: { ...res.headers(), ...headersFor(r.request().url()) },
+    });
   });
   await page.goto("/#videos");
   await page
@@ -99,12 +105,15 @@ test("CSP permite cargar el chat con un asesor (Zoho SalesIQ)", async ({ page, i
     if (r.request().resourceType() !== "document" || !url.startsWith("http://localhost"))
       return r.continue();
     const res = await r.fetch();
-    await r.fulfill({ response: res, headers: { ...res.headers(), ...headersFor(r.request().url()) } });
+    await r.fulfill({
+      response: res,
+      headers: { ...res.headers(), ...headersFor(r.request().url()) },
+    });
   });
   await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
   await page.goto("/");
-  await page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ }).click();
-  const chat = page.getByRole("region", { name: "Chat con Joel" });
+  await page.getByRole("button", { name: /Hablar con Joelito, asesor virtual/ }).click();
+  const chat = page.getByRole("region", { name: "Chat con Joelito" });
   await chat.getByRole("button", { name: "Hablar con un asesor" }).click({ timeout: 10_000 });
   await chat.getByRole("textbox", { name: "Mensaje" }).fill("Hola");
   await chat.getByRole("button", { name: "Enviar" }).click();

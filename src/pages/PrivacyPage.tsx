@@ -142,7 +142,11 @@ export function PrivacyPage() {
                       <thead>
                         <tr className="bg-azul text-start text-white">
                           {s.table.head.map((h) => (
-                            <th key={h} scope="col" className="px-4 py-3 text-start font-title font-semibold">
+                            <th
+                              key={h}
+                              scope="col"
+                              className="px-4 py-3 text-start font-title font-semibold"
+                            >
                               {h}
                             </th>
                           ))}
@@ -151,7 +155,10 @@ export function PrivacyPage() {
                       <tbody>
                         {s.table.rows.map(([where, data, purpose]) => (
                           <tr key={where} className="border-b border-linea align-top even:bg-gris">
-                            <th scope="row" className="w-[22%] px-4 py-3 text-start font-semibold text-tinta">
+                            <th
+                              scope="row"
+                              className="w-[22%] px-4 py-3 text-start font-semibold text-tinta"
+                            >
                               {where}
                             </th>
                             <td className="px-4 py-3">{data}</td>
@@ -163,7 +170,10 @@ export function PrivacyPage() {
                     {/* Celular: una tarjeta por canal */}
                     <div className="mb-4 grid gap-3 md:hidden">
                       {s.table.rows.map(([where, data, purpose]) => (
-                        <dl key={where} className="rounded-2xl border border-linea p-4 text-[0.9rem]">
+                        <dl
+                          key={where}
+                          className="rounded-2xl border border-linea p-4 text-[0.9rem]"
+                        >
                           <dt className="sr-only">{s.table!.head[0]}</dt>
                           <dd className="mb-2 font-title font-semibold text-azul">{where}</dd>
                           <dt className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-naranja">

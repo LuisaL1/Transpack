@@ -7,11 +7,11 @@ const SITE = "https://www.transpacksas.com";
 test.describe("sin JavaScript", () => {
   test.use({ javaScriptEnabled: false });
   for (const [route, h1, lang] of [
-    ["/", /Cuidamos lo que más te importa/, "es-CO"],
+    ["/", /Prometemos con el corazón/, "es-CO"],
     ["/nosotros", /cinco décadas/, "es-CO"],
-    ["/servicios/mudanzas-internacionales", /otro país/, "es-CO"],
+    ["/servicios/mudanzas-internacionales", /Cruzar fronteras/, "es-CO"],
     ["/blog/por-que-una-mudanza-maritima-internacional-puede-tardar", /tardar/, "es-CO"],
-    ["/en/services/international-moving", /abroad/, "en-US"],
+    ["/en/services/international-moving", /Crossing borders/, "en-US"],
     ["/privacidad", /Política de tratamiento de datos personales/, "es-CO"],
   ] as const) {
     test(`${route} trae idioma, título, H1, canónica y JSON-LD en el HTML`, async ({ page }) => {

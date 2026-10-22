@@ -1,6 +1,6 @@
 // Deutsche Fassung der Blogartikel (blogData.ts). Der Slug bleibt spanisch als
 // interne Kennung; die deutsche URL kommt aus src/i18n.
-import imgBarco from "@/assets/images/barco.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
@@ -10,7 +10,7 @@ export const blogPosts: Post[] = [
     slug: "por-que-una-mudanza-maritima-internacional-puede-tardar",
     title: "Warum kann ein internationaler Umzug per Seefracht länger dauern als erwartet?",
     cat: "Internationaler Umzug",
-    cover: imgBarco,
+    cover: imgContenedor,
     excerpt:
       "Zoll, Schiffsrouten, Häfen und Wetter: Wer versteht, wie ein Umzug per Seefracht abläuft, hat realistische Erwartungen und vermeidet Verzögerungen.",
     cta: "Meinen Auslandsumzug planen",
@@ -200,7 +200,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Heute umfasst dieses Netzwerk über 2.000 internationale Partner in 176 Ländern und deckt die USA, Kanada, die Europäische Union, Asien und ganz Lateinamerika ab. Genau diese Reichweite ist der Grund, warum Unternehmen und Familien Transpack ihr Hab und Gut anvertrauen, wenn sie Grenzen überqueren.",
+        text: "Heute umfasst dieses Netzwerk über 2.000 Vertreter in 176 Ländern und deckt die USA, Kanada, die Europäische Union, Asien und ganz Lateinamerika ab. Genau diese Reichweite ist der Grund, warum Unternehmen und Familien Transpack ihr Hab und Gut anvertrauen, wenn sie Grenzen überqueren.",
       },
       { t: "h2", text: "Spezialisten für See- und Luftfracht" },
       {

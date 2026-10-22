@@ -256,7 +256,7 @@ export function menusFor(lang: Lang): Menu[] {
           href: contactHref(),
         },
         {
-          label: tr("Habla con Joel", "Talk to Joel"),
+          label: tr("Habla con Joelito", "Talk to Joelito"),
           desc: tr("Asesor con IA, responde al instante", "AI advisor, answers instantly"),
           icon: "chat-dots",
           chat: true,
@@ -273,7 +273,7 @@ export function supportFor(lang: Lang): MenuItem[] {
   const tr = makeTr(lang);
   return [
     {
-      label: tr("Chatea con Joel", "Chat with Joel"),
+      label: tr("Chatea con Joelito", "Chat with Joelito"),
       desc: tr("Asesor con IA, responde al instante", "AI advisor, answers instantly"),
       icon: "chat-dots",
       chat: true,

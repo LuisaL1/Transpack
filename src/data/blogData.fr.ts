@@ -1,6 +1,6 @@
 // Version française des articles du blog (blogData.ts). Le slug reste en
 // espagnol comme identifiant interne ; l'URL française vient de src/i18n.
-import imgBarco from "@/assets/images/barco.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
@@ -11,7 +11,7 @@ export const blogPosts: Post[] = [
     title:
       "Pourquoi un déménagement maritime international peut-il prendre plus de temps que prévu ?",
     cat: "Déménagement international",
-    cover: imgBarco,
+    cover: imgContenedor,
     excerpt:
       "Douane, lignes maritimes, ports et météo : comprendre le fonctionnement d'un déménagement par mer vous aide à avoir des attentes réalistes et à éviter les retards.",
     cta: "Préparer mon déménagement international",
@@ -202,7 +202,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Aujourd'hui, ce réseau compte plus de 2 000 agents internationaux dans 176 pays et couvre les États-Unis, le Canada, l'Union européenne, l'Asie et toute l'Amérique latine. C'est cette couverture qui explique pourquoi entreprises et familles confient leurs biens à Transpack lorsqu'elles traversent les frontières.",
+        text: "Aujourd'hui, ce réseau compte plus de 2 000 représentants dans 176 pays et couvre les États-Unis, le Canada, l'Union européenne, l'Asie et toute l'Amérique latine. C'est cette couverture qui explique pourquoi entreprises et familles confient leurs biens à Transpack lorsqu'elles traversent les frontières.",
       },
       { t: "h2", text: "Spécialistes des routes maritimes et aériennes" },
       {

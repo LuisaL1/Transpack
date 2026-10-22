@@ -1,6 +1,6 @@
 // Versione italiana degli articoli del blog (blogData.ts). Lo slug resta in
 // spagnolo come identificativo interno; l'URL italiano viene da src/i18n.
-import imgBarco from "@/assets/images/barco.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
@@ -10,7 +10,7 @@ export const blogPosts: Post[] = [
     slug: "por-que-una-mudanza-maritima-internacional-puede-tardar",
     title: "Perché un trasloco marittimo internazionale può richiedere più tempo del previsto?",
     cat: "Trasloco internazionale",
-    cover: imgBarco,
+    cover: imgContenedor,
     excerpt:
       "Dogana, rotte, porti e meteo: capire come funziona un trasloco via mare ti aiuta ad avere aspettative chiare e a evitare ritardi.",
     cta: "Pianifica il mio trasloco internazionale",
@@ -198,7 +198,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Oggi questa rete conta oltre 2.000 agenti internazionali in 176 paesi e copre Stati Uniti, Canada, Unione Europea, Asia e tutta l'America Latina. È proprio questa copertura il motivo per cui aziende e famiglie affidano i propri beni a Transpack quando attraversano i confini.",
+        text: "Oggi questa rete conta oltre 2.000 rappresentanti in 176 paesi e copre Stati Uniti, Canada, Unione Europea, Asia e tutta l'America Latina. È proprio questa copertura il motivo per cui aziende e famiglie affidano i propri beni a Transpack quando attraversano i confini.",
       },
       { t: "h2", text: "Specialisti nelle rotte marittime e aeree" },
       {

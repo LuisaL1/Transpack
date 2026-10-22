@@ -175,7 +175,11 @@ describe("Aprendizaje y perfil del visitante", () => {
 
 describe("Chat con un asesor", () => {
   it("si pide un asesor, lo pasa de una vez (sin texto ni explicaciones)", () => {
-    for (const q of ["quiero hablar con un asesor", "necesito un asesor", "pásame con una persona real"]) {
+    for (const q of [
+      "quiero hablar con un asesor",
+      "necesito un asesor",
+      "pásame con una persona real",
+    ]) {
       const r = ask(q);
       expect(r.intent, q).toBe("asesor");
       expect(r.handoff, q).toBe(true);
