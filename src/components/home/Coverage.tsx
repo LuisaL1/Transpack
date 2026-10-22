@@ -1,26 +1,52 @@
 import lacmaImg from "@/assets/images/lacma.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
-// Foto pequeña: provisional (cargue de contenedor) mientras el cliente entrega
-// la foto de un buque portacontenedores visto de frente.
-import imgContenedor from "@/assets/images/contenedor.jpg";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
-import { Bi, Eyebrow, Reveal } from "@/components/ui";
+import { useSite } from "@/hooks/useContent";
+import { Bi, Eyebrow, Reveal, StatValue } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
-// Cobertura global: modalidades, certificaciones y red de agentes
+// Cobertura global: la foto del avión y el buque con efecto de velocidad
+// (editada por el cliente, oct. 2026) es la protagonista: ocupa toda la
+// sección de borde a borde. El texto va a la izquierda sobre un degradado azul
+// que se abre hacia la derecha; la foto empieza a un tercio del ancho para que
+// el avión quede a la vista en el centro y el buque a la derecha; abajo, las
+// cifras de la red sobre tarjetas translúcidas. En celular la foto va arriba,
+// completa, y el texto debajo sobre azul.
 export function Coverage() {
   const { tr } = useLang();
   const t = coverageText(tr);
+  const { STATS } = useSite();
+  // Cifras reales del sitio (STATS): representantes y países
+  const chips = [STATS[3], STATS[1]];
   return (
-    <section id="cobertura" className={`${section} overflow-hidden bg-violeta text-white/78`}>
-      <span
-        aria-hidden="true"
-        className="absolute -right-[300px] -top-[200px] h-[900px] w-[900px] rotate-45 bg-gradient-to-br from-white/4 to-transparent"
+    <section
+      id="cobertura"
+      className={`${section} overflow-hidden bg-azul-900 text-white/80 lg:min-h-[720px]`}
+    >
+      <img
+        loading="lazy"
+        decoding="async"
+        src={imgGlobal}
+        alt={t.imageAlt}
+        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-left lg:block"
       />
+      {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
       <div
-        className={`${container} relative grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16`}
-      >
+        aria-hidden="true"
+        className="absolute inset-0 hidden bg-[linear-gradient(90deg,#0d0f33_0%,#0d0f33_26%,rgba(27,30,92,.9)_34%,rgba(27,30,92,.5)_44%,rgba(27,30,92,.12)_56%,transparent_66%)] lg:block"
+      />
+      <div className={`${container} relative grid items-end gap-12 lg:grid-cols-[minmax(0,500px)_1fr] lg:gap-16`}>
+        {/* Celular y tableta: la foto completa, arriba */}
+        <Reveal className="lg:hidden">
+          <img
+            loading="lazy"
+            decoding="async"
+            src={imgGlobal}
+            alt={t.imageAlt}
+            className="aspect-[16/10] w-full object-cover shadow-[var(--shadow-float)]"
+          />
+        </Reveal>
         <Reveal>
           <Eyebrow light>{t.eyebrow}</Eyebrow>
           <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12] !text-white">
@@ -31,7 +57,7 @@ export function Coverage() {
             {t.modes.map((m) => (
               <div
                 key={m.title}
-                className="flex gap-3.5 rounded-2xl border border-white/10 bg-white/6 p-4"
+                className="flex gap-3.5 rounded-2xl border border-white/12 bg-white/8 p-4 backdrop-blur-sm"
               >
                 <Bi n={m.icon} className="text-[1.7rem] text-naranja" />
                 <div>
@@ -41,7 +67,7 @@ export function Coverage() {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-4 border-t border-white/12 pt-6">
+          <div className="flex items-center gap-4 border-t border-white/15 pt-6">
             <img
               loading="lazy"
               decoding="async"
@@ -59,29 +85,22 @@ export function Coverage() {
             </div>
           </div>
         </Reveal>
-        <Reveal delay={120}>
-          <div className="relative mx-auto aspect-[1/0.9] w-full max-w-[560px]">
-            <img
-              loading="lazy"
-              decoding="async"
-              src={imgGlobal}
-              alt={t.imageAlt}
-              className="absolute left-0 top-0 h-[78%] w-[82%] object-cover shadow-[var(--shadow-float)]"
-            />
-            <img
-              loading="lazy"
-              decoding="async"
-              src={imgContenedor}
-              alt={t.shipAlt}
-              className="absolute bottom-0 right-0 h-[58%] w-[44%] border-[6px] border-violeta object-cover shadow-[var(--shadow-float)]"
-            />
-            <div className="absolute bottom-[6%] left-[4%] rounded-2xl bg-white px-5 py-4 shadow-[var(--shadow-float)]">
-              <strong className="block font-title text-[2rem] leading-none text-azul">
-                {t.agents}
+
+        {/* Cifras de la red, sobre la foto */}
+        <Reveal delay={120} className="flex flex-wrap gap-4 lg:justify-end">
+          {chips.map((c) => (
+            <div
+              key={c.label}
+              className="min-w-[200px] rounded-2xl border border-white/15 bg-white/10 px-6 py-5 shadow-[0_24px_50px_-20px_rgba(13,15,51,.8)] backdrop-blur-md"
+            >
+              <strong className="block font-title text-[2.4rem] leading-none text-white">
+                <StatValue value={c.value} suffix={c.suffix} />
               </strong>
-              <span className="text-[0.8rem] font-medium text-texto">{t.agentsLabel}</span>
+              <span className="mt-1.5 block text-[0.85rem] font-medium text-white/85">
+                {c.short ?? c.label}
+              </span>
             </div>
-          </div>
+          ))}
         </Reveal>
       </div>
     </section>
