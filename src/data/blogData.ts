@@ -1,6 +1,6 @@
 // Artículos del blog. Texto tomado de los PDF de RecursosTranspack/
 // (#1 mudanza marítima internacional, #2 elegancia en tránsito, #3 58 años).
-import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 
@@ -28,7 +28,7 @@ export const blogPosts: Post[] = [
     slug: "por-que-una-mudanza-maritima-internacional-puede-tardar",
     title: "¿Por qué una mudanza marítima internacional puede tardar más de lo esperado?",
     cat: "Mudanza internacional",
-    cover: imgContenedor,
+    cover: imgBarco,
     excerpt:
       "Aduanas, rutas, puertos y clima: entender cómo funciona una mudanza marítima te ayuda a tener expectativas claras y a evitar retrasos.",
     cta: "Planear mi mudanza internacional",
@@ -231,7 +231,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Hoy esa red se traduce en más de 2.000 representantes en 176 países, con cobertura en Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Esta cobertura es la razón por la cual empresas y familias confían su patrimonio a Transpack cuando cruzan fronteras.",
+        text: "Hoy esa red se traduce en más de 2.000 agentes internacionales en 176 países, con cobertura en Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Esta cobertura es la razón por la cual empresas y familias confían su patrimonio a Transpack cuando cruzan fronteras.",
       },
       { t: "h2", text: "Especialistas en rutas marítimas y aéreas" },
       {

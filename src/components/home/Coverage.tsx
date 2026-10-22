@@ -1,8 +1,6 @@
 import lacmaImg from "@/assets/images/lacma.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
-// Foto pequeña: provisional (cargue de contenedor) mientras el cliente entrega
-// la foto de un buque portacontenedores visto de frente.
-import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
 import { Bi, Eyebrow, Reveal } from "@/components/ui";
@@ -71,7 +69,7 @@ export function Coverage() {
             <img
               loading="lazy"
               decoding="async"
-              src={imgContenedor}
+              src={imgBarco}
               alt={t.shipAlt}
               className="absolute bottom-0 right-0 h-[58%] w-[44%] border-[6px] border-violeta object-cover shadow-[var(--shadow-float)]"
             />

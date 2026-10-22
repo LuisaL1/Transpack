@@ -91,12 +91,8 @@ export function Header() {
   };
 
   const solid = scrolled || menuOpen || active !== null;
-  // La portada del inicio es blanca: ahí la cabecera usa letras oscuras desde
-  // arriba. Las páginas internas tienen portada oscura (PageHero): letras blancas.
-  const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
-  const dark = solid || home;
   const iconCls = `grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors ${
-    dark
+    solid
       ? "text-tinta hover:bg-gris hover:text-azul"
       : "text-white/90 hover:bg-white/15 hover:text-white"
   }`;
@@ -119,14 +115,14 @@ export function Header() {
         <div
           ref={navRef}
           onMouseLeave={hoverClose}
-          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-6 wide:w-[min(100%-120px,1320px)] ${
-            scrolled ? "h-[70px] md:h-[86px] wide:h-[100px]" : "h-[80px] md:h-[96px] wide:h-[110px]"
+          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-6 transition-all wide:w-[min(100%-120px,1320px)] ${
+            scrolled ? "h-[66px] wide:h-[76px]" : "h-[76px] wide:h-[92px]"
           }`}
         >
-          <Logo light={!dark} compact className="xl:-ms-6 wide:ms-0" />
+          <Logo light={!solid} compact className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          <nav className="hidden items-center gap-3 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
+          <nav className="hidden items-center gap-4 lg:flex xl:ms-6 xl:gap-4" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
               return (
@@ -137,9 +133,9 @@ export function Header() {
                   onClick={() => setActive(open ? null : m.key)}
                   aria-expanded={open}
                   aria-haspopup="true"
-                  className={`relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${
+                  className={`relative inline-flex items-center gap-1 py-1.5 text-[0.985rem] font-bold xl:text-[1.045rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${
                     open || sectionOf(m) ? "after:scale-x-100" : "after:scale-x-0"
-                  } ${dark ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`}
+                  } ${solid ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`}
                 >
                   {m.label}
                   <Bi
@@ -149,7 +145,7 @@ export function Header() {
                 </button>
               );
             })}
-            <span className={`h-5 w-px ${dark ? "bg-linea" : "bg-white/25"}`} aria-hidden="true" />
+            <span className={`h-5 w-px ${solid ? "bg-linea" : "bg-white/25"}`} aria-hidden="true" />
             <div className="flex items-center gap-1">
               <button
                 onClick={() => {
@@ -170,7 +166,7 @@ export function Header() {
                 aria-label={t.support}
                 aria-expanded={active === "soporte"}
                 title={t.support}
-                className={`${iconCls} ${active === "soporte" ? (dark ? "bg-gris text-azul" : "bg-white/15") : ""}`}
+                className={`${iconCls} ${active === "soporte" ? (solid ? "bg-gris text-azul" : "bg-white/15") : ""}`}
               >
                 <Bi n="headset" />
               </button>
@@ -231,7 +227,7 @@ export function Header() {
 
           {/* Botón de menú móvil */}
           <button
-            className={`relative z-10 grid h-11 w-11 place-items-center text-2xl lg:hidden ${dark ? "text-azul" : "text-white"}`}
+            className={`relative z-10 grid h-11 w-11 place-items-center text-2xl lg:hidden ${solid ? "text-azul" : "text-white"}`}
             aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}

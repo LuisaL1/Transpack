@@ -77,3 +77,4 @@ test("la política de datos permite cambiar la decisión sobre cookies", async (
   await expect(banner).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("tp-analytics-consent"))).toBeNull();
 });
+

@@ -9,12 +9,14 @@ import imgGuacales from "@/assets/images/guacales.jpg";
 import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT, type PrivacySection } from "@/data/site";
@@ -43,14 +45,9 @@ export const SLOGAN = "Nous promettons avec le cœur, nous tenons parole avec ex
 
 export const STATS = [
   { value: 58, suffix: "+", label: "ans d'expérience" },
-  {
-    value: 176,
-    suffix: "+",
-    label: "pays de destination, import et export",
-    short: "pays de destination",
-  },
-  { value: 60, suffix: "K+", label: "tonnes de biens domestiques exportées" },
-  { value: 2000, suffix: "+", label: "représentants" },
+  { value: 176, suffix: "+", label: "pays de destination" },
+  { value: 60, suffix: "K+", label: "tonnes de biens personnels exportées" },
+  { value: 2000, suffix: "+", label: "agents internationaux" },
 ];
 
 export const EMBASSIES = [
@@ -79,7 +76,7 @@ export const SERVICES: Service[] = [
     cta: "Demander un devis",
     image: imgEmbalajeHogar,
     kicker: "Déménager à Bogota",
-    headline: "Votre déménagement en ville, sans stress et sans contretemps",
+    headline: "Votre déménagement en ville, sans stress et sans surprise",
     intro:
       "Nous préparons chaque déménagement local en fonction du logement de départ et d'arrivée : étage, ascenseur, escaliers, accès du camion et horaires autorisés par la copropriété. Nous arrivons ainsi avec l'équipe et le temps qu'il faut.",
     includes: [
@@ -120,7 +117,7 @@ export const SERVICES: Service[] = [
     cta: "Demander un devis",
     image: imgCargue,
     kicker: "Entre villes colombiennes",
-    headline: "Vos biens protégés de porte à porte",
+    headline: "D'une ville à l'autre, vos biens protégés sur tout le trajet",
     intro:
       "Dans un déménagement national, l'inventaire est la base de tout : il nous permet de calculer le volume, le véhicule et les moyens nécessaires. Nous veillons à la sécurité, à la protection et au respect des délais sur chaque itinéraire.",
     includes: [
@@ -160,7 +157,7 @@ export const SERVICES: Service[] = [
     cta: "Parler à un conseiller",
     image: imgGlobal,
     kicker: "Depuis et vers la Colombie",
-    headline: "Traverser les frontières sans souci",
+    headline: "Votre nouvelle vie à l'étranger commence par un plan clair",
     intro:
       "Un déménagement international ne se gère pas comme un déménagement local. Vous comprenez d'abord le processus, les formalités, les délais et les coûts ; ensuite nous chiffrons. Un conseiller spécialisé vous accompagne dès le premier contact, avec l'appui de plus de 2 000 agents dans 176 pays.",
     includes: [
@@ -206,7 +203,7 @@ export const SERVICES: Service[] = [
     cta: "Demander un devis",
     image: imgContenedor,
     kicker: "Stockage à Bogota",
-    headline: "Un lieu sûr pour vos affaires, le temps qu'il vous faut",
+    headline: "Un lieu sûr pour vos biens, aussi longtemps que nécessaire",
     intro:
       "Nos entrepôts à Bogota vous permettent de stocker mobilier, équipements de bureau ou archives pendant votre installation, vos travaux ou en attendant votre départ. Le service peut être réservé seul ou avec votre déménagement.",
     includes: [
@@ -234,8 +231,7 @@ export const SERVICES: Service[] = [
     cta: "Demander un devis",
     image: imgGuacales,
     kicker: "Ingénierie d'emballage",
-    headline:
-      "Vos objets les plus précieux entre des mains professionnelles. Emballage spécialisé et soin total",
+    headline: "Les pièces de valeur ne s'emballent pas comme le reste",
     intro:
       "Œuvres d'art, collections, verrerie et mobilier design exigent une véritable ingénierie d'emballage : caisses en bois sur mesure pour les toiles, calage anti-chocs haute densité et protection contre l'humidité pour les longs transits.",
     includes: [
@@ -267,9 +263,9 @@ export const SERVICES: Service[] = [
       "Accompagnement pour l'exportation et l'importation de biens personnels, inventaires déclarés et formalités au départ et à l'arrivée.",
     quote: "internacional",
     cta: "Demander un devis",
-    image: imgInspeccionCanina,
+    image: imgBarco,
     kicker: "Formalités internationales",
-    headline: "Conseil et démarches documentaires pour la procédure douanière de chaque pays",
+    headline: "La douane est un labyrinthe juridique. Nous en connaissons le chemin",
     intro:
       "Un inventaire mal déclaré ou une autorisation manquante peut coûter des semaines de retard et des pénalités. Nous vous accompagnons dans les documents d'exportation et d'importation de vos biens et effets personnels, selon la réglementation de chaque pays.",
     includes: [
@@ -453,6 +449,8 @@ export const FAQS = [
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgContenedor, caption: "Chargement de conteneur", tall: true },
   { src: imgEmbalajeCuadro, caption: "Emballage d'un tableau", tall: true },
+  { src: imgBarco, caption: "Lignes maritimes", tall: true },
+  { src: imgEmbalajeCarton, caption: "Emballage avec carton et film protecteur", tall: true },
   { src: imgEmbalajeSala, caption: "Emballage à domicile" },
   { src: imgArteHogar, caption: "Protection d'œuvres d'art à domicile" },
   { src: imgCargueCajas, caption: "Chargement des cartons Transpack" },
@@ -467,15 +465,16 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 // Mismas secciones y orden que PRIVACY en src/data/site.ts.
 export const PRIVACY = {
   title: "Politique de traitement des données personnelles",
-  intro:
-    "Chez Transpack S.A.S., nous traitons vos données personnelles conformément à la loi colombienne 1581 de 2012 et au décret 1377 de 2013 (compilé dans le décret 1074 de 2015). Nous vous expliquons ici quelles données nous collectons sur ce site, à quoi elles servent, comment elles sont transmises et comment exercer vos droits.",
+  intro: "Chez Transpack S.A.S., nous traitons vos données personnelles conformément à la loi colombienne 1581 de 2012 et au décret 1377 de 2013 (compilé dans le décret 1074 de 2015). Nous vous expliquons ici quelles données nous collectons sur ce site, à quoi elles servent, comment elles sont transmises et comment exercer vos droits.",
   updated: "Dernière mise à jour : 8 octobre 2026",
   notice: "Ceci est une traduction fournie pour votre commodité. La version espagnole fait foi.",
   sections: [
     {
       id: "responsable",
       title: "Responsable du traitement",
-      text: ["L'entreprise responsable de vos données personnelles est :"],
+      text: [
+        "L'entreprise responsable de vos données personnelles est :",
+      ],
     },
     {
       id: "datos",
@@ -497,14 +496,14 @@ export const PRIVACY = {
             "Préparer l'estimation et le devis formel, vous contacter pour le revoir et, si vous l'acceptez, coordonner le service.",
           ],
           [
-            "Chat de Joelito (conseiller virtuel)",
+            "Chat de Joel (conseiller virtuel)",
             "Les options que vous choisissez et ce que vous écrivez dans la conversation, y compris votre nom, votre numéro de portable ou WhatsApp et, le cas échéant, le nom de votre entreprise.",
             "Vous orienter et préparer votre demande. Si vous choisissez d'envoyer votre devis à un conseiller, le récapitulatif (avec votre nom et votre portable) est envoyé à notre équipe commerciale via Zoho SalesIQ pour vous contacter et assurer le suivi. Le reste de la conversation reste dans votre navigateur.",
           ],
           [
             "Chat avec un conseiller (Zoho SalesIQ)",
             "Ce que vous écrivez dans la conversation et les informations que vous choisissez de nous donner (par exemple nom, e-mail ou téléphone), ainsi que des données techniques de la visite : pages consultées, localisation approximative, navigateur et appareil.",
-            "Traiter votre demande avec un conseiller de notre équipe, dans la même fenêtre que le chat de Joelito. Il n'est utilisé que si vous choisissez « Discuter avec un conseiller ».",
+            "Traiter votre demande avec un conseiller de notre équipe, dans la même fenêtre que le chat de Joel. Il n'est utilisé que si vous choisissez « Discuter avec un conseiller ».",
           ],
           [
             "WhatsApp et téléphone",
@@ -518,7 +517,9 @@ export const PRIVACY = {
           ],
         ],
       },
-      after: ["Nous ne vendons pas vos données et ne les utilisons pas à des fins publicitaires."],
+      after: [
+        "Nous ne vendons pas vos données et ne les utilisons pas à des fins publicitaires.",
+      ],
     },
     {
       id: "sensibles",
@@ -535,7 +536,7 @@ export const PRIVACY = {
         "Formulaire de contact et devis par e-mail : vos données sont transmises de façon chiffrée (HTTPS) à une fonction du site lui-même, qui les envoie par e-mail à Transpack via Brevo, notre prestataire d'e-mails, agissant comme sous-traitant. Brevo vous envoie aussi une confirmation de réception de votre demande. Le site ne conserve aucune copie de ce que vous envoyez.",
         "WhatsApp : si vous choisissez d'envoyer votre demande par WhatsApp, cette conversation est également régie par les conditions et la politique de confidentialité de WhatsApp (Meta).",
         "Dans votre navigateur : les préférences du conseiller virtuel et votre choix concernant les cookies sont enregistrés uniquement dans votre navigateur (stockage local) et ne sont jamais envoyés à Transpack. Vous pouvez les supprimer à tout moment en effaçant les données de ce site dans votre navigateur.",
-        "Chat avec un conseiller : si vous le choisissez dans le chat de Joelito, vos messages sont envoyés depuis notre site à Zoho SalesIQ, l'outil de chat de notre CRM, qui agit comme sous-traitant. La conversation est conservée sur les serveurs de Zoho, qui peuvent se trouver hors de Colombie, et dans notre CRM. Tant que vous ne choisissez pas ce chat, rien n'est envoyé à Zoho.",
+        "Chat avec un conseiller : si vous le choisissez dans le chat de Joel, vos messages sont envoyés depuis notre site à Zoho SalesIQ, l'outil de chat de notre CRM, qui agit comme sous-traitant. La conversation est conservée sur les serveurs de Zoho, qui peuvent se trouver hors de Colombie, et dans notre CRM. Tant que vous ne choisissez pas ce chat, rien n'est envoyé à Zoho.",
         "Conservation : nous conservons les demandes reçues le temps nécessaire pour les traiter et fournir le service, puis la durée exigée par les règles comptables, fiscales et légales.",
       ],
     },
@@ -558,7 +559,9 @@ export const PRIVACY = {
     {
       id: "derechos",
       title: "Vos droits",
-      text: ["En tant que titulaire des données, vous pouvez :"],
+      text: [
+        "En tant que titulaire des données, vous pouvez :",
+      ],
       items: [
         "Connaître, mettre à jour et rectifier vos données.",
         "Demander la preuve de l'autorisation que vous nous avez donnée.",

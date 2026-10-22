@@ -16,24 +16,16 @@ const line = fs.existsSync(FILE)
       .split("\n")
       .find((l) => l.trim().startsWith("BREVO_API_KEY="))
   : undefined;
-const key = line
-  ?.slice(line.indexOf("=") + 1)
-  .trim()
-  .replace(/^["']|["']$/g, "");
+const key = line?.slice(line.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
 if (!key) {
-  console.error(
-    `Falta BREVO_API_KEY en ${FILE} (cópiela de Vercel → Settings → Environment Variables).`,
-  );
+  console.error(`Falta BREVO_API_KEY en ${FILE} (cópiela de Vercel → Settings → Environment Variables).`);
   process.exit(1);
 }
 
 const days = Math.min(Math.max(Number(process.argv[2]) || 1, 1), 30);
-const r = await fetch(
-  `https://api.brevo.com/v3/smtp/statistics/events?limit=100&days=${days}&sort=desc`,
-  {
-    headers: { "api-key": key, Accept: "application/json" },
-  },
-);
+const r = await fetch(`https://api.brevo.com/v3/smtp/statistics/events?limit=100&days=${days}&sort=desc`, {
+  headers: { "api-key": key, Accept: "application/json" },
+});
 const d = await r.json().catch(() => ({}));
 if (!r.ok) {
   console.error(`Brevo respondió HTTP ${r.status}: ${d.code ?? ""} ${d.message ?? ""}`);

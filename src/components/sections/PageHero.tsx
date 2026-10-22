@@ -1,20 +1,18 @@
 import type { ReactNode } from "react";
 
-// Encabezado de páginas internas (nosotros, servicio, artículo). Con foto, la
-// foto se ve bien (pedido del cliente, oct. 2026): azul oscuro solo a la
-// izquierda, donde va el texto, y hacia la derecha tonos naranja a rojizo.
+// Encabezado oscuro para páginas internas (nosotros, servicio, artículo)
 export function PageHero({ children, image }: { children: ReactNode; image?: string }) {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#272b7c_0%,#1b1e5c_55%,#2f2959_100%)] pb-20 pt-40 text-white/80 md:pb-28 md:pt-48">
+    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#272b7c_0%,#1b1e5c_55%,#2f2959_100%)] pb-20 pt-36 text-white/80 md:pb-28 md:pt-44">
       {image && (
         <>
           <img
             fetchPriority="high"
             src={image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,15,51,.94)_0%,rgba(27,30,92,.86)_34%,rgba(27,30,92,.45)_58%,rgba(232,64,28,.28)_82%,rgba(255,118,25,.22)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-azul-900 via-azul-900/85 to-azul/40" />
         </>
       )}
       <span

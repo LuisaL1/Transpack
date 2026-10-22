@@ -123,9 +123,7 @@ export function AdvisorChat() {
               ref={inputRef}
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder={
-                live !== "off" ? t.advisorPlaceholder : (step.input?.placeholder ?? t.placeholder)
-              }
+              placeholder={live !== "off" ? t.advisorPlaceholder : (step.input?.placeholder ?? t.placeholder)}
               aria-label={t.message}
               className="no-ring min-w-0 flex-1 rounded-xl border border-linea bg-gris px-4 py-2.5 text-[0.88rem] text-tinta outline-none transition focus:border-azul focus:bg-white"
             />

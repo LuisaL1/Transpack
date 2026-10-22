@@ -1,141 +1,31 @@
-import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/i18n";
 import { statsText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
-import { Bi, StatValue } from "@/components/ui";
+import { StatValue } from "@/components/ui";
 import { container } from "@/components/ui/layout";
 
-// Cifras bajo el hero (datos en STATS de src/data/site.ts) como carrusel con
-// movimiento, a pedido del cliente: una cifra a la vez, cada una con su espacio
-// y su tiempo, deslizándose hacia la izquierda como los logos de clientes.
-// Avanza solo, sin pausa (pedido del cliente); solo se queda quieto si el
-// visitante pidió reducir el movimiento en su equipo. Las barras de abajo
-// muestran el avance y permiten saltar a otra cifra. Todas las cifras están en el
-// HTML pre-generado (SEO); al final va una copia de la primera para que el
-// giro de la última a la primera sea continuo.
-const INTERVAL = 4500;
-const ICONS = ["award", "globe-americas", "box-seam", "people"];
-
+// Franja de cifras bajo el hero (datos en STATS de src/data/site.ts)
 export function Stats() {
   const { tr } = useLang();
   const t = statsText(tr);
   const { STATS } = useSite();
-  const n = STATS.length;
-  const [i, setI] = useState(0); // 0..n (n = copia de la primera)
-  const [animate, setAnimate] = useState(true);
-  const [reduced, setReduced] = useState(false);
-  const raf = useRef(0);
-
-  useEffect(() => {
-    const m = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const on = () => setReduced(m.matches);
-    on();
-    m.addEventListener("change", on);
-    return () => m.removeEventListener("change", on);
-  }, []);
-
-  const running = !reduced;
-
-  // Avanza una cifra cada INTERVAL mientras corre
-  useEffect(() => {
-    if (!running) return;
-    const id = window.setTimeout(() => {
-      setAnimate(true);
-      setI((v) => v + 1);
-    }, INTERVAL);
-    return () => window.clearTimeout(id);
-  }, [running, i]);
-
-  // Tras llegar a la copia de la primera, salta al inicio sin animación
-  useEffect(() => {
-    if (animate) return;
-    raf.current = requestAnimationFrame(() => {
-      raf.current = requestAnimationFrame(() => setAnimate(true));
-    });
-    return () => cancelAnimationFrame(raf.current);
-  }, [animate]);
-
-  const active = i % n;
-  const slides = [...STATS, STATS[0]];
-  const goTo = (k: number) => {
-    setAnimate(true);
-    setI(k);
-  };
-
   return (
-    <section
-      className="pb-4 pt-6"
-      aria-label={t.label}
-      aria-roledescription={t.carousel}
-    >
+    <section className="pb-4 pt-6" aria-label={t.label}>
       <div
-        className={`${container} relative overflow-hidden rounded-[22px] bg-white shadow-[var(--shadow-float)] ring-1 ring-linea`}
+        className={`${container} grid grid-cols-2 overflow-hidden rounded-[22px] bg-white shadow-[var(--shadow-float)] lg:grid-cols-4`}
       >
-        {/* Cuadrado naranja girado de la marca, esquina inferior derecha */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-20 -right-20 h-48 w-48 rotate-45 rounded-[22%] bg-naranja/10"
-        />
-        <div
-          className={`relative flex ${animate && !reduced ? "transition-transform duration-700 ease-[cubic-bezier(.65,0,.35,1)]" : ""}`}
-          style={{ transform: `translateX(-${i * 100}%)` }}
-          aria-live={running ? "off" : "polite"}
-          onTransitionEnd={(e) => {
-            if (e.target === e.currentTarget && i === n) {
-              setAnimate(false);
-              setI(0);
-            }
-          }}
-        >
-          {slides.map((s, k) => (
-            <div
-              key={`${s.label}-${k}`}
-              role="group"
-              aria-roledescription={t.slide}
-              aria-label={t.of(Math.min(k, n - 1) + 1, n)}
-              aria-hidden={k !== i}
-              className="flex w-full shrink-0 flex-col items-center gap-4 px-6 py-9 text-center sm:px-12 md:flex-row md:justify-center md:gap-9 md:py-12 md:text-start"
-            >
-              <span className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-azul text-[1.7rem] text-naranja shadow-[0_12px_26px_-12px_rgba(39,43,124,.8)] md:h-20 md:w-20 md:text-[2rem]">
-                <span
-                  aria-hidden="true"
-                  className="absolute -right-4 -top-4 h-9 w-9 rotate-45 rounded-[6px] bg-naranja/25"
-                />
-                <Bi n={ICONS[k % n]} className="relative" />
-              </span>
-              <span className="font-title text-[clamp(3.2rem,2.3rem+3.6vw,5.6rem)] font-bold leading-none text-azul">
-                <StatValue value={s.value} suffix={s.suffix} />
-              </span>
-              <span aria-hidden="true" className="hidden h-20 w-px bg-linea md:block" />
-              <span className="max-w-[440px] text-balance font-title text-[clamp(1.2rem,1.02rem+.8vw,1.8rem)] font-semibold leading-snug text-tinta">
-                {s.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Avance: una barra por cifra (la activa se llena con el tiempo) */}
-      <div className="mt-4 flex items-center justify-center gap-2">
-        {STATS.map((s, k) => (
-          <button
+        {STATS.map((s, i) => (
+          <div
             key={s.label}
-            type="button"
-            onClick={() => goTo(k)}
-            aria-label={t.goTo(k + 1)}
-            aria-current={k === active}
-            className="group px-1 py-3"
+            className={`flex flex-col gap-2.5 px-5 py-8 sm:px-9 sm:py-11 ${i % 2 ? "border-s border-linea" : ""} ${
+              i >= 2 ? "border-t border-linea lg:border-s lg:border-t-0" : ""
+            }`}
           >
-            <span className="relative block h-1.5 w-10 overflow-hidden rounded-full bg-linea transition-colors group-hover:bg-suave/40 sm:w-14">
-              {k === active && (
-                <span
-                  key={`${i}-${running}`}
-                  className={`absolute inset-y-0 left-0 rounded-full bg-naranja ${running ? "animate-stat-progress" : "w-full"}`}
-                  style={running ? { animationDuration: `${INTERVAL}ms` } : undefined}
-                />
-              )}
+            <span className="font-title text-[clamp(2.6rem,1.9rem+2.4vw,4rem)] font-bold leading-none text-azul">
+              <StatValue value={s.value} suffix={s.suffix} />
             </span>
-          </button>
+            <span className="text-[0.98rem] font-medium text-suave sm:text-[1.08rem]">{s.label}</span>
+          </div>
         ))}
       </div>
     </section>

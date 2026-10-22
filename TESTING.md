@@ -13,20 +13,20 @@ pnpm exec playwright install chromium   # navegador para las pruebas de extremo 
 
 ## Comandos
 
-| Comando              | Qué revisa                                                                                                                                                                                                                   | Tiempo aprox. |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `pnpm check`         | Tipos + lint + pruebas unitarias + build + revisión del HTML pre-generado (`test:seo`). **Correr antes de cada commit.**                                                                                                     | ~20 s         |
-| `pnpm check:all`     | Lo anterior + auditoría de dependencias + extremo a extremo                                                                                                                                                                  | ~1 min        |
-| `pnpm typecheck`     | TypeScript estricto (incluye variables y parámetros sin uso)                                                                                                                                                                 |               |
-| `pnpm lint`          | ESLint: calidad, hooks de React, accesibilidad (jsx-a11y) y patrones inseguros (eslint-plugin-security)                                                                                                                      |               |
-| `pnpm test`          | Pruebas unitarias, de contenido y de seguridad estática (Vitest)                                                                                                                                                             |               |
-| `pnpm test:watch`    | Igual, en modo observación mientras se desarrolla                                                                                                                                                                            |               |
-| `pnpm test:coverage` | Igual, con cobertura de `src/lib`, `src/data` y `src/hooks` (reporte en `coverage/`)                                                                                                                                         |               |
-| `pnpm test:security` | Solo las pruebas de seguridad estática                                                                                                                                                                                       |               |
-| `pnpm test:deps`     | Vulnerabilidades conocidas en todas las dependencias (nivel alto o crítico)                                                                                                                                                  |               |
-| `pnpm test:seo`      | Revisa el HTML pre-generado en `dist/` (después de `pnpm build`): un archivo por ruta, etiquetas, JSON-LD, un `<h1>`, contenido, sitemap y robots                                                                            |               |
-| `pnpm test:e2e`      | Playwright sobre el build de producción, en escritorio (1440 px) y celular (Pixel 7). Se compila **sin** Google Analytics para no enviar visitas de prueba                                                                   | ~45 s         |
-| `pnpm test:ga`       | Compila **con** el ID real de Google Analytics y verifica: aviso de cookies, consentimiento denegado por defecto, sin cookie `_ga` antes de aceptar, cookie y envío de datos al aceptar, nada al rechazar. Necesita internet | ~10 s         |
+| Comando | Qué revisa | Tiempo aprox. |
+| --- | --- | --- |
+| `pnpm check` | Tipos + lint + pruebas unitarias + build + revisión del HTML pre-generado (`test:seo`). **Correr antes de cada commit.** | ~20 s |
+| `pnpm check:all` | Lo anterior + auditoría de dependencias + extremo a extremo | ~1 min |
+| `pnpm typecheck` | TypeScript estricto (incluye variables y parámetros sin uso) | |
+| `pnpm lint` | ESLint: calidad, hooks de React, accesibilidad (jsx-a11y) y patrones inseguros (eslint-plugin-security) | |
+| `pnpm test` | Pruebas unitarias, de contenido y de seguridad estática (Vitest) | |
+| `pnpm test:watch` | Igual, en modo observación mientras se desarrolla | |
+| `pnpm test:coverage` | Igual, con cobertura de `src/lib`, `src/data` y `src/hooks` (reporte en `coverage/`) | |
+| `pnpm test:security` | Solo las pruebas de seguridad estática | |
+| `pnpm test:deps` | Vulnerabilidades conocidas en todas las dependencias (nivel alto o crítico) | |
+| `pnpm test:seo` | Revisa el HTML pre-generado en `dist/` (después de `pnpm build`): un archivo por ruta, etiquetas, JSON-LD, un `<h1>`, contenido, sitemap y robots | |
+| `pnpm test:e2e` | Playwright sobre el build de producción, en escritorio (1440 px) y celular (Pixel 7). Se compila **sin** Google Analytics para no enviar visitas de prueba | ~45 s |
+| `pnpm test:ga` | Compila **con** el ID real de Google Analytics y verifica: aviso de cookies, consentimiento denegado por defecto, sin cookie `_ga` antes de aceptar, cookie y envío de datos al aceptar, nada al rechazar. Necesita internet | ~10 s |
 
 Para correr las pruebas de extremo a extremo contra otro entorno (por ejemplo,
 una URL de Vercel Preview): `BASE_URL=https://su-preview.vercel.app pnpm test:e2e`.
@@ -35,7 +35,6 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
 ## Qué cubre cada capa
 
 ### 1. Calidad de código
-
 - **TypeScript estricto** (`tsconfig.json`, con `noUnusedLocals` y `noUnusedParameters`).
 - **ESLint** (`eslint.config.js`): reglas recomendadas de JS y TypeScript, hooks
   de React, accesibilidad en JSX y patrones inseguros. Prohíbe
@@ -47,7 +46,6 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
-
 - `zohoBridge.test.ts` — el puente con una ventana de Zoho falsa: envía la
   pregunta, pasa los mensajes nuevos (sin repetir) con nombre y opciones,
   formularios con "Omitir", deja de escuchar al terminar y falla si la ventana
@@ -69,7 +67,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - maneja objeciones;
   - **no da precios** y solo menciona las certificaciones reales (LACMA, IAM, PAIMA);
   - si no tiene un dato, lo dice y ofrece el contacto;
-  - rechaza intentos de manipulación (_prompt injection_), redirige temas
+  - rechaza intentos de manipulación (*prompt injection*), redirige temas
     ajenos, responde con honestidad si le preguntan si es ChatGPT y maneja
     groserías;
   - no repite HTML ni scripts del visitante;
@@ -119,9 +117,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - **chat de Joel sin degradados**.
 
 ### 2b. HTML pre-generado (`tests/seo/dist.test.ts`, con `pnpm test:seo`)
-
 Por cada una de las 72 rutas:
-
 - existe su `.html`, con el idioma y la dirección del `<html>`;
 - un solo `<title>` y una sola descripción, su canónica, 7 enlaces hreflang,
   Open Graph y `twitter:card`;
@@ -129,14 +125,12 @@ Por cada una de las 72 rutas:
   real (más de 1.500 caracteres de texto).
 
 Además:
-
 - `404.html` con `noindex`;
 - `sitemap.xml` con todas las canónicas y sus idiomas;
 - `robots.txt` coherente con la indexación;
 - imágenes de marca presentes.
 
 ### 3. Seguridad
-
 - **Estática** (`tests/security/static.test.ts`):
   - sin inyección de HTML ni `eval`;
   - enlaces en pestaña nueva con `rel="noopener"`/`noreferrer`;
@@ -171,7 +165,6 @@ Además:
   - en CI, **gitleaks** busca secretos en todo el historial de git.
 
 ### 4. Funcionamiento de extremo a extremo (`tests/e2e/`)
-
 - `smoke.spec.ts`:
   - cada ruta (español, inglés, francés, alemán y árabe) carga sin errores de
     JavaScript ni recursos rotos, con título y `<h1>`;
@@ -211,7 +204,6 @@ Además:
   navegador).
 
 ### 5. Accesibilidad (`tests/e2e/a11y.spec.ts`)
-
 axe-core con WCAG 2.1 A/AA en inicio, Nosotros, un servicio, un artículo, inglés
 y árabe. Bloquea con cualquier problema crítico o grave. Para que axe vea todo
 el contenido, las animaciones se desactivan (`prefers-reduced-motion`).
@@ -219,16 +211,15 @@ el contenido, las animaciones se desactivan (`prefers-reduced-motion`).
 ## Pendientes conocidos
 
 ### Contraste de color (depende del diseño)
-
 Se reporta como anotación "pendiente", sin bloquear, porque depende de los
 colores de marca y debe aprobarlo el cliente. Todo viene del naranja de marca
 `#FF7619`:
 
-| Elemento                                                                                   | Colores                               | Contraste | Mínimo AA                         |
-| ------------------------------------------------------------------------------------------ | ------------------------------------- | --------- | --------------------------------- |
-| Botones naranjas con texto blanco ("Cotiza tu mudanza", cabecera y menú)                   | blanco sobre `#FF7619`                | 2.7:1     | 4.5:1 (3:1 si el texto es grande) |
-| Signo "+" naranja de las cifras ("58+", "176+")                                            | `#FF7619` sobre blanco                | 2.7:1     | 3:1 (texto grande)                |
-| Franja naranja final ("¿Listo para tu próximo destino?"): título, texto y botón "WhatsApp" | blanco sobre `#FF7619` y tonos claros | 2.1–2.6:1 | 4.5:1                             |
+| Elemento | Colores | Contraste | Mínimo AA |
+| --- | --- | --- | --- |
+| Botones naranjas con texto blanco ("Cotiza tu mudanza", cabecera y menú) | blanco sobre `#FF7619` | 2.7:1 | 4.5:1 (3:1 si el texto es grande) |
+| Signo "+" naranja de las cifras ("58+", "176+") | `#FF7619` sobre blanco | 2.7:1 | 3:1 (texto grande) |
+| Franja naranja final ("¿Listo para tu próximo destino?"): título, texto y botón "WhatsApp" | blanco sobre `#FF7619` y tonos claros | 2.1–2.6:1 | 4.5:1 |
 
 Opciones para el diseño: oscurecer el naranja de los fondos con texto blanco
 (por ejemplo `naranja-600` `#E8620A` llega a ~3.4:1, suficiente solo para texto
@@ -238,7 +229,6 @@ modo estricto (`A11Y_STRICT=1 pnpm test:e2e`) y déjelo fijo en
 `tests/e2e/a11y.spec.ts`.
 
 ### Traducciones
-
 Dos etiquetas de accesibilidad de la franja de idiomas no tienen traducción en
 francés, alemán, italiano ni árabe y se leen en inglés: "Choose region and
 language" y "Region and language". Están en la lista `PENDING` de
@@ -246,7 +236,6 @@ language" y "Region and language". Están en la lista `PENDING` de
 esa lista.
 
 ## Al agregar funcionalidad
-
 1. Texto o contenido nuevo → en `src/data/` (con `tr("es", "en")` y su
    traducción en `src/i18n/dict/*.ts`); las pruebas de contenido lo validan solas.
 2. Lógica nueva → en `src/lib/` o `src/hooks/`, con su prueba en `tests/unit/`.

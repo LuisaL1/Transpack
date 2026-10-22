@@ -26,7 +26,7 @@ export const CONTACT_REASONS: ContactReason[] = [
 /** Nombre de cada motivo en el idioma de la página */
 export const contactReasons = (tr: Tr): Record<ContactReason, string> => ({
   cotizacion: tr("Cotización de una mudanza o bodegaje", "Moving or storage quote"),
-  informacion: tr("Información sobre un servicio", "Information about a service"),
+  informacion: tr("Información general", "General information"),
   soporte: tr("Soporte de un servicio en curso", "Support with an ongoing service"),
   pqrs: tr(
     "Peticiones, quejas, reclamos o sugerencias (PQRS)",

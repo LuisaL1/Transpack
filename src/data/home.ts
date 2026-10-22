@@ -9,9 +9,9 @@ export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
   certifications: tr("Certificados LACMA, IAM y PAIMA", "LACMA, IAM and PAIMA certified"),
   certificationsShort: "LACMA · IAM · PAIMA",
-  title: tr("Prometemos con el corazón", "We promise from the heart"),
-  titlePrefix: tr("y cumplimos ", "and deliver "),
-  titleHighlight: tr("con excelencia.", "with excellence."),
+  title: tr("Cuidamos lo que más te importa", "We take care of what matters most to you"),
+  titlePrefix: tr("y lo llevamos ", "and take it "),
+  titleHighlight: tr("a donde vayas.", "wherever you go."),
   sub: tr(
     "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
     "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.",
@@ -19,10 +19,7 @@ export const heroText = (tr: Tr) => ({
   legend: {
     origin: tr("Bogotá, punto de origen", "Bogotá, point of origin"),
     operate: tr("Países donde operamos", "Countries where we operate"),
-    network: tr(
-      "Red de representantes en 176 países",
-      "Network of representatives in 176 countries",
-    ),
+    network: tr("Red de agentes en 176 países", "Agent network in 176 countries"),
   },
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
   clientsTitle: tr(
@@ -33,23 +30,6 @@ export const heroText = (tr: Tr) => ({
 
 export const statsText = (tr: Tr) => ({
   label: tr("Transpack en cifras", "Transpack in numbers"),
-  // Carrusel de cifras (Stats.tsx)
-  carousel: tr("carrusel", "carousel"),
-  slide: tr("cifra", "figure"),
-  of: (a: number, b: number) =>
-    tr(`${a} de ${b}`, `${a} of ${b}`, {
-      fr: `${a} sur ${b}`,
-      de: `${a} von ${b}`,
-      it: `${a} di ${b}`,
-      ar: `${a} من ${b}`,
-    }),
-  goTo: (a: number) =>
-    tr(`Ver cifra ${a}`, `Show figure ${a}`, {
-      fr: `Voir le chiffre ${a}`,
-      de: `Zahl ${a} anzeigen`,
-      it: `Vedi cifra ${a}`,
-      ar: `عرض الرقم ${a}`,
-    }),
 });
 
 export const servicesText = (tr: Tr) => ({
@@ -93,8 +73,8 @@ export const coverageText = (tr: Tr) => ({
     "From Colombia to the world, with a network you can't improvise",
   ),
   text: tr(
-    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Tu mudanza se opera con los mismos estándares en origen y en destino.",
-    "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
+    "Casi seis décadas construyendo una red operativa con más de 2.000 agentes internacionales en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Tu mudanza se opera con los mismos estándares en origen y en destino.",
+    "Almost six decades building an operating network of more than 2,000 international agents in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
   ),
   modes: [
     {
@@ -118,9 +98,9 @@ export const coverageText = (tr: Tr) => ({
   certificationsTitle: tr("Certificaciones internacionales", "International certifications"),
   certifications: "LACMA · IAM · PAIMA",
   imageAlt: tr("Avión y buque portacontenedores en puerto", "Airplane and container ship in port"),
-  shipAlt: tr("Cargue de un contenedor de mudanza", "Loading a moving container"),
+  shipAlt: tr("Buque de carga en altamar", "Cargo ship at sea"),
   agents: "2.000+",
-  agentsLabel: tr("representantes en 176 países", "representatives in 176 countries"),
+  agentsLabel: tr("agentes en 176 países", "agents in 176 countries"),
 });
 
 export const processText = (tr: Tr) => ({

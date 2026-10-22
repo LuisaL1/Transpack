@@ -72,13 +72,7 @@ function type(doc: Document, text: string): boolean {
   setter?.call(ta, text);
   ta.dispatchEvent(new win.Event("input", { bubbles: true }));
   ta.dispatchEvent(
-    new win.KeyboardEvent("keydown", {
-      key: "Enter",
-      code: "Enter",
-      keyCode: 13,
-      which: 13,
-      bubbles: true,
-    }),
+    new win.KeyboardEvent("keydown", { key: "Enter", code: "Enter", keyCode: 13, which: 13, bubbles: true }),
   );
   return true;
 }
@@ -203,8 +197,7 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
         continue;
       }
       const name =
-        el.closest(".siqcw-agentmsg-grp")?.querySelector(".siqcw-name-div")?.textContent?.trim() ??
-        "";
+        el.closest(".siqcw-agentmsg-grp")?.querySelector(".siqcw-name-div")?.textContent?.trim() ?? "";
       const options = Array.from(el.querySelectorAll(".tag-div"))
         .map((t) => t.textContent?.trim() ?? "")
         .filter(Boolean);

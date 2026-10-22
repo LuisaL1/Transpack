@@ -8,12 +8,14 @@ import imgGuacales from "@/assets/images/guacales.jpg";
 import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
+import imgBarco from "@/assets/images/barco.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 
@@ -38,14 +40,9 @@ export const SLOGAN = "We promise with our heart, we deliver with excellence.";
 
 export const STATS = [
   { value: 58, suffix: "+", label: "years of experience" },
-  {
-    value: 176,
-    suffix: "+",
-    label: "destination countries, import and export",
-    short: "destination countries",
-  },
+  { value: 176, suffix: "+", label: "destination countries" },
   { value: 60, suffix: "K+", label: "tons of household goods exported" },
-  { value: 2000, suffix: "+", label: "representatives" },
+  { value: 2000, suffix: "+", label: "international agents" },
 ];
 
 export const EMBASSIES = [
@@ -74,7 +71,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgEmbalajeHogar,
     kicker: "Moving in Bogotá",
-    headline: "Your move across town, with no stress and no setbacks",
+    headline: "Your move across town, with no stress and no surprises",
     intro:
       "We plan every local move around the origin and destination property: floor, elevator, stairs, truck access and the hours allowed by building management. That way we arrive with the right crew and the right time.",
     includes: [
@@ -112,7 +109,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgCargue,
     kicker: "Between Colombian cities",
-    headline: "Your belongings protected from door to door",
+    headline: "From one city to another, with your belongings protected all the way",
     intro:
       "In a national move the inventory is the foundation of everything: it lets us calculate the volume, the vehicle and the resources needed. We take care of security, protection and on-time delivery on every route.",
     includes: [
@@ -146,9 +143,9 @@ export const SERVICES: Service[] = [
     cta: "Talk to an advisor",
     image: imgGlobal,
     kicker: "To and from Colombia",
-    headline: "Crossing borders without worry",
+    headline: "Your next life abroad starts with a clear plan",
     intro:
-      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs; then we quote. A specialized advisor guides you from the first contact, backed by more than 2,000 representatives in 176 countries.",
+      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs; then we quote. A specialized advisor guides you from the first contact, backed by more than 2,000 agents in 176 countries.",
     includes: [
       "Initial advice on origin and destination requirements",
       "Sea freight (large volumes) or air freight (urgent shipments)",
@@ -220,8 +217,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgGuacales,
     kicker: "Packing engineering",
-    headline:
-      "Your most valuable items in professional hands. Specialized packing and total care",
+    headline: "High-value pieces are not wrapped in generic packaging",
     intro:
       "Artwork, collections, glassware and designer furniture require packing engineering: custom wooden crates for canvases, high-density impact cushioning and moisture protection for long transits.",
     includes: [
@@ -247,9 +243,9 @@ export const SERVICES: Service[] = [
       "Support with the export and import of household goods, declared inventories and origin and destination requirements.",
     quote: "internacional",
     cta: "Get a quote",
-    image: imgInspeccionCanina,
+    image: imgBarco,
     kicker: "International paperwork",
-    headline: "Guidance and document procedures for the customs process in every country",
+    headline: "Customs is a legal maze. We know the way through",
     intro:
       "A poorly declared inventory or a missing permit can cost weeks of delay and penalties. We guide you through the export and import documentation for household goods and personal effects, according to each country's regulations.",
     includes: [
@@ -332,7 +328,7 @@ export const SEGMENTS = [
     points: [
       "Advice on requirements, timelines and costs before you pack",
       "Sea or air shipping, depending on your case",
-      "A network of representatives that receives you in your destination country",
+      "An agent network that receives you in your destination country",
     ],
     cta: "Plan my international move",
     quote: "internacional" as QuoteService,
@@ -427,6 +423,8 @@ export const FAQS = [
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgContenedor, caption: "Container loading", tall: true },
   { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
+  { src: imgBarco, caption: "Sea routes", tall: true },
+  { src: imgEmbalajeCarton, caption: "Packing with cardboard and protective film", tall: true },
   { src: imgEmbalajeSala, caption: "On-site packing" },
   { src: imgArteHogar, caption: "Protecting artwork at home" },
   { src: imgCargueCajas, caption: "Loading Transpack boxes" },
@@ -441,15 +439,16 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 // Mismas secciones y orden que PRIVACY en src/data/site.ts.
 export const PRIVACY = {
   title: "Personal Data Processing Policy",
-  intro:
-    "At Transpack S.A.S. we process your personal data in accordance with Colombian Law 1581 of 2012 and Decree 1377 of 2013 (compiled in Decree 1074 of 2015). Here we explain what data we collect on this site, what we use it for, how it is transmitted and how you can exercise your rights.",
+  intro: "At Transpack S.A.S. we process your personal data in accordance with Colombian Law 1581 of 2012 and Decree 1377 of 2013 (compiled in Decree 1074 of 2015). Here we explain what data we collect on this site, what we use it for, how it is transmitted and how you can exercise your rights.",
   updated: "Last updated: October 8, 2026",
   notice: "This is a translation for your convenience. The Spanish version is the official one.",
   sections: [
     {
       id: "responsable",
       title: "Data controller",
-      text: ["The company responsible for your personal data is:"],
+      text: [
+        "The company responsible for your personal data is:",
+      ],
     },
     {
       id: "datos",
@@ -471,14 +470,14 @@ export const PRIVACY = {
             "To prepare the estimate and formal quote, contact you to review it and, if you accept it, coordinate the service.",
           ],
           [
-            "Joelito chat (virtual advisor)",
+            "Joel chat (virtual advisor)",
             "The options you choose and what you write in the conversation, including your name, your mobile or WhatsApp number and, if applicable, your company's name.",
             "To guide you and prepare your request. If you choose to send your quote to an advisor, the summary (with your name and mobile number) is sent to our sales team through Zoho SalesIQ so they can contact you and follow up. The rest of the conversation stays in your browser.",
           ],
           [
             "Advisor chat (Zoho SalesIQ)",
             "What you write in the conversation and any details you choose to give us (for example, name, email or phone), along with technical data about the visit: pages viewed, approximate location, browser and device.",
-            "To handle your question with an advisor from our team, in the same window as Joelito's chat. It is only used if you choose “Chat with an advisor”.",
+            "To handle your question with an advisor from our team, in the same window as Joel's chat. It is only used if you choose “Chat with an advisor”.",
           ],
           [
             "WhatsApp and phone",
@@ -492,7 +491,9 @@ export const PRIVACY = {
           ],
         ],
       },
-      after: ["We do not sell your data or use it for advertising."],
+      after: [
+        "We do not sell your data or use it for advertising.",
+      ],
     },
     {
       id: "sensibles",
@@ -509,7 +510,7 @@ export const PRIVACY = {
         "Contact form and quote form by email: your data travels encrypted (HTTPS) to a function of the site itself, which emails it to Transpack through Brevo, our email provider, acting as data processor. Brevo also sends you a confirmation that we received your request. The site keeps no copy of what you send.",
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: the virtual advisor's preferences and your cookie choice are stored only in your browser (local storage) and are never sent to Transpack. You can delete them at any time by clearing this site's data in your browser.",
-        "Advisor chat: if you choose it in Joelito's chat, your messages are sent from our site to Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. The conversation is stored on Zoho's servers, which may be outside Colombia, and in our CRM. Until you choose that chat, nothing is sent to Zoho.",
+        "Advisor chat: if you choose it in Joel's chat, your messages are sent from our site to Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. The conversation is stored on Zoho's servers, which may be outside Colombia, and in our CRM. Until you choose that chat, nothing is sent to Zoho.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },
@@ -532,7 +533,9 @@ export const PRIVACY = {
     {
       id: "derechos",
       title: "Your rights",
-      text: ["As the data subject, you can:"],
+      text: [
+        "As the data subject, you can:",
+      ],
       items: [
         "Know, update and correct your data.",
         "Request proof of the authorization you gave us.",

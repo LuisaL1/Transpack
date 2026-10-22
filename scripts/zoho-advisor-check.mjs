@@ -26,8 +26,7 @@ for (const k of ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"])
     process.exit(1);
   }
 
-const show = (title, data) =>
-  console.log(`\n── ${title}\n${JSON.stringify(data, null, 2).slice(0, 3000)}`);
+const show = (title, data) => console.log(`\n── ${title}\n${JSON.stringify(data, null, 2).slice(0, 3000)}`);
 
 const q = new URLSearchParams({
   refresh_token: get("ZOHO_REFRESH_TOKEN"),
@@ -44,25 +43,16 @@ console.log(`Token OK (vence en ${t.expires_in} s; alcances: ${t.scope ?? "no in
 const zoho = async (path, init = {}) => {
   const r = await fetch(`${salesiq}${path}`, {
     ...init,
-    headers: {
-      Authorization: `Zoho-oauthtoken ${t.access_token}`,
-      "Content-Type": "application/json",
-    },
+    headers: { Authorization: `Zoho-oauthtoken ${t.access_token}`, "Content-Type": "application/json" },
   });
   const d = await r.json().catch(() => ({}));
   return { status: r.status, data: d };
 };
 
 const apps = await zoho(`/api/v2/${screen}/apps`);
-show(
-  `Marcas (apps) · HTTP ${apps.status} → use el id como ZOHO_SALESIQ_APP_ID`,
-  (apps.data.data ?? apps.data).map?.((a) => ({ id: a.id, name: a.name })) ?? apps.data,
-);
+show(`Marcas (apps) · HTTP ${apps.status} → use el id como ZOHO_SALESIQ_APP_ID`, (apps.data.data ?? apps.data).map?.((a) => ({ id: a.id, name: a.name })) ?? apps.data);
 const deps = await zoho(`/api/v2/${screen}/departments`);
-show(
-  `Departamentos · HTTP ${deps.status} → use el id como ZOHO_SALESIQ_DEPARTMENT_ID`,
-  (deps.data.data ?? deps.data).map?.((d) => ({ id: d.id, name: d.name })) ?? deps.data,
-);
+show(`Departamentos · HTTP ${deps.status} → use el id como ZOHO_SALESIQ_DEPARTMENT_ID`, (deps.data.data ?? deps.data).map?.((d) => ({ id: d.id, name: d.name })) ?? deps.data);
 
 if (process.argv.includes("--conversacion")) {
   const appId = get("ZOHO_SALESIQ_APP_ID", apps.data.data?.[0]?.id);

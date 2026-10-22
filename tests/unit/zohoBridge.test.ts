@@ -75,12 +75,7 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
   it("pasa a Joel los mensajes nuevos con su nombre y sus opciones", async () => {
     const onMessage = vi.fn();
     const b = await startBridge("Hola", { onMessage, onForm: vi.fn() });
-    agentSays(
-      "m1",
-      "Laura",
-      "¡Hola! ¿Qué servicio necesitas?",
-      `<div class="tag-div">Mudanza local</div><div class="tag-div">Bodegaje</div>`,
-    );
+    agentSays("m1", "Laura", "¡Hola! ¿Qué servicio necesitas?", `<div class="tag-div">Mudanza local</div><div class="tag-div">Bodegaje</div>`);
     await tick();
     expect(onMessage).toHaveBeenCalledWith({
       id: "m1",
@@ -162,12 +157,7 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
     );
     doc.querySelector('[data-zsqa="skip_btn"]')!.addEventListener("click", skipped);
     // También cuando la pregunta usa el campo de texto de Zoho (solo trae "Omitir")
-    agentSays(
-      "f2",
-      "Transpack",
-      "¿Podemos enviarle un correo electrónico?",
-      `<span data-zsqa="skip_btn">Omitir</span>`,
-    );
+    agentSays("f2", "Transpack", "¿Podemos enviarle un correo electrónico?", `<span data-zsqa="skip_btn">Omitir</span>`);
     await tick();
     expect(skipped).toHaveBeenCalled();
     expect(onMessage).not.toHaveBeenCalled();

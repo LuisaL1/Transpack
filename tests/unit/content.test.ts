@@ -68,9 +68,7 @@ describe("Traducciones", () => {
         expect(s.items?.length ?? 0, `${l} ${s.id}`).toBe(
           es.PRIVACY.sections[i].items?.length ?? 0,
         );
-        expect(s.after?.length ?? 0, `${l} ${s.id}`).toBe(
-          es.PRIVACY.sections[i].after?.length ?? 0,
-        );
+        expect(s.after?.length ?? 0, `${l} ${s.id}`).toBe(es.PRIVACY.sections[i].after?.length ?? 0);
         expect(s.table?.rows.length ?? 0, `${l} ${s.id}`).toBe(
           es.PRIVACY.sections[i].table?.rows.length ?? 0,
         );
@@ -95,15 +93,7 @@ describe("Traducciones", () => {
     ])
       expect(where).toContain(c);
     const all = JSON.stringify(es.PRIVACY);
-    for (const k of [
-      "Brevo",
-      "Zoho",
-      "Meta",
-      "navegador",
-      "Superintendencia",
-      "10 días hábiles",
-      "15 días hábiles",
-    ])
+    for (const k of ["Brevo", "Zoho", "Meta", "navegador", "Superintendencia", "10 días hábiles", "15 días hábiles"])
       expect(all).toContain(k);
     // El NIT no está en los documentos del cliente: queda vacío hasta que lo entreguen
     expect(es.CONTACT.nit).toMatch(/^(\d{3}\.?\d{3}\.?\d{3}-\d)?$/);
@@ -207,7 +197,7 @@ describe("Reglas de contenido (lo que la empresa no puede afirmar)", () => {
     }
   });
 
-  it("las cifras de la empresa coinciden con STATS (58 años, 176 países, 2.000 representantes)", () => {
+  it("las cifras de la empresa coinciden con STATS (58 años, 176 países, 2.000 agentes)", () => {
     const stat = (re: RegExp) => es.STATS.find((s) => re.test(s.label))!.value;
     const years = stat(/años/);
     const countries = stat(/países/);
@@ -215,8 +205,8 @@ describe("Reglas de contenido (lo que la empresa no puede afirmar)", () => {
       for (const m of s.matchAll(/(\d+) años de (experiencia|trayectoria)/g))
         expect(Number(m[1]), f).toBe(years);
       for (const m of s.matchAll(/(\d+) países/g)) expect(Number(m[1]), f).toBe(countries);
-      for (const m of s.matchAll(/([\d.]+)\+? (agentes|representantes)/g))
-        expect(m[1].replace(".", ""), f).toBe(String(stat(/representantes/)));
+      for (const m of s.matchAll(/([\d.]+)\+? agentes/g))
+        expect(m[1].replace(".", ""), f).toBe(String(stat(/agentes/)));
     }
   });
 
@@ -253,7 +243,6 @@ describe("Diseño", () => {
     "#1B1E5C",
     "#34399A",
     "#E8620A",
-    "#E8401C",
     "#1D2050",
     "#3E4160",
     "#6B6E8A",

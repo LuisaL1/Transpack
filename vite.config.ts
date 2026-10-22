@@ -58,22 +58,8 @@ export default defineConfig({
                 JSON.stringify({
                   ok: true,
                   messages: [
-                    {
-                      id: "1",
-                      seq: 1,
-                      from: "system",
-                      name: "Laura (prueba)",
-                      text: "joined",
-                      time: now,
-                    },
-                    {
-                      id: "2",
-                      seq: 2,
-                      from: "operator",
-                      name: "Laura (prueba)",
-                      text: "¡Hola! Soy Laura, asesora de Transpack (mensaje simulado). ¿En qué te ayudo?",
-                      time: now,
-                    },
+                    { id: "1", seq: 1, from: "system", name: "Laura (prueba)", text: "joined", time: now },
+                    { id: "2", seq: 2, from: "operator", name: "Laura (prueba)", text: "¡Hola! Soy Laura, asesora de Transpack (mensaje simulado). ¿En qué te ayudo?", time: now },
                   ],
                 }),
               );

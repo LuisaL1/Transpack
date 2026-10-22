@@ -48,8 +48,8 @@ export const aboutTimeline = (tr: Tr) => [
   {
     year: tr("Décadas de red", "Decades of network"),
     text: tr(
-      "Construimos una red de más de 2.000 representantes en 176 países.",
-      "We built a network of more than 2,000 representatives in 176 countries.",
+      "Construimos una red de más de 2.000 agentes internacionales en 176 países.",
+      "We built a network of more than 2,000 international agents in 176 countries.",
     ),
   },
   {
@@ -145,36 +145,25 @@ export const aboutText = (tr: Tr) => ({
 export const ceoInfo = (tr: Tr) => ({
   name: "Joël Doglioni",
   role: tr("CEO de Transpack", "CEO of Transpack"),
-  // Rótulo del formato que entregó el cliente ("Empresario comprometido")
-  tagline: tr("Empresario comprometido", "Committed entrepreneur"),
-  // Texto del formato "Empresario comprometido" que entregó el cliente (oct. 2026)
   bio: tr(
-    `Egresado de la Universidad Paul Valéry de Montpellier, en Francia, con un Máster II en Gestión de la información y la documentación, Joël Doglioni, ciudadano francés, es un apasionado administrador de empresas y un enamorado de Colombia.
+    `Llegué a Colombia en los años 80 como joven ejecutivo de un grupo francés, y he dedicado gran parte de mi vida a representar y apoyar a la comunidad francesa residente en el país. Nada me había preparado a ello salvo mi interés creciente por la vida pública y mi paso de joven por las filas del ejército, donde aprendí que el verbo SERVIR es noble.
 
-Llegó al país andino con una robusta experiencia previa como ejecutivo de empresas francesas del sector de obras públicas. Domina el español, el inglés y el italiano, además del francés, su lengua materna.
+Al margen de mi actividad profesional, fui consejero en la Asamblea de los Franceses de la zona andina entre 2003 y 2014 y consejero consular hasta 2021. Durante la pandemia de COVID-19, mi labor se intensificó, y hasta cambió de naturaleza, pues me vi obligado a brindar en condiciones muy desestabilizadoras asistencia administrativa, orientación práctica y apoyo psicológico a muchos compatriotas profundamente afectados. Este momento me marcó mucho.
 
-Arraigado en Colombia y a la vez conocedor del mundo globalizado, se ha convertido en experto en logística de transporte internacional y nacional, manejando Transpack S.A.S.
+Tengo mis convicciones políticas y filosóficas. Me ayudan a avanzar y a comprender un mundo cada vez más complejo, violento e imprevisible. Sin embargo, no considero los mandatos que ejercí como mandatos políticos. Apoyar a sus compatriotas, ayudarles a entender los entresijos de la legislación, abogar por ellos en el Consulado o en la Embajada, escribir si hace falta al ministro competente en París: todo esto no es política. Es civismo. Es puro servicio.
 
-Paralelamente, Joël Doglioni ha desarrollado una destacada actividad social en el seno de la comunidad francesa de Colombia. Fue miembro de la Junta directiva de la Alianza Francesa y del Liceo Francés de Bogotá, Consejero electo de la comunidad francesa durante 18 años, y es ahora Presidente de honor de la Unión en Colombia de los Franceses en el Extranjero (UFE). Chevalier de la Légion d'honneur, Joël Doglioni ha sido condecorado en repetidas ocasiones por Francia.
+Ser un facilitador legítimo, es decir, alguien que ayuda a sus compatriotas a resolver las dificultades administrativas de todo tipo que conlleva vivir fuera del país, es lo que quise ser y lo que fui durante 18 años. De esta experiencia saco una simple enseñanza: la comunidad francesa en Colombia no necesita batallitas entre partidos políticos.
 
-Joël lleva también años comprometido con el desarrollo sostenible y la reducción del impacto ecológico de sus actividades, centrándose en estrategias de reducción del consumo de papel y del uso de materiales plásticos y cartones en su empresa.
+No necesita que uno venga a explicarle la diferencia entre la izquierda y la derecha, entre el bien y el mal, entre la luz y la noche. Lo que sí necesitamos, en tiempos revueltos como los que corren, son gentes comprometidas, competentes y cercanas.`,
+    `I arrived in Colombia in the 1980s as a young executive of a French group, and I have devoted a large part of my life to representing and supporting the French community living in the country. Nothing had prepared me for it except my growing interest in public life and my time as a young man in the army, where I learned that the verb SERVE is a noble one.
 
-Premiado en 2001 con el "Premio Ecología Juan Peralta" de la Asociación Panamericana de Mudanzas Internacionales (PAIMA) por el proyecto de preservación de más de 55.000 árboles que lleva cuidadosamente a cabo en el área urbana de Bogotá, Joël Doglioni fue seleccionado en 2004 por las Naciones Unidas (UNODC) para participar activamente en un programa de ayuda a familias campesinas necesitadas.
+Alongside my professional activity, I was a councillor in the Assembly of French Citizens Abroad for the Andean region between 2003 and 2014, and a consular councillor until 2021. During the COVID-19 pandemic my work intensified and even changed in nature: under very unsettling conditions I found myself providing administrative assistance, practical guidance and psychological support to many deeply affected compatriots. That period marked me profoundly.
 
-Con altura de miras, sentido ético y compromiso social y medioambiental, Joël Doglioni ha logrado fortalecer Transpack S.A.S., haciendo de ella una compañía pionera en Colombia, sinónimo de seriedad, de calidad de servicio y de atención al cliente.`,
-    `A graduate of Paul Valéry University in Montpellier, France, with a Master II in Information and Documentation Management, Joël Doglioni, a French citizen, is a passionate business administrator and a lover of Colombia.
+I have my political and philosophical convictions. They help me move forward and understand a world that is ever more complex, violent and unpredictable. Yet I do not regard the mandates I held as political ones. Supporting your compatriots, helping them understand the ins and outs of the law, advocating for them at the Consulate or the Embassy, writing to the relevant minister in Paris when needed: none of that is politics. It is civic duty. It is pure service.
 
-He arrived in the Andean country with solid prior experience as an executive of French public works companies. He speaks Spanish, English and Italian, as well as French, his mother tongue.
+Being a legitimate facilitator, someone who helps compatriots solve the administrative difficulties of every kind that come with living abroad, is what I wanted to be and what I was for 18 years. From that experience I draw one simple lesson: the French community in Colombia does not need petty battles between political parties.
 
-Rooted in Colombia and at the same time at home in a globalized world, he has become an expert in international and national transport logistics, leading Transpack S.A.S.
-
-Alongside this, Joël Doglioni has carried out an outstanding social role within the French community in Colombia. He was a member of the Board of the Alliance Française and of the Lycée Français in Bogotá, an elected Councillor of the French community for 18 years, and is now Honorary President of the Union of French Citizens Abroad (UFE) in Colombia. A Chevalier of the Légion d'honneur, Joël Doglioni has been decorated by France on several occasions.
-
-Joël has also been committed for years to sustainable development and to reducing the ecological impact of his activities, focusing on strategies to reduce the use of paper, plastics and cardboard in his company.
-
-Awarded the "Juan Peralta Ecology Award" in 2001 by the Pan American International Movers Association (PAIMA) for the project to preserve more than 55,000 trees that he carefully carries out in the urban area of Bogotá, Joël Doglioni was selected in 2004 by the United Nations (UNODC) to take an active part in an aid program for families of farmers in need.
-
-With vision, ethics and social and environmental commitment, Joël Doglioni has strengthened Transpack S.A.S., making it a pioneering company in Colombia, synonymous with reliability, quality of service and customer care.`,
+It does not need anyone to come and explain the difference between left and right, between good and evil, between light and night. What we do need, in turbulent times like these, are committed, competent people who are close to us.`,
   ),
   website: "https://www.joeldoglioni.com/",
   photo: "/brand/ceo.jpg",

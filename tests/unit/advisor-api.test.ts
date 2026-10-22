@@ -54,9 +54,7 @@ describe("/api/advisor", () => {
 
   it("rechaza envíos desde otro sitio", async () => {
     configure();
-    const r = await POST(
-      req({ action: "start", question: "Hola" }, { origin: "https://otro.com" }),
-    );
+    const r = await POST(req({ action: "start", question: "Hola" }, { origin: "https://otro.com" }));
     expect(r.status).toBe(403);
   });
 
@@ -68,10 +66,7 @@ describe("/api/advisor", () => {
     expect(r.status).toBe(200);
     const { token } = (await r.json()) as { token: string };
     expect(readPass(token)?.c).toBe("conv123");
-    const [url, init] = f.mock.calls[1] as [
-      string,
-      RequestInit & { headers: Record<string, string> },
-    ];
+    const [url, init] = f.mock.calls[1] as [string, RequestInit & { headers: Record<string, string> }];
     expect(url).toBe("https://salesiq.zoho.com/api/visitor/v1/transpacksas/conversations");
     expect(init.headers.Authorization).toBe("Zoho-oauthtoken tok");
     const sent = JSON.parse(init.body as string);
@@ -97,9 +92,7 @@ describe("/api/advisor", () => {
     configure();
     const f = zohoMock();
     vi.stubGlobal("fetch", f);
-    expect((await POST(req({ action: "send", token: "falso.pase", text: "hola" }))).status).toBe(
-      403,
-    );
+    expect((await POST(req({ action: "send", token: "falso.pase", text: "hola" }))).status).toBe(403);
     // Pase alterado (otra conversación con la firma original)
     const good = makePass({ c: "conv123", u: "web-1", t: 1, exp: Date.now() + 60_000 });
     const forged = `${Buffer.from(JSON.stringify({ c: "otra", u: "x", t: 1, exp: Date.now() + 60_000 })).toString("base64url")}.${good.split(".")[1]}`;
@@ -128,31 +121,19 @@ describe("/api/advisor", () => {
     vi.stubGlobal(
       "fetch",
       zohoMock([
-        {
-          sequence_id: "1",
-          sender: { name: "Ana", id: "$v1" },
-          type: "text",
-          message: { text: "Hola" },
-        },
+        { sequence_id: "1", sender: { name: "Ana", id: "$v1" }, type: "text", message: { text: "Hola" } },
         {
           sequence_id: "2",
           sender: { name: "Laura", id: "830000001" },
           type: "info",
           message: { mode: "accepttransfer", operation_user: { name: "Laura" } },
         },
-        {
-          sequence_id: "3",
-          sender: { name: "Laura", id: "830000001" },
-          type: "text",
-          message: { text: "¡Hola Ana!" },
-        },
+        { sequence_id: "3", sender: { name: "Laura", id: "830000001" }, type: "text", message: { text: "¡Hola Ana!" } },
       ]),
     );
     const token = makePass({ c: "conv123", u: "web-1", t: 1, exp: Date.now() + 60_000 });
     const r = await POST(req({ action: "poll", token, after: 1 }));
-    const { messages } = (await r.json()) as {
-      messages: { from: string; text: string; name: string }[];
-    };
+    const { messages } = (await r.json()) as { messages: { from: string; text: string; name: string }[] };
     expect(messages).toEqual([
       expect.objectContaining({ from: "system", text: "joined", name: "Laura" }),
       expect.objectContaining({ from: "operator", text: "¡Hola Ana!", name: "Laura" }),
@@ -189,8 +170,8 @@ describe("/api/advisor", () => {
 
 describe("/api/advisor · mensajes", () => {
   it("marca el fin de la conversación", () => {
-    expect(mapMessages([{ sequence_id: "9", type: "info", message: { mode: "endchat" } }])).toEqual(
-      [expect.objectContaining({ from: "system", text: "ended" })],
-    );
+    expect(
+      mapMessages([{ sequence_id: "9", type: "info", message: { mode: "endchat" } }]),
+    ).toEqual([expect.objectContaining({ from: "system", text: "ended" })]);
   });
 });

@@ -20,12 +20,7 @@ import { routeChat } from "@/lib/chatRoute";
 import type { JoelReply } from "@/lib/joel";
 import { newMemory, QUOTE_TOPIC, track } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
-import {
-  ADVISOR_EVENT,
-  CRM_CHAT_EVENT,
-  QUOTE_EVENT,
-  requestAdvisorChat,
-} from "@/lib/advisorEvents";
+import { ADVISOR_EVENT, CRM_CHAT_EVENT, QUOTE_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 import {
