@@ -446,13 +446,19 @@ test("formulario de contacto: se abre precargado y muestra el error con WhatsApp
   await expect(dlg).toBeHidden();
 });
 
-test("cotizador: exige autorización, envía por correo y el WhatsApp lleva la solicitud", async ({
+test("cotizador: exige autorización y envía la solicitud a un asesor (Zoho Desk)", async ({
   page,
 }) => {
-  let sent: { kind?: string; subject?: string; fields?: Record<string, string> } | null = null;
-  await page.route("**/api/contact", async (r) => {
+  let sent: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    subject?: string;
+    message?: string;
+  } | null = null;
+  await page.route("**/api/ticket", async (r) => {
     sent = r.request().postDataJSON();
-    await r.fulfill({ json: { ok: true } });
+    await r.fulfill({ json: { ok: true, ticketNumber: "101" } });
   });
   await page.goto("/?servicio=local#cotizar");
   await closeCookies(page);
@@ -473,23 +479,16 @@ test("cotizador: exige autorización, envía por correo y el WhatsApp lleva la s
   await form.getByRole("checkbox").check();
   await next();
 
-  const wa = form.getByRole("link", { name: /Enviar por WhatsApp/ });
-  const href = decodeURIComponent((await wa.getAttribute("href")) ?? "");
-  expect(href).toMatch(/^https:\/\/wa\.me\/573218115967\?text=/);
-  expect(href).toContain("*Servicio:* Mudanza local");
-  expect(href).toContain("*Nombre:* Ana Prueba");
-  expect(href).toContain("*Autorización de datos:* Sí");
-
-  await form.getByRole("button", { name: /Enviar por correo/ }).click();
-  await expect(form.getByText(/Un asesor te responderá a ana@empresa.com/)).toBeVisible();
-  expect(sent!.kind).toBe("cotizacion");
+  // Al llegar al final, la solicitud se envía sola a un asesor y se confirma
+  await expect(form.getByText(/Un asesor revisará tu solicitud/)).toBeVisible();
+  expect(sent).not.toBeNull();
+  expect(sent!.name).toBe("Ana Prueba");
+  expect(sent!.phone).toBe("3000000000");
+  expect(sent!.email).toBe("ana@empresa.com");
   expect(sent!.subject).toContain("Solicitud de cotización");
-  expect(sent!.fields).toMatchObject({
-    Origen: "Chapinero",
-    Nombre: "Ana Prueba",
-    Correo: "ana@empresa.com",
-    "Autorización de datos": "Sí",
-  });
+  expect(sent!.message).toContain("Servicio: Mudanza local");
+  expect(sent!.message).toContain("Nombre: Ana Prueba");
+  expect(sent!.message).toContain("Autorización de datos: Sí");
 });
 
 test("la política de datos carga con la tabla de canales y el formulario", async ({ page }) => {

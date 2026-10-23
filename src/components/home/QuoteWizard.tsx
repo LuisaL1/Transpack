@@ -5,7 +5,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { QuoteService } from "@/data/site";
 import {
-  doneMsg,
   extrasFor,
   placeLabels,
   QUOTE_STEPS_TOTAL,
@@ -21,8 +20,7 @@ import { Bi, btn } from "@/components/ui";
 import { Chips, Field, inputCls, Label } from "@/components/home/QuoteFields";
 import { track } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
-import { sendLead } from "@/lib/leads";
-import { contactFormText } from "@/data/contact";
+import { sendTicket } from "@/lib/ticket";
 
 type QuoteText = ReturnType<typeof quoteText>;
 
@@ -107,7 +105,6 @@ export function QuoteWizard({
   const SERVICE_NAMES = useMemo(() => serviceNames(tr), [tr]);
   const PLACE_LABELS = placeLabels(tr);
   const STEP4_TITLE = step4Title(tr);
-  const DONE_MSG = doneMsg(tr);
   const EXTRAS = extrasFor(tr);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<QuoteForm>({});
@@ -183,39 +180,45 @@ export function QuoteWizard({
     trackEvent("quote_step", { step: done ? "resumen" : step, service: form.servicio });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, done]);
-  const lead = (method: "whatsapp" | "email") =>
-    trackEvent("generate_lead", { method, service, level: form.nivel, lang });
-
-  // Envío directo por correo (función /api/contact → Brevo → Transpack)
-  const ct = contactFormText(tr);
-  const [mail, setMail] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [mailTo, setMailTo] = useState("");
-  const sendEmail = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    const email = (form.email || mailTo).trim();
-    if (!service || !email) return;
-    setMail("sending");
+  // Al llegar al final, la solicitud se envía automáticamente a un asesor
+  // (función /api/ticket → Zoho Desk: crea el contacto y el ticket).
+  const [sendState, setSendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const sentRef = useRef(false);
+  const submitTicket = async () => {
+    if (!service) return;
+    setSendState("sending");
     // El equipo comercial recibe la solicitud en español
     const es = makeTr("es");
-    const fields: Record<string, string> = Object.fromEntries(
-      summaryRows(form, service, quoteText(es), serviceNames(es), "es"),
-    );
-    fields["Nombre"] = (form.nombre || "").trim();
-    fields["Celular"] = (form.telefono || "").trim();
-    fields["Correo"] = email;
-    if (lang !== "es") fields["Idioma del cliente"] = LANG_INFO[lang].name;
-    fields["Autorización de datos"] = "Sí";
-    const r = await sendLead(
-      "cotizacion",
-      `Solicitud de cotización — ${serviceNames(es)[service]}`,
-      fields,
-      { email, name: fields["Nombre"] },
+    const esRows = summaryRows(form, service, quoteText(es), serviceNames(es), "es");
+    const description = [
+      "Solicitud de cotización desde el cotizador del sitio web.",
       "",
-      { lang, about: SERVICE_NAMES[service] },
-    );
-    setMail(r.ok ? "sent" : "error");
-    if (r.ok) lead("email");
+      ...esRows.map(([l, v]) => `${l}: ${v}`),
+      "",
+      `Nombre: ${(form.nombre || "").trim()}`,
+      `Celular / WhatsApp: ${(form.telefono || "").trim()}`,
+      ...(form.email ? [`Correo: ${form.email.trim()}`] : []),
+      ...(lang !== "es" ? [`Idioma del cliente: ${LANG_INFO[lang].name}`] : []),
+      "Autorización de datos: Sí",
+    ].join("\n");
+    const r = await sendTicket({
+      name: (form.nombre || "").trim(),
+      email: (form.email || "").trim(),
+      phone: (form.telefono || "").trim(),
+      subject: `Solicitud de cotización — ${serviceNames(es)[service]}`,
+      message: description,
+    });
+    setSendState(r.ok ? "sent" : "error");
+    if (r.ok) trackEvent("generate_lead", { method: "zoho_ticket", service, level: form.nivel, lang });
   };
+
+  // Envía la solicitud una sola vez al llegar a la pantalla final
+  useEffect(() => {
+    if (!done || sentRef.current) return;
+    sentRef.current = true;
+    void submitTicket();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   const next = () => {
     if (!validate()) return;
@@ -224,8 +227,8 @@ export function QuoteWizard({
   };
 
   const reset = () => {
-    setMail("idle");
-    setMailTo("");
+    sentRef.current = false;
+    setSendState("idle");
     setForm({});
     setDone(false);
     setStep(1);
@@ -237,22 +240,6 @@ export function QuoteWizard({
     () => summaryRows(form, service, t, SERVICE_NAMES, lang),
     [form, service, t, lang, SERVICE_NAMES],
   );
-
-  const message = useMemo(() => {
-    // *texto* = negrita en WhatsApp
-    const lines = [
-      `*${t.holaTranspackQuieroSolicitar}*`,
-      "",
-      ...rows.map(([l, v]) => `• *${l}:* ${v}`),
-      "",
-    ];
-    lines.push(`*${t.nombre}:* ${form.nombre || ""}`, `*${t.celular}:* ${form.telefono || ""}`);
-    if (form.email) lines.push(`*${t.correo}:* ${form.email}`);
-    lines.push(`*${t.autorizacionDatos}:* ${t.si}`);
-    // El equipo comercial atiende en español: se indica el idioma del cliente
-    if (lang !== "es") lines.push("", `[Idioma del cliente: ${LANG_INFO[lang].name}]`);
-    return lines.join("\n");
-  }, [rows, form.nombre, form.telefono, form.email, t, lang]);
 
   const L = service ? PLACE_LABELS[service] : PLACE_LABELS.local;
   const inp = (k: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
@@ -315,92 +302,24 @@ export function QuoteWizard({
         {done ? (
           <div className="animate-fade-up py-4 text-center">
             <div className="mx-auto mb-5 grid h-[72px] w-[72px] place-items-center rounded-full bg-naranja text-4xl text-white shadow-[0_0_0_10px_rgba(255,118,25,.15)]">
-              <Bi n="check-lg" />
+              <Bi n={sendState === "error" ? "exclamation-lg" : "check-lg"} />
             </div>
             <h3 className="mb-2 text-xl">{t.listoSolicitudEstaPreparada}</h3>
-            <p className="mx-auto max-w-xl">
-              {(service && DONE_MSG[service]) || t.envialaWhatsappAsesorTe}
+            <p className="mx-auto max-w-xl" role="status" aria-live="polite">
+              {sendState === "sent"
+                ? t.solicitudEnviadaAsesor
+                : sendState === "error"
+                  ? t.noPudimosEnviarSolicitud
+                  : t.enviandoSolicitud}
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <a
-                className={`${btn.whatsapp} ${btn.lg}`}
-                href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`}
-                onClick={() => lead("whatsapp")}
-                target="_blank"
-                rel="noopener"
+            {sendState === "error" && (
+              <button
+                type="button"
+                className={`${btn.outline} ${btn.lg} mt-6`}
+                onClick={submitTicket}
               >
-                <Bi n="whatsapp" /> {t.enviarWhatsapp}
-              </a>
-              {mail !== "sent" && form.email && (
-                <button
-                  type="button"
-                  className={`${btn.outline} ${btn.lg} disabled:opacity-60`}
-                  disabled={mail === "sending"}
-                  onClick={sendEmail}
-                >
-                  <Bi n="envelope" /> {mail === "sending" ? ct.sending : t.enviarCorreo}
-                </button>
-              )}
-            </div>
-            {/* Sin correo en el paso de contacto: se pide aquí para poder responder */}
-            {mail !== "sent" && !form.email && (
-              <div className="mx-auto mt-4 flex max-w-md flex-col gap-2 text-start">
-                <label htmlFor="quote-mail" className="text-[0.85rem] font-semibold text-tinta">
-                  {t.tuCorreoParaEnviar}
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    id="quote-mail"
-                    type="email"
-                    autoComplete="email"
-                    value={mailTo}
-                    onChange={(e) => setMailTo(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key !== "Enter") return;
-                      e.stopPropagation(); // no avanza el cotizador
-                      sendEmail(e);
-                    }}
-                    className={inputCls}
-                  />
-                  <button
-                    type="button"
-                    className={`${btn.outline} ${btn.md} shrink-0 disabled:opacity-60`}
-                    disabled={
-                      mail === "sending" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailTo.trim())
-                    }
-                    onClick={sendEmail}
-                  >
-                    <Bi n="envelope" /> {mail === "sending" ? ct.sending : t.enviarCorreo}
-                  </button>
-                </div>
-              </div>
-            )}
-            {mail === "sent" && (
-              <p
-                role="status"
-                className="mx-auto mt-5 flex max-w-xl items-start justify-center gap-2 rounded-xl bg-gris px-4 py-3 text-[0.9rem] font-medium text-azul"
-              >
-                <Bi n="check-circle" className="mt-0.5 text-naranja" />
-                {ct.sentText((form.email || mailTo).trim())}
-              </p>
-            )}
-            {mail === "error" && (
-              <p
-                role="alert"
-                className="mx-auto mt-5 max-w-xl rounded-xl bg-beige px-4 py-3 text-[0.88rem] font-medium text-violeta"
-              >
-                {ct.error}{" "}
-                <a
-                  href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`}
-                  onClick={() => lead("whatsapp")}
-                  target="_blank"
-                  rel="noopener"
-                  className="font-semibold text-azul underline underline-offset-2"
-                >
-                  WhatsApp
-                </a>
-                .
-              </p>
+                <Bi n="arrow-clockwise" /> {t.reintentar}
+              </button>
             )}
             <button type="button" onClick={reset} className="mt-5 text-suave underline">
               {t.hacerOtraSolicitud}
