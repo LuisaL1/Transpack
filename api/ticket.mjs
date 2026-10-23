@@ -15,6 +15,9 @@
 //       El refresh token debe tener los alcances (scopes) de DESK:
 //         Desk.tickets.CREATE, Desk.contacts.CREATE, Desk.contacts.READ
 //       (un token hecho para SalesIQ NO sirve para Desk).
+//       Para NO compartir con SalesIQ, define credenciales propias de Desk:
+//         ZOHO_DESK_CLIENT_ID, ZOHO_DESK_CLIENT_SECRET, ZOHO_DESK_REFRESH_TOKEN
+//       (tienen prioridad sobre las ZOHO_* compartidas).
 //   ZOHO_ORG_ID         id de la organización de Zoho Desk (cabecera orgId)
 //   ZOHO_DEPARTMENT_ID  departamento que recibe el ticket
 //   ZOHO_ACCOUNTS_URL   por defecto https://accounts.zoho.com (cambia según el
@@ -31,9 +34,11 @@ const json = (data, status = 200) =>
 
 const env = (k) => (process.env[k] ?? "").trim();
 const cfg = () => ({
-  clientId: env("ZOHO_CLIENT_ID"),
-  clientSecret: env("ZOHO_CLIENT_SECRET"),
-  refreshToken: env("ZOHO_REFRESH_TOKEN"),
+  // Credenciales dedicadas de Desk (ZOHO_DESK_*) si existen, para no chocar con
+  // las de SalesIQ (api/advisor.mjs); si no, usa las compartidas ZOHO_*.
+  clientId: env("ZOHO_DESK_CLIENT_ID") || env("ZOHO_CLIENT_ID"),
+  clientSecret: env("ZOHO_DESK_CLIENT_SECRET") || env("ZOHO_CLIENT_SECRET"),
+  refreshToken: env("ZOHO_DESK_REFRESH_TOKEN") || env("ZOHO_REFRESH_TOKEN"),
   orgId: env("ZOHO_ORG_ID"),
   departmentId: env("ZOHO_DEPARTMENT_ID"),
   accounts: env("ZOHO_ACCOUNTS_URL") || "https://accounts.zoho.com",
