@@ -66,8 +66,6 @@ export type JoelReply = {
   handoff?: boolean;
 };
 
-
-
 export type JoelKB = {
   services: {
     slug: string;
@@ -351,7 +349,6 @@ function daysIn(t: string): number | undefined {
 }
 
 // ─── 3. Motor ──────────────────────────────────────────────────────────────
-
 
 // Pasos del chat guiado (AdvisorChat) en los que empieza cada cotización
 const ENTRY: Record<QuoteKind, string> = {
@@ -1045,7 +1042,7 @@ export function createJoel(kb: JoelKB) {
   };
   const YEARS = stat(/años/);
   const COUNTRIES = stat(/países/);
-  const AGENTS = stat(/agentes/);
+  const AGENTS = stat(/representantes/);
   const TONS = stat(/toneladas/);
   const CERTS =
     kb.services
@@ -1290,8 +1287,8 @@ export function createJoel(kb: JoelKB) {
       timingAdvice(days),
       `Te recomiendo combinar:\n• ${T(I).title}: marítima para el menaje completo o aérea para lo urgente.\n• ${T(A).title}: requisitos de origen y destino e inventario declarado para aduanas.\n• ${T(B).title}, si tu nuevo hogar no está listo al llegar o quieres dejar cosas en Colombia.`,
       known
-        ? `${dest} es uno de los destinos a los que llevamos mudanzas, con el respaldo de más de ${AGENTS} agentes en ${COUNTRIES} países.`
-        : `Nuestra red tiene más de ${AGENTS} agentes en ${COUNTRIES} países; el asesor te confirma la ruta a ${dest}.`,
+        ? `${dest} es uno de los destinos a los que llevamos mudanzas, con el respaldo de más de ${AGENTS} representantes en ${COUNTRIES} países.`
+        : `Nuestra red tiene más de ${AGENTS} representantes en ${COUNTRIES} países; el asesor te confirma la ruta a ${dest}.`,
     ];
     if (
       hasAny(t, words, [
@@ -2237,7 +2234,7 @@ export function createJoel(kb: JoelKB) {
   // ─── Intenciones generales ──────────────────────────────────────────────
 
   const whyUs = () =>
-    `Más de ${YEARS} años de trayectoria, más de ${AGENTS} agentes internacionales en ${COUNTRIES} países, más de ${TONS} toneladas de menaje exportadas y estándares certificados por ${CERTS} en origen y destino.`;
+    `Más de ${YEARS} años de trayectoria, más de ${AGENTS} representantes en ${COUNTRIES} países, más de ${TONS} toneladas de menaje doméstico exportadas y estándares certificados por ${CERTS} en origen y destino.`;
 
   type Resp = (m: Memory, asked: Set<string>, t: string, words: string[]) => JoelReply;
   const RESP: Record<string, Resp> = {
@@ -2270,7 +2267,7 @@ export function createJoel(kb: JoelKB) {
           intent: "cobertura",
           service: I,
           say: [
-            `Sí, hacemos mudanzas internacionales desde y hacia Colombia, con más de ${AGENTS} agentes en ${COUNTRIES} países.`,
+            `Sí, hacemos mudanzas internacionales desde y hacia Colombia, con más de ${AGENTS} representantes en ${COUNTRIES} países.`,
             kb.destinations.includes(dest)
               ? `${dest} es uno de los destinos a los que llevamos mudanzas.`
               : `El asesor te confirma la ruta a ${dest}.`,
@@ -2281,7 +2278,7 @@ export function createJoel(kb: JoelKB) {
         intent: "cobertura",
         say: [
           "Hacemos mudanzas puerta a puerta en todo el país y, al exterior, con una red de más de " +
-            `${AGENTS} agentes en ${COUNTRIES} países.`,
+            `${AGENTS} representantes en ${COUNTRIES} países.`,
           "Si el origen o el destino es una zona de difícil acceso, primero validamos que la operación sea viable. Cuéntame a dónde vas.",
         ],
         options: [
@@ -2295,7 +2292,7 @@ export function createJoel(kb: JoelKB) {
       intent: "empresa",
       say: [
         `Transpack tiene más de ${YEARS} años de trayectoria en mudanzas locales, nacionales e internacionales y bodegaje, desde Bogotá.`,
-        `Contamos con más de ${AGENTS} agentes internacionales en ${COUNTRIES} países y más de ${TONS} toneladas de menaje exportadas.`,
+        `Contamos con más de ${AGENTS} representantes en ${COUNTRIES} países y más de ${TONS} toneladas de menaje doméstico exportadas.`,
         `Han confiado en nosotros empresas como ${kb.clients.slice(0, 5).join(", ")} y embajadas como las de ${kb.embassies.slice(0, 4).join(", ")}.`,
       ],
       actions: [{ label: "Conocer Transpack", icon: "building", to: "/nosotros" }],
@@ -2323,7 +2320,7 @@ export function createJoel(kb: JoelKB) {
     certificaciones: () => ({
       intent: "certificaciones",
       say: [
-        `Trabajamos con estándares certificados por ${CERTS}, que aseguran que la red de agentes en el país de destino opere con los mismos estándares que en origen.`,
+        `Trabajamos con estándares certificados por ${CERTS}, que aseguran que la red de representantes en el país de destino opere con los mismos estándares que en origen.`,
         "Si tu empresa necesita otra certificación del proveedor, un asesor te confirma la documentación disponible.",
       ],
       actions: [{ label: "Conocer Transpack", icon: "building", to: "/nosotros" }],
@@ -2411,7 +2408,7 @@ export function createJoel(kb: JoelKB) {
     bot: () => ({
       intent: "bot",
       say: [
-        "Soy Joel, el asesor virtual de Transpack. No soy ChatGPT ni una persona: respondo con la información de la empresa y de este sitio para orientarte, y te conecto con un asesor de nuestro equipo cuando lo necesites.",
+        "Soy Joelito, el asesor virtual de Transpack. No soy ChatGPT ni una persona: respondo con la información de la empresa y de este sitio para orientarte, y te conecto con un asesor de nuestro equipo cuando lo necesites.",
       ],
       options: [ADVISOR, QUOTE],
     }),
@@ -2643,8 +2640,8 @@ export function createJoel(kb: JoelKB) {
   function greeting(): JoelReply {
     const ins = getInsight(topicOf, articleTopic);
     const hello = ins.returning
-      ? "¡Qué bueno verte de nuevo! Soy Joel, el asesor virtual de Transpack. 👋"
-      : "¡Hola! Soy Joel, el asesor virtual de Transpack. 👋";
+      ? "¡Qué bueno verte de nuevo! Soy Joelito, el asesor virtual de Transpack. 👋"
+      : "¡Hola! Soy Joelito, el asesor virtual de Transpack. 👋";
     const base: JoelOption[] = [
       opt("Quiero cotizar una mudanza", "svc", "card-checklist"),
       opt("Tengo una pregunta", "faq", "question-circle"),
@@ -2696,8 +2693,8 @@ export function createJoel(kb: JoelKB) {
       say: [
         hello,
         ins.returning
-          ? "¿En qué te puedo ayudar hoy? Puedes elegir una opción o escribirme tu caso con tus palabras."
-          : "Te ayudo a planear tu mudanza, resolver dudas o hablar con nuestro equipo. Puedes elegir una opción o contarme tu caso con tus palabras.",
+          ? "¿Seguimos con tu mudanza? Cuéntame qué te falta resolver o elige una opción."
+          : "¿Te vas a mudar y no sabes por dónde empezar? Cuéntame a dónde vas y cuándo: resuelvo tus dudas y te ayudo a cotizar en pocos minutos.",
       ],
       options: base,
     };

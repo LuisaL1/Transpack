@@ -59,8 +59,11 @@ export function NosotrosPage() {
       {/* Nuestro CEO (solo cuando el cliente entregue los datos: src/data/about.ts) */}
       {CEO.name && (
         <section id="ceo" className={section}>
-          <div className={`${container} grid items-center gap-12 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20`}>
-            <Reveal>
+          <div
+            className={`${container} grid items-start gap-12 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20`}
+          >
+            {/* La foto acompaña la lectura de la biografía (larga) en escritorio */}
+            <Reveal className="lg:sticky lg:top-32">
               <img
                 loading="lazy"
                 decoding="async"
@@ -71,9 +74,11 @@ export function NosotrosPage() {
             </Reveal>
             <Reveal delay={100}>
               <Eyebrow>{CEO.eyebrow}</Eyebrow>
-              <h2 className="mb-1 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">{CEO.name}</h2>
+              <h2 className="mb-1 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">
+                {CEO.name}
+              </h2>
               <p className="mb-6 font-title text-[0.95rem] font-semibold uppercase tracking-[0.12em] text-naranja">
-                {CEO.role}
+                {CEO.role} · {CEO.tagline}
               </p>
               <p className="mb-8 whitespace-pre-line text-[1.05rem]">{CEO.bio}</p>
               {CEO.website && (

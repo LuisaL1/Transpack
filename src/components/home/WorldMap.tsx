@@ -8,14 +8,7 @@ import { useEffect, useState } from "react";
 import { useLang } from "@/i18n";
 import { mapText } from "@/data/home";
 import { useDestinationName } from "@/hooks/useContent";
-import {
-  DESTINATIONS,
-  LAND_BASE,
-  LAND_HOT,
-  LAND_ORIGIN,
-  MAP_W,
-  ORIGIN,
-} from "@/data/worldMap";
+import { DESTINATIONS, LAND_BASE, LAND_HOT, LAND_ORIGIN, MAP_W, ORIGIN } from "@/data/worldMap";
 
 // Curva que sale de Bogotá y se eleva según la distancia al destino
 const arc = (x: number, y: number) => {
@@ -96,7 +89,11 @@ export function WorldMap({
                 className="route transition-all duration-500"
                 style={{ animationDuration: `${2.6 + (i % 3) * 0.6}s` }}
               />
-              <circle r={on ? 3.6 : 2.2} fill={on ? "#ff7619" : "#272B7C"} fillOpacity={on ? 1 : 0.55}>
+              <circle
+                r={on ? 3.6 : 2.2}
+                fill={on ? "#ff7619" : "#272B7C"}
+                fillOpacity={on ? 1 : 0.55}
+              >
                 <animateMotion
                   dur={`${3.2 + (i % 4) * 0.7}s`}
                   repeatCount="indefinite"

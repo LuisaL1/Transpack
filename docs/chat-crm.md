@@ -9,11 +9,11 @@ contacto en general (teléfono, WhatsApp), Joel lo da en una línea y ofrece
 "Chatear con un asesor" como primera opción. En los tres modos el asesor atiende desde su
 panel de SalesIQ como cualquier chat:
 
-| Modo | Cuándo | Cómo se ve |
-| --- | --- | --- |
-| **API** (`api/advisor.mjs`) | Si las credenciales de la API de Zoho están en Vercel. **Hoy bloqueado:** Zoho no da el permiso de organización (ver "Estado") | Todo dentro de Joel; el navegador nunca carga Zoho. |
-| **Puente** (`src/lib/zohoBridge.ts`) — **el que se usa hoy** | Si la API no está configurada | Todo dentro de Joel: el widget de Zoho se carga **escondido** y Joel escribe en él y muestra sus respuestas. Si Zoho pide un formulario, Joel ofrece completarlo en la ventana de Zoho u omitirlo. |
-| **Ventana de Zoho** (respaldo) | Si el puente falla (por ejemplo, Zoho cambió su ventana) | Se abre la ventana del widget de SalesIQ, con el diseño del sitio. |
+| Modo                                                         | Cuándo                                                                                                                         | Cómo se ve                                                                                                                                                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **API** (`api/advisor.mjs`)                                  | Si las credenciales de la API de Zoho están en Vercel. **Hoy bloqueado:** Zoho no da el permiso de organización (ver "Estado") | Todo dentro de Joel; el navegador nunca carga Zoho.                                                                                                                                                |
+| **Puente** (`src/lib/zohoBridge.ts`) — **el que se usa hoy** | Si la API no está configurada                                                                                                  | Todo dentro de Joel: el widget de Zoho se carga **escondido** y Joel escribe en él y muestra sus respuestas. Si Zoho pide un formulario, Joel ofrece completarlo en la ventana de Zoho u omitirlo. |
+| **Ventana de Zoho** (respaldo)                               | Si el puente falla (por ejemplo, Zoho cambió su ventana)                                                                       | Se abre la ventana del widget de SalesIQ, con el diseño del sitio.                                                                                                                                 |
 
 ## Cotización terminada → seguimiento del equipo comercial
 
@@ -66,6 +66,7 @@ Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
 6. "Volver con Joel" deja de escuchar y esconde Zoho.
 
 **Configuración de Zoho para este modo (8 de octubre de 2026):**
+
 - El bot de Zoho ("Joel Transpack", SalesIQ → Bot → Zobot) está **apagado**:
   Joel cumple ese papel en el sitio. Si se vuelve a encender, sus mensajes
   aparecen en Joel y la conversación no llega a los asesores hasta que el bot
@@ -101,16 +102,17 @@ Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mjs
 7. La conversación sigue al cambiar de página o recargar (se guarda el pase en
    `sessionStorage` de esa pestaña).
 
-| Pieza | Archivo |
-| --- | --- |
-| Función (abrir, enviar, leer) | `api/advisor.mjs` |
-| Cliente del navegador | `src/lib/advisorChat.ts` |
-| Lógica en el chat | `src/hooks/useAdvisorChat.ts` (`live`: `ask` → `connecting` → `live`) |
-| Mensaje del asesor y franja "Chat con un asesor" | `src/components/chat/ChatBubble.tsx`, `AdvisorChat.tsx` |
-| Simulación en `pnpm dev` | `vite.config.ts` (un asesor de prueba responde a los 5 s) |
-| Verificación con Zoho real | `scripts/zoho-advisor-check.mjs` (`pnpm advisor:check`) |
+| Pieza                                            | Archivo                                                               |
+| ------------------------------------------------ | --------------------------------------------------------------------- |
+| Función (abrir, enviar, leer)                    | `api/advisor.mjs`                                                     |
+| Cliente del navegador                            | `src/lib/advisorChat.ts`                                              |
+| Lógica en el chat                                | `src/hooks/useAdvisorChat.ts` (`live`: `ask` → `connecting` → `live`) |
+| Mensaje del asesor y franja "Chat con un asesor" | `src/components/chat/ChatBubble.tsx`, `AdvisorChat.tsx`               |
+| Simulación en `pnpm dev`                         | `vite.config.ts` (un asesor de prueba responde a los 5 s)             |
+| Verificación con Zoho real                       | `scripts/zoho-advisor-check.mjs` (`pnpm advisor:check`)               |
 
 **Seguridad**
+
 - Las credenciales de Zoho son de toda la cuenta: solo existen en el servidor
   (prueba en `tests/security/static.test.ts`).
 - El pase está firmado con `ADVISOR_SECRET` y vence en 12 horas. Sin él, o
@@ -120,6 +122,7 @@ Navegador (Joel) ──/api/advisor──► Función de Vercel (api/advisor.mjs
   mensajes y no reenvía al navegador los detalles de los errores de Zoho.
 
 **Estado (8 de octubre de 2026): bloqueado por un permiso de Zoho.**
+
 - Funciona: el token de la cuenta (lectura de marcas, departamentos y
   mensajes).
 - No funciona: abrir conversaciones a nombre del visitante. Zoho responde
@@ -153,6 +156,7 @@ lo muestra y se ajusta `api/advisor.mjs` (acción `poll`).
    ```
 
    La respuesta trae `refresh_token`. Guárdelo: no vuelve a mostrarse.
+
 4. Cree una clave para firmar los pases: `openssl rand -base64 48`.
 5. Para probar en el equipo, ponga los valores en `.env.local` (no se sube al
    repositorio; ver `.env.example`) y corra:
@@ -166,6 +170,7 @@ lo muestra y se ajusta `api/advisor.mjs` (acción `poll`).
 7. Pruebe en el sitio: "Hablar con un asesor" y escriba un mensaje.
 
 Notas:
+
 - El portal se llama `transpacksas` (aparece en la dirección de SalesIQ); se
   cambia con `ZOHO_SALESIQ_SCREEN`.
 - Si la cuenta de Zoho está en otro centro de datos (por ejemplo `.eu`),
@@ -175,11 +180,11 @@ Notas:
 
 ## Modo "ventana de Zoho" (respaldo)
 
-| Pieza | Archivo | Qué hace |
-| --- | --- | --- |
-| Opción en Joel | `src/data/chat.ts` (paso `human`) y `src/lib/joel.ts` (`ADVISOR_CHAT`) | "Hablar con un asesor" (o pedir un asesor por escrito: intención `asesor`, `handoff`) conecta de una vez; pedir contacto ofrece "Chatear con un asesor" como primera opción. |
-| Lógica | `src/hooks/useAdvisorChat.ts` | Si `/api/advisor` no está configurado, carga y abre la ventana de Zoho; mientras está abierta se ocultan la ventana y el botón de Joel. Si Zoho no carga, Joel ofrece WhatsApp y el formulario. |
-| Cargador | `src/lib/crmChat.ts` (archivo aparte, se descarga solo al usarlo) | Carga el script de Zoho una sola vez, en español, sin su botón y con el diseño del sitio. |
+| Pieza          | Archivo                                                                | Qué hace                                                                                                                                                                                        |
+| -------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Opción en Joel | `src/data/chat.ts` (paso `human`) y `src/lib/joel.ts` (`ADVISOR_CHAT`) | "Hablar con un asesor" (o pedir un asesor por escrito: intención `asesor`, `handoff`) conecta de una vez; pedir contacto ofrece "Chatear con un asesor" como primera opción.                    |
+| Lógica         | `src/hooks/useAdvisorChat.ts`                                          | Si `/api/advisor` no está configurado, carga y abre la ventana de Zoho; mientras está abierta se ocultan la ventana y el botón de Joel. Si Zoho no carga, Joel ofrece WhatsApp y el formulario. |
+| Cargador       | `src/lib/crmChat.ts` (archivo aparte, se descarga solo al usarlo)      | Carga el script de Zoho una sola vez, en español, sin su botón y con el diseño del sitio.                                                                                                       |
 
 - **Código del widget:** `SALESIQ_WIDGET` en `src/lib/crmChat.ts` (no es secreto).
 - **Vista inicial:** la ventana abre en el inicio de Zoho ("Chatee con nosotros
@@ -214,10 +219,10 @@ La ventana de Zoho tiene el diseño del chat de Joel:
   copia de `src/assets/images/joel-avatar.png`);
 - tipografías del sitio y solo colores de la marca.
 
-| Qué | Archivo |
-| --- | --- |
-| Lo de adentro de la ventana | `src/styles/zoho-chat.css` (se inyecta desde `src/lib/crmChat.ts`) |
-| Marco (esquinas, sombra) y botón de cerrar | `src/styles/zoho-host.css` (se inyecta en la página aislada) |
+| Qué                                        | Archivo                                                            |
+| ------------------------------------------ | ------------------------------------------------------------------ |
+| Lo de adentro de la ventana                | `src/styles/zoho-chat.css` (se inyecta desde `src/lib/crmChat.ts`) |
+| Marco (esquinas, sombra) y botón de cerrar | `src/styles/zoho-host.css` (se inyecta en la página aislada)       |
 
 - **Por qué funciona:** la ventana de Zoho es un iframe del mismo origen que la
   página, así que el sitio puede agregarle una hoja de estilos. Los colores se
@@ -242,12 +247,13 @@ visitante (incluye su identificador), así que no se puede autorizar con una
 huella fija. La CSP estricta del sitio lo bloqueaba (la ventana de Zoho quedaba
 vacía). Con la página aislada:
 
-| Cabeceras | Para | Scripts permitidos |
-| --- | --- | --- |
-| `/((?!chat-asesor).*)` | Todo el sitio | Solo los del propio sitio y Google Tag Manager. Nada de Zoho. `frame-src 'self'` para mostrar la página aislada. |
+| Cabeceras                            | Para              | Scripts permitidos                                                                                                                                                                                  |
+| ------------------------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/((?!chat-asesor).*)`               | Todo el sitio     | Solo los del propio sitio y Google Tag Manager. Nada de Zoho. `frame-src 'self'` para mostrar la página aislada.                                                                                    |
 | `/chat-asesor` y `/chat-asesor.html` | La página aislada | `'unsafe-inline'` más `salesiq.zohopublic.com`, `salesiq.zoho.com` y `static.zohocdn.com`. Solo el sitio la puede mostrar (`frame-ancestors 'self'`, `X-Frame-Options: SAMEORIGIN`) y no se indexa. |
 
 Otros dominios de Zoho permitidos en la página aislada:
+
 - `style-src`, `font-src` y `media-src`: `static.zohocdn.com`;
 - `img-src`: `static.zohocdn.com` y `*.zohopublic.com`;
 - `connect-src`: `salesiq.zoho.com`, `*.zohopublic.com` (también por `wss:`) y

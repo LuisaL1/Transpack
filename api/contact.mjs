@@ -368,8 +368,16 @@ async function handle(req) {
       tags: [`sitio-${kind}-confirmacion`],
     });
     const why = await r.json().catch(() => ({}));
-    if (r.ok) console.log(`[contact] Confirmación enviada al visitante (Brevo ${why.messageId ?? "sin id"})`);
-    else console.error(`[contact] Brevo no envió la confirmación (HTTP ${r.status}):`, why.code, why.message);
+    if (r.ok)
+      console.log(
+        `[contact] Confirmación enviada al visitante (Brevo ${why.messageId ?? "sin id"})`,
+      );
+    else
+      console.error(
+        `[contact] Brevo no envió la confirmación (HTTP ${r.status}):`,
+        why.code,
+        why.message,
+      );
   } catch (e) {
     console.error("[contact] Falló la confirmación:", e instanceof Error ? e.message : e);
   }

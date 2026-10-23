@@ -283,8 +283,7 @@ export function ContactModal() {
                 className="mt-0.5 h-[18px] w-[18px] shrink-0 accent-naranja"
               />
               <span>
-                {t.consent}{" "}
-                {/* En otra pestaña, para no perder lo que ya se escribió */}
+                {t.consent} {/* En otra pestaña, para no perder lo que ya se escribió */}
                 <a
                   href={lp("/privacidad")}
                   target="_blank"

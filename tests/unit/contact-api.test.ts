@@ -24,7 +24,12 @@ const req = (body: unknown, headers: Record<string, string> = {}) =>
 const valid = {
   kind: "contacto",
   subject: "Contacto web — Otro",
-  fields: { Nombre: "Ana", Correo: "ana@empresa.com", Mensaje: "Hola <b>", "Autorización de datos": "Sí" },
+  fields: {
+    Nombre: "Ana",
+    Correo: "ana@empresa.com",
+    Mensaje: "Hola <b>",
+    "Autorización de datos": "Sí",
+  },
   replyTo: { email: "ana@empresa.com", name: "Ana Prueba" },
 };
 const ok = () => new Response("{}", { status: 201 });
@@ -48,7 +53,8 @@ describe("/api/contact", () => {
     vi.stubEnv("BREVO_API_KEY", "k");
     expect((await POST(req({ ...valid, replyTo: { email: "no-es-correo" } }))).status).toBe(422);
     expect(
-      (await POST(req({ ...valid, fields: { ...valid.fields, "Autorización de datos": "" } }))).status,
+      (await POST(req({ ...valid, fields: { ...valid.fields, "Autorización de datos": "" } })))
+        .status,
     ).toBe(422);
     expect((await POST(req({ ...valid, fields: {} }))).status).toBe(422);
   });
@@ -82,7 +88,10 @@ describe("/api/contact", () => {
     vi.stubEnv("BREVO_API_KEY", "k");
     const r = await POST(req(valid, { origin: "https://www.transpacksas.com" }));
     expect(r.status).toBe(200);
-    const [url, init] = f.mock.calls[0] as [string, RequestInit & { headers: Record<string, string> }];
+    const [url, init] = f.mock.calls[0] as [
+      string,
+      RequestInit & { headers: Record<string, string> },
+    ];
     expect(url).toBe("https://api.brevo.com/v3/smtp/email");
     expect(init.headers["api-key"]).toBe("k");
     const sent = sentBody(f);
@@ -101,7 +110,10 @@ describe("/api/contact", () => {
     vi.stubEnv("BREVO_API_KEY", "k");
     // Cotizador
     await POST(req({ ...valid, kind: "cotizacion" }));
-    expect(sentBody(f).to[0]).toEqual({ email: "mercadeo@transpacksas.com", name: "Mercadeo Transpack" });
+    expect(sentBody(f).to[0]).toEqual({
+      email: "mercadeo@transpacksas.com",
+      name: "Mercadeo Transpack",
+    });
     // La confirmación al visitante responde a quien recibió la solicitud
     expect(sentBody(f, 1).replyTo.email).toBe("mercadeo@transpacksas.com");
     // Formulario de contacto con motivo "Cotización"
@@ -253,4 +265,3 @@ describe("/api/contact · diseño de los correos", () => {
     expect(png.length).toBeLessThan(60 * 1024);
   });
 });
-

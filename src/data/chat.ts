@@ -7,9 +7,9 @@ import { siteFor } from "@/data/content";
 import { contactHref } from "@/data/contact";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
 
-export const NAME = "Joel";
+export const NAME = "Joelito";
 // En árabe el nombre se escribe en su alfabeto
-const AR_NAME = "جويل";
+const AR_NAME = "جويليتو";
 
 export type ChatData = Record<string, string>;
 export type ChatAction = {
@@ -56,27 +56,27 @@ const opts = (
 // ─── Conversación (en el idioma de la página) ─────────────────────────────────
 
 const serviceNamesFor = (tr: Tr): ChatData => ({
-    local: tr("Mudanza local", "Local move"),
-    nacional: tr("Mudanza nacional", "National move"),
-    internacional: tr("Mudanza internacional", "International move"),
-    bodegaje: tr("Bodegaje", "Storage"),
+  local: tr("Mudanza local", "Local move"),
+  nacional: tr("Mudanza nacional", "National move"),
+  internacional: tr("Mudanza internacional", "International move"),
+  bodegaje: tr("Bodegaje", "Storage"),
   empresarial: tr("Traslado empresarial / institucional", "Corporate / institutional move"),
 });
 
 const labelsFor = (tr: Tr): [string, string][] => [
-    ["servicio", tr("Servicio", "Service")],
-    ["tipo_corp", tr("Tipo de solicitud", "Type of request")],
-    ["empresa", tr("Empresa o entidad", "Company or institution")],
-    ["pais_origen", tr("País de origen", "Origin country")],
-    ["pais_destino", tr("País de destino", "Destination country")],
-    ["origen", tr("Origen", "Origin")],
-    ["destino", tr("Destino", "Destination")],
-    ["cuando", tr("Cuándo", "When")],
-    ["motivo", tr("Motivo", "Reason")],
-    ["modalidad", tr("Modalidad", "Mode")],
-    ["bodega_que", tr("Qué se almacena", "What is stored")],
-    ["bodega_tiempo", tr("Tiempo de bodegaje", "Storage time")],
-    ["volumen", tr("Volumen", "Volume")],
+  ["servicio", tr("Servicio", "Service")],
+  ["tipo_corp", tr("Tipo de solicitud", "Type of request")],
+  ["empresa", tr("Empresa o entidad", "Company or institution")],
+  ["pais_origen", tr("País de origen", "Origin country")],
+  ["pais_destino", tr("País de destino", "Destination country")],
+  ["origen", tr("Origen", "Origin")],
+  ["destino", tr("Destino", "Destination")],
+  ["cuando", tr("Cuándo", "When")],
+  ["motivo", tr("Motivo", "Reason")],
+  ["modalidad", tr("Modalidad", "Mode")],
+  ["bodega_que", tr("Qué se almacena", "What is stored")],
+  ["bodega_tiempo", tr("Tiempo de bodegaje", "Storage time")],
+  ["volumen", tr("Volumen", "Volume")],
   ["nivel", tr("Nivel de servicio", "Service level")],
   ["telefono", tr("Celular / WhatsApp", "Mobile / WhatsApp")],
 ];
@@ -100,7 +100,7 @@ export const validPhone = (v: string) => v.replace(/\D/g, "").length >= 7;
  */
 export function teamQuoteMessage(d: ChatData, lang: Lang): string {
   return [
-    "🆕 NUEVA COTIZACIÓN para seguimiento (chat de Joel en el sitio web)",
+    "🆕 NUEVA COTIZACIÓN para seguimiento (chat de Joelito en el sitio web)",
     `Cliente: ${d.nombre || "—"}`,
     `Celular / WhatsApp: ${d.telefono || "—"}`,
     "",
@@ -173,8 +173,8 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           },
         ),
         tr(
-          "Te ayudo a planear tu mudanza, resolver dudas o hablar con nuestro equipo. ¿Qué necesitas?",
-          "I can help you plan your move, answer questions or connect you with our team. What do you need?",
+          "¿Te vas a mudar y no sabes por dónde empezar? Cuéntame a dónde vas y cuándo: resuelvo tus dudas y te ayudo a cotizar en pocos minutos.",
+          "Moving and not sure where to start? Tell me where you're going and when: I'll answer your questions and help you get a quote in a few minutes.",
         ),
       ],
       options: MAIN,
@@ -722,11 +722,11 @@ export const chatText = (tr: Tr) => ({
     "Your message couldn't be sent. Please try again.",
   ),
   advisorBanner: tr("Chat con un asesor de Transpack", "Chat with a Transpack advisor"),
-  advisorEnd: tr("Volver con Joel", "Back to Joel", {
-    fr: "Revenir à Joel",
-    de: "Zurück zu Joel",
-    it: "Torna da Joel",
-    ar: "العودة إلى جويل",
+  advisorEnd: tr("Volver con Joelito", "Back to Joelito", {
+    fr: "Revenir à Joelito",
+    de: "Zurück zu Joelito",
+    it: "Torna da Joelito",
+    ar: "العودة إلى جويليتو",
   }),
   advisorPlaceholder: tr("Escribe tu mensaje al asesor…", "Write your message to the advisor…"),
   advisorLabel: tr("Asesor", "Advisor"),

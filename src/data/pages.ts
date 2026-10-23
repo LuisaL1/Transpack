@@ -94,7 +94,10 @@ export const privacyText = (tr: Tr) => ({
   direccion: tr("Dirección", "Address"),
   correo: tr("Correo", "Email"),
   telefonos: tr("Teléfonos", "Phone numbers"),
-  cambiarCookies: tr("Puedes cambiar tu decisión cuando quieras.", "You can change your choice at any time."),
+  cambiarCookies: tr(
+    "Puedes cambiar tu decisión cuando quieras.",
+    "You can change your choice at any time.",
+  ),
   cambiarCookiesBtn: tr("Cambiar mi decisión sobre cookies", "Change my cookie choice"),
 });
 

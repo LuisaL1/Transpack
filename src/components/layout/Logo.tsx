@@ -3,7 +3,8 @@ import logoImg from "@/assets/images/logo.png";
 import { headerText } from "@/data/navigation";
 import { useLang } from "@/i18n";
 
-// Logo con enlace al inicio (claro sobre fondos oscuros, azul sobre blanco)
+// Logo con enlace al inicio (claro sobre fondos oscuros, azul sobre blanco).
+// Tamaño: 20 % más grande que la primera versión, a pedido del cliente (oct. 2026).
 export function Logo({
   light = true,
   compact = false,
@@ -24,12 +25,12 @@ export function Logo({
       <img
         src={logoImg}
         alt=""
-        width={76}
-        height={76}
-        className={`h-12 w-12 rounded-[4px] md:h-16 md:w-16 wide:h-[76px] wide:w-[76px] ${light ? "ring-[1.5px] ring-white/50" : ""}`}
+        width={91}
+        height={91}
+        className={`h-[48px] w-[48px] rounded-[4px] min-[375px]:h-[58px] min-[375px]:w-[58px] md:h-[77px] md:w-[77px] wide:h-[91px] wide:w-[91px] ${light ? "ring-[1.5px] ring-white/50" : ""}`}
       />
       <span
-        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-xl font-bold tracking-[0.08em] transition-colors md:text-[1.7rem] wide:text-[2.2rem] ${
+        className={`${compact ? "lg:hidden xl:inline" : ""} font-title text-xl font-bold min-[375px]:text-[1.5rem] tracking-[0.08em] transition-colors md:text-[2.04rem] wide:text-[2.64rem] ${
           light ? "text-white" : "text-azul"
         }`}
       >

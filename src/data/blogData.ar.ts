@@ -1,6 +1,6 @@
 // النسخة العربية من مقالات المدونة (blogData.ts). يبقى الـ slug بالإسبانية كمعرّف
 // داخلي، ويأتي الرابط العربي من src/i18n.
-import imgBarco from "@/assets/images/barco.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
@@ -10,7 +10,7 @@ export const blogPosts: Post[] = [
     slug: "por-que-una-mudanza-maritima-internacional-puede-tardar",
     title: "لماذا قد يستغرق النقل الدولي بحرًا وقتًا أطول من المتوقع؟",
     cat: "النقل الدولي",
-    cover: imgBarco,
+    cover: imgContenedor,
     excerpt:
       "الجمارك والمسارات البحرية والموانئ والطقس: فهم آلية النقل البحري يساعدك على وضع توقعات واقعية وتجنّب التأخير.",
     cta: "خطط لانتقالك الدولي",
@@ -196,7 +196,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "واليوم تضم هذه الشبكة أكثر من 2,000 وكيل دولي في 176 دولة، وتغطي الولايات المتحدة وكندا والاتحاد الأوروبي وآسيا وأمريكا اللاتينية كلها. وهذه التغطية هي ما يدفع الشركات والعائلات إلى ائتمان ترانسباك على مقتنياتها عند عبور الحدود.",
+        text: "واليوم تضم هذه الشبكة أكثر من 2,000 ممثل في 176 دولة، وتغطي الولايات المتحدة وكندا والاتحاد الأوروبي وآسيا وأمريكا اللاتينية كلها. وهذه التغطية هي ما يدفع الشركات والعائلات إلى ائتمان ترانسباك على مقتنياتها عند عبور الحدود.",
       },
       { t: "h2", text: "متخصصون في المسارات البحرية والجوية" },
       {

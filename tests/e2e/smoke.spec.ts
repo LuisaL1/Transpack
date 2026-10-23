@@ -36,7 +36,9 @@ for (const route of ROUTES) {
   });
 }
 
-test("solo se publican español e inglés (los demás idiomas están desactivados)", async ({ page }) => {
+test("solo se publican español e inglés (los demás idiomas están desactivados)", async ({
+  page,
+}) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Elegir región e idioma" }).click();
   const options = page.getByRole("option");

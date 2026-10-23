@@ -67,6 +67,7 @@
   --color-azul-900: #1b1e5c;
   --color-azul-700: #34399a;
   --color-naranja-600: #e8620a;
+  --color-rojizo: #e8401c; /* Naranja rojizo: calidez en las fotos (pedido del cliente, oct. 2026) */
   --color-tinta: #1d2050;
   --color-texto: #3e4160;
   --color-suave: #6b6e8a;
@@ -166,6 +167,18 @@ p {
 }
 .animate-marquee {
   animation: marquee 50s linear infinite;
+}
+/* Barra de avance del carrusel de cifras (Stats.tsx) */
+@keyframes stat-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.animate-stat-progress {
+  animation: stat-progress linear forwards;
 }
 .marquee:hover .animate-marquee {
   animation-play-state: paused;

@@ -107,7 +107,7 @@ public/                     Archivos servidos tal cual (favicon, brand/logo.png,
 scripts/                    generate-world-map.mjs (pnpm map), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos) y zoho-token.mjs / zoho-advisor-check.mjs (API de Zoho)
-docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
+docs/                       agregar-servicio.md, chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
@@ -171,7 +171,7 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 
 - **Nada de `mailto:`** (lo revisa la prueba de seguridad). Para "escribir un
   correo" use un enlace a `#contacto` o `contactHref({ motivo, mensaje, nombre,
-  empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
+empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `App`.
 - Los envíos pasan por `sendLead()` (`src/lib/leads.ts`) → `api/contact.mjs` →
   Brevo. Nunca a servicios de formularios de terceros. La clave
@@ -192,9 +192,12 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   **No inventar** precios, tarifas, tiempos exactos, pólizas de seguro,
   horarios de atención, listas de artículos prohibidos ni certificaciones.
 - Certificaciones reales: **LACMA, IAM y PAIMA** (no ISO 9001, FIDI, BASC, OEA).
-- Cifras: más de **58 años** (desde 1968), **176 países**, **2.000+ agentes**,
-  **60.000+ toneladas** de menaje exportadas (`STATS` en `src/data/site.ts`).
-  Las pruebas verifican que los textos coincidan con `STATS`.
+- Cifras: más de **58 años** (desde 1968), **176 países** (de destino, importación
+  y exportación), **2.000+ representantes** (el cliente pidió "representantes",
+  no "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
+  exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
+  textos coincidan con `STATS`. En el inicio se muestran como carrusel con
+  movimiento (`Stats.tsx`), una cifra a la vez.
 - Embajadas atendidas: las 10 de `EMBASSIES`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en
@@ -214,9 +217,12 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 - Paleta del Manual de Marca (bloque `@theme` de `src/styles/index.css`):
   azul `#272B7C`, naranja `#FF7619`, beige `#FAEED9`, violeta `#2F2959`,
   gris `#F0F6F6`, más sus derivados (`azul-900`, `tinta`, `texto`, `suave`,
-  `linea`…). La lista blanca de colores está en `tests/unit/content.test.ts`:
+  `linea`, `rojizo` `#E8401C`…). La lista blanca de colores está en `tests/unit/content.test.ts`:
   para usar un color nuevo, agréguelo ahí a propósito.
 - Tipografías: IBM Plex Sans (títulos) y Montserrat (texto).
+- Portada del inicio en **fondo blanco** (con detalles de marca, no blanco y
+  negro); las páginas internas usan `PageHero` con la foto bien visible y tonos
+  naranja a rojizo.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat de Joel: **sin degradados**, mismo estilo de los menús (cabecera azul
   sólida con el cuadrado naranja translúcido girado 45°, rótulo naranja en
@@ -225,6 +231,10 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   cambiarlas por fotos de banco sin su aprobación.
 
 ## Joel (asesor virtual)
+
+- **Nombre visible: "Joelito"** (`NAME` en `src/data/chat.ts`, pedido del
+  cliente en octubre de 2026). En el código y la documentación sigue llamándose
+  Joel (`joel.ts`, `createJoel`…).
 
 - `src/lib/joel.ts` (cerebro, solo en español; **pesa ~120 KB y se carga con
   `import()` desde `useAdvisorChat`**, nunca con import estático desde las

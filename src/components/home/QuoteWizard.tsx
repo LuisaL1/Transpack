@@ -365,7 +365,9 @@ export function QuoteWizard({
                   <button
                     type="button"
                     className={`${btn.outline} ${btn.md} shrink-0 disabled:opacity-60`}
-                    disabled={mail === "sending" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailTo.trim())}
+                    disabled={
+                      mail === "sending" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailTo.trim())
+                    }
                     onClick={sendEmail}
                   >
                     <Bi n="envelope" /> {mail === "sending" ? ct.sending : t.enviarCorreo}

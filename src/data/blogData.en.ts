@@ -1,6 +1,6 @@
 // English version of the blog articles (blogData.ts). The slug stays in Spanish
 // as an internal id; the English URL comes from the i18n slug map.
-import imgBarco from "@/assets/images/barco.jpg";
+import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
@@ -10,7 +10,7 @@ export const blogPosts: Post[] = [
     slug: "por-que-una-mudanza-maritima-internacional-puede-tardar",
     title: "Why can an international sea move take longer than expected?",
     cat: "International moving",
-    cover: imgBarco,
+    cover: imgContenedor,
     excerpt:
       "Customs, routes, ports and weather: understanding how a sea move works helps you set clear expectations and avoid delays.",
     cta: "Plan my international move",
@@ -199,7 +199,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Today that network means more than 2,000 international agents in 176 countries, covering the United States, Canada, the European Union, Asia and all of Latin America. That coverage is why companies and families trust Transpack with their belongings when they cross borders.",
+        text: "Today that network means more than 2,000 representatives in 176 countries, covering the United States, Canada, the European Union, Asia and all of Latin America. That coverage is why companies and families trust Transpack with their belongings when they cross borders.",
       },
       { t: "h2", text: "Specialists in sea and air routes" },
       {

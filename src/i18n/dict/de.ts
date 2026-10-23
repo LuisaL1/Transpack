@@ -26,8 +26,8 @@ const dict: Record<string, string> = {
   "I'm a company or embassy": "Ich vertrete ein Unternehmen oder eine Botschaft",
   "Talk to an advisor": "Mit einem Berater sprechen",
   "Back to start": "Zurück zum Anfang",
-  "I can help you plan your move, answer questions or connect you with our team. What do you need?":
-    "Ich helfe Ihnen bei der Planung Ihres Umzugs, beantworte Ihre Fragen oder verbinde Sie mit unserem Team. Wie kann ich Ihnen helfen?",
+  "Moving and not sure where to start? Tell me where you're going and when: I'll answer your questions and help you get a quote in a few minutes.":
+    "Sie ziehen um und wissen nicht, wo Sie anfangen sollen? Sagen Sie mir, wohin und wann: Ich beantworte Ihre Fragen und helfe Ihnen in wenigen Minuten zu einem Angebot.",
   "What else can I help you with?": "Wobei kann ich Ihnen noch helfen?",
   "Happy to help! What kind of move do you need?": "Sehr gern! Welche Art von Umzug planen Sie?",
   "Local move (same city)": "Umzug vor Ort (gleiche Stadt)",
@@ -200,10 +200,10 @@ const dict: Record<string, string> = {
   "Message us on WhatsApp": "Schreiben Sie uns per WhatsApp",
   "Call us": "Rufen Sie uns an",
   Email: "E-Mail",
-  "Talk to Joel": "Mit Joel sprechen",
+  "Talk to Joelito": "Mit Joelito sprechen",
   "AI advisor, answers instantly": "KI-Berater, antwortet sofort",
   "Embassies served in": "Betreute Botschaften",
-  "Chat with Joel": "Mit Joel chatten",
+  "Chat with Joelito": "Mit Joelito chatten",
   "Hello Transpack, I need help": "Hallo Transpack, ich benötige Hilfe",
   "Email us": "Schreiben Sie uns",
   "Transpack support": "Transpack-Kundenservice",
@@ -386,7 +386,8 @@ const dict: Record<string, string> = {
   Search: "Suchen",
   "Popular searches": "Häufige Suchanfragen",
   "No results for": "Keine Ergebnisse für",
-  "Try another word or ask Joel.": "Versuchen Sie einen anderen Begriff oder fragen Sie Joel.",
+  "Try another word or ask Joelito.":
+    "Versuchen Sie einen anderen Begriff oder fragen Sie Joelito.",
   navigate: "navigieren",
   open: "öffnen",
   close: "schließen",
@@ -410,14 +411,14 @@ const dict: Record<string, string> = {
   "Keep reading": "Weiterlesen",
   "Read article": "Artikel lesen",
   "LACMA, IAM and PAIMA certified": "Zertifiziert von LACMA, IAM und PAIMA",
-  "We take care of what matters most to you": "Wir kümmern uns um das, was Ihnen am wichtigsten ist",
-  "and take it ": "und bringen es ",
-  "wherever you go.": "wohin Sie auch gehen.",
+  "We promise from the heart": "Wir versprechen von Herzen",
+  "and deliver ": "und liefern ",
+  "with excellence.": "mit Exzellenz.",
   "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.":
     "Umzüge vor Ort, innerhalb Kolumbiens und international, Einlagerung und Firmenmobilität – mit 58 Jahren Erfahrung.",
   "Bogotá, point of origin": "Bogotá, Ausgangspunkt",
   "Countries where we operate": "Länder, in denen wir tätig sind",
-  "Agent network in 176 countries": "Partnernetzwerk in 176 Ländern",
+  "Network of representatives in 176 countries": "Netzwerk von Vertretern in 176 Ländern",
   "Companies that trust Transpack": "Unternehmen, die Transpack vertrauen",
   "Companies, embassies and institutions that have trusted Transpack with their mobility":
     "Unternehmen, Botschaften und Organisationen, die ihre Mobilität Transpack anvertraut haben",
@@ -426,11 +427,11 @@ const dict: Record<string, string> = {
     "Der Umzug ist der Kern unserer Arbeit. Rundherum kombinieren wir Verpackung, Einlagerung, Dokumente und fachkundige Koordination, damit Sie sich um nichts kümmern müssen.",
   "What do you need today?": "Was brauchen Sie heute?",
   "Quote this service": "Angebot für diesen Service",
-  "Local": "Lokal",
-  "National": "National",
-  "International": "International",
-  "Packing": "Verpackung",
-  "Customs": "Zoll",
+  Local: "Lokal",
+  National: "National",
+  International: "International",
+  Packing: "Verpackung",
+  Customs: "Zoll",
   "From Bogotá to the world": "Von Bogotá in die Welt",
   "View service": "Zur Leistung",
   "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.":
@@ -443,8 +444,8 @@ const dict: Record<string, string> = {
   Choose: "Auswählen:",
   "From Colombia to the world, with a network you can't improvise":
     "Von Kolumbien in die Welt – mit einem Netzwerk, das man nicht improvisiert",
-  "Almost six decades building an operating network of more than 2,000 international agents in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.":
-    "Fast sechs Jahrzehnte Aufbau eines Netzwerks mit über 2.000 internationalen Partnern in 176 Ländern: USA, Kanada, Europäische Union, Asien und ganz Lateinamerika. Ihr Umzug läuft am Abhol- und am Zielort nach denselben Standards.",
+  "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.":
+    "Fast sechs Jahrzehnte Aufbau eines Netzwerks mit über 2.000 Vertretern in 176 Ländern: USA, Kanada, Europäische Union, Asien und ganz Lateinamerika. Ihr Umzug läuft am Abhol- und am Zielort nach denselben Standards.",
   "Sea freight": "Seefracht",
   "Ideal for large volumes and full households.": "Ideal für große Mengen und komplette Haushalte.",
   "Air freight": "Luftfracht",
@@ -452,14 +453,15 @@ const dict: Record<string, string> = {
   "LACMA Certified Packers seal": "Siegel LACMA Certified Packers",
   "International certifications": "Internationale Zertifizierungen",
   "Airplane and container ship in port": "Flugzeug und Containerschiff im Hafen",
-  "Cargo ship at sea": "Frachtschiff auf hoher See",
-  "agents in 176 countries": "Partner in 176 Ländern",
+  "Loading a moving container": "Beladen eines Umzugscontainers",
+  "representatives in 176 countries": "Vertreter in 176 Ländern",
   "How we work": "So arbeiten wir",
   "A structured process, with no improvisation": "Ein strukturierter Ablauf – ohne Improvisation",
   "Every move follows a methodology proven over decades. That way we reduce surprises and you always know what comes next.":
     "Jeder Umzug folgt einer über Jahrzehnte bewährten Methode. So vermeiden wir Überraschungen und Sie wissen jederzeit, was als Nächstes passiert.",
   "Transpack crew loading boxes onto a truck": "Transpack-Team beim Beladen eines LKW",
-  "Two Transpack crew members carrying a moving box": "Zwei Transpack-Mitarbeiter tragen einen Umzugskarton",
+  "Two Transpack crew members carrying a moving box":
+    "Zwei Transpack-Mitarbeiter tragen einen Umzugskarton",
   Since: "Seit",
   "We are an established company founded in 1968, specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world. We have exported more than 60,000 tons of household goods and personal effects to 176 countries.":
     "Wir sind ein etabliertes Unternehmen, gegründet 1968, spezialisiert auf Umzüge vor Ort, innerhalb Kolumbiens und international sowie auf Einlagerung – mit hochwertiger Verpackung und Transporten überallhin in Kolumbien und weltweit. Wir haben über 60.000 Tonnen Hausrat und persönliche Gegenstände in 176 Länder exportiert.",
@@ -492,8 +494,8 @@ const dict: Record<string, string> = {
   "Transpack is founded in Bogotá, specializing in moving services.":
     "Gründung von Transpack in Bogotá, spezialisiert auf Umzüge.",
   "Decades of network": "Jahrzehnte des Netzwerkaufbaus",
-  "We built a network of more than 2,000 international agents in 176 countries.":
-    "Wir haben ein Netzwerk von über 2.000 internationalen Partnern in 176 Ländern aufgebaut.",
+  "We built a network of more than 2,000 representatives in 176 countries.":
+    "Wir haben ein Netzwerk von über 2.000 Vertretern in 176 Ländern aufgebaut.",
   Today: "Heute",
   "We run local, national and international moves, storage and corporate mobility.":
     "Wir führen Umzüge vor Ort, innerhalb Kolumbiens und international durch, bieten Einlagerung und Firmenmobilität.",
@@ -561,72 +563,47 @@ const dict: Record<string, string> = {
   "What data we use, why, and how to exercise your rights":
     "Welche Daten wir nutzen, wofür und wie Sie Ihre Rechte ausüben",
   // ─── Formulario de contacto y envío por correo ───
-  "Change my cookie choice":
-    "Meine Cookie-Entscheidung ändern",
-  "Close form":
-    "Formular schließen",
-  "Contact form":
-    "Kontaktformular",
-  "Data authorization":
-    "Einwilligung zur Datenverarbeitung",
+  "Change my cookie choice": "Meine Cookie-Entscheidung ändern",
+  "Close form": "Formular schließen",
+  "Contact form": "Kontaktformular",
+  "Data authorization": "Einwilligung zur Datenverarbeitung",
   "Enter your email to get the reply this way:":
     "Geben Sie Ihre E-Mail-Adresse an, um die Antwort auf diesem Weg zu erhalten:",
-  "General information":
-    "Allgemeine Informationen",
+  "Information about a service": "Informationen zu einer Leistung",
   "I authorize Transpack S.A.S. to process my personal data to answer this request, in accordance with its":
     "Ich willige ein, dass Transpack S.A.S. meine personenbezogenen Daten zur Beantwortung dieser Anfrage verarbeitet, gemäß ihrer",
   "Leave your details and a Transpack advisor will get back to you.":
     "Hinterlassen Sie Ihre Daten, und ein Berater von Transpack meldet sich bei Ihnen.",
-  "Message sent!":
-    "Nachricht gesendet!",
-  "Moving or storage quote":
-    "Angebot für Umzug oder Einlagerung",
-  "Open the contact form":
-    "Kontaktformular öffnen",
-  "Personal data (Law 1581)":
-    "Personenbezogene Daten (Gesetz 1581)",
-  "Phone":
-    "Telefon",
-  "Phone numbers":
-    "Telefonnummern",
-  "Requests, complaints or suggestions":
-    "Anfragen, Beschwerden oder Vorschläge",
-  "Send message":
-    "Nachricht senden",
-  "Sending…":
-    "Wird gesendet…",
-  "Support with an ongoing service":
-    "Unterstützung bei einer laufenden Leistung",
-  "Tell us what you need…":
-    "Sagen Sie uns, was Sie brauchen…",
+  "Message sent!": "Nachricht gesendet!",
+  "Moving or storage quote": "Angebot für Umzug oder Einlagerung",
+  "Open the contact form": "Kontaktformular öffnen",
+  "Personal data (Law 1581)": "Personenbezogene Daten (Gesetz 1581)",
+  Phone: "Telefon",
+  "Phone numbers": "Telefonnummern",
+  "Requests, complaints or suggestions": "Anfragen, Beschwerden oder Vorschläge",
+  "Send message": "Nachricht senden",
+  "Sending…": "Wird gesendet…",
+  "Support with an ongoing service": "Unterstützung bei einer laufenden Leistung",
+  "Tell us what you need…": "Sagen Sie uns, was Sie brauchen…",
   "We couldn't send your message right now. Please try again or message us on":
     "Wir konnten Ihre Nachricht gerade nicht senden. Bitte versuchen Sie es erneut oder schreiben Sie uns per",
-  "Work with us":
-    "Bei uns arbeiten",
-  "Write to us":
-    "Schreiben Sie uns",
-  "You can change your choice at any time.":
-    "Sie können Ihre Entscheidung jederzeit ändern.",
-  "data processing policy":
-    "Datenschutzrichtlinie",
+  "Work with us": "Bei uns arbeiten",
+  "Write to us": "Schreiben Sie uns",
+  "You can change your choice at any time.": "Sie können Ihre Entscheidung jederzeit ändern.",
+  "data processing policy": "Datenschutzrichtlinie",
   // ─── Chat con un asesor (Zoho SalesIQ) ───
-  "Chat with an advisor (in Spanish)":
-    "Mit einem Berater chatten (auf Spanisch)",
-  "Leave a message":
-    "Nachricht hinterlassen",
+  "Chat with an advisor (in Spanish)": "Mit einem Berater chatten (auf Spanisch)",
+  "Leave a message": "Nachricht hinterlassen",
   "We couldn't open the advisor chat right now. Reach us another way:":
     "Wir konnten den Chat mit einem Berater gerade nicht öffnen. Erreichen Sie uns auf anderem Weg:",
   // ─── Chat con un asesor dentro de Joel ───
-  "Advisor":
-    "Berater",
-  "Chat with a Transpack advisor":
-    "Chat mit einem Transpack-Berater",
+  Advisor: "Berater",
+  "Chat with a Transpack advisor": "Chat mit einem Transpack-Berater",
   "Our advisors are busy right now. You can keep waiting here or reach us another way:":
     "Unsere Berater sind gerade beschäftigt. Sie können hier weiter warten oder uns auf anderem Weg erreichen:",
   "The advisor ended the conversation. Thank you for writing to us!":
     "Der Berater hat das Gespräch beendet. Vielen Dank für Ihre Nachricht!",
-  "Write your message to the advisor…":
-    "Schreiben Sie Ihre Nachricht an den Berater…",
+  "Write your message to the advisor…": "Schreiben Sie Ihre Nachricht an den Berater…",
   "You're back with me. If you want to talk to an advisor again, choose “Talk to an advisor”.":
     "Sie sind wieder bei mir. Wenn Sie erneut mit einem Berater sprechen möchten, wählen Sie „Mit einem Berater sprechen“.",
   "You're still in the chat with a Transpack advisor.":
@@ -634,15 +611,12 @@ const dict: Record<string, string> = {
   "Your message couldn't be sent. Please try again.":
     "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
   // ─── Puente con Zoho: formularios ───
-  "Fill in my details":
-    "Meine Daten ausfüllen",
+  "Fill in my details": "Meine Daten ausfüllen",
   "Our team is asking for some contact details. You can fill them in the support window or continue without them.":
     "Unser Team bittet um einige Kontaktdaten. Sie können sie im Kundenservice-Fenster ausfüllen oder ohne sie fortfahren.",
-  "Skip this step":
-    "Diesen Schritt überspringen",
+  "Skip this step": "Diesen Schritt überspringen",
   // ─── Cotización del chat → seguimiento del equipo comercial ───
-  "E.g. +1 555 123 4567":
-    "Z. B. +49 151 1234567",
+  "E.g. +1 555 123 4567": "Z. B. +49 151 1234567",
   "That number doesn't look complete. Could you write it again? If it's from another country, include the country code.":
     "Diese Nummer scheint unvollständig. Können Sie sie noch einmal schreiben? Wenn sie aus einem anderen Land ist, geben Sie die Ländervorwahl an.",
   "With your request, our sales team will contact you to follow up.":
@@ -652,13 +626,15 @@ const dict: Record<string, string> = {
     "Erledigt, ein Berater antwortet Ihnen hier in Kürze.",
   "I couldn't send it right now. Send it on WhatsApp with the button above and an advisor will reply.":
     "Ich konnte sie gerade nicht senden. Senden Sie sie per WhatsApp über die Schaltfläche oben, und ein Berater antwortet Ihnen.",
-  "I'll connect you with an advisor.":
-    "Ich verbinde Sie mit einem Berater.",
+  "I'll connect you with an advisor.": "Ich verbinde Sie mit einem Berater.",
   "I'll connect you with an advisor. Write your message and they'll reply right here (in Spanish).":
     "Ich verbinde Sie mit einem Berater. Schreiben Sie Ihre Nachricht, er antwortet Ihnen direkt hier (auf Spanisch).",
   "Send it to an advisor and they'll contact you with an estimate.":
     "Senden Sie sie an einen Berater, er meldet sich mit einem Kostenvoranschlag.",
-  "Send to an advisor":
-    "An einen Berater senden",
+  "Send to an advisor": "An einen Berater senden",
+  // Carrusel de cifras
+  carousel: "Karussell",
+  figure: "Zahl",
+  "Committed entrepreneur": "Engagierter Unternehmer",
 };
 export default dict;

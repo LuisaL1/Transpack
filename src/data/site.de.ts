@@ -9,14 +9,12 @@ import imgGuacales from "@/assets/images/guacales.jpg";
 import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
-import imgBarco from "@/assets/images/barco.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
-import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import type { QuoteService, Service } from "@/data/site";
 import { CONTACT, type PrivacySection } from "@/data/site";
@@ -40,9 +38,9 @@ export const SLOGAN = "Wir versprechen mit Herz und halten Wort mit Exzellenz.";
 
 export const STATS = [
   { value: 58, suffix: "+", label: "Jahre Erfahrung" },
-  { value: 176, suffix: "+", label: "Zielländer" },
-  { value: 60, suffix: "K+", label: "Tonnen exportiertes Umzugsgut" },
-  { value: 2000, suffix: "+", label: "internationale Partner" },
+  { value: 176, suffix: "+", label: "Zielländer, Import und Export", short: "Zielländer" },
+  { value: 60, suffix: "K+", label: "Tonnen exportierter Hausrat" },
+  { value: 2000, suffix: "+", label: "Vertreter" },
 ];
 
 export const EMBASSIES = [
@@ -71,7 +69,7 @@ export const SERVICES: Service[] = [
     cta: "Angebot anfordern",
     image: imgEmbalajeHogar,
     kicker: "Umziehen in Bogotá",
-    headline: "Ihr Umzug innerhalb der Stadt – ohne Stress und ohne Überraschungen",
+    headline: "Ihr Umzug innerhalb der Stadt – ohne Stress und ohne Zwischenfälle",
     intro:
       "Wir planen jeden Umzug vor Ort anhand der alten und neuen Wohnung: Stockwerk, Aufzug, Treppen, Zufahrt für den LKW und die von der Hausverwaltung erlaubten Zeiten. So kommen wir mit dem richtigen Team und genügend Zeit.",
     includes: [
@@ -109,7 +107,7 @@ export const SERVICES: Service[] = [
     cta: "Angebot anfordern",
     image: imgCargue,
     kicker: "Zwischen kolumbianischen Städten",
-    headline: "Von einer Stadt in die andere – Ihr Hab und Gut auf der ganzen Strecke geschützt",
+    headline: "Ihr Hab und Gut geschützt von Tür zu Tür",
     intro:
       "Beim Umzug zwischen Städten ist die Inventarliste die Grundlage: Mit ihr berechnen wir Umfang, Fahrzeug und benötigte Ressourcen. Auf jeder Strecke achten wir auf Sicherheit, Schutz und Termintreue.",
     includes: [
@@ -143,7 +141,7 @@ export const SERVICES: Service[] = [
     cta: "Mit einem Berater sprechen",
     image: imgGlobal,
     kicker: "Von und nach Kolumbien",
-    headline: "Ihr neues Leben im Ausland beginnt mit einem klaren Plan",
+    headline: "Grenzen überqueren ohne Sorgen",
     intro:
       "Ein Auslandsumzug läuft anders ab als ein Umzug vor Ort. Zuerst verstehen Sie Ablauf, Vorschriften, Fristen und Kosten – danach erstellen wir das Angebot. Ein spezialisierter Berater begleitet Sie ab dem ersten Kontakt, gestützt auf über 2.000 Partner in 176 Ländern.",
     includes: [
@@ -189,7 +187,7 @@ export const SERVICES: Service[] = [
     cta: "Angebot anfordern",
     image: imgContenedor,
     kicker: "Lagerung in Bogotá",
-    headline: "Ein sicherer Ort für Ihr Hab und Gut – so lange Sie ihn brauchen",
+    headline: "Ein sicherer Ort für Ihre Habseligkeiten – so lange Sie ihn brauchen",
     intro:
       "In unseren Lagerhallen in Bogotá können Sie Hausrat, Büromöbel oder Akten unterbringen, während Sie sich einrichten, renovieren oder auf Ihren Reisetermin warten. Die Einlagerung ist einzeln oder als Teil Ihres Umzugs buchbar.",
     includes: [
@@ -220,7 +218,8 @@ export const SERVICES: Service[] = [
     cta: "Angebot anfordern",
     image: imgGuacales,
     kicker: "Verpackungstechnik",
-    headline: "Wertvolle Stücke verpackt man nicht wie alles andere",
+    headline:
+      "Ihre wertvollsten Stücke in professionellen Händen. Spezialisierte Verpackung und volle Sorgfalt",
     intro:
       "Kunstwerke, Sammlungen, Glas und Designermöbel erfordern echte Verpackungstechnik: maßgefertigte Holzkisten für Gemälde, hochdichte Stoßdämpfung und Feuchtigkeitsschutz für lange Transportwege.",
     includes: [
@@ -252,9 +251,9 @@ export const SERVICES: Service[] = [
       "Begleitung bei Ausfuhr und Einfuhr von Umzugsgut, deklarierten Inventarlisten und den Vorschriften im Abreise- und Zielland.",
     quote: "internacional",
     cta: "Angebot anfordern",
-    image: imgBarco,
+    image: imgInspeccionCanina,
     kicker: "Internationale Formalitäten",
-    headline: "Der Zoll ist ein Labyrinth aus Vorschriften. Wir kennen den Weg",
+    headline: "Beratung und Dokumentenabwicklung für das Zollverfahren in jedem Land",
     intro:
       "Eine fehlerhafte Inventarliste oder eine fehlende Genehmigung kann Wochen an Verzögerung und Strafen kosten. Wir begleiten Sie bei den Aus- und Einfuhrdokumenten für Umzugsgut und persönliche Gegenstände – nach den Vorschriften des jeweiligen Landes.",
     includes: [
@@ -435,8 +434,6 @@ export const FAQS = [
 export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
   { src: imgContenedor, caption: "Containerbeladung", tall: true },
   { src: imgEmbalajeCuadro, caption: "Verpackung eines Gemäldes", tall: true },
-  { src: imgBarco, caption: "Seewege", tall: true },
-  { src: imgEmbalajeCarton, caption: "Verpackung mit Karton und Schutzfolie", tall: true },
   { src: imgEmbalajeSala, caption: "Verpackung vor Ort" },
   { src: imgArteHogar, caption: "Schutz von Kunstwerken zu Hause" },
   { src: imgCargueCajas, caption: "Verladen von Transpack-Kartons" },
@@ -451,16 +448,15 @@ export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
 // Mismas secciones y orden que PRIVACY en src/data/site.ts.
 export const PRIVACY = {
   title: "Richtlinie zur Verarbeitung personenbezogener Daten",
-  intro: "Transpack S.A.S. verarbeitet Ihre personenbezogenen Daten gemäß dem kolumbianischen Gesetz 1581 von 2012 und dem Dekret 1377 von 2013 (zusammengefasst im Dekret 1074 von 2015). Hier erklären wir, welche Daten wir auf dieser Website erheben, wofür wir sie verwenden, wie sie übermittelt werden und wie Sie Ihre Rechte ausüben können.",
+  intro:
+    "Transpack S.A.S. verarbeitet Ihre personenbezogenen Daten gemäß dem kolumbianischen Gesetz 1581 von 2012 und dem Dekret 1377 von 2013 (zusammengefasst im Dekret 1074 von 2015). Hier erklären wir, welche Daten wir auf dieser Website erheben, wofür wir sie verwenden, wie sie übermittelt werden und wie Sie Ihre Rechte ausüben können.",
   updated: "Letzte Aktualisierung: 8. Oktober 2026",
   notice: "Dies ist eine Übersetzung zu Ihrer Information. Maßgeblich ist die spanische Fassung.",
   sections: [
     {
       id: "responsable",
       title: "Verantwortliche Stelle",
-      text: [
-        "Verantwortlich für Ihre personenbezogenen Daten ist:",
-      ],
+      text: ["Verantwortlich für Ihre personenbezogenen Daten ist:"],
     },
     {
       id: "datos",
@@ -482,14 +478,14 @@ export const PRIVACY = {
             "Kostenvoranschlag und verbindliches Angebot erstellen, Sie zur Besprechung kontaktieren und, wenn Sie annehmen, die Leistung koordinieren.",
           ],
           [
-            "Chat mit Joel (virtueller Berater)",
+            "Chat mit Joelito (virtueller Berater)",
             "Die Optionen, die Sie wählen, und was Sie im Gespräch schreiben, einschließlich Ihres Namens, Ihrer Handy- oder WhatsApp-Nummer und gegebenenfalls des Namens Ihres Unternehmens.",
             "Sie beraten und Ihre Anfrage vorbereiten. Wenn Sie Ihr Angebot an einen Berater senden, wird die Zusammenfassung (mit Ihrem Namen und Ihrer Handynummer) über Zoho SalesIQ an unser Vertriebsteam gesendet, damit es Sie kontaktieren und nachfassen kann. Der Rest des Gesprächs bleibt in Ihrem Browser.",
           ],
           [
             "Chat mit einem Berater (Zoho SalesIQ)",
             "Was Sie im Gespräch schreiben und die Angaben, die Sie uns machen möchten (zum Beispiel Name, E-Mail oder Telefon), sowie technische Daten des Besuchs: aufgerufene Seiten, ungefährer Standort, Browser und Gerät.",
-            "Ihre Anfrage mit einem Berater unseres Teams bearbeiten, im selben Fenster wie der Chat mit Joel. Er wird nur genutzt, wenn Sie „Mit einem Berater chatten“ wählen.",
+            "Ihre Anfrage mit einem Berater unseres Teams bearbeiten, im selben Fenster wie der Chat mit Joelito. Er wird nur genutzt, wenn Sie „Mit einem Berater chatten“ wählen.",
           ],
           [
             "WhatsApp und Telefon",
@@ -503,9 +499,7 @@ export const PRIVACY = {
           ],
         ],
       },
-      after: [
-        "Wir verkaufen Ihre Daten nicht und nutzen sie nicht für Werbung.",
-      ],
+      after: ["Wir verkaufen Ihre Daten nicht und nutzen sie nicht für Werbung."],
     },
     {
       id: "sensibles",
@@ -522,7 +516,7 @@ export const PRIVACY = {
         "Kontaktformular und Angebotsformular per E-Mail: Ihre Daten werden verschlüsselt (HTTPS) an eine Funktion der Website selbst übertragen, die sie über Brevo, unseren E-Mail-Dienstleister und Auftragsverarbeiter, per E-Mail an Transpack sendet. Brevo schickt Ihnen außerdem eine Bestätigung, dass Ihre Anfrage eingegangen ist. Die Website speichert keine Kopie Ihrer Angaben.",
         "WhatsApp: Wenn Sie Ihre Anfrage per WhatsApp senden, gelten für dieses Gespräch zusätzlich die Nutzungsbedingungen und die Datenschutzrichtlinie von WhatsApp (Meta).",
         "In Ihrem Browser: Die Einstellungen des virtuellen Beraters und Ihre Cookie-Entscheidung werden nur in Ihrem Browser (lokaler Speicher) gespeichert und nie an Transpack gesendet. Sie können sie jederzeit löschen, indem Sie die Daten dieser Website in Ihrem Browser entfernen.",
-        "Chat mit einem Berater: Wenn Sie ihn im Chat mit Joel wählen, werden Ihre Nachrichten von unserer Website an Zoho SalesIQ gesendet, das Chat-Werkzeug unseres CRM, das als Auftragsverarbeiter handelt. Das Gespräch wird auf den Servern von Zoho, die sich außerhalb Kolumbiens befinden können, und in unserem CRM gespeichert. Solange Sie diesen Chat nicht wählen, wird nichts an Zoho gesendet.",
+        "Chat mit einem Berater: Wenn Sie ihn im Chat mit Joelito wählen, werden Ihre Nachrichten von unserer Website an Zoho SalesIQ gesendet, das Chat-Werkzeug unseres CRM, das als Auftragsverarbeiter handelt. Das Gespräch wird auf den Servern von Zoho, die sich außerhalb Kolumbiens befinden können, und in unserem CRM gespeichert. Solange Sie diesen Chat nicht wählen, wird nichts an Zoho gesendet.",
         "Aufbewahrung: Wir bewahren eingegangene Anfragen so lange auf, wie es für ihre Bearbeitung und die Erbringung der Leistung nötig ist, und danach so lange, wie es buchhalterische, steuerliche und gesetzliche Vorschriften verlangen.",
       ],
     },
@@ -545,9 +539,7 @@ export const PRIVACY = {
     {
       id: "derechos",
       title: "Ihre Rechte",
-      text: [
-        "Als betroffene Person können Sie:",
-      ],
+      text: ["Als betroffene Person können Sie:"],
       items: [
         "Ihre Daten einsehen, aktualisieren und berichtigen.",
         "Einen Nachweis über die von Ihnen erteilte Einwilligung verlangen.",
