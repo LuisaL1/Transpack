@@ -14,9 +14,9 @@ export function HeroQuickStart() {
   const { lp, tr } = useLang();
   const t = quickPickText(tr);
   const { SERVICES: ALL } = useSite();
-  // Orden pedido por el cliente: primero internacional, luego nacional y local;
-  // después el resto en el orden del sitio
-  const FIRST = ["mudanzas-internacionales", "mudanzas-nacionales", "mudanzas-locales"];
+  // Orden pedido por el cliente (22 oct. 2026): primero local, luego nacional e
+  // internacional; después el resto en el orden del sitio
+  const FIRST = ["mudanzas-locales", "mudanzas-nacionales", "mudanzas-internacionales"];
   const SERVICES = [
     ...FIRST.map((slug) => ALL.find((x) => x.slug === slug)).filter((x) => x !== undefined),
     ...ALL.filter((x) => !FIRST.includes(x.slug)),

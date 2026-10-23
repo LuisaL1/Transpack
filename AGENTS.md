@@ -222,7 +222,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Tipografías: IBM Plex Sans (títulos) y Montserrat (texto).
 - Portada del inicio en **fondo blanco** (con detalles de marca, no blanco y
   negro); las páginas internas usan `PageHero` con la foto bien visible y tonos
-  naranja a rojizo.
+  naranja a rojizo. El efecto de "velocidad" del brochure de referencia del
+  cliente no se logra con capas sobre las fotos actuales (probado en octubre
+  de 2026): debe venir en las fotos que entregue el cliente.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat de Joel: **sin degradados**, mismo estilo de los menús (cabecera azul
   sólida con el cuadrado naranja translúcido girado 45°, rótulo naranja en
