@@ -65,7 +65,11 @@ async function accessToken() {
   });
   const r = await fetch(`${c.accounts}/oauth/v2/token?${q}`, { method: "POST" });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok || !d.access_token) throw new Error(`oauth-${r.status}`);
+  if (!r.ok || !d.access_token) {
+    const e = new Error(`oauth-${r.status}`);
+    e.detail = d; // p. ej. { error: "invalid_grant" } → centro de datos equivocado
+    throw e;
+  }
   cached = { token: d.access_token, exp: Date.now() + (d.expires_in ?? 3600) * 1000 };
   return d.access_token;
 }
@@ -178,8 +182,11 @@ export async function POST(req) {
     });
     return json({ ok: true, id: ticket.id ?? null, ticketNumber: ticket.ticketNumber ?? null });
   } catch (e) {
-    // No se reenvía el detalle de Zoho al navegador
-    console.error("[ticket]", e instanceof Error ? e.message : e, e?.detail ?? "");
-    return json({ ok: false, error: "provider" }, 502);
+    // El detalle completo queda en los logs del servidor; al navegador solo se
+    // le devuelve una clasificación (etapa + código de Zoho) para diagnosticar.
+    const stage = e instanceof Error ? e.message : String(e); // "oauth-400" | "desk-401" | …
+    const code = e?.detail?.error || e?.detail?.errorCode || "";
+    console.error("[ticket]", stage, e?.detail ?? "");
+    return json({ ok: false, error: "provider", stage, code }, 502);
   }
 }

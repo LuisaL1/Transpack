@@ -132,6 +132,6 @@ describe("/api/ticket", () => {
     );
     const r = await POST(req(okBody));
     expect(r.status).toBe(502);
-    expect(await r.json()).toEqual({ ok: false, error: "provider" });
+    expect(await r.json()).toMatchObject({ ok: false, error: "provider" });
   });
 });
