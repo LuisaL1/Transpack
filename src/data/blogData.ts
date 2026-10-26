@@ -130,7 +130,7 @@ export const blogPosts: Post[] = [
       { t: "h2", text: "Conclusión" },
       {
         t: "p",
-        text: "Una mudanza internacional no debería sentirse improvisada, especialmente cuando se trata de proteger pertenencias importantes y comenzar una nueva etapa de vida. En Transpack acompañamos mudanzas nacionales e internacionales con procesos organizados, embalaje especializado y asesoría personalizada, para que hagas tu traslado con experiencia, confianza y respaldo profesional.",
+        text: "Una mudanza internacional no debería sentirse improvisada, especialmente cuando se trata de proteger pertenencias importantes y comenzar una nueva etapa de vida. En Transpack acompañamos mudanzas nacionales e internacionales con procesos organizados, embalaje especializado y asesoría personalizada, para que hagas su traslado con experiencia, confianza y respaldo profesional.",
       },
     ],
   },
@@ -210,7 +210,7 @@ export const blogPosts: Post[] = [
     cat: "Trayectoria",
     cover: imgGlobal,
     excerpt:
-      "Por qué las organizaciones más exigentes y las misiones diplomáticas no dejan su movilidad al azar, y qué debes saber antes de elegir tu operador logístico.",
+      "Por qué las organizaciones más exigentes y las misiones diplomáticas no dejan su movilidad al azar, y qué debes saber antes de elegir su operador logístico.",
     cta: "Cotizar mi mudanza internacional",
     blocks: [
       {
@@ -219,7 +219,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Por eso, cuando se trata de mover tu patrimonio o el de tu equipo directivo a través de las fronteras, la improvisación no es una opción.",
+        text: "Por eso, cuando se trata de mover su patrimonio o el de su equipo directivo a través de las fronteras, la improvisación no es una opción.",
       },
       {
         t: "h2",
@@ -257,7 +257,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "La pregunta que realmente deberías hacerte no es ¿quién es la opción más económica?, sino ¿quién tiene la trayectoria comprobada para hacerlo bien, sin sorpresas? Conoce cómo Transpack puede acompañarte en cada etapa de tu mudanza, con la misma experiencia que ha respaldado a las empresas y misiones diplomáticas más exigentes del mundo.",
+        text: "La pregunta que realmente deberías hacerte no es ¿quién es la opción más económica?, sino ¿quién tiene la trayectoria comprobada para hacerlo bien, sin sorpresas? Conoce cómo Transpack puede acompañarte en cada etapa de su mudanza, con la misma experiencia que ha respaldado a las empresas y misiones diplomáticas más exigentes del mundo.",
       },
     ],
   },

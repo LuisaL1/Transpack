@@ -70,7 +70,7 @@ export const parseContactHref = (href: string): ContactPrefill => {
 export const contactFormText = (tr: Tr) => ({
   title: tr("Escríbenos", "Write to us"),
   subtitle: tr(
-    "Déjanos tus datos y un asesor de Transpack te responde.",
+    "Déjanos sus datos y un asesor de Transpack te responde.",
     "Leave your details and a Transpack advisor will get back to you.",
   ),
   close: tr("Cerrar formulario", "Close form"),
@@ -91,12 +91,12 @@ export const contactFormText = (tr: Tr) => ({
   sentTitle: tr("¡Mensaje enviado!", "Message sent!"),
   sentText: (email: string) =>
     tr(
-      `Recibimos tu solicitud. Un asesor te responderá a ${email}.`,
+      `Recibimos su solicitud. Un asesor te responderá a ${email}.`,
       `We received your request. An advisor will reply to ${email}.`,
     ),
   closeBtn: tr("Cerrar", "Close"),
   error: tr(
-    "No pudimos enviar tu mensaje en este momento. Inténtalo de nuevo o escríbenos por",
+    "No pudimos enviar su mensaje en este momento. Inténtalo de nuevo o escríbenos por",
     "We couldn't send your message right now. Please try again or message us on",
   ),
 });

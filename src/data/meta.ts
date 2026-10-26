@@ -30,7 +30,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
     aboutTitle: "Quiénes somos: mudanzas desde 1968 en Bogotá | Transpack",
     privacyTitle: "Política de tratamiento de datos personales | Transpack",
     privacyDescription:
-      "Cómo Transpack S.A.S. trata tus datos personales según la Ley 1581 de 2012: qué datos recogemos, para qué los usamos y cómo ejercer tus derechos.",
+      "Cómo Transpack S.A.S. trata sus datos personales según la Ley 1581 de 2012: qué datos recogemos, para qué los usamos y cómo ejercer sus derechos.",
     inCity: "en Bogotá, Colombia",
     inCityShort: "en Bogotá",
     notFoundTitle: "Página no encontrada | Transpack",

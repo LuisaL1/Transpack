@@ -50,7 +50,7 @@ test("una ruta desconocida muestra la 404 útil (inicio, cotizar y servicios) co
   await page.goto("/esta-pagina-no-existe");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Esta página tomó otra ruta");
   await expect(page.getByRole("link", { name: "Ir al inicio" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Cotiza tu mudanza" }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Cotiza su mudanza" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: /Bodegaje/ }).last()).toBeVisible();
   await expect(page.locator('head meta[name="robots"]')).toHaveAttribute("content", /noindex/);
 });

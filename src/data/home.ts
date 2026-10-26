@@ -80,7 +80,7 @@ export const coverageText = (tr: Tr) => ({
     "From Colombia to the world, with a network you can't improvise",
   ),
   text: tr(
-    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Tu mudanza se opera con los mismos estándares en origen y en destino.",
+    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Su mudanza se opera con los mismos estándares en origen y en destino.",
     "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
   ),
   modes: [
@@ -156,13 +156,13 @@ export const galleryText = (tr: Tr) => ({
 });
 
 export const quoteSectionText = (tr: Tr) => ({
-  eyebrow: tr("Cotiza tu mudanza", "Get a moving quote"),
+  eyebrow: tr("Cotiza su mudanza", "Get a moving quote"),
   title: tr(
-    "Cuéntanos tu traslado en menos de 2 minutos",
+    "Cuéntanos su traslado en menos de 2 minutos",
     "Tell us about your move in under 2 minutes",
   ),
   sub: tr(
-    "Con esta información un asesor te contactará con una propuesta a tu medida. Sin compromiso.",
+    "Con esta información un asesor te contactará con una propuesta a su medida. Sin compromiso.",
     "With this information an advisor will contact you with a tailored proposal. No commitment.",
   ),
 });
@@ -171,7 +171,7 @@ export const blogSectionText = (tr: Tr) => ({
   eyebrow: "Blog",
   title: tr("Guías para mudarte con tranquilidad", "Guides for a stress-free move"),
   sub: tr(
-    "Lo que debes saber antes de tu próximo traslado, explicado por quienes lo hacen todos los días.",
+    "Lo que debes saber antes de su próximo traslado, explicado por quienes lo hacen todos los días.",
     "What you should know before your next move, explained by the people who do it every day.",
   ),
   read: tr("Leer artículo", "Read article"),
@@ -179,9 +179,9 @@ export const blogSectionText = (tr: Tr) => ({
 
 export const faqText = (tr: Tr) => ({
   eyebrow: tr("Preguntas frecuentes", "Frequently asked questions"),
-  title: tr("Resolvemos tus dudas", "Your questions, answered"),
+  title: tr("Resolvemos sus dudas", "Your questions, answered"),
   sub: tr(
-    "¿No encuentras tu pregunta? Escríbenos por WhatsApp y te respondemos.",
+    "¿No encuentras su pregunta? Escríbenos por WhatsApp y te respondemos.",
     "Can't find your question? Message us on WhatsApp and we'll answer.",
   ),
 });

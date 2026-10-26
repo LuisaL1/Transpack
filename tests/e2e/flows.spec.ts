@@ -439,7 +439,7 @@ test("formulario de contacto: se abre precargado y muestra el error con WhatsApp
   await dlg.locator("#ct-autorizacion").check();
   await dlg.getByRole("button", { name: /Enviar mensaje/ }).click();
   const alert = dlg.getByRole("alert");
-  await expect(alert).toContainText("No pudimos enviar tu mensaje");
+  await expect(alert).toContainText("No pudimos enviar su mensaje");
   await expect(alert.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", /wa\.me/);
   // Clic afuera cierra
   await page.mouse.click(5, 5);
@@ -480,7 +480,7 @@ test("cotizador: exige autorización y envía la solicitud a un asesor (Zoho Des
   await next();
 
   // Al llegar al final, la solicitud se envía sola a un asesor y se confirma
-  await expect(form.getByText(/Un asesor revisará tu solicitud/)).toBeVisible();
+  await expect(form.getByText(/Un asesor revisará su solicitud/)).toBeVisible();
   expect(sent).not.toBeNull();
   expect(sent!.name).toBe("Ana Prueba");
   expect(sent!.phone).toBe("3000000000");

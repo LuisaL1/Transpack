@@ -12,7 +12,7 @@ export const serviceDetailText = (tr: Tr) => ({
   comoHacemos: tr("¿Cómo lo hacemos?", "How do we do it?"),
   incluye: tr("Qué incluye", "What's included"),
   pasoPaso: tr("Paso a paso", "Step by step"),
-  asiSeraProceso: tr("Así será tu proceso", "What your process looks like"),
+  asiSeraProceso: tr("Así será su proceso", "What your process looks like"),
   preguntasFrecuentes: tr("Preguntas frecuentes", "Frequently asked questions"),
   antesCotizar: tr("Antes de cotizar", "Before you get a quote"),
   siTienesOtraDuda: tr(
@@ -20,7 +20,7 @@ export const serviceDetailText = (tr: Tr) => ({
     "If you have another question, message us and an advisor will answer.",
   ),
   otrosServicios: tr("Otros servicios", "Other services"),
-  complementaTraslado: tr("Complementa tu traslado", "Complete your move"),
+  complementaTraslado: tr("Complementa su traslado", "Complete your move"),
   quoteService: (title: string) =>
     tr(`Cotizar ${title.toLowerCase()}`, `Get a ${title.toLowerCase()} quote`),
   whatsappAbout: (title: string) =>
@@ -50,15 +50,15 @@ export const notFoundText = (tr: Tr) => ({
     "We couldn't find what you were looking for. Let us take you back home.",
   ),
   cta: tr("Ir al inicio", "Go to home"),
-  quote: tr("Cotiza tu mudanza", "Get a moving quote"),
+  quote: tr("Cotiza su mudanza", "Get a moving quote"),
   services: tr("Servicios", "Services"),
 });
 
 // Franja naranja de llamado a la acción (al final de varias páginas)
 export const ctaBandText = (tr: Tr) => ({
-  title: tr("¿Listo para tu próximo destino?", "Ready for your next destination?"),
+  title: tr("¿Listo para su próximo destino?", "Ready for your next destination?"),
   text: tr(
-    "Un asesor especializado diseñará contigo el plan de tu mudanza.",
+    "Un asesor especializado diseñará contigo el plan de su mudanza.",
     "A specialized advisor will design your moving plan with you.",
   ),
   cta: tr("Cotizar ahora", "Get a quote"),
@@ -71,9 +71,9 @@ export const privacyText = (tr: Tr) => ({
   ruta: tr("Ruta", "Breadcrumb"),
   inicio: tr("Inicio", "Home"),
   enEstaPagina: tr("En esta página", "On this page"),
-  dudas: tr("¿Preguntas sobre tus datos?", "Questions about your data?"),
+  dudas: tr("¿Preguntas sobre sus datos?", "Questions about your data?"),
   escribenos: tr(
-    "Escríbenos y te ayudamos a ejercer tus derechos.",
+    "Escríbenos y te ayudamos a ejercer sus derechos.",
     "Write to us and we will help you exercise your rights.",
   ),
   abrirFormulario: tr("Abrir el formulario de contacto", "Open the contact form"),
@@ -84,7 +84,7 @@ export const privacyText = (tr: Tr) => ({
   correo: tr("Correo", "Email"),
   telefonos: tr("Teléfonos", "Phone numbers"),
   cambiarCookies: tr(
-    "Puedes cambiar tu decisión cuando quieras.",
+    "Puedes cambiar su decisión cuando quieras.",
     "You can change your choice at any time.",
   ),
   cambiarCookiesBtn: tr("Cambiar mi decisión sobre cookies", "Change my cookie choice"),
