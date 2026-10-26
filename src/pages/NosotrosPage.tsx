@@ -25,7 +25,7 @@ export function NosotrosPage() {
       <PageHero image={imgEquipo}>
         <div className="animate-fade-up max-w-3xl">
           <Eyebrow light>{t.quienesSomos}</Eyebrow>
-          <h1 className="mb-6 text-[clamp(2.2rem,1.4rem+3vw,3.8rem)] leading-[1.08] !text-white">
+          <h1 className="mb-6 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.1] !text-white">
             {t.masCincoDecadasMoviendo} <span className="text-naranja">{t.masQuieres}</span>
           </h1>
           <p className="max-w-2xl text-[1.1rem]">{t.somosOrganizacionConsolidadaDesde}</p>

@@ -52,7 +52,7 @@ export function ArticlePage() {
               {readMinutes(post)} {t.minLectura}
             </span>
           </p>
-          <h1 className="text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] leading-[1.12] !text-white">
+          <h1 className="text-[clamp(1.7rem,1.15rem+2vw,2.7rem)] leading-[1.14] !text-white">
             {post.title}
           </h1>
         </div>

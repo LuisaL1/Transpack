@@ -36,7 +36,7 @@ export function ServiceDetailPage() {
       <PageHero image={service.image}>
         <nav
           aria-label={t.ruta}
-          className="mb-6 flex items-center gap-2 text-[0.85rem] text-white/60"
+          className="mb-4 flex items-center gap-2 text-[0.85rem] text-white/60"
         >
           <Link to={lp("/")} className="hover:text-white">
             {t.inicio}
@@ -49,11 +49,11 @@ export function ServiceDetailPage() {
           <span className="text-white">{service.title}</span>
         </nav>
         <div className="animate-fade-up max-w-3xl">
-          <span className="mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-white/10 text-3xl text-naranja">
+          <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-white/10 text-[1.6rem] text-naranja">
             <Bi n={service.icon} />
           </span>
           <Eyebrow light>{service.kicker}</Eyebrow>
-          <h1 className="mb-6 text-[clamp(2.1rem,1.4rem+2.8vw,3.6rem)] leading-[1.08] !text-white">
+          <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] !text-white">
             {service.headline}
           </h1>
           <p className="mb-8 max-w-2xl text-[1.08rem]">{service.short}</p>
