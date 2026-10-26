@@ -39,7 +39,7 @@ export const STATS = [
   { value: 58, suffix: "+", label: "عامًا من الخبرة" },
   { value: 176, suffix: "+", label: "دولة وجهة، استيرادًا وتصديرًا", short: "دولة وجهة" },
   { value: 60, suffix: "K+", label: "طن من الأمتعة المنزلية المصدّرة" },
-  { value: 2000, suffix: "+", label: "ممثل" },
+  { value: 2000, suffix: "+", label: "وكلاء وشركاء استراتيجيون", short: "ممثل" },
 ];
 
 export const EMBASSIES = [

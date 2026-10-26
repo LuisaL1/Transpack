@@ -50,7 +50,7 @@ export const STATS = [
     short: "pays de destination",
   },
   { value: 60, suffix: "K+", label: "tonnes de biens domestiques exportées" },
-  { value: 2000, suffix: "+", label: "représentants" },
+  { value: 2000, suffix: "+", label: "agents et partenaires stratégiques", short: "représentants" },
 ];
 
 export const EMBASSIES = [

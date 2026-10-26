@@ -40,7 +40,7 @@ export const STATS = [
   { value: 58, suffix: "+", label: "Jahre Erfahrung" },
   { value: 176, suffix: "+", label: "Zielländer, Import und Export", short: "Zielländer" },
   { value: 60, suffix: "K+", label: "Tonnen exportierter Hausrat" },
-  { value: 2000, suffix: "+", label: "Vertreter" },
+  { value: 2000, suffix: "+", label: "Agenten und strategische Partner", short: "Vertreter" },
 ];
 
 export const EMBASSIES = [

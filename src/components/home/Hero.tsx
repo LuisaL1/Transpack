@@ -70,7 +70,7 @@ export function Hero() {
           {t.titlePrefix}
           <span className="text-naranja-600">{t.titleHighlight}</span>
         </h1>
-        <p className="mx-auto max-w-[560px] text-[clamp(.98rem,.94rem+.2vw,1.08rem)] text-suave">
+        <p className="mx-auto max-w-[560px] text-[clamp(.98rem,.94rem+.2vw,1.08rem)] font-medium text-texto">
           {t.sub}
         </p>
       </div>

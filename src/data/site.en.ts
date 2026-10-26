@@ -45,7 +45,7 @@ export const STATS = [
     short: "destination countries",
   },
   { value: 60, suffix: "K+", label: "tons of household goods exported" },
-  { value: 2000, suffix: "+", label: "representatives" },
+  { value: 2000, suffix: "+", label: "agents and strategic partners", short: "representatives" },
 ];
 
 export const EMBASSIES = [

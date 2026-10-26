@@ -216,7 +216,7 @@ describe("Reglas de contenido (lo que la empresa no puede afirmar)", () => {
         expect(Number(m[1]), f).toBe(years);
       for (const m of s.matchAll(/(\d+) países/g)) expect(Number(m[1]), f).toBe(countries);
       for (const m of s.matchAll(/([\d.]+)\+? (agentes|representantes)/g))
-        expect(m[1].replace(".", ""), f).toBe(String(stat(/representantes/)));
+        expect(m[1].replace(".", ""), f).toBe(String(stat(/agentes/)));
     }
   });
 

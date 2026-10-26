@@ -78,7 +78,7 @@ export const STATS = [
     short: "países de destino",
   },
   { value: 60, suffix: "K+", label: "toneladas de menaje doméstico exportadas" },
-  { value: 2000, suffix: "+", label: "representantes" },
+  { value: 2000, suffix: "+", label: "agentes y aliados estratégicos", short: "representantes" },
 ];
 
 export const EMBASSIES = [

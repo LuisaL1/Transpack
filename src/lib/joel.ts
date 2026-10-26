@@ -1042,7 +1042,7 @@ export function createJoel(kb: JoelKB) {
   };
   const YEARS = stat(/años/);
   const COUNTRIES = stat(/países/);
-  const AGENTS = stat(/representantes/);
+  const AGENTS = stat(/agentes/);
   const TONS = stat(/toneladas/);
   const CERTS =
     kb.services

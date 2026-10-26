@@ -44,7 +44,7 @@ export const STATS = [
     short: "paesi di destinazione",
   },
   { value: 60, suffix: "K+", label: "tonnellate di masserizie domestiche esportate" },
-  { value: 2000, suffix: "+", label: "rappresentanti" },
+  { value: 2000, suffix: "+", label: "agenti e partner strategici", short: "rappresentanti" },
 ];
 
 export const EMBASSIES = [
