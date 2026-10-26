@@ -3,11 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Puente con Zoho (src/lib/zohoBridge.ts) sobre una ventana de Zoho FALSA:
 // nunca se carga el widget real en las pruebas.
 const z = { floatwindow: { visible: vi.fn() } };
+const triggerAdvisorStart = vi.fn();
 vi.mock("@/lib/crmChat", () => ({
   loadCrmChat: vi.fn(async () => z),
   setBridging: vi.fn(),
   styleChatWindow: vi.fn(),
   announce: vi.fn(),
+  triggerAdvisorStart: () => triggerAdvisorStart(),
   // La página aislada de Zoho: aquí, la misma ventana de prueba
   zohoWindow: () => window,
 }));
@@ -70,6 +72,26 @@ describe("puente con Zoho (chat con un asesor dentro de Joel)", () => {
     expect(setBridging).toHaveBeenCalledWith(true);
     expect(z.floatwindow.visible).toHaveBeenCalledWith("show");
     expect(sent).toEqual(["Necesito cotizar"]);
+  });
+
+  it("sin pregunta, no envía nada y dispara el bot proactivo de Zoho", async () => {
+    const onMessage = vi.fn();
+    await startBridge(undefined, { onMessage, onForm: vi.fn() });
+    // No escribe ningún mensaje: solo abre la conversación
+    expect(sent).toEqual([]);
+    expect(setBridging).toHaveBeenCalledWith(true);
+    expect(z.floatwindow.visible).toHaveBeenCalledWith("show");
+    // Avisa a Zoho (acción personalizada) para que su bot salude solo
+    expect(triggerAdvisorStart).toHaveBeenCalled();
+    // El saludo del bot llega a Joel igual que cualquier mensaje
+    agentSays("m1", "Transpack", "¡Hola! ¿En qué te ayudo?");
+    await tick();
+    expect(onMessage).toHaveBeenCalledWith({
+      id: "m1",
+      name: "Transpack",
+      text: "¡Hola! ¿En qué te ayudo?",
+      options: [],
+    });
   });
 
   it("pasa a Joel los mensajes nuevos con su nombre y sus opciones", async () => {

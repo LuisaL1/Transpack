@@ -177,6 +177,9 @@ export function useAdvisorChat() {
   useEffect(() => {
     if (firstLang.current === lang) return;
     firstLang.current = lang;
+    // Un chat con un asesor en curso (en español) no se interrumpe al cambiar
+    // de idioma la página.
+    if (live !== "off") return;
     timers.current.forEach(clearTimeout);
     timers.current = [];
     setTyping(false);
@@ -184,7 +187,7 @@ export function useAdvisorChat() {
     setStepId("start");
     setMsgs([]);
     mem.current = newMemory();
-    if (open) goTo("start", {});
+    if (open) requestAdvisorChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
@@ -228,6 +231,11 @@ export function useAdvisorChat() {
       trackEvent("contact_click", { method: "advisor_chat" });
       void advisorAvailable().then((ok) => {
         mode.current = ok ? "api" : "bridge";
+        // Puente (modo activo): conecta de una vez SIN enviar ningún mensaje. El
+        // puente avisa a Zoho con una acción personalizada para que su bot
+        // proactivo salude solo (requiere el disparador configurado en Zoho).
+        if (!ok) return void startViaBridge();
+        // API de Zoho: necesita un primer mensaje para abrir la conversación.
         setLive("ask");
         say(t.advisorAsk);
       });
@@ -276,6 +284,24 @@ export function useAdvisorChat() {
       options: [{ label: t.backToStart, next: "start", icon: "house" }],
     };
     goTo("dyn", data);
+  };
+
+  // "Reiniciar" (botón de la cabecera) empieza una conversación nueva con un
+  // asesor: el chat ya no vuelve al asistente Joel.
+  const restartAdvisor = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    followUp.current = false;
+    pass.current = null;
+    pending.current = null;
+    save(null);
+    bridge.current?.stop();
+    bridge.current = null;
+    setLiveOptions([]);
+    setTyping(false);
+    setLive("off");
+    setMsgs([]);
+    requestAdvisorChat();
   };
 
   // Respuestas del asesor: se preguntan cada pocos segundos mientras dura el chat
@@ -331,7 +357,7 @@ export function useAdvisorChat() {
   // Puente: abre la conversación en el Zoho escondido y pasa sus mensajes a Joel
   // quiet: para la cotización enviada al equipo (sin el mensaje de "ya le avisé"
   // ni la ventana de Zoho de respaldo si falla). Devuelve si se conectó.
-  const startViaBridge = async (question: string, quiet = false): Promise<boolean> => {
+  const startViaBridge = async (question?: string, quiet = false): Promise<boolean> => {
     pending.current = [];
     setLive("connecting");
     try {
@@ -351,10 +377,9 @@ export function useAdvisorChat() {
           setLiveOptions(canSkip ? [t.advisorFormFill, t.advisorFormSkip] : [t.advisorFormFill]);
         },
       });
-      if (!quiet) {
-        trackEvent("generate_lead", { method: "advisor_chat", lang });
-        say(t.advisorConnecting);
-      }
+      // El bot de Zoho se encarga de todo desde que abre: no se muestra ningún
+      // mensaje propio ("Listo, un asesor te responderá…").
+      if (!quiet) trackEvent("generate_lead", { method: "advisor_chat", lang });
       for (const text of pending.current ?? []) bridge.current.send(text);
       pending.current = null;
       return true;
@@ -455,13 +480,14 @@ export function useAdvisorChat() {
     return () => window.removeEventListener("tp:open-chat", openChat);
   }, []);
 
-  // Saludo al abrir por primera vez
+  // Al abrir, conecta directo con un asesor (ya no muestra el menú de Joel).
+  // Si ya hay una conversación en curso, o quedó una al cerrar y volver a abrir,
+  // no reconecta: se sigue mostrando lo que había.
   useEffect(() => {
-    if (open && msgs.length === 0 && !typing) goTo("start", {});
-    if (open) {
-      setTeaser(false);
-      trackEvent("chat_open", { lang });
-    }
+    if (!open) return;
+    setTeaser(false);
+    trackEvent("chat_open", { lang });
+    if (live === "off" && msgs.length === 0) requestAdvisorChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
@@ -567,7 +593,7 @@ export function useAdvisorChat() {
     options,
     choose,
     send,
-    restart: () => goTo("reset", {}),
+    restart: restartAdvisor,
     endRef,
     inputRef,
   };

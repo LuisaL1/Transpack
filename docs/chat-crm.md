@@ -1,13 +1,26 @@
 # Chat con un asesor: Zoho SalesIQ (CRM)
 
-**Joel atiende primero.** El chat del sitio es Joel, el asesor virtual propio.
-Cuando la persona pide un asesor ("Hablar con un asesor", o escribe "quiero
-hablar con un asesor", "con una persona"…), **Joel la conecta de una vez**:
-"Te conecto con un asesor. Escríbele tu mensaje y te responderá aquí mismo."
-Sin pasos intermedios y **sin mencionar Zoho** ni la plataforma. Si pide
-contacto en general (teléfono, WhatsApp), Joel lo da en una línea y ofrece
-"Chatear con un asesor" como primera opción. En los tres modos el asesor atiende desde su
-panel de SalesIQ como cualquier chat:
+**El chat abre directo con un asesor.** Al pulsar el ícono del chat, la ventana
+conecta de una vez con un asesor (modo puente, el activo hoy): **no** muestra el
+menú del asesor virtual Joel, **no** dice "Te conecto con un asesor…" y **no**
+espera a que la persona escriba. En vez de enviar un mensaje, el puente avisa a
+Zoho con una **acción personalizada** (`ADVISOR_START_ACTION`,
+"abrir_chat_asesor", vía `visitor.customaction`); con esa acción, un **bot
+proactivo configurado en Zoho** saluda solo, sin que el visitante escriba nada.
+**Nunca se menciona Zoho** ni la plataforma.
+
+> ⚠️ Para que el saludo aparezca hay que configurar ese disparador en Zoho (ver
+> "Configuración del bot proactivo" abajo). Sin esa configuración, el chat abre
+> pero el bot no saluda hasta que la persona escriba.
+
+La ventana es **solo el chat con el asesor**: no muestra ninguna franja ni
+mensaje propio ("Listo, un asesor te responderá…"), ni el botón "Volver con
+Joel". El asesor virtual Joel ya **no se usa en el chat** (su cerebro y el
+cotizador guiado siguen en el código pero no se alcanzan desde la ventana); el
+cotizador del sitio (QuoteWizard en la portada) es independiente y sigue igual.
+El botón de reiniciar de la cabecera empieza una conversación nueva con un
+asesor. En los tres modos el asesor atiende desde su panel de SalesIQ como
+cualquier chat:
 
 | Modo                                                         | Cuándo                                                                                                                         | Cómo se ve                                                                                                                                                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -49,10 +62,14 @@ Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
 
 ## Modo "puente" (activo)
 
-1. "Hablar con un asesor" → Joel dice "Te conecto con un asesor" y pide el mensaje.
+1. Al **abrir el chat** (o con "Hablar con un asesor") se conecta de una vez,
+   sin enviar ningún mensaje y sin pedírselo a la persona.
 2. Se carga el widget de Zoho en la página aislada, escondida fuera de la
    pantalla (`#tp-zoho-frame`, `src/styles/index.css`), se pulsa "Chatee con
-   nosotros ahora" y se escribe la pregunta en su campo de texto.
+   nosotros ahora" y se avisa la acción personalizada (`triggerAdvisorStart()` en
+   `src/lib/crmChat.ts` → `visitor.customaction("abrir_chat_asesor")`). **No se
+   envía ningún mensaje**: el bot proactivo de Zoho (configurado para esa acción)
+   saluda solo.
 3. Un observador lee los mensajes nuevos del bot o del asesor de Zoho
    (`[data-zsqa="agent_msg message_bubble"]`) y los muestra en Joel con su
    nombre; los botones de sugerencia de Zoho aparecen como opciones en Joel.
@@ -63,14 +80,25 @@ Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
    asesores, y Joel ya tiene la consulta. Si una pregunta no se puede omitir,
    Joel ofrece "Completar mis datos" (muestra la ventana de Zoho; al cerrarla
    se vuelve a esconder).
-6. "Volver con Joel" deja de escuchar y esconde Zoho.
+6. Al cerrar la ventana del chat (la X de la cabecera) se deja de escuchar; la
+   conversación sigue en SalesIQ y se retoma al abrir de nuevo.
 
-**Configuración de Zoho para este modo (8 de octubre de 2026):**
+**Configuración del bot proactivo (necesaria para que salude solo):**
+Hay que hacer que el bot (Zobot) salude cuando el sitio dispara la acción
+personalizada `abrir_chat_asesor`:
+1. SalesIQ → Configuración → Bots (Zobot): edita el bot o crea uno.
+2. En la audiencia / "¿Cuándo activar el bot con el visitante?" elige **"Realiza
+   una acción personalizada"** y escribe el valor **`abrir_chat_asesor`** (igual
+   que `ADVISOR_START_ACTION` en `src/lib/crmChat.ts`).
+3. Guarda y activa el bot.
 
-- El bot de Zoho ("Joel Transpack", SalesIQ → Bot → Zobot) está **apagado**:
-  Joel cumple ese papel en el sitio. Si se vuelve a encender, sus mensajes
-  aparecen en Joel y la conversación no llega a los asesores hasta que el bot
-  la transfiera.
+Alternativa más simple: poner la audiencia del bot en **"Todos los visitantes"**
+(proactivo); así saluda al abrirse el chat sin depender de la acción. Es menos
+preciso (puede traer condiciones de tiempo o de página), pero no necesita la
+acción personalizada.
+
+- Conviene que el bot pase la conversación a un asesor (o lo ofrezca) pronto;
+  mientras el bot no transfiera, no llega a los asesores.
 - Las preguntas de datos del visitante de la ventana de chat de Zoho se omiten
   solas (paso 5). Si se quieren quitar en Zoho, están en la configuración de
   la ventana de chat de la marca.
@@ -196,11 +224,15 @@ Notas:
 
 ## Protección de datos
 
-- Mientras la persona no pida un asesor (o no pulse "Enviar a un asesor" en
-  la cotización), no se envía nada a Zoho. En el modo dentro de Joel, el
-  navegador nunca carga Zoho ni sus cookies.
-- Para que el paso al asesor sea directo, Joel no muestra un aviso previo
-  ni nombra la plataforma: el uso de los datos lo explica la política.
+- **Al abrir el chat se carga Zoho** (modo puente): como la ventana conecta de
+  una vez con un asesor, el widget de Zoho y sus cookies se cargan apenas se
+  abre el chat (antes solo al pedir un asesor). En el modo API dentro de Joel el
+  navegador nunca carga Zoho ni sus cookies: todo pasa por `/api/advisor`.
+- Para que el paso al asesor sea directo, no se muestra un aviso previo ni se
+  nombra la plataforma: el uso de los datos lo explica la política.
+- **Pendiente (legal):** la política dice que las cookies de Zoho se cargan
+  "solo si se abre su ventana"; ahora se cargan al abrir el chat. Revisar ese
+  texto en `/privacidad` (fila del chat con un asesor) en los seis idiomas.
 - La política (`/privacidad`, seis idiomas) lo explica:
   - fila "Chat con un asesor (Zoho SalesIQ)";
   - Zoho como encargado del tratamiento, con servidores que pueden estar fuera

@@ -27,6 +27,10 @@ export const SALESIQ_SRC = `https://salesiq.zohopublic.com/widget?wc=${SALESIQ_W
 /** Página aislada donde vive Zoho y el iframe que la contiene */
 export const HOST_SRC = "/chat-asesor.html";
 export const HOST_ID = "tp-zoho-frame";
+/** Acción personalizada que el sitio avisa a Zoho al abrir el chat. En Zoho se
+ *  configura un disparador/bot proactivo para esta acción, de modo que el bot
+ *  salude solo sin que el visitante envíe ningún mensaje (ver docs/chat-crm.md). */
+export const ADVISOR_START_ACTION = "abrir_chat_asesor";
 /** Tiempo máximo para que Zoho responda antes de ofrecer otros canales */
 const TIMEOUT_MS = 15_000;
 
@@ -40,6 +44,7 @@ type SalesIQ = {
     close?: (cb: () => void) => void;
     minimize?: (cb: () => void) => void;
   };
+  visitor?: { customaction?: (action: string) => void };
 };
 declare global {
   interface Window {
@@ -180,6 +185,13 @@ export async function openCrmChat(): Promise<void> {
   z.floatwindow?.visible("show");
   styleChatWindow();
   announce(true);
+}
+
+/** Avisa a Zoho que se abrió el chat mediante una acción personalizada, para que
+ *  su bot proactivo salude solo, sin que el visitante envíe un mensaje. Requiere
+ *  el disparador configurado en Zoho (ver docs/chat-crm.md). */
+export function triggerAdvisorStart() {
+  hostWin?.$zoho?.salesiq?.visitor?.customaction?.(ADVISOR_START_ACTION);
 }
 
 /** Cierra la ventana del chat si Zoho ya está cargado. */

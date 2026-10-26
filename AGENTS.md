@@ -267,23 +267,27 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 
 ### Chat con un asesor (Zoho SalesIQ)
 
-- **Joel atiende primero.** "Hablar con un asesor" (o escribir que se quiere
-  un asesor) **conecta de una vez**, sin pasos intermedios ni mencionar Zoho;
-  un pedido de contacto ofrece **"Chatear con un asesor"** como primera opción.
-  El resumen de la cotización trae **"Enviar a un asesor"**, que la manda al
-  chat de los asesores (`docs/chat-crm.md`):
-  - **dentro de Joel** si `/api/advisor` está configurado: la persona escribe
-    en la misma ventana y el asesor responde desde SalesIQ (API REST, sin
-    cargar Zoho en el navegador). Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo
-    en el servidor; cada conversación con un pase firmado;
+- **El chat es solo el chat con un asesor.** Al abrir el ícono se conecta de una
+  vez (sin menú de Joel, sin "Te conecto…", sin la franja "Chat con un asesor" y
+  sin esperar a que escriban); en vez de enviar un mensaje, el puente avisa a
+  Zoho una acción personalizada (`ADVISOR_START_ACTION`, "abrir_chat_asesor") y
+  un bot proactivo configurado en Zoho saluda solo (`docs/chat-crm.md`). **Nunca
+  se menciona Zoho.** El asesor virtual Joel y su cotizador guiado **ya
+  no se alcanzan desde el chat** (el código sigue ahí; el cotizador de la portada
+  es aparte). Modos (`docs/chat-crm.md`):
+  - **dentro de Joel** si `/api/advisor` está configurado: como la API de
+    visitante necesita un primer mensaje, pide la consulta antes de abrir; el
+    asesor responde desde SalesIQ (API REST, sin cargar Zoho en el navegador).
+    Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo en el servidor; cada
+    conversación con un pase firmado;
   - si no, por el **puente** (`src/lib/zohoBridge.ts`, el que se usa hoy): el
-    widget de Zoho se carga escondido y Joel escribe en él y muestra sus
-    respuestas; si Zoho pide un formulario, Joel ofrece completarlo en la
-    ventana de Zoho u omitirlo;
+    widget de Zoho se carga escondido sin enviar ningún mensaje (el bot saluda
+    primero) y la ventana muestra sus respuestas; si Zoho pide un formulario,
+    ofrece completarlo en la ventana de Zoho u omitirlo;
   - si el puente falla, se abre la **ventana de Zoho** (respaldo, abajo).
-- `src/lib/crmChat.ts` carga el script de Zoho **solo en ese momento** (nunca
-  al entrar: sin cookies de Zoho antes), una sola vez, en español y con el
-  botón de Zoho oculto. El uso de los datos lo explica la política (`/privacidad`).
+- `src/lib/crmChat.ts` carga el script de Zoho **solo al abrir el chat** (no al
+  entrar al sitio), una sola vez, en español y con el botón de Zoho oculto. El
+  uso de los datos lo explica la política (`/privacidad`).
 - Acciones con `crm: true` (`ChatAction` y `JoelAction`) abren ese chat.
 - **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
   chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de
