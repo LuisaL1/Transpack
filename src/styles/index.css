@@ -266,32 +266,6 @@ p {
     transform: none;
   }
 }
-
-/* ─── Árabe (derecha a izquierda) ─────────────────────────────────────────── */
-/* El espaciado entre letras separa los caracteres árabes, que van unidos */
-[dir="rtl"] * {
-  letter-spacing: 0 !important;
-}
-[dir="rtl"] body {
-  font-family: "IBM Plex Sans Arabic", "Montserrat", sans-serif;
-  line-height: 1.75;
-}
-[dir="rtl"] h1,
-[dir="rtl"] h2,
-[dir="rtl"] h3,
-[dir="rtl"] h4 {
-  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif;
-  line-height: 1.35;
-}
-/* Las flechas apuntan en el sentido de lectura */
-[dir="rtl"] .bi-arrow-right::before,
-[dir="rtl"] .bi-arrow-left::before,
-[dir="rtl"] .bi-chevron-right::before,
-[dir="rtl"] .bi-arrow-return-left::before {
-  display: inline-block;
-  transform: scaleX(-1);
-}
-
 /* Aviso de cookies abierto: en celular se oculta el botón de Joel para no taparlo */
 @media (max-width: 639px) {
   body.consent-open [data-chat-launcher] {

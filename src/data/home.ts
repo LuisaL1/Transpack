@@ -1,8 +1,7 @@
 // Textos de las secciones del inicio (src/components/home). Cada función recibe
-// `tr` (ver src/i18n): el español va primero y el inglés después; el francés,
-// alemán, italiano y árabe se buscan por el texto en inglés en src/i18n/dict.
+// `tr` (ver src/i18n): el español va primero y el inglés después.
 // Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
-// están en src/data/site.ts (y sus traducciones site.<idioma>.ts).
+// están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
 
 export const heroText = (tr: Tr) => ({
@@ -36,20 +35,8 @@ export const statsText = (tr: Tr) => ({
   // Carrusel de cifras (Stats.tsx)
   carousel: tr("carrusel", "carousel"),
   slide: tr("cifra", "figure"),
-  of: (a: number, b: number) =>
-    tr(`${a} de ${b}`, `${a} of ${b}`, {
-      fr: `${a} sur ${b}`,
-      de: `${a} von ${b}`,
-      it: `${a} di ${b}`,
-      ar: `${a} من ${b}`,
-    }),
-  goTo: (a: number) =>
-    tr(`Ver cifra ${a}`, `Show figure ${a}`, {
-      fr: `Voir le chiffre ${a}`,
-      de: `Zahl ${a} anzeigen`,
-      it: `Vedi cifra ${a}`,
-      ar: `عرض الرقم ${a}`,
-    }),
+  of: (a: number, b: number) => tr(`${a} de ${b}`, `${a} of ${b}`),
+  goTo: (a: number) => tr(`Ver cifra ${a}`, `Show figure ${a}`),
 });
 
 export const servicesText = (tr: Tr) => ({

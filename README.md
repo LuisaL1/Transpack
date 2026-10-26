@@ -1,8 +1,7 @@
 # Transpack · Sitio web
 
 Sitio corporativo de Transpack S.A.S. (mudanzas y bodegaje, Bogotá) — React 19 +
-Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en seis idiomas
-(español, inglés, francés, alemán, italiano y árabe).
+Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en español e inglés.
 
 ## Requisitos
 
@@ -37,8 +36,8 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 | `/servicios/:slug` | Detalle de servicio (slugs en `src/data/site.ts`)                                    |
 | `/blog/:slug`      | Artículo (contenido en `src/data/blogData.ts`)                                       |
 
-- Los demás idiomas van con prefijo y URLs traducidas (`/en/about`,
-  `/fr/services/...`).
+- El inglés va con prefijo y URLs traducidas (`/en/about`,
+  `/en/services/...`).
 - El cotizador acepta preselección por URL: `/?servicio=internacional&nivel=2#cotizar`
   (`servicio`: local, nacional, internacional, empresarial, bodegaje · `nivel`: 1, 2, 3).
 - Las soluciones abren un segmento con `/?segmento=corporate#soluciones`
@@ -113,20 +112,17 @@ push y pull request corre además la integración continua de GitHub Actions
   que la CSP no bloquee funciones del chat (adjuntos o llamadas). Si Zoho
   cambia su ventana, revisar que el diseño del sitio se siga aplicando.
 - **Joel**:
-  - el cerebro solo funciona en español; en los otros idiomas el chat entiende
-    palabras clave limitadas (por ejemplo, en alemán reconoce "Ausland", pero
-    no nombres de países como "Kanada");
+  - el cerebro solo funciona en español; en inglés el chat entiende palabras
+    clave limitadas;
   - las preguntas que no supo responder quedan solo en el navegador de cada
     visitante (`localStorage`), así que el equipo no puede revisarlas sin un
     servidor.
 - **Contraste de color (accesibilidad AA)**: el texto blanco sobre el naranja de
   marca y el "+" naranja de las cifras no alcanzan el mínimo (tabla en
   `TESTING.md`). Requiere aprobación de diseño.
-- **Idiomas**: solo se publican español e inglés. Francés, alemán, italiano y
-  árabe quedaron desactivados (octubre de 2026) por errores de gramática que
-  encontró el cliente; sus textos se conservan y no viajan en el JS. Para
-  volver a publicarlos hay que revisar la traducción completa (incluidas las
-  dos etiquetas de la franja de idiomas que faltan, ver `TESTING.md`).
+- **Idiomas**: el sitio está solo en español e inglés. Francés, alemán,
+  italiano y árabe se eliminaron (octubre de 2026) por errores de gramática que
+  encontró el cliente; sus URLs antiguas redirigen a `/en`.
 - **Rendimiento**:
   - JS principal de ~330 KB (106 KB comprimido): las librerías van aparte
     (~260 KB, `vite.config.ts`), el cerebro de Joel (~48 KB) y el chat con un

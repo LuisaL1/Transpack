@@ -93,12 +93,6 @@ export const contactFormText = (tr: Tr) => ({
     tr(
       `Recibimos tu solicitud. Un asesor te responderá a ${email}.`,
       `We received your request. An advisor will reply to ${email}.`,
-      {
-        fr: `Nous avons bien reçu votre demande. Un conseiller vous répondra à ${email}.`,
-        de: `Wir haben Ihre Anfrage erhalten. Ein Berater antwortet Ihnen an ${email}.`,
-        it: `Abbiamo ricevuto la tua richiesta. Un consulente ti risponderà a ${email}.`,
-        ar: `تلقّينا طلبك. سيرد عليك أحد مستشارينا على ${email}.`,
-      },
     ),
   closeBtn: tr("Cerrar", "Close"),
   error: tr(

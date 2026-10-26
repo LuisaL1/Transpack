@@ -22,22 +22,11 @@ export const serviceDetailText = (tr: Tr) => ({
   otrosServicios: tr("Otros servicios", "Other services"),
   complementaTraslado: tr("Complementa tu traslado", "Complete your move"),
   quoteService: (title: string) =>
-    tr(`Cotizar ${title.toLowerCase()}`, `Get a ${title.toLowerCase()} quote`, {
-      fr: "Demander un devis",
-      de: "Angebot anfordern",
-      it: "Richiedi un preventivo",
-      ar: "اطلب عرض سعر",
-    }),
+    tr(`Cotizar ${title.toLowerCase()}`, `Get a ${title.toLowerCase()} quote`),
   whatsappAbout: (title: string) =>
     tr(
       `Hola Transpack, quiero información sobre: ${title}`,
       `Hello Transpack, I would like information about: ${title}`,
-      {
-        fr: `Bonjour Transpack, je souhaite des informations sur : ${title}`,
-        de: `Hallo Transpack, ich hätte gern Informationen zu: ${title}`,
-        it: `Ciao Transpack, vorrei informazioni su: ${title}`,
-        ar: `مرحبًا ترانسباك، أود الحصول على معلومات حول: ${title}`,
-      },
     ),
 });
 

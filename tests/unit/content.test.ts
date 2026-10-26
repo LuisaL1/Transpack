@@ -6,10 +6,6 @@ import { menusFor } from "@/data/navigation";
 import { serviceOptions } from "@/data/quote";
 import { DESTINATIONS } from "@/data/worldMap";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
-import fr from "@/i18n/dict/fr";
-import de from "@/i18n/dict/de";
-import itDict from "@/i18n/dict/it";
-import ar from "@/i18n/dict/ar";
 
 // Integridad del contenido (src/data), traducciones y reglas de negocio y de
 // diseño de AGENTS.md.
@@ -159,25 +155,6 @@ describe("Traducciones", () => {
     for (const d of DESTINATIONS)
       for (const l of OTHERS)
         expect(DESTINATION_NAMES[d.name]?.[l], `${d.name} en ${l}`).toBeTruthy();
-  });
-
-  // Textos cortos tr("es", "en"): el francés, alemán, italiano y árabe se buscan
-  // por el texto en inglés en src/i18n/dict. Pendientes conocidos (ver TESTING.md):
-  const PENDING = new Set(["Choose region and language", "Region and language"]);
-  it("todos los textos cortos están traducidos (salvo los pendientes conocidos)", () => {
-    const CALL = /\btr\(\s*"(?:[^"\\]|\\.)*"\s*,\s*("(?:[^"\\]|\\.)*")\s*(,\s*\{)?/g;
-    const missing: string[] = [];
-    for (const [f, s] of ALL.filter(([f]) => /\.tsx?$/.test(f) && !f.includes("dict"))) {
-      const code = s.replace(/^\s*\/\/.*$/gm, "");
-      for (const m of code.matchAll(CALL)) {
-        if (m[2]) continue; // trae sus propias traducciones
-        const en = JSON.parse(m[1]) as string;
-        if (!en || PENDING.has(en)) continue;
-        for (const [l, d] of Object.entries({ fr, de, it: itDict, ar }))
-          if (!(en in d)) missing.push(`${l}: "${en}" (${f})`);
-      }
-    }
-    expect(missing).toEqual([]);
   });
 });
 

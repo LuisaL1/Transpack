@@ -45,7 +45,7 @@ Cuando el visitante termina la cotización guiada de Joel:
 4. Siguen disponibles los botones de WhatsApp y correo (no el cotizador: la cotización ya se hizo en el chat).
 
 Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
-(fila del chat de Joel) lo explica en los seis idiomas.
+(fila del chat de Joel) lo explica en español e inglés.
 
 ## Modo "puente" (activo)
 
@@ -201,7 +201,7 @@ Notas:
   navegador nunca carga Zoho ni sus cookies.
 - Para que el paso al asesor sea directo, Joel no muestra un aviso previo
   ni nombra la plataforma: el uso de los datos lo explica la política.
-- La política (`/privacidad`, seis idiomas) lo explica:
+- La política (`/privacidad`, español e inglés) lo explica:
   - fila "Chat con un asesor (Zoho SalesIQ)";
   - Zoho como encargado del tratamiento, con servidores que pueden estar fuera
     de Colombia;

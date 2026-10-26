@@ -197,38 +197,16 @@ export const quoteText = (tr: Tr) => ({
   ),
   autorizacionDatos: tr("Autorización de datos", "Data authorization"),
   // Envío automático de la solicitud a un asesor (Zoho Desk) al llegar al final
-  enviandoSolicitud: tr("Enviando tu solicitud…", "Sending your request…", {
-    fr: "Envoi de votre demande…",
-    de: "Ihre Anfrage wird gesendet…",
-    it: "Invio della tua richiesta…",
-    ar: "جارٍ إرسال طلبك…",
-  }),
+  enviandoSolicitud: tr("Enviando tu solicitud…", "Sending your request…"),
   solicitudEnviadaAsesor: tr(
     "¡Enviada! Un asesor revisará tu solicitud y te contactará pronto.",
     "Sent! An advisor will review your request and contact you soon.",
-    {
-      fr: "Envoyée ! Un conseiller examinera votre demande et vous contactera bientôt.",
-      de: "Gesendet! Ein Berater prüft Ihre Anfrage und meldet sich bald bei Ihnen.",
-      it: "Inviata! Un consulente esaminerà la tua richiesta e ti contatterà presto.",
-      ar: "تم الإرسال! سيراجع أحد المستشارين طلبك وسيتواصل معك قريبًا.",
-    },
   ),
   noPudimosEnviarSolicitud: tr(
     "No pudimos enviar tu solicitud. Inténtalo de nuevo.",
     "We couldn't send your request. Please try again.",
-    {
-      fr: "Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.",
-      de: "Wir konnten Ihre Anfrage nicht senden. Bitte versuchen Sie es erneut.",
-      it: "Non siamo riusciti a inviare la tua richiesta. Riprova.",
-      ar: "لم نتمكن من إرسال طلبك. حاول مرة أخرى.",
-    },
   ),
-  reintentar: tr("Reintentar", "Try again", {
-    fr: "Réessayer",
-    de: "Erneut versuchen",
-    it: "Riprova",
-    ar: "إعادة المحاولة",
-  }),
+  reintentar: tr("Reintentar", "Try again"),
   hacerOtraSolicitud: tr("Hacer otra solicitud", "Start a new request"),
   paso: tr("Paso", "Step"),
   stepOf: tr("de", "of"),

@@ -8,8 +8,6 @@ import { contactHref } from "@/data/contact";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
 
 export const NAME = "Joelito";
-// En árabe el nombre se escribe en su alfabeto
-const AR_NAME = "جويليتو";
 
 export type ChatData = Record<string, string>;
 export type ChatAction = {
@@ -122,12 +120,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
       tr(
         `Hola Transpack, soy ${d.nombre || ""}. ${NAME} (asesor virtual) me ayudó a preparar esta solicitud:`,
         `Hello Transpack, I'm ${d.nombre || ""}. ${NAME} (virtual advisor) helped me prepare this request:`,
-        {
-          fr: `Bonjour Transpack, je suis ${d.nombre || ""}. ${NAME} (conseiller virtuel) m'a aidé à préparer cette demande :`,
-          de: `Hallo Transpack, ich bin ${d.nombre || ""}. ${NAME} (virtueller Berater) hat mir geholfen, diese Anfrage vorzubereiten:`,
-          it: `Ciao Transpack, sono ${d.nombre || ""}. ${NAME} (consulente virtuale) mi ha aiutato a preparare questa richiesta:`,
-          ar: `مرحبًا ترانسباك، أنا ${d.nombre || ""}. ساعدني ${AR_NAME} (المستشار الافتراضي) في إعداد هذا الطلب:`,
-        },
       ),
       "",
       summary(d),
@@ -165,12 +157,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         tr(
           `¡Hola! Soy ${NAME}, el asesor virtual de Transpack.`,
           `Hi! I'm ${NAME}, Transpack's virtual advisor.`,
-          {
-            fr: `Bonjour ! Je suis ${NAME}, le conseiller virtuel de Transpack.`,
-            de: `Hallo! Ich bin ${NAME}, der virtuelle Berater von Transpack.`,
-            it: `Ciao! Sono ${NAME}, il consulente virtuale di Transpack.`,
-            ar: `مرحبًا! أنا ${AR_NAME}، المستشار الافتراضي لترانسباك.`,
-          },
         ),
         tr(
           "¿Te vas a mudar y no sabes por dónde empezar? Cuéntame a dónde vas y cuándo: resuelvo tus dudas y te ayudo a cotizar en pocos minutos.",
@@ -458,12 +444,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         tr(
           `Gracias, ${d.nombre}. ¿A qué número de celular o WhatsApp te puede contactar un asesor?`,
           `Thank you, ${d.nombre}. What mobile or WhatsApp number can an advisor reach you at?`,
-          {
-            fr: `Merci, ${d.nombre}. À quel numéro de portable ou WhatsApp un conseiller peut-il vous joindre ?`,
-            de: `Danke, ${d.nombre}. Unter welcher Handy- oder WhatsApp-Nummer kann Sie ein Berater erreichen?`,
-            it: `Grazie, ${d.nombre}. A quale numero di cellulare o WhatsApp può contattarti un consulente?`,
-            ar: `شكرًا يا ${d.nombre}. على أي رقم هاتف محمول أو واتساب يمكن لمستشار التواصل معك؟`,
-          },
         ),
         tr(
           "Con tu solicitud, nuestro equipo comercial te contactará para darte seguimiento.",
@@ -494,12 +474,6 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
         tr(
           `¡Gracias, ${d.nombre}! Este es el resumen de tu solicitud:`,
           `Thank you, ${d.nombre}! Here is a summary of your request:`,
-          {
-            fr: `Merci, ${d.nombre} ! Voici le récapitulatif de votre demande :`,
-            de: `Vielen Dank, ${d.nombre}! Hier ist die Zusammenfassung Ihrer Anfrage:`,
-            it: `Grazie, ${d.nombre}! Ecco il riepilogo della tua richiesta:`,
-            ar: `شكرًا لك يا ${d.nombre}! إليك ملخص طلبك:`,
-          },
         ),
         summary(d),
         tr(
@@ -604,12 +578,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
           href: waLink(),
         },
         {
-          label: tr(`Llamar al ${CONTACT.phones[0]}`, `Call +57 ${CONTACT.phones[0]}`, {
-            fr: `Appeler le +57 ${CONTACT.phones[0]}`,
-            de: `+57 ${CONTACT.phones[0]} anrufen`,
-            it: `Chiama il +57 ${CONTACT.phones[0]}`,
-            ar: `اتصل على \u200E+57 ${CONTACT.phones[0]}`,
-          }),
+          label: tr(`Llamar al ${CONTACT.phones[0]}`, `Call +57 ${CONTACT.phones[0]}`),
           icon: "telephone",
           href: `tel:+57${CONTACT.phones[0].replace(/\s/g, "")}`,
         },
@@ -633,45 +602,20 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
 // Textos de la interfaz del chat (invitación, botón, ventana y campo de texto)
 export const chatText = (tr: Tr) => ({
   // En los mensajes de Joel, esta frase enlaza a /privacidad (ChatBubble)
-  policyPhrase: tr("política de datos", "privacy policy", {
-    fr: "politique de données",
-    de: "Datenschutzrichtlinie",
-    it: "informativa privacy",
-    ar: "سياسة البيانات",
-  }),
+  policyPhrase: tr("política de datos", "privacy policy"),
   closeTeaser: tr("Cerrar invitación", "Close invitation"),
-  teaserHello: tr(`¡Hola! Soy ${NAME}.`, `Hi! I'm ${NAME}.`, {
-    fr: `Bonjour ! Je suis ${NAME}.`,
-    de: `Hallo! Ich bin ${NAME}.`,
-    it: `Ciao! Sono ${NAME}.`,
-    ar: `مرحبًا! أنا ${AR_NAME}.`,
-  }),
+  teaserHello: tr(`¡Hola! Soy ${NAME}.`, `Hi! I'm ${NAME}.`),
   teaserText: tr(
     "¿Planeas una mudanza? Te ayudo a organizarla.",
     "Planning a move? I can help you organize it.",
   ),
-  talkTo: tr(`Hablar con ${NAME}`, `Talk to ${NAME}`, {
-    fr: `Parler à ${NAME}`,
-    de: `Mit ${NAME} sprechen`,
-    it: `Parla con ${NAME}`,
-    ar: `تحدث مع ${AR_NAME}`,
-  }),
+  talkTo: tr(`Hablar con ${NAME}`, `Talk to ${NAME}`),
   closeChat: tr("Cerrar chat", "Close chat"),
-  openChat: tr(`Hablar con ${NAME}, asesor virtual`, `Talk to ${NAME}, virtual advisor`, {
-    fr: `Parler à ${NAME}, conseiller virtuel`,
-    de: `Mit ${NAME} sprechen, virtueller Berater`,
-    it: `Parla con ${NAME}, consulente virtuale`,
-    ar: `تحدث مع ${AR_NAME}، المستشار الافتراضي`,
-  }),
+  openChat: tr(`Hablar con ${NAME}, asesor virtual`, `Talk to ${NAME}, virtual advisor`),
   close: tr("Cerrar", "Close"),
   ai: tr("IA", "AI"),
   online: tr("En línea", "Online"),
-  window: tr(`Chat con ${NAME}`, `Chat with ${NAME}`, {
-    fr: `Discussion avec ${NAME}`,
-    de: `Chat mit ${NAME}`,
-    it: `Chat con ${NAME}`,
-    ar: `محادثة مع ${AR_NAME}`,
-  }),
+  window: tr(`Chat con ${NAME}`, `Chat with ${NAME}`),
   role: tr("Asesor virtual", "Virtual advisor"),
   status: tr("Transpack · Responde al instante", "Transpack · Answers instantly"),
   restart: tr("Reiniciar conversación", "Restart conversation"),
@@ -695,12 +639,7 @@ export const chatText = (tr: Tr) => ({
     "Done, an advisor will reply here shortly.",
   ),
   advisorJoined: (name: string) =>
-    tr(`${name} se unió a la conversación.`, `${name} joined the conversation.`, {
-      fr: `${name} a rejoint la conversation.`,
-      de: `${name} ist dem Gespräch beigetreten.`,
-      it: `${name} si è unito alla conversazione.`,
-      ar: `انضم ${name} إلى المحادثة.`,
-    }),
+    tr(`${name} se unió a la conversación.`, `${name} joined the conversation.`),
   advisorBusy: tr(
     "Nuestros asesores están ocupados en este momento. Puedes seguir esperando aquí o escribirnos por otro canal:",
     "Our advisors are busy right now. You can keep waiting here or reach us another way:",
@@ -722,12 +661,7 @@ export const chatText = (tr: Tr) => ({
     "Your message couldn't be sent. Please try again.",
   ),
   advisorBanner: tr("Chat con un asesor de Transpack", "Chat with a Transpack advisor"),
-  advisorEnd: tr("Volver con Joelito", "Back to Joelito", {
-    fr: "Revenir à Joelito",
-    de: "Zurück zu Joelito",
-    it: "Torna da Joelito",
-    ar: "العودة إلى جويليتو",
-  }),
+  advisorEnd: tr("Volver con Joelito", "Back to Joelito"),
   advisorPlaceholder: tr("Escribe tu mensaje al asesor…", "Write your message to the advisor…"),
   advisorLabel: tr("Asesor", "Advisor"),
   advisorForm: tr(
@@ -742,12 +676,6 @@ export const chatText = (tr: Tr) => ({
     tr(
       `Listo, tu cotización ya está con un asesor. Te contactará al ${phone}; si sigues aquí, también te puede escribir en este chat.`,
       `Done, your quote is now with an advisor. They'll contact you at ${phone}; if you're still here, they can also write to you in this chat.`,
-      {
-        fr: `C'est fait, votre devis est entre les mains d'un conseiller. Il vous contactera au ${phone} ; si vous êtes encore là, il peut aussi vous écrire dans ce chat.`,
-        de: `Erledigt, Ihr Angebot liegt jetzt bei einem Berater. Er kontaktiert Sie unter ${phone}; wenn Sie noch hier sind, kann er Ihnen auch in diesem Chat schreiben.`,
-        it: `Fatto, il tuo preventivo è ora nelle mani di un consulente. Ti contatterà al ${phone}; se sei ancora qui, può scriverti anche in questa chat.`,
-        ar: `تم، أصبح طلب عرض السعر لدى أحد المستشارين. سيتواصل معك على الرقم ${phone}، وإذا كنت لا تزال هنا يمكنه أيضًا مراسلتك في هذه المحادثة.`,
-      },
     ),
   sendToAdvisor: tr("Enviar a un asesor", "Send to an advisor"),
   quoteSendFail: tr(

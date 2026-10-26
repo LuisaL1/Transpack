@@ -15,7 +15,6 @@ export function SeoHead() {
     const m = getPageMeta(pathname);
     const html = document.documentElement;
     html.lang = LANG_INFO[m.lang].locale;
-    html.dir = LANG_INFO[m.lang].dir;
     document.head.querySelectorAll("[data-seo]").forEach((el) => el.remove());
     const add = <K extends keyof HTMLElementTagNameMap>(
       tag: K,

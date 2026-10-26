@@ -169,11 +169,11 @@ describe("/api/contact", () => {
     expect(conf.tags).toEqual(["sitio-contacto-confirmacion"]);
 
     f.mockClear();
-    await POST(req({ ...valid, kind: "cotizacion", lang: "de", about: "Internationaler Umzug" }));
-    const de = sentBody(f, 1);
-    expect(de.subject).toMatch(/Wir haben Ihre Anfrage erhalten/);
-    expect(de.htmlContent).toMatch(/<strong[^>]*>Internationaler Umzug<\/strong>/);
-    expect(de.htmlContent).toContain("https://www.transpacksas.com/de/datenschutz");
+    await POST(req({ ...valid, kind: "cotizacion", lang: "en", about: "International moving" }));
+    const en = sentBody(f, 1);
+    expect(en.subject).toMatch(/We received your request/);
+    expect(en.htmlContent).toMatch(/<strong[^>]*>International moving<\/strong>/);
+    expect(en.htmlContent).toContain("https://www.transpacksas.com/en/privacy");
     expect(sentBody(f).tags).toEqual(["sitio-cotizacion"]);
   });
 
@@ -252,9 +252,8 @@ describe("/api/contact · diseño de los correos", () => {
     expect(r('evil.com"><script>')).toBe(BRAND.site);
   });
 
-  it("la plantilla escapa el título y respeta el árabe de derecha a izquierda", () => {
+  it("la plantilla escapa el título", () => {
     expect(layout("https://a.co", "<b>x</b>", "")).toContain("&lt;b&gt;x&lt;/b&gt;");
-    expect(confirmation("contacto", "Ali", {}, "ar").html).toContain('dir="rtl"');
   });
 
   it("el banner existe, mide 1120 × 220 px y pesa menos de 60 KB", () => {

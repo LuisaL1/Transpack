@@ -334,10 +334,6 @@ export const footerText = (tr: Tr) => ({
 export const REGIONS: Record<Lang, string> = {
   es: "Latinoamérica y España",
   en: "International",
-  fr: "France et Canada",
-  de: "Deutschland",
-  it: "Italia",
-  ar: "الشرق الأوسط",
 };
 export const regionLabel = (l: Lang) => `${REGIONS[l]} (${LANG_INFO[l].name})`;
 

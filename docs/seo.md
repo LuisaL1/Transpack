@@ -7,7 +7,7 @@
 | HTML pre-generado por ruta | `src/entry-server.tsx`, `scripts/prerender.mjs`  | 72 páginas (12 por idioma × 6 idiomas) + `404.html`, con el contenido ya renderizado: los buscadores y las redes lo leen sin ejecutar JavaScript.                                                                                                                                                          |
 | Idioma por página          | `<html lang dir>` en cada HTML                   | `es-CO`, `en-US`, `fr-FR`, `de-DE`, `it-IT` y `ar` (de derecha a izquierda).                                                                                                                                                                                                                               |
 | Metadatos                  | `src/seo/meta.ts` (textos en `src/data/meta.ts`) | Título único (30–70 caracteres, palabra clave + ciudad + marca), descripción única (70–160), canónica absoluta, robots, Open Graph, Twitter.                                                                                                                                                               |
-| Idiomas (hreflang)         | `meta.ts` + `sitemap.xml`                        | Cada página enlaza su versión en los seis idiomas y `x-default` (español), recíprocos.                                                                                                                                                                                                                     |
+| Idiomas (hreflang)         | `meta.ts` + `sitemap.xml`                        | Cada página enlaza su versión en español e inglés y `x-default` (español), recíprocos.                                                                                                                                                                                                                     |
 | Datos estructurados        | `meta.ts` (JSON-LD en `@graph`)                  | Empresa (`MovingCompany`, un `LocalBusiness`) y `WebSite` en todas las páginas, más el tipo de cada página (ver abajo).                                                                                                                                                                                    |
 | Datos de la empresa        | `src/seo/site.ts`                                | Salen de `CONTACT`, `SLOGAN` y `STATS` (`src/data/site.ts`): razón social, dirección, teléfonos, correo, redes y año de fundación.                                                                                                                                                                         |
 | Navegación interna         | `SeoHead` (`src/components/layout/SeoHead.tsx`)  | Al cambiar de página actualiza idioma, título y todas las etiquetas (sin `innerHTML`). Va antes de `AnalyticsTracker`, para que `page_view` lleve el título correcto.                                                                                                                                      |
@@ -62,7 +62,7 @@ que no pre-genera), renderiza desde cero.
 
 - **Ruta nueva**:
   - agréguela en `App.tsx`, en `getPageMeta` y en `PUBLIC_ROUTES`
-    (`src/seo/meta.ts`), con título y descripción en los seis idiomas;
+    (`src/seo/meta.ts`), con título y descripción en español e inglés;
   - si es de otro idioma, agregue sus slugs en `src/i18n/index.ts`;
   - las pruebas avisan si falta algo.
 - **Nada de `window`, `document`, `localStorage` ni `matchMedia` durante el

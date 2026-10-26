@@ -87,7 +87,7 @@ export function PrivacyPage() {
           <Link to={lp("/")} className="hover:text-white">
             {t.inicio}
           </Link>
-          <Bi n="chevron-right" className="text-[0.7rem] rtl:rotate-180" />
+          <Bi n="chevron-right" className="text-[0.7rem]" />
           <span className="text-white">{PRIVACY.title}</span>
         </nav>
         <div className="animate-fade-up max-w-3xl">

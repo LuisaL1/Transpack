@@ -3,14 +3,14 @@ import { routeChat } from "@/lib/chatRoute";
 import { buildChat } from "@/data/chat";
 import { LANGS } from "@/i18n";
 
-// Chat en inglés, francés, alemán, italiano y árabe: palabras clave → paso del chat guiado
-describe("Chat en otros idiomas", () => {
+// Chat en inglés: palabras clave → paso del chat guiado
+describe("Chat en inglés", () => {
   it("lleva cada intención al paso correcto", () => {
     expect(routeChat("I need to talk to an advisor").next).toBe("human");
     expect(routeChat("We are an embassy").next).toBe("corp");
-    expect(routeChat("Je cherche un garde-meuble").next).toBe("bod_que");
-    expect(routeChat("Umzug ins Ausland").set?.servicio).toBe("internacional");
-    expect(routeChat("كم يستغرق").next).toBe("faq_answer");
+    expect(routeChat("I need storage").next).toBe("bod_que");
+    expect(routeChat("Moving abroad").set?.servicio).toBe("internacional");
+    expect(routeChat("How long does it take").next).toBe("faq_answer");
     expect(routeChat("asdfgh").next).toBe("fallback");
   });
 

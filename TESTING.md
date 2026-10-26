@@ -91,7 +91,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - títulos únicos (30–70 caracteres, con marca, y ciudad en los servicios);
   - descripciones únicas (70–160 caracteres);
   - canónicas absolutas sin barra final;
-  - hreflang recíproco en seis idiomas + x-default;
+  - hreflang recíproco en español e inglés + x-default;
   - imagen absoluta;
   - `noindex` mientras no se active la indexación;
   - 404 (con `noindex` y sin hreflang) para rutas desconocidas o no canónicas;
@@ -101,16 +101,14 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - recorte de textos (`clip`) y escape seguro del `<head>`.
 - `content.test.ts` — integridad de `src/data/` y reglas de `AGENTS.md`:
   - slugs únicos;
-  - cada servicio con página en los seis idiomas;
+  - cada servicio con página en español e inglés;
   - cada servicio y segmento con un tipo de cotización existente;
   - el menú apunta a servicios y segmentos que existen;
   - todos los idiomas con los mismos servicios, segmentos, niveles, pasos,
     preguntas, cifras y artículos;
   - la política de datos con las mismas secciones en cada idioma, el aviso de
     que manda la versión en español y el mismo correo y dirección de contacto;
-  - cada destino del mapa con su nombre en los seis idiomas;
-  - **todos los textos cortos traducidos** en `src/i18n/dict` (salvo los
-    pendientes conocidos, abajo);
+  - cada destino del mapa con su nombre en inglés;
   - los países marcados como embajada son exactamente los de `EMBASSIES`;
   - **sin precios**, sin certificaciones no reales (ISO 9001, FIDI, BASC, OEA);
   - **cifras coherentes con `STATS`** (58 años, 176 países, 2.000 agentes);
@@ -173,9 +171,8 @@ Además:
 ### 4. Funcionamiento de extremo a extremo (`tests/e2e/`)
 
 - `smoke.spec.ts`:
-  - cada ruta (español, inglés, francés, alemán y árabe) carga sin errores de
-    JavaScript ni recursos rotos, con título y `<h1>`;
-  - el árabe va de derecha a izquierda;
+  - cada ruta (español e inglés) carga sin errores de JavaScript ni recursos
+    rotos, con título y `<h1>`;
   - una ruta inexistente muestra la 404.
 - `flows.spec.ts`:
   - menú Servicios → página del servicio (escritorio y menú móvil);
@@ -199,7 +196,7 @@ Además:
   - cambio de idioma conservando la página.
 
 - `seo.spec.ts`:
-  - **sin JavaScript**, las rutas clave (español, inglés y árabe) traen idioma,
+  - **sin JavaScript**, las rutas clave (español e inglés) traen idioma,
     título, H1, canónica, JSON-LD y hreflang;
   - al navegar cambian el título, la canónica y los hreflang, sin duplicar
     etiquetas;
@@ -212,8 +209,8 @@ Además:
 
 ### 5. Accesibilidad (`tests/e2e/a11y.spec.ts`)
 
-axe-core con WCAG 2.1 A/AA en inicio, Nosotros, un servicio, un artículo, inglés
-y árabe. Bloquea con cualquier problema crítico o grave. Para que axe vea todo
+axe-core con WCAG 2.1 A/AA en inicio, Nosotros, un servicio, un artículo e
+inglés. Bloquea con cualquier problema crítico o grave. Para que axe vea todo
 el contenido, las animaciones se desactivan (`prefers-reduced-motion`).
 
 ## Pendientes conocidos
@@ -237,18 +234,10 @@ cumple AA). Una vez corregido, active el
 modo estricto (`A11Y_STRICT=1 pnpm test:e2e`) y déjelo fijo en
 `tests/e2e/a11y.spec.ts`.
 
-### Traducciones
-
-Dos etiquetas de accesibilidad de la franja de idiomas no tienen traducción en
-francés, alemán, italiano ni árabe y se leen en inglés: "Choose region and
-language" y "Region and language". Están en la lista `PENDING` de
-`tests/unit/content.test.ts`: al traducirlas en `src/i18n/dict/*.ts`, quítelas de
-esa lista.
-
 ## Al agregar funcionalidad
 
-1. Texto o contenido nuevo → en `src/data/` (con `tr("es", "en")` y su
-   traducción en `src/i18n/dict/*.ts`); las pruebas de contenido lo validan solas.
+1. Texto o contenido nuevo → en `src/data/` (con `tr("es", "en")`); las pruebas de
+   contenido lo validan solas.
 2. Lógica nueva → en `src/lib/` o `src/hooks/`, con su prueba en `tests/unit/`.
 3. Página o recorrido nuevo → agregue la ruta a `smoke.spec.ts` y `a11y.spec.ts`
    y, si tiene interacción, un caso en `flows.spec.ts`.
