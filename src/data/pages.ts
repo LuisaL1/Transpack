@@ -7,7 +7,7 @@ export const serviceDetailText = (tr: Tr) => ({
   ruta: tr("Ruta", "Breadcrumb"),
   inicio: tr("Inicio", "Home"),
   servicios: tr("Servicios", "Services"),
-  escribenos: tr("Escríbenos", "Message us"),
+  escribenos: tr("WhatsApp", "WhatsApp"),
   servicio: tr("El servicio", "The service"),
   comoHacemos: tr("¿Cómo lo hacemos?", "How do we do it?"),
   incluye: tr("Qué incluye", "What's included"),
