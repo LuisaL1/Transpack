@@ -214,6 +214,10 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   naranja a rojizo. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
+- Mapa del inicio (`WorldMap` sobre el panel azul de marca del `Hero`, el mismo
+  del selector de servicios): países
+  en blanco translúcido, **Estados Unidos iluminado** en naranja claro (capa
+  `LAND_USA`, pedido del cliente), Colombia en naranja.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat de Joel: **sin degradados**, mismo estilo de los menús (cabecera azul
   sólida con el cuadrado naranja translúcido girado 45°, rótulo naranja en

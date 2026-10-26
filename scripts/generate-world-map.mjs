@@ -168,7 +168,8 @@ const hotIds = new Set([...DEST.map((d) => d.id), ...SOUTH_AMERICA, ...AFRICA, .
 const keyOf = (f) => f.id ?? f.properties.name;
 
 // Siluetas de los países (rellenos sólidos, como un mapa político), agrupadas
-// en tres capas: resto del mundo, países y regiones donde opera, y Colombia.
+// en cuatro capas: resto del mundo, países y regiones donde opera, Estados
+// Unidos y Colombia.
 // Coordenadas con un decimal: suficiente a este tamaño y mantiene el archivo liviano.
 const path = geoPath(proj).digits(1);
 const layer = (pick) =>
@@ -176,8 +177,12 @@ const layer = (pick) =>
     .filter(pick)
     .map((f) => path(f))
     .join("");
+// Estados Unidos va en su propia capa: es el principal mercado y el cliente
+// pidió verlo "iluminado" en el mapa (oct. 2026)
+const USA_ID = "840";
 const base = layer((f) => f.id !== ORIGIN.id && !hotIds.has(keyOf(f)));
-const hot = layer((f) => f.id !== ORIGIN.id && hotIds.has(keyOf(f)));
+const hot = layer((f) => f.id !== ORIGIN.id && f.id !== USA_ID && hotIds.has(keyOf(f)));
+const usa = layer((f) => f.id === USA_ID);
 const origin = layer((f) => f.id === ORIGIN.id);
 const n = countries.length;
 const pt = (ll) => proj(ll).map((v) => +v.toFixed(1));
@@ -193,6 +198,8 @@ export const MAP_H = ${H};
 export const LAND_BASE = "${base}";
 /** Siluetas de los países y regiones con operación (destinos, Suramérica, África y Asia) */
 export const LAND_HOT = "${hot}";
+/** Silueta de Estados Unidos (principal mercado: se ilumina aparte) */
+export const LAND_USA = "${usa}";
 /** Silueta de Colombia */
 export const LAND_ORIGIN = "${origin}";
 

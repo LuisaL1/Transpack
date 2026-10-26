@@ -82,14 +82,19 @@ export function Hero() {
         className={`${container} relative mt-10 grid items-center gap-8 overflow-hidden rounded-[28px] bg-white p-5 shadow-[0_2px_8px_rgba(13,15,51,.08),0_24px_50px_-18px_rgba(39,43,124,.35),0_60px_120px_-40px_rgba(13,15,51,.45)] ring-1 ring-azul/10 md:mt-12 md:p-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-8`}
       >
         <div className="order-2 min-w-0 lg:order-1">
-          {/* Panel del mapa: fondo gris claro de marca */}
-          <div className="relative overflow-hidden rounded-[22px] bg-gris p-4 ring-1 ring-linea md:p-5">
+          {/* Panel del mapa: el mismo azul sólido del selector de servicios, con
+              una trama fina de puntos, para que el mapa resalte sobre el tablero */}
+          <div className="relative overflow-hidden rounded-[22px] bg-azul p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.1)] md:p-5">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,.12)_1px,transparent_1.5px)] bg-[size:14px_14px] [mask-image:radial-gradient(70%_70%_at_50%_50%,#000_30%,transparent_100%)]"
+            />
             <div className="relative mb-2 flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="flex items-center gap-2 font-title text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-naranja">
                   <Bi n="globe-americas" /> {m.eyebrow}
                 </p>
-                <p className="font-title text-[1.15rem] font-semibold leading-tight text-tinta">
+                <p className="font-title text-[1.15rem] font-semibold leading-tight text-white">
                   {m.title}
                 </p>
               </div>
@@ -122,10 +127,10 @@ export function Hero() {
               {t.legend.origin}
             </span>
             <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-3.5 rounded-[3px] bg-suave/60" /> {t.legend.operate}
+              <span className="h-2.5 w-3.5 rounded-[3px] bg-azul/45" /> {t.legend.operate}
             </span>
             <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-tinta ring-2 ring-white" />{" "}
+              <span className="h-2.5 w-2.5 rounded-full bg-white ring-2 ring-tinta" />{" "}
               {t.legend.network}
             </span>
           </div>

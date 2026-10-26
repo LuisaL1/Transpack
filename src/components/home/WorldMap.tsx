@@ -1,14 +1,23 @@
 // Mapamundi con rutas desde Bogotá hacia los países donde Transpack ha operado.
 // Las siluetas de los países vienen precalculadas en src/data/worldMap.ts
-// (pnpm map). Versión clara (va sobre el tablero blanco del hero), como un mapa
-// político: países en dos tonos de gris con bordes blancos (más oscuro donde
-// opera), destinos en tinta oscura y el naranja de marca solo para Colombia,
-// Bogotá y el destino resaltado.
+// (pnpm map). Va sobre el panel azul de marca del hero, como un mapa político
+// de noche: países en blanco translúcido (más claros donde opera), Estados
+// Unidos iluminado en naranja claro (principal mercado, pedido del cliente),
+// destinos en blanco y el naranja de marca para Colombia, Bogotá y el destino
+// resaltado.
 import { useEffect, useState } from "react";
 import { useLang } from "@/i18n";
 import { mapText } from "@/data/home";
 import { useDestinationName } from "@/hooks/useContent";
-import { DESTINATIONS, LAND_BASE, LAND_HOT, LAND_ORIGIN, MAP_W, ORIGIN } from "@/data/worldMap";
+import {
+  DESTINATIONS,
+  LAND_BASE,
+  LAND_HOT,
+  LAND_ORIGIN,
+  LAND_USA,
+  MAP_W,
+  ORIGIN,
+} from "@/data/worldMap";
 
 // Curva que sale de Bogotá y se eleva según la distancia al destino
 const arc = (x: number, y: number) => {
@@ -67,11 +76,14 @@ export function WorldMap({
           </radialGradient>
         </defs>
 
-        {/* Países: bordes blancos finos entre países, como un mapa político */}
-        <g stroke="#ffffff" strokeWidth=".6" strokeLinejoin="round">
-          <path d={LAND_BASE} fill="#6B6E8A" fillOpacity=".28" />
-          <path d={LAND_HOT} fill="#6B6E8A" fillOpacity=".62" />
-          <path d={LAND_ORIGIN} fill="#FF7619" fillOpacity=".85" />
+        {/* Países: bordes azul noche finos entre países, como un mapa político */}
+        <g stroke="#1b1e5c" strokeWidth=".5" strokeLinejoin="round">
+          <path d={LAND_BASE} fill="#ffffff" fillOpacity=".14" />
+          <path d={LAND_HOT} fill="#ffffff" fillOpacity=".4" />
+          {/* Estados Unidos iluminado: halo difuso debajo y silueta nítida encima */}
+          <path d={LAND_USA} fill="#FFB27A" fillOpacity=".7" stroke="none" style={{ filter: "blur(9px)" }} />
+          <path d={LAND_USA} fill="#FFB27A" fillOpacity=".95" />
+          <path d={LAND_ORIGIN} fill="#FF7619" fillOpacity=".95" />
         </g>
 
         {/* Rutas */}
@@ -83,16 +95,16 @@ export function WorldMap({
               <path
                 d={path}
                 fill="none"
-                stroke={on ? "#ff7619" : "#272B7C"}
-                strokeOpacity={on ? 1 : 0.28}
+                stroke={on ? "#ff7619" : "#ffffff"}
+                strokeOpacity={on ? 1 : 0.3}
                 strokeWidth={on ? 2 : 1.2}
                 className="route transition-all duration-500"
                 style={{ animationDuration: `${2.6 + (i % 3) * 0.6}s` }}
               />
               <circle
                 r={on ? 3.6 : 2.2}
-                fill={on ? "#ff7619" : "#272B7C"}
-                fillOpacity={on ? 1 : 0.55}
+                fill={on ? "#ff7619" : "#ffffff"}
+                fillOpacity={on ? 1 : 0.7}
               >
                 <animateMotion
                   dur={`${3.2 + (i % 4) * 0.7}s`}
@@ -126,9 +138,9 @@ export function WorldMap({
               cx={d.x}
               cy={d.y}
               r={i === current ? 5.5 : 3.6}
-              fill={i === current ? "#ff7619" : "#1D2050"}
-              stroke="#fff"
-              strokeWidth="1.6"
+              fill={i === current ? "#ff7619" : "#ffffff"}
+              stroke={i === current ? "#fff" : "#1D2050"}
+              strokeWidth="1.4"
               className="transition-all duration-300"
             />
           </g>
@@ -156,7 +168,7 @@ export function WorldMap({
         <span
           key={d.name}
           aria-hidden={i !== current}
-          className={`pointer-events-none absolute whitespace-nowrap rounded-full bg-tinta px-3 py-1 text-[0.72rem] font-semibold text-white shadow-lg transition-all duration-500 sm:text-xs ${
+          className={`pointer-events-none absolute whitespace-nowrap rounded-full bg-white px-3 py-1 text-[0.72rem] font-semibold text-tinta shadow-lg transition-all duration-500 sm:text-xs ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
           style={{
