@@ -19,7 +19,6 @@ export function AdvisorChat() {
     setOpen,
     advisor,
     live,
-    endAdvisor,
     teaser,
     setTeaser,
     msgs,
@@ -87,21 +86,6 @@ export function AdvisorChat() {
               <Bi n="x-lg" />
             </button>
           </header>
-
-          {/* Chat con un asesor dentro de Joel */}
-          {live !== "off" && (
-            <div className="flex items-center gap-2 border-b border-linea bg-beige px-4 py-2 text-[0.78rem] font-semibold text-violeta">
-              <Bi n="headset" className="text-naranja" />
-              <span className="flex-1">{t.advisorBanner}</span>
-              <button
-                type="button"
-                onClick={endAdvisor}
-                className="rounded-lg px-2 py-1 text-azul underline-offset-2 hover:underline"
-              >
-                {t.advisorEnd}
-              </button>
-            </div>
-          )}
 
           <div className="flex-1 space-y-3 overflow-y-auto bg-gris p-4" aria-live="polite">
             {msgs.map((m, i) => (

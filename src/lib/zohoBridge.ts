@@ -13,7 +13,14 @@
 // · Depende de la estructura interna de la ventana de Zoho (clases y atributos
 //   data-zsqa). Si Zoho la cambia, startBridge falla y Joel abre la ventana de
 //   Zoho como respaldo.
-import { announce, loadCrmChat, setBridging, styleChatWindow, zohoWindow } from "@/lib/crmChat";
+import {
+  announce,
+  loadCrmChat,
+  setBridging,
+  styleChatWindow,
+  triggerAdvisorStart,
+  zohoWindow,
+} from "@/lib/crmChat";
 
 export type BridgeMessage = {
   id: string;
@@ -77,8 +84,12 @@ function type(doc: Document, text: string): boolean {
   return true;
 }
 
-/** Abre la conversación en el Zoho escondido, envía la pregunta y empieza a escuchar. */
-export async function startBridge(question: string, h: BridgeHandlers): Promise<Bridge> {
+/**
+ * Abre la conversación en el Zoho escondido y empieza a escuchar. Si se pasa una
+ * `question`, la escribe como primer mensaje; sin ella, no envía nada y deja que
+ * el bot de Zoho salude primero (así el chat abre directo con un asesor).
+ */
+export async function startBridge(question: string | undefined, h: BridgeHandlers): Promise<Bridge> {
   setBridging(true);
   try {
     return await connect(question, h);
@@ -88,7 +99,7 @@ export async function startBridge(question: string, h: BridgeHandlers): Promise<
   }
 }
 
-async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
+async function connect(question: string | undefined, h: BridgeHandlers): Promise<Bridge> {
   const z = await loadCrmChat();
   z.floatwindow?.visible("show");
   styleChatWindow();
@@ -114,7 +125,7 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   // de texto unos segundos mientras pasa la conversación a los asesores.
   // Se envía uno a la vez y se confirma que aparezca en la conversación de Zoho
   // antes de seguir (Zoho pierde envíos muy seguidos).
-  const queue: { text: string; at: number }[] = [{ text: question, at: Date.now() }];
+  const queue: { text: string; at: number }[] = question ? [{ text: question, at: Date.now() }] : [];
   const QUEUE_MS = 60_000;
   const VISITOR = '[data-zsqa="visitor_msg message_bubble"]';
   // Zoho cambia el texto al mostrarlo (saltos de línea, emojis como imagen…):
@@ -137,8 +148,9 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   // no se pudo confirmar, reintentar sin límite lo repetiría sin fin.
   const MAX_TRIES = 3;
   let tries = 0;
-  // El primer mensaje (la pregunta): startBridge espera a que Zoho lo confirme
-  let first: "pending" | "ok" | "failed" = "pending";
+  // El primer mensaje (la pregunta): startBridge espera a que Zoho lo confirme.
+  // Sin pregunta, la conexión se da por buena en cuanto la ventana está lista.
+  let first: "pending" | "ok" | "failed" = question ? "pending" : "ok";
   let inFlight: { before: number; total: number; at: number } | null = null;
   const flush = () => {
     if (!queue.length) return;
@@ -213,6 +225,10 @@ async function connect(question: string, h: BridgeHandlers): Promise<Bridge> {
   // Revisión periódica: procesa los mensajes que ya quedaron completos
   const timer = window.setInterval(scan, 400);
   scan();
+
+  // Sin pregunta inicial: se avisa a Zoho con la acción personalizada para que
+  // su bot proactivo salude solo, sin enviar ningún mensaje del visitante.
+  if (!question) triggerAdvisorStart();
 
   // Solo hay conversación si Zoho recibió la pregunta: si no, se deja todo
   // como estaba y Joel ofrece otro canal (en vez de decir "Listo").
