@@ -19,7 +19,6 @@ import { useSite } from "@/hooks/useContent";
 import { LANG_INFO, makeTr, useLang, type Lang } from "@/i18n";
 import { Bi, btn } from "@/components/ui";
 import { Chips, Field, inputCls, Label } from "@/components/home/QuoteFields";
-import { track } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
 import { sendLead } from "@/lib/leads";
 import { contactFormText } from "@/data/contact";
@@ -132,15 +131,11 @@ export function QuoteWizard({
       ...(lvl ? { nivel: lvl } : {}),
     }));
     setDone(false);
-    if (valid) {
-      setStep((s) => (s === 1 ? 2 : s));
-      track("quote", initialService!);
-    }
+    if (valid) setStep((s) => (s === 1 ? 2 : s));
   }, [initialService, initialLevel, SERVICE_OPTIONS, LEVELS]);
 
   const pickService = (v: QuoteService) => {
     set("servicio", v);
-    track("quote", v);
     setError(null);
     setTimeout(() => setStep(2), 220);
   };

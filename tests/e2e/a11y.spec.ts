@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Accesibilidad automática (WCAG 2.1 A/AA) con axe.
 // - Bloquean: todos los problemas críticos o graves, excepto el contraste.

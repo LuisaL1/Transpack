@@ -86,7 +86,6 @@ describe("Traducciones", () => {
     for (const c of [
       "Formulario de contacto",
       "Cotizador",
-      "Joel",
       "Chat con un asesor (Zoho SalesIQ)",
       "WhatsApp",
       "Analítica",
@@ -190,11 +189,7 @@ describe("Reglas de contenido (lo que la empresa no puede afirmar)", () => {
   });
 
   it("solo afirma las certificaciones reales: LACMA, IAM y PAIMA", () => {
-    for (const [f, s] of ALL) {
-      // El cerebro de Joel las nombra solo para reconocer la pregunta
-      const code = f.endsWith("lib/joel.ts") ? s.replace(/"(iso|fidi|9001)"/g, "") : s;
-      expect(code, f).not.toMatch(/ISO\s?9001|\bFIDI\b|\bBASC\b|\bOEA\b/i);
-    }
+    for (const [f, s] of ALL) expect(s, f).not.toMatch(/ISO\s?9001|\bFIDI\b|\bBASC\b|\bOEA\b/i);
   });
 
   it("las cifras de la empresa coinciden con STATS (58 años, 176 países, 2.000 agentes)", () => {

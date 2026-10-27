@@ -1,28 +1,22 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 
-// Abre la ventana del chat. Al abrir conecta directo con un asesor (por el
-// puente con Zoho), así que requiere mockZoho en la prueba.
-async function openChat(page: Page) {
-  // Si el build tiene Google Analytics, el aviso de cookies tapa el botón en celular
-  const cookies = page.getByRole("dialog", { name: "Aviso de cookies" });
-  if (await cookies.isVisible().catch(() => false))
-    await cookies.getByRole("button", { name: "Rechazar" }).click();
-  await page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ }).click();
-  return page.getByRole("region", { name: "Chat con Joel" });
-}
+// Botón flotante del chat (abre el widget de Zoho SalesIQ)
+const launcher = (page: Page) =>
+  page.getByRole("button", { name: /Hablar con Joel, asesor virtual/ });
 
-// Escribe y envía como lo haría una persona: espera a que el botón Enviar se
-// active (el texto ya quedó registrado) y lo pulsa.
-async function send(chat: Locator, text: string) {
-  await chat.getByRole("textbox", { name: "Mensaje" }).fill(text);
-  const button = chat.getByRole("button", { name: "Enviar" });
-  await expect(button).toBeEnabled();
-  await button.click();
-}
+// Registro del Zoho simulado, dentro de la página aislada (#tp-zoho-frame)
+const zohoLog = (page: Page) =>
+  page.evaluate(
+    () =>
+      (
+        (document.getElementById("tp-zoho-frame") as HTMLIFrameElement | null)
+          ?.contentWindow as unknown as { __zoho?: { calls: string[]; sent: string[] } } | null
+      )?.__zoho,
+  );
 
-// Chat con un asesor (Zoho SalesIQ) simulado: nunca se carga el script real.
-// Imita la API que usa src/lib/crmChat.ts y deja registro en window.__zoho
-// (de la página aislada public/chat-asesor.html, donde corre el widget).
+// Chat con un asesor (Zoho SalesIQ) simulado: nunca se carga el script real
+// (fixtures.ts lo bloquea; esta ruta lo reemplaza). Imita la API que usa
+// src/lib/crmChat.ts y deja registro en window.__zoho de la página aislada.
 const ZOHO_STUB = `(() => {
   const z = window.$zoho.salesiq, log = (window.__zoho = { calls: [], sent: [] }), cb = {};
   z.language = (l) => log.calls.push("language:" + l);
@@ -31,30 +25,30 @@ const ZOHO_STUB = `(() => {
     visible: (v) => { log.calls.push("window:" + v); if (v === "show") cb.open && cb.open(); if (v === "hide") cb.close && cb.close(); },
     open: (f) => (cb.open = f), close: (f) => (cb.close = f), minimize: (f) => (cb.min = f),
   };
-  window.__closeZoho = () => cb.close && cb.close();
   // Ventana de Zoho falsa (iframe del mismo origen, como la real): inicio con
-  // "Chatee con nosotros ahora".
+  // "Chatee con nosotros ahora"; al pulsarlo, la conversación (campo de escribir).
   const f = document.createElement("iframe"); f.id = "siq_chatwindow"; document.body.appendChild(f);
   const d = f.contentDocument;
   d.body.innerHTML = '<div class="home-icon-optns"><em class="siqico-chat-start"></em>Chatee con nosotros ahora</div><div id="scroll-container"></div>';
-  // El bot proactivo de Zoho saluda cuando el sitio avisa la acción personalizada
-  // (sin que la persona escriba nada): así el chat abre directo con un asesor.
-  z.visitor = { customaction: (a) => {
-    log.calls.push("action:" + a);
-    setTimeout(() => {
-      const g = d.createElement("div"); g.className = "siqcw-agentmsg-grp";
-      g.innerHTML = '<div class="siqcw-name-div">Laura</div><div class="chat-bubble-cont" id="a1" data-zsqa="agent_msg message_bubble"><span data-zsqa="msg">¡Hola! Soy Laura. ¿En qué te ayudo?</span><div class="tag-div">Mudanza local</div></div>';
-      d.getElementById("scroll-container").appendChild(g);
-    }, 300);
-  } };
+  z.visitor = {
+    // El bot proactivo saluda cuando el sitio avisa la acción personalizada
+    customaction: (a) => {
+      log.calls.push("action:" + a);
+      setTimeout(() => {
+        const g = d.createElement("div"); g.className = "siqcw-agentmsg-grp";
+        g.innerHTML = '<div class="siqcw-name-div">Laura</div><div class="chat-bubble-cont" id="a1" data-zsqa="agent_msg message_bubble"><span data-zsqa="msg">¡Hola! Soy Laura. ¿En qué te ayudo?</span></div>';
+        d.getElementById("scroll-container").appendChild(g);
+      }, 300);
+    },
+    chat: (fn) => (cb.chat = fn),
+  };
   d.querySelector(".home-icon-optns").addEventListener("click", () => {
+    log.calls.push("new-conversation");
     const ta = d.createElement("textarea"); ta.className = "siqcw-textarea"; d.body.appendChild(ta);
     ta.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
       log.sent.push(ta.value);
-      const v = d.createElement("div"); v.setAttribute("data-zsqa", "visitor_msg message_bubble");
-      v.innerHTML = '<span data-zsqa="msg"></span>'; v.firstChild.textContent = ta.value;
-      d.getElementById("scroll-container").appendChild(v);
+      cb.chat && cb.chat("v1", { question: ta.value });
     });
   });
   setTimeout(() => z.ready && z.ready(), 50);
@@ -129,123 +123,63 @@ test("soluciones: el menú abre el segmento pedido", async ({ page }) => {
   );
 });
 
-test("chat: el texto del visitante se muestra como texto, nunca como HTML", async ({ page }) => {
-  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
-  await mockZoho(page);
-  await page.goto("/");
-  const chat = await openChat(page);
-  // Al abrir conecta con el asesor; lo que escribe el visitante se ve como texto
-  await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({
-    timeout: 10_000,
-  });
-  await send(chat, '<img src=x onerror="window.__xss=1">');
-  await expect(chat.getByText('<img src=x onerror="window.__xss=1">')).toBeVisible();
-  expect(
-    await page.evaluate(() => (window as unknown as { __xss?: number }).__xss),
-  ).toBeUndefined();
-});
-
-test("sin API, el chat abre directo con un asesor por el puente con Zoho", async ({
+test("chat: se precarga escondido y al tocar el ícono abre ya en la conversación", async ({
   page,
 }) => {
-  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
+  // Espera la precarga (cuando el navegador está libre) y abre y cierra el chat
+  test.slow();
   const requests = await mockZoho(page);
   await page.goto("/");
-  // Al abrir conecta de una vez: sin menú de Joel, sin "Te conecto…", sin la
-  // franja "Chat con un asesor" y sin nombrar la plataforma
-  const chat = await openChat(page);
-  await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible({ timeout: 10_000 });
-  await expect(chat).not.toContainText(/Te conecto con un asesor/);
-  await expect(chat).not.toContainText(/un asesor te responderá aquí/);
-  await expect(chat).not.toContainText(/Chat con un asesor de Transpack/);
-  await expect(chat).not.toContainText(/Zoho/);
-  // Se carga el Zoho escondido (una vez) sin que la persona escriba nada
+  await closeCookies(page);
+  // Precarga (el build de pruebas no lleva el aviso de cookies): Zoho se carga y
+  // entra a una conversación sin mostrar la ventana ni enviar nada
   await expect.poll(() => requests.length).toBe(1);
-  const zoho = () =>
-    page.evaluate(
-      () =>
-        (
-          (document.getElementById("tp-zoho-frame") as HTMLIFrameElement | null)
-            ?.contentWindow as unknown as { __zoho?: { calls: string[]; sent: string[] } } | null
-        )?.__zoho,
-    );
-  // No se envía ningún mensaje: se avisa la acción personalizada y el bot
-  // proactivo de Zoho saluda solo
-  await expect.poll(async () => (await zoho())?.calls).toEqual(
-    expect.arrayContaining(["language:es", "button:hide", "action:abrir_chat_asesor"]),
-  );
-  expect((await zoho())?.sent).toEqual([]);
-  // Zoho trabaja en la página aislada, escondida; la ventana sigue a la vista
-  await expect(page.locator("#tp-zoho-frame")).toBeAttached();
+  await expect
+    .poll(async () => (await zohoLog(page))?.calls ?? [], { timeout: 15_000 })
+    .toContain("new-conversation");
   await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
-  await expect(chat).toBeVisible();
-  // El saludo del bot de Zoho aparece en la ventana, con el nombre y sus opciones
-  await expect(chat.getByText("Laura", { exact: true })).toBeVisible();
-  await chat.getByRole("button", { name: "Mudanza local" }).click();
-  // Lo que el visitante escribe después va a Zoho
-  await send(chat, "Somos dos personas");
-  await expect.poll(async () => (await zoho())?.sent.at(-1)).toBe("Somos dos personas");
+  const frame = page.locator("#tp-zoho-frame");
+  await expect(frame).toHaveAttribute("aria-hidden", "true");
+
+  // Al tocar el ícono: ventana a la vista, accesible, y el bot saluda
+  await launcher(page).click();
+  await expect(page.locator("html")).toHaveClass(/tp-zoho-open/);
+  expect(await frame.getAttribute("aria-hidden")).toBeNull();
+  const chat = page.frameLocator("#tp-zoho-frame").frameLocator("#siq_chatwindow");
+  await expect(chat.locator("textarea")).toBeVisible();
+  await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible();
+  const log = await zohoLog(page);
+  expect(log?.calls).toEqual(expect.arrayContaining(["language:es", "button:hide", "action:abrir_chat_asesor"]));
+  expect(log?.sent).toEqual([]);
+
+  // El botón flotante muestra la X y cierra la ventana
+  await page.getByRole("button", { name: "Cerrar chat" }).click();
+  await expect(page.locator("html")).not.toHaveClass(/tp-zoho-open/);
+  await expect(frame).toHaveAttribute("aria-hidden", "true");
+
+  // Reabrir: la conversación ya tiene mensajes, el bot no vuelve a saludar
+  await launcher(page).click();
+  await expect(page.locator("html")).toHaveClass(/tp-zoho-open/);
+  expect((await zohoLog(page))?.calls.filter((c) => c.startsWith("action:"))).toHaveLength(1);
+  expect(requests).toHaveLength(1);
 });
 
-test("si el chat con un asesor no carga, ofrece WhatsApp y el formulario", async ({
-  page,
-}) => {
-  await page.route("**/api/advisor", (r) => r.fulfill({ json: { configured: false } }));
+test("si el chat con un asesor no carga, ofrece WhatsApp y el formulario", async ({ page }) => {
+  // El script de Zoho no carga (bloqueado)
   await page.route("https://salesiq.zohopublic.com/**", (r) => r.abort());
   await page.goto("/");
-  const chat = await openChat(page);
-  // Al abrir intenta conectar; si Zoho no carga, ofrece otros canales
+  await closeCookies(page);
+  await launcher(page).click();
+  const chat = page.getByRole("region", { name: "Chat con Joel" });
   await expect(chat.getByText("No pudimos abrir el chat con un asesor")).toBeVisible({
     timeout: 15_000,
   });
-  await expect(chat.getByRole("link", { name: /Escribir por WhatsApp/ }).last()).toHaveAttribute(
+  await expect(chat.getByRole("link", { name: /Escribir por WhatsApp/ })).toHaveAttribute(
     "href",
     /wa\.me/,
   );
   await chat.getByRole("link", { name: /Dejar un mensaje/ }).click();
   await expect(page.getByRole("dialog", { name: "Escríbenos" })).toBeVisible();
-});
-
-test("chat con un asesor dentro de Joel: se escribe y se responde ahí mismo", async ({
-  page,
-}) => {
-  // /api/advisor simulado: nunca se conecta con Zoho en las pruebas
-  const calls: { action?: string; question?: string; text?: string }[] = [];
-  let polls = 0;
-  await page.route("**/api/advisor", async (r) => {
-    if (r.request().method() === "GET") return r.fulfill({ json: { configured: true } });
-    const b = r.request().postDataJSON();
-    calls.push(b);
-    if (b.action === "start") return r.fulfill({ json: { ok: true, token: "pase.prueba" } });
-    if (b.action === "poll" && ++polls === 2)
-      return r.fulfill({
-        json: {
-          ok: true,
-          messages: [
-            { id: "1", seq: 1, from: "system", name: "Laura", text: "joined", time: 1 },
-            { id: "2", seq: 2, from: "operator", name: "Laura", text: "¡Hola! ¿En qué te ayudo?", time: 2 },
-          ],
-        },
-      });
-    return r.fulfill({ json: { ok: true, messages: [] } });
-  });
-  let zoho = 0;
-  await page.route("https://salesiq.zohopublic.com/**", (r) => (zoho++, r.abort()));
-  await page.goto("/");
-  const chat = await openChat(page);
-  // Con la API, al abrir pide el mensaje (que el bot salude primero es del puente)
-  await expect(chat.getByText(/Te conecto con un asesor/)).toBeVisible({ timeout: 10_000 });
-  // La primera pregunta abre la conversación
-  await send(chat, "Quiero cotizar una mudanza a Canadá");
-  expect(calls.find((c) => c.action === "start")?.question).toBe("Quiero cotizar una mudanza a Canadá");
-  // La respuesta del asesor aparece en la ventana, con su nombre
-  await expect(chat.getByText("Laura se unió a la conversación.")).toBeVisible({ timeout: 15_000 });
-  await expect(chat.getByText("¡Hola! ¿En qué te ayudo?")).toBeVisible();
-  // El visitante responde y el mensaje va al asesor
-  await send(chat, "Somos dos personas");
-  await expect.poll(() => calls.find((c) => c.action === "send")?.text).toBe("Somos dos personas");
-  // Nunca se carga la ventana de Zoho (todo por la API)
-  expect(zoho).toBe(0);
 });
 
 test("cambio de idioma conserva la página", async ({ page, isMobile }) => {

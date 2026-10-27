@@ -69,7 +69,11 @@ export function initAnalytics() {
   document.head.appendChild(s);
 }
 
-/** Guarda la decisión del aviso de cookies y la comunica a GA. */
+/** Evento con la decisión del aviso de cookies ("granted" o "denied"); lo
+ *  escucha el chat para precargar Zoho solo si se aceptan. */
+export const CONSENT_EVENT = "tp:consent";
+
+/** Guarda la decisión del aviso de cookies, la comunica a GA y la avisa al sitio. */
 export function setConsent(value: "granted" | "denied") {
   try {
     localStorage.setItem(CONSENT_KEY, value);
@@ -77,6 +81,7 @@ export function setConsent(value: "granted" | "denied") {
     /* sin almacenamiento */
   }
   gtag("consent", "update", { analytics_storage: value });
+  window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
 }
 
 /** Evento que escucha el aviso de cookies para volver a mostrarse. */

@@ -32,7 +32,7 @@ jobs:
       # HTML pre-generado por ruta: títulos, canónicas, hreflang, JSON-LD, sitemap y robots
       - run: pnpm test:seo
       # Hoy el JS principal pesa ~330 KB; las librerías van aparte (~260 KB,
-      # vite.config.ts) y el cerebro de Joel y Zoho se cargan con import().
+      # vite.config.ts) y el chat de Zoho se carga aparte, con import().
       # Este límite evita que crezca sin que nadie lo note.
       - name: Tamaño del build
         run: |

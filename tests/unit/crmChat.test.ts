@@ -1,14 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import {
-  CRM_CHAT_EVENT,
   SALESIQ_SRC,
+  closeCrmChat,
   loadCrmChat,
   openCrmChat,
+  preloadCrmChat,
   resetCrmChatForTests,
   setZohoHostForTests,
   styleChatWindow,
 } from "@/lib/crmChat";
+import { CHAT_LEAD_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 
 // Cargador del chat de Zoho SalesIQ (sin cargar el script real). En el sitio,
 // Zoho vive en una página aislada (iframe); aquí esa página es la ventana de
@@ -19,7 +21,11 @@ afterEach(() => {
   document.getElementById("zsiqscript")?.remove();
   delete window.$zoho;
   document.getElementById("siq_chatwindow")?.remove();
+  document.documentElement.classList.remove("tp-zoho-open");
 });
+
+// Lo que Zoho registra de la API (para simular sus avisos en las pruebas)
+const zoho: { open?: () => void; chat?: () => void } = {};
 
 // Simula lo que hace el script de Zoho al cargar: completa la API y llama a ready()
 function zohoLoads() {
@@ -30,13 +36,35 @@ function zohoLoads() {
     floatbutton: { visible: (v: string) => calls.push(`button:${v}`) },
     floatwindow: {
       visible: (v: string) => calls.push(`window:${v}`),
-      open: () => {},
+      open: (cb: () => void) => (zoho.open = cb),
       close: () => {},
       minimize: () => {},
     },
+    visitor: { chat: (cb: () => void) => (zoho.chat = cb) },
   });
   z.ready!();
   return calls;
+}
+
+// Espera a que el script de Zoho esté en la página y lo "carga"
+async function zohoLoadsSoon() {
+  for (let i = 0; i < 20 && !document.getElementById("zsiqscript"); i++) await Promise.resolve();
+  return zohoLoads();
+}
+
+// Iframe de la página aislada (en el sitio lo crea crmChat) y ventana de Zoho
+// ya dentro de una conversación
+function zohoFrames(conversation = "") {
+  const host = document.createElement("iframe");
+  host.id = "tp-zoho-frame";
+  host.setAttribute("aria-hidden", "true");
+  host.tabIndex = -1;
+  document.body.appendChild(host);
+  const chat = document.createElement("iframe");
+  chat.id = "siq_chatwindow";
+  document.body.appendChild(chat);
+  chat.contentDocument!.body.innerHTML = `${conversation}<textarea class="siqcw-textarea"></textarea>`;
+  return { host, chat };
 }
 
 describe("chat de Zoho SalesIQ", () => {
@@ -85,6 +113,55 @@ describe("chat de Zoho SalesIQ", () => {
     expect(events).toEqual([true]);
     window.removeEventListener(CRM_CHAT_EVENT, on);
     frame.remove();
+  });
+
+  it("precargada no se muestra ni avisa al sitio hasta que se abre el chat", async () => {
+    const events: boolean[] = [];
+    const on = (e: Event) => events.push((e as CustomEvent<{ open: boolean }>).detail.open);
+    window.addEventListener(CRM_CHAT_EVENT, on);
+    const { host } = zohoFrames();
+    const p = preloadCrmChat();
+    const calls = await zohoLoadsSoon();
+    // Zoho avisa que abrió su ventana (escondida): el sitio no la muestra
+    zoho.open?.();
+    await p;
+    expect(calls).toContain("window:show");
+    expect(events).toEqual([]);
+    expect(document.documentElement.classList.contains("tp-zoho-open")).toBe(false);
+    expect(host.getAttribute("aria-hidden")).toBe("true");
+    // Al abrir el chat se muestra, accesible y con el foco en el campo
+    expect(await openCrmChat()).toBe(true);
+    expect(events).toEqual([true]);
+    expect(host.hasAttribute("aria-hidden")).toBe(false);
+    expect(host.tabIndex).toBe(0);
+    // Al cerrar, vuelve a quedar oculta
+    closeCrmChat();
+    expect(events).toEqual([true, false]);
+    expect(host.getAttribute("aria-hidden")).toBe("true");
+    expect(host.tabIndex).toBe(-1);
+    window.removeEventListener(CRM_CHAT_EVENT, on);
+    document.documentElement.classList.remove("tp-zoho-open");
+    host.remove();
+  });
+
+  it("avisa si la conversación está vacía: al reabrir con mensajes, el bot no vuelve a saludar", async () => {
+    const { host } = zohoFrames(`<div data-zsqa="agent_msg message_bubble">¡Hola!</div>`);
+    const p = openCrmChat();
+    await zohoLoadsSoon();
+    expect(await p).toBe(false);
+    document.documentElement.classList.remove("tp-zoho-open");
+    host.remove();
+  });
+
+  it("cuando el visitante inicia una conversación, avisa al sitio (conversión)", async () => {
+    const lead = vi.fn();
+    window.addEventListener(CHAT_LEAD_EVENT, lead);
+    const p = loadCrmChat();
+    await zohoLoadsSoon();
+    await p;
+    zoho.chat?.();
+    expect(lead).toHaveBeenCalledTimes(1);
+    window.removeEventListener(CHAT_LEAD_EVENT, lead);
   });
 
   it("si el script no carga, falla y permite reintentar", async () => {

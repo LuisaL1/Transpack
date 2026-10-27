@@ -24,8 +24,8 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 - Pruebas de calidad, accesibilidad y seguridad: ver `TESTING.md`.
 - Google Analytics y eventos de conversión: ver `docs/conversion-y-analitica.md`.
 - SEO técnico y checklist del día de publicación: ver `docs/seo.md`.
-- Arquitectura, reglas de contenido, idiomas, diseño y funcionamiento del asesor
-  virtual Joel: ver `AGENTS.md`.
+- Arquitectura, reglas de contenido, idiomas y diseño: ver `AGENTS.md`. Chat
+  con un asesor (Zoho SalesIQ): ver `docs/chat-crm.md`.
 
 ### Rutas
 
@@ -68,7 +68,6 @@ push y pull request corre además la integración continua de GitHub Actions
 | `VITE_SITE_INDEXABLE` | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`) | Solo Production |
 | `VITE_GOOGLE_SITE_VERIFICATION` | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS) | Solo Production |
 | `BREVO_API_KEY` | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`) | Production |
-| `ZOHO_CLIENT_ID` / `ZOHO_CLIENT_SECRET` / `ZOHO_REFRESH_TOKEN` / `ADVISOR_SECRET` | Chat con un asesor dentro de Joel (Zoho SalesIQ). **Secretas** (sin `VITE_`); ver `docs/chat-crm.md` | Production |
 | `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production |
 
 - **Después de crear o cambiar una variable:** Deployments → último despliegue
@@ -97,28 +96,19 @@ push y pull request corre además la integración continua de GitHub Actions
 - **Google Analytics**: integrado y verificado (`pnpm test:ga`). Falta crear la
   variable en Vercel y marcar los eventos clave en GA4 (ver
   `docs/conversion-y-analitica.md`).
-- **Información que no está en los documentos** (Joel responde "no tengo ese
-  dato" y da el contacto): precios, condiciones del seguro, horario de atención,
-  lista de artículos que no se pueden transportar, formas de pago y políticas
-  de cancelación. Si el cliente las entrega, se agregan a `src/lib/joel.ts` y
-  al contenido.
-- **Chat con un asesor (Zoho SalesIQ)**: Joel atiende primero y ofrece
-  "Chatear con un asesor". Hoy funciona **dentro de la ventana de Joel** con el
-  puente (Zoho escondido, `src/lib/zohoBridge.ts`). Pendiente: apagar o
-  simplificar el bot de Zoho en el sitio (pide formularios) y, si Zoho habilita
-  el permiso de organización, pasar a la API (`api/advisor.mjs`, sin cargar
-  Zoho en el navegador). Ver `docs/chat-crm.md`. En el panel
-  de Zoho falta autorizar el dominio `www.transpacksas.com` y decidir si el bot
-  de Zoho saluda o pasa directo a un asesor. Hay que verificar en producción
-  que la CSP no bloquee funciones del chat (adjuntos o llamadas). Si Zoho
-  cambia su ventana, revisar que el diseño del sitio se siga aplicando.
-- **Joel**:
-  - el cerebro solo funciona en español; en los otros idiomas el chat entiende
-    palabras clave limitadas (por ejemplo, en alemán reconoce "Ausland", pero
-    no nombres de países como "Kanada");
-  - las preguntas que no supo responder quedan solo en el navegador de cada
-    visitante (`localStorage`), así que el equipo no puede revisarlas sin un
-    servidor.
+- **Información que no está en los documentos**: precios, condiciones del
+  seguro, horario de atención, lista de artículos que no se pueden transportar,
+  formas de pago y políticas de cancelación. Si el cliente las entrega, se
+  agregan al contenido (y al bot de Zoho, que se configura en SalesIQ).
+- **Chat con un asesor (Zoho SalesIQ)**: el chat del sitio es el widget de
+  Zoho con el diseño del sitio, precargado si se aceptan las cookies (ver
+  `docs/chat-crm.md`). Pendiente en el panel de Zoho: subir
+  `public/zoho-salesiq.css`, autorizar el dominio `www.transpacksas.com`,
+  disparar el bot solo con la acción `abrir_chat_asesor` (frecuencia "cada
+  vez"), que el bot atienda también los chats que inicia el visitante y el
+  título de la ventana "Joelito". Verificar en producción que la CSP no bloquee
+  funciones del chat (adjuntos) y, si Zoho cambia su ventana, que el diseño se
+  siga aplicando.
 - **Contraste de color (accesibilidad AA)**: el texto blanco sobre el naranja de
   marca y el "+" naranja de las cifras no alcanzan el mínimo (tabla en
   `TESTING.md`). Requiere aprobación de diseño.
@@ -129,8 +119,7 @@ push y pull request corre además la integración continua de GitHub Actions
   dos etiquetas de la franja de idiomas que faltan, ver `TESTING.md`).
 - **Rendimiento**:
   - JS principal de ~330 KB (106 KB comprimido): las librerías van aparte
-    (~260 KB, `vite.config.ts`), el cerebro de Joel (~48 KB) y el chat con un
-    asesor se descargan solo al usarlos. El CI falla si un archivo JS pasa de
+    (~260 KB, `vite.config.ts`) y el chat de Zoho se descarga aparte. El CI falla si un archivo JS pasa de
     450 KB. Siguiente paso posible: `React.lazy` por página;
   - fotos en JPG de hasta 360 KB (`cargue.jpg`, `equipo.jpg`): convertir a
     WebP/AVIF y servir tamaños según pantalla (`srcset`) cuando el cliente
