@@ -375,7 +375,7 @@ export const SEGMENTS = [
     tab: "Residencial",
     kicker: "Transpack Residencial",
     title: "Su hogar, en las mismas condiciones en el nuevo destino",
-    text: "Mudanzas de hogar locales, nacionales e internacionales. Elige cuánto quieres delegar: desde el traslado básico hasta un servicio integral en el que nos ocupamos de todo.",
+    text: "",
     points: [
       "Embalaje, desarme y armado de muebles",
       "Protección de objetos delicados y de alto valor",
@@ -390,13 +390,12 @@ export const SEGMENTS = [
   {
     id: "corporate",
     icon: "buildings",
-    tab: "Corporate Mobility",
-    kicker: "Transpack Corporate Mobility",
+    tab: "Movilidad corporativa",
+    kicker: "Transpack Movilidad corporativa",
     title: "Un solo operador para trasladar oficinas y talento",
-    text: "Traslados de oficinas y reubicación de personal nacional e internacional. Trabajamos con Compras y Recursos Humanos bajo acuerdos o contratos, con un ejecutivo de cuenta dedicado.",
+    text: "",
     points: [
       "Ejecutivo de cuenta y operación recurrente",
-      "Jornadas nocturnas o de fin de semana según cronograma",
       "Reportes, trazabilidad y condiciones corporativas",
     ],
     cta: "Solicitar propuesta corporativa",
@@ -406,10 +405,10 @@ export const SEGMENTS = [
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomatic & Institutional",
-    kicker: "Transpack Diplomatic & Institutional",
+    tab: "Diplomático e institucional",
+    kicker: "Transpack Diplomático e institucional",
     title: "Discreción, protocolo y precisión para misiones diplomáticas",
-    text: "Embajadas de Estados Unidos, España, Canadá, México, India, Francia, Alemania, Egipto, Emiratos Árabes e Italia, y entidades como la CAF, han confiado en nosotros el traslado de su personal.",
+    text: "",
     points: [
       "Atención protocolaria y absoluta confidencialidad",
       "Proceso de registro como proveedor institucional",
@@ -425,7 +424,7 @@ export const SEGMENTS = [
     tab: "Vivir en el exterior",
     kicker: "Te mudas a otro país o regresas a Colombia",
     title: "No solo llevamos sus cosas: facilitamos su transición",
-    text: "Si te vas a vivir a Estados Unidos, Canadá, Europa u otro destino, o regresas a Colombia, te acompañamos desde la planeación para que llegues con todo en orden.",
+    text: "",
     points: [
       "Asesoría sobre requisitos, tiempos y costos antes de empacar",
       "Elección entre envío marítimo o aéreo según su caso",

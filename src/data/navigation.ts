@@ -128,7 +128,7 @@ export function menusFor(lang: Lang): Menu[] {
           to: lp("/?segmento=residencial#soluciones"),
         },
         {
-          label: "Corporate Mobility",
+          label: tr("Movilidad corporativa", "Corporate Mobility"),
           desc: tr(
             "Traslado de oficinas y reubicación de funcionarios",
             "Office moves and employee relocation",
@@ -137,7 +137,7 @@ export function menusFor(lang: Lang): Menu[] {
           to: lp("/?segmento=corporate#soluciones"),
         },
         {
-          label: "Diplomatic & Institutional",
+          label: tr("Diplomático e institucional", "Diplomatic & Institutional"),
           desc: tr(
             "Embajadas y organismos, con protocolo y confidencialidad",
             "Embassies and institutions, with protocol and confidentiality",

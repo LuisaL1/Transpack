@@ -8,8 +8,8 @@ export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
   certifications: tr("Certificados LACMA, IAM y PAIMA", "LACMA, IAM and PAIMA certified"),
   certificationsShort: "LACMA · IAM · PAIMA",
-  title: tr("Prometemos con el corazón", "We promise from the heart"),
-  titlePrefix: tr("y cumplimos ", "and deliver "),
+  title: tr("Prometemos con el corazón,", "We promise from the heart,"),
+  titlePrefix: tr("cumplimos ", "deliver "),
   titleHighlight: tr("con excelencia.", "with excellence."),
   sub: tr(
     "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
@@ -64,7 +64,7 @@ export const segmentsText = (tr: Tr) => ({
 
 export const levelsText = (tr: Tr) => ({
   eyebrow: tr("Niveles de servicio", "Service levels"),
-  title: tr("Tú decides cuánto delegar", "You decide how much to hand over"),
+  title: tr("Elige cuánto quieres delegar", "Choose how much to hand over"),
   sub: tr(
     "No cotizamos solo “una mudanza”: cotizamos la mudanza con el nivel de servicio que necesitas.",
     "We don't just quote “a move”: we quote your move with the service level you need.",

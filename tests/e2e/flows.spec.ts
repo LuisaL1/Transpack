@@ -123,7 +123,7 @@ test("cotizador: preselección por URL y validación", async ({ page }) => {
 
 test("soluciones: el menú abre el segmento pedido", async ({ page }) => {
   await page.goto("/?segmento=diplomatic#soluciones");
-  await expect(page.getByRole("tab", { name: /Diplomatic/ })).toHaveAttribute(
+  await expect(page.getByRole("tab", { name: /Diplomático/ })).toHaveAttribute(
     "aria-selected",
     "true",
   );

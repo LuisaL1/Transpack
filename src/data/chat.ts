@@ -370,7 +370,7 @@ export function buildChat(lang: Lang): Record<string, ChatStep> {
     corp: {
       say: () => [
         tr(
-          "Con gusto. Nuestras unidades Corporate Mobility y Diplomatic & Institutional atienden empresas, embajadas y organismos con un ejecutivo de cuenta dedicado.",
+          "Con gusto. Nuestras unidades Movilidad corporativa y Diplomático e institucional atienden empresas, embajadas y organismos con un ejecutivo de cuenta dedicado.",
           "Of course. Our Corporate Mobility and Diplomatic & Institutional units serve companies, embassies and institutions with a dedicated account executive.",
         ),
         tr("¿Qué necesitas?", "What do you need?"),

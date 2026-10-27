@@ -46,8 +46,8 @@ describe("Soluciones por segmento", () => {
     );
     const tabs = screen.getAllByRole("tab");
     expect(tabs.length).toBe(4);
-    await userEvent.click(screen.getByRole("tab", { name: /Corporate Mobility/ }));
-    expect(screen.getByRole("tab", { name: /Corporate Mobility/ })).toHaveAttribute(
+    await userEvent.click(screen.getByRole("tab", { name: /Movilidad corporativa/ }));
+    expect(screen.getByRole("tab", { name: /Movilidad corporativa/ })).toHaveAttribute(
       "aria-selected",
       "true",
     );

@@ -1441,7 +1441,7 @@ export function createJoel(kb: JoelKB) {
         say: [
           "Esto es lo que hacemos:",
           bullets(kb.services.map((s) => s.title)),
-          "Además atendemos empresas (Corporate Mobility) y embajadas y organismos (Diplomatic & Institutional). Cuéntame qué necesitas mover y te recomiendo por dónde empezar.",
+          "Además atendemos empresas (Movilidad corporativa) y embajadas y organismos (Diplomático e institucional). Cuéntame qué necesitas mover y te recomiendo por dónde empezar.",
         ],
         options: [QUOTE, SERVICES, CASE],
       }),
@@ -1921,7 +1921,7 @@ export function createJoel(kb: JoelKB) {
         return {
           service: EMP,
           say: [
-            "Sí. Con Transpack Corporate Mobility trasladamos oficinas y reubicamos personal, a nivel nacional e internacional.",
+            "Sí. Con Transpack Movilidad corporativa trasladamos oficinas y reubicamos personal, a nivel nacional e internacional.",
             bullets(t.includes),
             t.intro,
           ],

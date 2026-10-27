@@ -278,7 +278,7 @@ export const SEGMENTS = [
     tab: "Residential",
     kicker: "Transpack Residential",
     title: "Your home, in the same condition at its new destination",
-    text: "Local, national and international household moves. Choose how much you want to hand over: from a basic move to a full service where we take care of everything.",
+    text: "",
     points: [
       "Packing, furniture disassembly and reassembly",
       "Protection for fragile and high-value items",
@@ -296,10 +296,9 @@ export const SEGMENTS = [
     tab: "Corporate Mobility",
     kicker: "Transpack Corporate Mobility",
     title: "One provider to move offices and talent",
-    text: "Office moves and national and international employee relocation. We work with Procurement and Human Resources under agreements or contracts, with a dedicated account executive.",
+    text: "",
     points: [
       "Account executive and recurring operations",
-      "Night or weekend schedules when the plan requires it",
       "Reporting, traceability and corporate terms",
     ],
     cta: "Request a corporate proposal",
@@ -312,7 +311,7 @@ export const SEGMENTS = [
     tab: "Diplomatic & Institutional",
     kicker: "Transpack Diplomatic & Institutional",
     title: "Discretion, protocol and precision for diplomatic missions",
-    text: "The embassies of the United States, Spain, Canada, Mexico, India, France, Germany, Egypt, the United Arab Emirates and Italy, and institutions such as CAF, have trusted us to move their staff.",
+    text: "",
     points: [
       "Protocol-level service and complete confidentiality",
       "Registration process as an institutional supplier",
@@ -328,7 +327,7 @@ export const SEGMENTS = [
     tab: "Living abroad",
     kicker: "Moving abroad or coming back to Colombia",
     title: "We don't just move your things: we ease your transition",
-    text: "Whether you are moving to the United States, Canada, Europe or anywhere else, or coming back to Colombia, we guide you from the planning stage so you arrive with everything in order.",
+    text: "",
     points: [
       "Advice on requirements, timelines and costs before you pack",
       "Sea or air shipping, depending on your case",
