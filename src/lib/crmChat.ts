@@ -31,6 +31,8 @@ export const HOST_ID = "tp-zoho-frame";
  *  configura un disparador/bot proactivo para esta acción, de modo que el bot
  *  salude solo sin que el visitante envíe ningún mensaje (ver docs/chat-crm.md). */
 export const ADVISOR_START_ACTION = "abrir_chat_asesor";
+/** Pestaña con la que abre la ventana de Zoho: la conversación (no su inicio) */
+const DEFAULT_VIEW = "chat";
 /** Tiempo máximo para que Zoho responda antes de ofrecer otros canales */
 const TIMEOUT_MS = 15_000;
 
@@ -43,7 +45,11 @@ type SalesIQ = {
     open?: (cb: () => void) => void;
     close?: (cb: () => void) => void;
     minimize?: (cb: () => void) => void;
+    /** Pestaña con la que abre la ventana ("home", "chat"…) */
+    defaultview?: (view: string) => void;
   };
+  /** Lo lee la ventana de Zoho para elegir la pestaña inicial */
+  defaultview?: string;
   visitor?: { customaction?: (action: string) => void };
 };
 declare global {
@@ -124,13 +130,16 @@ function watchChatWindow(w: Window) {
 // En modo puente (src/lib/zohoBridge.ts) la ventana de Zoho trabaja escondida:
 // no se muestra ni se avisa al sitio, para que Joel siga a la vista.
 let bridging = false;
+// Abriendo: la ventana no se muestra hasta estar dentro de una conversación
+// (así no se alcanza a ver el inicio ni la lista de conversaciones de Zoho)
+let opening = false;
 export const setBridging = (on: boolean) => {
   bridging = on;
   if (on) document.documentElement.classList.remove("tp-zoho-open");
 };
 /** Muestra u oculta la ventana de Zoho y avisa al sitio (salvo en modo puente). */
 export const announce = (open: boolean) => {
-  if (bridging) return;
+  if (bridging || (opening && open)) return;
   document.documentElement.classList.toggle("tp-zoho-open", open);
   window.dispatchEvent(new CustomEvent(CRM_CHAT_EVENT, { detail: { open } }));
 };
@@ -154,11 +163,15 @@ export function loadCrmChat(): Promise<SalesIQ> {
         w.$zoho = w.$zoho || {};
         w.$zoho.salesiq = {
           ...w.$zoho.salesiq,
+          // Abre directo en la conversación, no en el inicio de Zoho
+          defaultview: DEFAULT_VIEW,
           ready() {
             window.clearTimeout(timer);
             const z = w.$zoho!.salesiq!;
             z.language?.("es");
             z.floatbutton?.visible("hide");
+            z.defaultview = DEFAULT_VIEW;
+            z.floatwindow?.defaultview?.(DEFAULT_VIEW);
             z.floatwindow?.open?.(() => announce(true));
             z.floatwindow?.close?.(() => announce(false));
             z.floatwindow?.minimize?.(() => announce(false));
@@ -178,13 +191,47 @@ export function loadCrmChat(): Promise<SalesIQ> {
   return loading;
 }
 
-/** Abre la ventana del chat de Zoho a la vista (respaldo). */
+/** Abre la ventana del chat de Zoho a la vista, ya dentro de una conversación. */
 export async function openCrmChat(): Promise<void> {
   const z = await loadCrmChat();
   setBridging(false);
-  z.floatwindow?.visible("show");
-  styleChatWindow();
+  opening = true;
+  try {
+    z.floatwindow?.visible("show");
+    styleChatWindow();
+    await enterConversation();
+  } finally {
+    opening = false;
+  }
   announce(true);
+}
+
+/** Documento de la ventana de Zoho (iframe del mismo origen) */
+const chatDoc = () =>
+  (hostWin?.document.getElementById("siq_chatwindow") as HTMLIFrameElement | null)?.contentDocument ??
+  null;
+
+/** Si Zoho muestra su lista de conversaciones ("No hay ninguna conversación en
+ *  curso") o su inicio en vez de una conversación, entra a una conversación
+ *  nueva: el visitante ve directo el chat. No envía ningún mensaje. */
+async function enterConversation(ms = 8000) {
+  const end = Date.now() + ms;
+  let clicked = false;
+  while (Date.now() < end) {
+    const doc = chatDoc();
+    // Ya en una conversación (el campo de escribir está a la vista)
+    if (doc?.querySelector("textarea")) return;
+    if (!clicked) {
+      const start =
+        doc?.querySelector<HTMLElement>('[data-zsqa="new_conversation"]') ??
+        doc?.querySelector(".siqico-chat-start")?.closest<HTMLElement>(".home-icon-optns");
+      if (start) {
+        start.click();
+        clicked = true;
+      }
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
 }
 
 /** Avisa a Zoho que se abrió el chat mediante una acción personalizada, para que

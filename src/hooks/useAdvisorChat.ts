@@ -46,6 +46,11 @@ const loadJoel = () =>
     ([j, k]) => (joelBrain = j.createJoel(k.joelKnowledge())),
   ));
 
+// PRUEBA (rama feature/chatbot): el ícono del chat abre directamente la ventana
+// (widget) de Zoho SalesIQ, sin el puente ni /api/advisor. Con false vuelve el
+// chat dentro de la ventana del sitio (puente o API). Ver docs/chat-crm.md.
+const WIDGET_ONLY = true;
+
 // Pasos que inician una cotización en el chat
 const QUOTE_STEPS = new Set(["origen", "int_info", "bod_que", "empresa"]);
 // Opciones que, al elegirse después de algo que Joel no entendió, le enseñan
@@ -210,20 +215,39 @@ export function useAdvisorChat() {
     setMsgs((m) => [...m, { from: "bot", text, actions }]);
 
   // Ventana de Zoho (cuando el chat integrado no está configurado)
-  const openZohoWindow = () => {
+  // Si la ventana de Zoho no cargó, la de Joel se muestra con el aviso y otros
+  // canales (y no se vuelve a intentar hasta cerrarla y abrirla de nuevo)
+  const widgetFailed = useRef(false);
+  // start: avisa a Zoho la acción personalizada para que su bot salude solo
+  const openZohoWindow = (start = false) => {
     setAdvisor("loading");
     // El código de Zoho se descarga solo ahora (archivo aparte)
     import("@/lib/crmChat")
-      .then((m) => m.openCrmChat())
+      .then(async (m) => {
+        await m.openCrmChat();
+        if (start) m.triggerAdvisorStart();
+      })
       .catch(() => {
         setAdvisor("idle");
+        widgetFailed.current = true;
+        setOpen(true);
         say(t.crmError, otherChannels());
       });
+  };
+
+  // Cierra la ventana de Zoho (la X del botón flotante del sitio)
+  const closeAdvisorWindow = () => {
+    void import("@/lib/crmChat").then((m) => m.closeCrmChat());
   };
 
   useEffect(() => {
     const onRequest = () => {
       trackEvent("contact_click", { method: "advisor_chat" });
+      // Solo el widget: se abre la ventana de Zoho tal cual
+      if (WIDGET_ONLY) {
+        openZohoWindow(true);
+        return;
+      }
       void advisorAvailable().then((ok) => {
         mode.current = ok ? "api" : "bridge";
         // Puente (modo activo): conecta de una vez SIN enviar ningún mensaje. El
@@ -479,9 +503,20 @@ export function useAdvisorChat() {
   // Si ya hay una conversación en curso, o quedó una al cerrar y volver a abrir,
   // no reconecta: se sigue mostrando lo que había.
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      widgetFailed.current = false;
+      return;
+    }
     setTeaser(false);
     trackEvent("chat_open", { lang });
+    if (WIDGET_ONLY) {
+      // La ventana de Zoho reemplaza a la de Joel (salvo si no cargó)
+      if (!widgetFailed.current) {
+        setOpen(false);
+        requestAdvisorChat();
+      }
+      return;
+    }
     if (live === "off" && msgs.length === 0) requestAdvisorChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -578,6 +613,7 @@ export function useAdvisorChat() {
     advisor,
     live,
     endAdvisor: () => endAdvisor(),
+    closeAdvisorWindow,
     teaser,
     setTeaser,
     msgs,

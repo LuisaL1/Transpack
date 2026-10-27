@@ -1,15 +1,14 @@
-/* ─── Chat de Zoho SalesIQ: marco de la ventana y botón de cerrar ──────────────
+/* ─── Chat de Zoho SalesIQ: ventana dentro de la página aislada ────────────────
    Se inyecta en la página aislada public/chat-asesor.html (src/lib/crmChat.ts).
-   Lo de adentro de la ventana está en src/styles/zoho-chat.css. Mismo marco
-   del chat de Joel: esquinas de 24 px, borde azul muy suave y sombra. */
-#zsiq_chat_wrap {
-  border-radius: 24px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(39, 43, 124, 0.1) !important;
-  box-shadow: 0 40px 80px -30px rgba(39, 43, 124, 0.5) !important;
-}
+   Lo de adentro de la ventana está en src/styles/zoho-chat.css. El marco
+   (esquinas de 24 px, borde y sombra, igual al chat del sitio) lo pone el
+   iframe de la página aislada (#tp-zoho-frame en src/styles/index.css): aquí la
+   ventana de Zoho lo llena, sin esquinas ni sombra propias. */
+#zsiq_chat_wrap,
 #zsiq_chat_wrap iframe {
-  border-radius: 24px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 #zsiq_float {
   background: #272b7c !important;
@@ -21,12 +20,4 @@
 }
 #zs_fl_close {
   background-color: #272b7c !important;
-}
-/* En celular la ventana de Zoho ocupa toda la pantalla: sin esquinas ni borde */
-@media (max-width: 639px) {
-  #zsiq_chat_wrap,
-  #zsiq_chat_wrap iframe {
-    border-radius: 0 !important;
-    border: 0 !important;
-  }
 }

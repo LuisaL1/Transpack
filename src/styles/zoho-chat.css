@@ -4,10 +4,11 @@
    naranja en mayúsculas, fondo gris, opciones en tarjetas blancas con el ícono
    en un recuadro gris y botón de enviar azul con ícono naranja.
 
-   Se inyecta dentro de la ventana de Zoho desde src/lib/crmChat.ts. El mismo
-   archivo se puede pegar en Zoho (Configuración → Marca → Personalización →
-   CSS personalizado) para que también aplique fuera del sitio. Ver
-   docs/chat-crm.md. Solo colores de la marca (src/styles/index.css). */
+   Se inyecta dentro de la ventana de Zoho desde src/lib/crmChat.ts. Su copia
+   para subir a Zoho (Configuración → Marcas → Personalización → Apariencia →
+   "Upload custom CSS") es public/zoho-salesiq.css: si cambia este archivo,
+   cámbiela también (la prueba de crmChat lo verifica). Ver docs/chat-crm.md.
+   Solo colores de la marca (src/styles/index.css). */
 
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap");
 
@@ -23,8 +24,7 @@
   --siqcw-dialog-hdr-bg-color: #272b7c;
   --siqcw-button-bg-color: #272b7c;
   --siqcw-call-only-btn-bg: #272b7c;
-  --siqcw-visitor-bubble-gradient-color:
-    linear-gradient(0deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.86)), #272b7c;
+  --siqcw-visitor-bubble-gradient-color: #272b7c;
   --siqcw-dropdown-listdiv-sel-bg:
     linear-gradient(0deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), #272b7c;
   --siqcw-agent-bubble-bg-color: #ffffff;
@@ -57,6 +57,15 @@ textarea,
 .siqcw-section-cont,
 .call-home-wrap {
   background: #f0f6f6 !important;
+}
+/* Conversación nueva, aún sin mensajes: sin la ilustración de Zoho */
+.widget_online {
+  display: none !important;
+}
+/* Los mensajes empiezan arriba, como en el chat del sitio (Zoho los alinea
+   abajo y deja un hueco bajo la cabecera) */
+.siqcw-section-cont .justifyE.h100 {
+  justify-content: flex-start !important;
 }
 
 /* ── Cabeceras: azul sólido + cuadrado naranja girado ──────────────────────── */
@@ -101,6 +110,91 @@ textarea,
   font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600;
 }
+/* Cabecera de la conversación como la del chat del sitio: foto de 42 px, rótulo
+   naranja "Asesor virtual", nombre y "Transpack · Responde al instante" */
+.siqcw-header {
+  height: auto !important;
+  min-height: 74px;
+  padding: 16px 20px !important;
+}
+/* Solo la conversación: sin la flecha que vuelve al inicio de Zoho */
+.siqcw-header .siqico-larrow {
+  display: none !important;
+}
+.siqcw-header .mobile-head-space {
+  margin-left: 0 !important;
+}
+.siqcw-header .embed-prof-cont {
+  margin-right: 12px !important;
+}
+.siqcw-header .header-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none !important;
+}
+.siqcw-header [data-zsqa="header_desc"] {
+  overflow: visible !important;
+}
+.siqcw-header .header-title::before {
+  content: "Asesor virtual";
+  display: block;
+  font:
+    600 10.4px/1.5 "IBM Plex Sans",
+    sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ff7619 !important;
+}
+.siqcw-header [data-zsqa="header_title"] {
+  font-size: 16px !important;
+  line-height: 1.25 !important;
+}
+.siqcw-header [data-zsqa="header_desc"] {
+  margin-top: 0 !important;
+  font-size: 0 !important;
+}
+.siqcw-header [data-zsqa="header_desc"]::after,
+.siqcw-header .header-title:not(:has([data-zsqa="header_desc"]))::after {
+  content: "Transpack · Responde al instante";
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+/* Sin el menú de opciones de Zoho ("⋮") ni su lista: la ventana solo muestra
+   la conversación */
+.header-optn-icn {
+  display: none !important;
+}
+/* Botón de cerrar: cuadro translúcido como los de la cabecera del sitio */
+.siqcw-header .chat-win-close {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 0 0 12px !important;
+  border-radius: 8px;
+  place-items: center;
+  font-size: 0 !important;
+  background: rgba(255, 255, 255, 0.1) url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.8%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.146%202.854a.5.5%200%201%201%20.708-.708L8%207.293l5.146-5.147a.5.5%200%200%201%20.708.708L8.707%208l5.147%205.146a.5.5%200%200%201-.708.708L8%208.707l-5.146%205.147a.5.5%200%200%201-.708-.708L7.293%208z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.siqcw-header .chat-win-close:not(.hide) {
+  display: grid !important;
+}
+/* La X de Zoho es un ícono de fuente descentrado: se usa la del chat del sitio
+   (x-lg de Bootstrap Icons) */
+.siqcw-header .chat-win-close::before {
+  content: none !important;
+}
+.siqcw-header .chat-win-close:hover {
+  background: #ffffff url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23272b7c%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.146%202.854a.5.5%200%201%201%20.708-.708L8%207.293l5.146-5.147a.5.5%200%200%201%20.708.708L8.707%208l5.147%205.146a.5.5%200%200%201-.708.708L8%208.707l-5.146%205.147a.5.5%200%200%201-.708-.708L7.293%208z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat;
+}
+
 /* Rótulo naranja en mayúsculas sobre el saludo */
 .home-title::before {
   content: "Transpack";
@@ -187,31 +281,108 @@ textarea,
 }
 
 /* ── Conversación ─────────────────────────────────────────────────────────── */
-.siqcw-textarea-cont {
+/* Barra de escribir como la del chat del sitio: franja blanca con borde arriba,
+   campo de una línea y el botón cuadrado de enviar al lado */
+.siqcw-conv-footer {
   background: #ffffff !important;
   border-top: 1px solid #e1e5ee !important;
 }
-.siqcw-textarea {
-  font-size: 14px !important;
-  color: #1d2050 !important;
+.siqcw-textarea-composer {
+  border-top: 0 !important;
 }
+.siqcw-textarea-cont {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px;
+  height: auto !important;
+  padding: 12px !important;
+  background: #ffffff !important;
+  border: 0 !important;
+}
+.siqcw-textarea-cont .scroll-txtarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto !important;
+}
+.siqcw-textarea-cont .footer-icons {
+  position: static !important;
+  flex-shrink: 0;
+  margin: 0 !important;
+}
+/* Campo: gris con borde fino y esquinas redondeadas; blanco con borde azul al
+   escribir */
+.siqcw-textarea {
+  box-sizing: border-box !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 10px 16px !important;
+  overflow-y: auto !important;
+  resize: none !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  color: #1d2050 !important;
+  background: #f0f6f6 !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 12px !important;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.siqcw-textarea:focus {
+  background: #ffffff !important;
+  border-color: #272b7c !important;
+}
+/* Texto de ayuda del sitio en lugar del de Zoho (se dibuja encima del campo
+   mientras está vacío) */
 .siqcw-textarea::placeholder {
-  color: #6b6e8a !important;
+  color: transparent !important;
+}
+.siqcw-textarea-cont .scroll-txtarea {
+  position: relative;
+}
+.siqcw-textarea-cont:has(.siqcw-textarea:placeholder-shown) .scroll-txtarea::after {
+  content: "Escribe tu mensaje al asesor…";
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  max-width: calc(100% - 34px);
+  overflow: hidden;
+  font-size: 14px;
+  color: #6b6e8a;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 /* Botón de enviar: cuadro azul con ícono naranja */
 .siqico-send {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
+  margin: 0 !important;
   border-radius: 12px !important;
-  background: #272b7c !important;
-  color: #ff7619 !important;
-  display: grid !important;
-  place-items: center;
+  font-size: 0 !important;
+  background: #272b7c url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%23ff7619%22%3E%3Cpath%20d%3D%22M15.964.686a.5.5%200%200%200-.65-.65L.767%205.855H.766l-.452.18a.5.5%200%200%200-.082.887l.41.26.001.002%204.995%203.178%203.178%204.995.002.002.26.41a.5.5%200%200%200%20.886-.083zm-1.833%201.89L6.637%2010.07l-.215-.338a.5.5%200%200%200-.154-.154l-.338-.215%207.494-7.494%201.178-.471z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat !important;
+  display: block !important;
   transition: background-color 0.2s;
 }
+.siqico-send::before {
+  content: none !important;
+}
 .siqico-send:hover {
-  background: #ff7619 !important;
-  color: #ffffff !important;
+  background: #ff7619 url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%23ffffff%22%3E%3Cpath%20d%3D%22M15.964.686a.5.5%200%200%200-.65-.65L.767%205.855H.766l-.452.18a.5.5%200%200%200-.082.887l.41.26.001.002%204.995%203.178%203.178%204.995.002.002.26.41a.5.5%200%200%200%20.886-.083zm-1.833%201.89L6.637%2010.07l-.215-.338a.5.5%200%200%200-.154-.154l-.338-.215%207.494-7.494%201.178-.471z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat !important;
+}
+/* Sin texto, el botón de enviar es el cuadro gris del botón desactivado del
+   sitio: si Zoho muestra el suyo se pinta así; si no lo muestra, se dibuja */
+.siqcw-textarea-cont:has(.siqcw-textarea:placeholder-shown) .siqico-send {
+  background: #f0f6f6 url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%236b6e8a%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M15.964.686a.5.5%200%200%200-.65-.65L.767%205.855H.766l-.452.18a.5.5%200%200%200-.082.887l.41.26.001.002%204.995%203.178%203.178%204.995.002.002.26.41a.5.5%200%200%200%20.886-.083zm-1.833%201.89L6.637%2010.07l-.215-.338a.5.5%200%200%200-.154-.154l-.338-.215%207.494-7.494%201.178-.471z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat !important;
+  pointer-events: none;
+}
+.siqcw-textarea-cont:has(.siqcw-textarea:placeholder-shown) .footer-icons:not(:has(.siqico-send))::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f0f6f6 url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%236b6e8a%22%3E%3Cpath%20d%3D%22M15.964.686a.5.5%200%200%200-.65-.65L.767%205.855H.766l-.452.18a.5.5%200%200%200-.082.887l.41.26.001.002%204.995%203.178%203.178%204.995.002.002.26.41a.5.5%200%200%200%20.886-.083zm-1.833%201.89L6.637%2010.07l-.215-.338a.5.5%200%200%200-.154-.154l-.338-.215%207.494-7.494%201.178-.471z%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat;
 }
 
 /* Burbujas del asistente: blancas con borde fino y la punta arriba a la izquierda */
@@ -226,74 +397,193 @@ textarea,
   font-size: 14px !important;
   line-height: 1.55 !important;
 }
+/* Burbujas del visitante: azul sólido, texto blanco y la punta abajo a la derecha */
+.siqcw-visitormsg-grp .chat-bubble,
+[data-zsqa="visitor_msg message_bubble"] .chat-bubble {
+  background: #272b7c !important;
+  border: 0 !important;
+  border-radius: 16px 16px 4px 16px !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+/* Solo el texto del mensaje va en blanco (no el botón de responder ni el
+   mensaje citado, que tienen fondo claro) */
+:is(.siqcw-visitormsg-grp, [data-zsqa="visitor_msg message_bubble"])
+  .chat-bubble
+  :is([data-zsqa="msg"], [data-zsqa="msg"] *):not(.chat-quote-msg *) {
+  color: #ffffff !important;
+}
+
+/* Mensaje citado al responder: franja con borde de color a la izquierda.
+   En la burbuja azul del visitante, translúcida con texto blanco y borde
+   naranja; en la blanca del asistente, gris con texto oscuro y borde azul. */
+.chat-bubble .chat-quote-msg {
+  border-radius: 8px !important;
+  background: #f0f6f6 !important;
+  border-left: 3px solid #272b7c !important;
+}
+.chat-bubble .chat-quote-msg,
+.chat-bubble .chat-quote-msg * {
+  color: #3e4160 !important;
+}
+:is(.siqcw-visitormsg-grp, [data-zsqa="visitor_msg message_bubble"]) .chat-bubble .chat-quote-msg {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-left-color: #ff7619 !important;
+}
+:is(.siqcw-visitormsg-grp, [data-zsqa="visitor_msg message_bubble"]) .chat-bubble .chat-quote-msg,
+:is(.siqcw-visitormsg-grp, [data-zsqa="visitor_msg message_bubble"]) .chat-bubble .chat-quote-msg * {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Botón de responder (aparece al pasar el mouse por un mensaje): pastilla
+   blanca con borde fino e ícono azul que se vuelve naranja */
+.siqcw-msg-act-cont {
+  background: #ffffff !important;
+  border: 1px solid #e1e5ee;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
+}
+.siqcw-msg-act-cont .siqcw-msgact-item,
+.siqcw-msg-act-cont .siqcw-msgact-item * {
+  color: #272b7c !important;
+}
+.siqcw-msg-act-cont .siqcw-msgact-item:hover,
+.siqcw-msg-act-cont .siqcw-msgact-item:hover * {
+  color: #ff7619 !important;
+}
+
+/* Aviso "respondiendo a…" sobre el campo de escribir */
+.siqcw-quote-cont {
+  background: #ffffff !important;
+  border-top: 1px solid #e1e5ee;
+  border-left: 3px solid #272b7c;
+  color: #3e4160 !important;
+}
 .siqcw-name-div {
   font-family: "IBM Plex Sans", sans-serif !important;
   font-weight: 600;
   color: #272b7c !important;
 }
-.bubble-time {
-  color: #6b6e8a !important;
+/* Sin la hora en las burbujas, como en el chat del sitio */
+.bubble-time,
+.chat-bubble .virtual-div {
+  display: none !important;
 }
 
-/* Opciones del asistente: filas como las del chat de Joel (texto azul en
-   negrita, borde fino y flecha que se vuelve naranja al pasar el mouse) */
+/* Opciones del asistente: una tarjeta blanca con las filas adentro, como en el
+   chat del sitio (ChatOptions): ícono en un cuadro gris, texto azul en negrita
+   y flecha; al pasar el mouse, la fila gris, el ícono azul con naranja y la
+   flecha naranja. */
 .chat-sugges-cont .textR {
-  text-align: left !important;
+  display: grid !important;
+  width: calc(100% - 16px) !important;
+  gap: 2px;
   box-sizing: border-box;
-  padding-right: 15px;
+  padding: 8px !important;
+  text-align: left !important;
+  background: #ffffff;
+  border: 1px solid #e1e5ee;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06);
 }
 .tag-div {
   display: flex !important;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box;
-  padding: 11px 14px !important;
-  border: 1px solid #e1e5ee !important;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 0 !important;
   border-radius: 12px !important;
-  background: #ffffff !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: #272b7c !important;
+  font-size: 13.76px !important;
   font-weight: 600 !important;
-  font-size: 14px !important;
+  line-height: 1.375 !important;
   text-align: left !important;
-  box-shadow: 0 1px 2px rgba(29, 32, 80, 0.06) !important;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.tag-div > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.tag-div::before {
+  content: "";
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f0f6f6 url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23272b7c%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%208a1%201%200%201%201-2%200%201%201%200%200%201%202%200m4%200a1%201%200%201%201-2%200%201%201%200%200%201%202%200m3%201a1%201%200%201%200%200-2%201%201%200%200%200%200%202%22%2F%3E%3Cpath%20d%3D%22m2.165%2015.803.02-.004c1.83-.363%202.948-.842%203.468-1.105A9%209%200%200%200%208%2015c4.418%200%208-3.134%208-7s-3.582-7-8-7-8%203.134-8%207c0%201.76.743%203.37%201.97%204.6a10.4%2010.4%200%200%201-.524%202.318l-.003.011a11%2011%200%200%201-.244.637c-.079.186.074.394.273.362a22%2022%200%200%200%20.693-.125m.8-3.108a1%201%200%200%200-.287-.801C1.618%2010.83%201%209.468%201%208c0-3.192%203.004-6%207-6s7%202.808%207%206-3.004%206-7%206a8%208%200%200%201-2.088-.272%201%201%200%200%200-.711.074c-.387.196-1.24.57-2.634.893a11%2011%200%200%200%20.398-2%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat;
+  transition: background-color 0.2s;
 }
 .tag-div::after {
-  content: "›";
-  font-size: 18px;
-  line-height: 1;
-  color: #6b6e8a;
-  transition:
-    color 0.2s,
-    transform 0.2s;
+  content: "";
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%236b6e8a%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M4.646%201.646a.5.5%200%200%201%20.708%200l6%206a.5.5%200%200%201%200%20.708l-6%206a.5.5%200%200%201-.708-.708L10.293%208%204.646%202.354a.5.5%200%200%201%200-.708%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+  transition: transform 0.2s;
 }
 .tag-div:hover {
   background: #f0f6f6 !important;
-  border-color: rgba(39, 43, 124, 0.25) !important;
+}
+.tag-div:hover::before {
+  background: #272b7c url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23ff7619%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%208a1%201%200%201%201-2%200%201%201%200%200%201%202%200m4%200a1%201%200%201%201-2%200%201%201%200%200%201%202%200m3%201a1%201%200%201%200%200-2%201%201%200%200%200%200%202%22%2F%3E%3Cpath%20d%3D%22m2.165%2015.803.02-.004c1.83-.363%202.948-.842%203.468-1.105A9%209%200%200%200%208%2015c4.418%200%208-3.134%208-7s-3.582-7-8-7-8%203.134-8%207c0%201.76.743%203.37%201.97%204.6a10.4%2010.4%200%200%201-.524%202.318l-.003.011a11%2011%200%200%201-.244.637c-.079.186.074.394.273.362a22%2022%200%200%200%20.693-.125m.8-3.108a1%201%200%200%200-.287-.801C1.618%2010.83%201%209.468%201%208c0-3.192%203.004-6%207-6s7%202.808%207%206-3.004%206-7%206a8%208%200%200%201-2.088-.272%201%201%200%200%200-.711.074c-.387.196-1.24.57-2.634.893a11%2011%200%200%200%20.398-2%22%2F%3E%3C%2Fsvg%3E") center / 16px no-repeat;
 }
 .tag-div:hover::after {
-  color: #ff7619;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23ff7619%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M4.646%201.646a.5.5%200%200%201%20.708%200l6%206a.5.5%200%200%201%200%20.708l-6%206a.5.5%200%200%201-.708-.708L10.293%208%204.646%202.354a.5.5%200%200%201%200-.708%22%2F%3E%3C%2Fsvg%3E");
   transform: translateX(2px);
 }
 
-/* Foto de Joel en lugar del robot de Zoho (cabecera y donde aparezca el bot).
-   La imagen se sirve desde el sitio: public/brand/joel-avatar.png. Si este CSS
-   se pega en el panel de Zoho, use la dirección completa:
-   https://www.transpacksas.com/brand/joel-avatar.png */
-.siqcw-bot-logo {
-  background-image: url("/brand/joel-avatar.png") !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
+/* Foto de Joel en el avatar (cabecera y mensajes) en lugar de los íconos
+   genéricos de Zoho: robot del bot, logo de la marca y "esperando asesor". Si
+   un asesor tiene foto propia (<img>) o es una persona sin foto, se respeta.
+   Igual que en el sitio: la foto (fondo transparente) sobre un círculo beige,
+   sin borde. Va embebida (copia de 84 px de public/brand/joel-avatar.png): no
+   depende del dominio, la CSP de la página de Zoho la permite (img-src data:)
+   y sirve igual en el CSS que se sube a Zoho. */
+.embed-prof-cont {
+  border: 0 !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+}
+.siqcw-bot-logo,
+.siqcw-header .embed-prof-cont,
+.embed-prof-cont:has(.siqcw-bot-logo, .siqico-brand, .siq-clogo, .siqico-chat-wait) {
+  background: #faeed9 url("data:image/png;base64,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") center / cover
+    no-repeat !important;
   border-radius: 50% !important;
 }
-.embed-prof-cont {
-  border-radius: 50% !important;
-  overflow: hidden;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+/* Sin la sombra bajo el robot ni los íconos genéricos encima de la foto. Dentro
+   del círculo la foto la pinta el círculo: el ícono del bot (44 × 32 px, no
+   cuadrado) se esconde para que no la deforme ni la corte. */
+.siqcw-bot-logo::after {
+  display: none !important;
+}
+.embed-prof-cont :is(.siqcw-bot-logo, .siqico-brand, .siq-clogo, .siqico-chat-wait),
+.siqcw-header .embed-prof-cont > * {
+  visibility: hidden !important;
+}
+/* En la cabecera siempre va Joel (como en el chat del sitio), de 42 px y con el
+   punto verde de "en línea" con borde azul */
+.siqcw-header .embed-prof-cont {
+  width: 42px !important;
+  height: 42px !important;
+  overflow: visible !important;
+}
+.siqcw-header .embed-prof-cont::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #272b7c;
+  background: #22c55e;
 }

@@ -255,6 +255,10 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 
 ### Chat con un asesor (Zoho SalesIQ)
 
+- **Modo de prueba en `feature/chatbot`:** `WIDGET_ONLY = true`
+  (`src/hooks/useAdvisorChat.ts`) hace que el ícono abra directamente la
+  ventana de Zoho, sin puente ni API. Con `false` vuelve el modo descrito abajo.
+
 - **El chat es solo el chat con un asesor.** Al abrir el ícono se conecta de una
   vez (sin menú de Joel, sin "Te conecto…", sin la franja "Chat con un asesor" y
   sin esperar a que escriban); en vez de enviar un mensaje, el puente avisa a

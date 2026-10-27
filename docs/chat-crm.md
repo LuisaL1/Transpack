@@ -1,5 +1,25 @@
 # Chat con un asesor: Zoho SalesIQ (CRM)
 
+> **Modo de prueba "solo widget" (rama `feature/chatbot`):** con
+> `WIDGET_ONLY = true` en `src/hooks/useAdvisorChat.ts`, el ícono del chat abre
+> directamente la ventana de Zoho (su widget, con el CSS de
+> `public/zoho-salesiq.css` subido en Zoho), sin la ventana de Joel, el puente
+> ni `/api/advisor`. Al abrirla se avisa la acción personalizada
+> `abrir_chat_asesor` para que el bot salude solo. Si Zoho no carga, se muestra
+> la ventana del sitio con WhatsApp y el formulario.
+> El menú "⋮" y la flecha "<" de la cabecera de Zoho se esconden: la ventana
+> solo muestra la conversación (no el inicio ni el menú de SalesIQ).
+> La ventana abre en la pestaña de conversación (`defaultview: "chat"`) y, si
+> no hay una en curso, el sitio entra solo a una conversación nueva
+> (`enterConversation` en `src/lib/crmChat.ts`, sin enviar mensajes). La
+> ventana se muestra solo cuando ya está dentro de la conversación (mientras
+> tanto el botón flotante muestra que está cargando): no se alcanza a ver el
+> inicio ni la lista de Zoho. El saludo
+> del bot depende del disparador del bot en Zoho; si no salta, el primer
+> mensaje del visitante lo atiende quien Zoho tenga configurado (bot o asesores). Lo que sigue describe el
+> modo normal (`WIDGET_ONLY = false`); sus pruebas e2e del puente no aplican
+> mientras esté activo el modo de prueba.
+
 **El chat abre directo con un asesor.** Al pulsar el ícono del chat, la ventana
 conecta de una vez con un asesor (modo puente, el activo hoy): **no** muestra el
 menú del asesor virtual Joel, **no** dice "Te conecto con un asesor…" y **no**
@@ -259,9 +279,14 @@ La ventana de Zoho tiene el diseño del chat de Joel:
   (`.siqcw-header`, `.home-icon-optns`, `.tag-div`, `.siqcw-bot-logo`…). Si
   Zoho cambia su ventana, algunos estilos podrían dejar de aplicarse. Revise el
   chat después de cada actualización grande de Zoho.
-- **Opcional:** el mismo `zoho-chat.css` se puede pegar en Zoho (Configuración
-  → Marca → Personalización → CSS personalizado), cambiando la foto por la
-  dirección completa `https://www.transpacksas.com/brand/joel-avatar.png`.
+- **En el panel de Zoho:** `public/zoho-salesiq.css` es la copia lista para
+  subir en SalesIQ → Configuración → Marcas → Personalización → Apariencia →
+  "Upload custom CSS" (aplica a lo de adentro de la ventana, también fuera del
+  sitio). Es el mismo `zoho-chat.css`, con la foto de Joel
+  (embebida en el archivo, así no depende del dominio); si cambia el
+  original, vuelva a generarla (`tests/unit/crmChat.test.ts` avisa si difieren).
+  El marco de la ventana y el botón flotante (`zoho-host.css`) quedan fuera de
+  la ventana: Zoho no los toma de este CSS.
 
 ## Página aislada y CSP (vercel.json)
 
