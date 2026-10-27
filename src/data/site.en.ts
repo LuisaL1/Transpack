@@ -4,8 +4,10 @@
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgCargador from "@/assets/images/cargador.jpeg";
 import imgGuacales from "@/assets/images/guacales.jpg";
-import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgOficina from "@/assets/images/oficina.jpg";
+import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -190,7 +192,7 @@ export const SERVICES: Service[] = [
       "Secure storage in Bogotá, by the day, the month or while your move is completed. Our own facilities and inventory control.",
     quote: "bodegaje",
     cta: "Get a quote",
-    image: imgContenedor,
+    image: imgCargador,
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
@@ -303,7 +305,7 @@ export const SEGMENTS = [
     ],
     cta: "Request a corporate proposal",
     quote: "empresarial" as QuoteService,
-    image: imgContenedor,
+    image: imgOficina,
   },
   {
     id: "diplomatic",
@@ -335,7 +337,7 @@ export const SEGMENTS = [
     ],
     cta: "Plan my international move",
     quote: "internacional" as QuoteService,
-    image: imgNuevaEtapa,
+    image: imgExterior,
   },
 ];
 

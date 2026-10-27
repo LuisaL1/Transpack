@@ -3,8 +3,10 @@
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgCargador from "@/assets/images/cargador.jpeg";
 import imgGuacales from "@/assets/images/guacales.jpg";
-import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgOficina from "@/assets/images/oficina.jpg";
+import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
@@ -254,7 +256,7 @@ export const SERVICES: Service[] = [
       "Almacenamiento seguro en Bogotá, por días, meses o mientras se completa su traslado. Infraestructura propia y control de inventario.",
     quote: "bodegaje",
     cta: "Cotizar",
-    image: imgContenedor,
+    image: imgCargador,
     kicker: "Almacenamiento en Bogotá",
     headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesites",
     intro:
@@ -400,7 +402,7 @@ export const SEGMENTS = [
     ],
     cta: "Solicitar propuesta corporativa",
     quote: "empresarial" as QuoteService,
-    image: imgContenedor,
+    image: imgOficina,
   },
   {
     id: "diplomatic",
@@ -432,7 +434,7 @@ export const SEGMENTS = [
     ],
     cta: "Planear mi mudanza internacional",
     quote: "internacional" as QuoteService,
-    image: imgNuevaEtapa,
+    image: imgExterior,
   },
 ];
 
