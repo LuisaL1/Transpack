@@ -282,8 +282,9 @@ p {
   position: fixed;
   left: -10000px;
   bottom: 0;
-  width: 440px;
-  height: min(800px, 100vh);
+  /* Mismo tamaño que abierta: precargada y escondida, Zoho ya queda armado */
+  width: 400px;
+  height: min(620px, calc(100vh - 130px));
   border: 0;
   background: transparent;
   color-scheme: normal;
@@ -291,16 +292,31 @@ p {
   pointer-events: none;
   z-index: 70;
 }
+/* Abierta: mismo tamaño, lugar y marco que la ventana del chat del sitio
+   (AdvisorChat), encima del botón flotante. Como el iframe mide menos de 555 px
+   de ancho, Zoho usa su vista "celular" y su ventana lo llena por completo. */
 html.tp-zoho-open #tp-zoho-frame {
   left: auto;
-  right: 0;
+  right: 24px;
+  bottom: 76px;
+  width: 400px;
+  height: min(620px, calc(100vh - 130px));
+  overflow: hidden;
+  border: 1px solid rgba(39, 43, 124, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 40px 80px -30px rgba(39, 43, 124, 0.5);
   opacity: 1;
   pointer-events: auto;
 }
+@media (min-width: 768px) {
+  html.tp-zoho-open #tp-zoho-frame {
+    bottom: 92px;
+  }
+}
 @media (max-width: 639px) {
   html.tp-zoho-open #tp-zoho-frame {
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: 80px 12px 76px;
+    width: auto;
+    height: auto;
   }
 }

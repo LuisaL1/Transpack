@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Cada ruta carga sin errores de JavaScript ni recursos rotos (en español y en
 // inglés).

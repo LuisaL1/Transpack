@@ -5,7 +5,6 @@ import { segmentsText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
 import { Bi, btn, Checks, Reveal, SectionHead } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
-import { SEGMENT_TOPIC, track } from "@/lib/joelProfile";
 
 // Soluciones por segmento (SEGMENTS de src/data/site.ts), en pestañas
 export function Segments() {
@@ -36,11 +35,7 @@ export function Segments() {
                 key={s.id}
                 role="tab"
                 aria-selected={i === active}
-                onClick={() => {
-                  setActive(i);
-                  // Segmento consultado (perfil del visitante para Joel)
-                  if (SEGMENT_TOPIC[s.id]) track("service", SEGMENT_TOPIC[s.id]);
-                }}
+                onClick={() => setActive(i)}
                 className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full px-5 py-3 text-[0.9rem] font-semibold transition-colors ${
                   i === active ? "bg-azul text-white" : "text-suave hover:text-azul"
                 }`}

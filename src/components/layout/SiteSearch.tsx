@@ -6,7 +6,6 @@ import { SEARCH_SUGGESTIONS, searchIndex, searchText } from "@/data/search";
 import { search, type SearchEntry } from "@/lib/search";
 import { useLang } from "@/i18n";
 import { Bi } from "@/components/ui";
-import { trackSearch } from "@/lib/joelProfile";
 import { trackEvent } from "@/lib/analytics";
 import { openChat } from "@/components/layout/MenuLink";
 
@@ -36,7 +35,6 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
   if (!open) return null;
 
   const go = (e: SearchEntry) => {
-    trackSearch(q);
     trackEvent("search", { search_term: q.trim(), result: e.to, lang });
     onClose();
     navigate(e.to);
@@ -120,7 +118,6 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
               <p className="mb-4 text-[0.88rem] text-suave">{t.tryAgain}</p>
               <button
                 onClick={() => {
-                  trackSearch(q);
                   onClose();
                   openChat();
                 }}

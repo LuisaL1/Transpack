@@ -75,7 +75,7 @@ que no pre-genera), renderiza desde cero.
 - **Un solo `<h1>` por página.**
 - Títulos de 30 a 70 caracteres y descripciones de 70 a 160, únicos.
 - **Texto del sitio en `src/data/`:** así cambia a la vez la página, el
-  buscador, Joel y los metadatos.
+  buscador y los metadatos.
 
 ## Por qué la indexación queda desactivada
 

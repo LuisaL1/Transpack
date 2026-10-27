@@ -47,37 +47,18 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
-
-- `zohoBridge.test.ts` — el puente con una ventana de Zoho falsa: envía la
-  pregunta, pasa los mensajes nuevos (sin repetir) con nombre y opciones,
-  formularios con "Omitir", deja de escuchar al terminar y falla si la ventana
-  no aparece.
-- `advisor-api.test.ts` — la función `api/advisor.mjs` (chat con un asesor
-  dentro de Joel) con `fetch` simulado: sin credenciales 503; pase firmado por
-  conversación (sin pase, alterado o vencido → 403); envía y lee mensajes de
-  la conversación correcta; solo devuelve lo nuevo del asesor; errores de Zoho
-  → 502 sin detalle. Ver `docs/chat-crm.md`.
+- `crmChat.test.ts` — el chat de Zoho SalesIQ con su API simulada (nunca el
+  script real): no carga nada al entrar; carga una sola vez, en español y sin
+  el botón de Zoho; abre ya dentro de una conversación y avisa al sitio solo
+  entonces; precargado no se muestra hasta abrir y alterna `aria-hidden`; el
+  bot solo saluda con la conversación vacía; conversación iniciada →
+  conversión; error y tiempo de espera; diseño del sitio con la foto de Joel; y
+  `public/zoho-salesiq.css` es el mismo diseño. Ver `docs/chat-crm.md`.
 - `contact-api.test.ts` — la función `api/contact.mjs` con `fetch` simulado (sin
   correos reales): 503 sin clave, 422 por correo o autorización, 403 desde otro
   dominio, campo trampa, destino y "responder a", HTML escapado, confirmación
   al visitante en su idioma, fallas de Brevo (502) y de la confirmación (200).
   Detalle en `docs/formularios.md`.
-- `joel.test.ts` — el asesor virtual (`src/lib/joel.ts`):
-  - entiende texto libre y errores de tipeo;
-  - responde la pregunta específica antes que el resumen del servicio;
-  - recuerda el servicio en contexto y asesora según el plazo;
-  - maneja objeciones;
-  - **no da precios** y solo menciona las certificaciones reales (LACMA, IAM, PAIMA);
-  - si no tiene un dato, lo dice y ofrece el contacto;
-  - rechaza intentos de manipulación (_prompt injection_), redirige temas
-    ajenos, responde con honestidad si le preguntan si es ChatGPT y maneja
-    groserías;
-  - no repite HTML ni scripts del visitante;
-  - aprende de la elección del visitante, guarda lo que no entendió,
-    personaliza el saludo y funciona sin almacenamiento disponible.
-- `chatRoute.test.ts` — chat en otros idiomas: palabras clave → paso correcto,
-  y todas las opciones del chat guiado llevan a pasos que existen, en los seis
-  idiomas.
 - `search.test.ts` — buscador:
   - busca sin tildes ni mayúsculas y exige todas las palabras;
   - pide mínimo 2 letras y muestra máximo 8 resultados, todos con destino;
@@ -114,7 +95,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   - **cifras coherentes con `STATS`** (58 años, 176 países, 2.000 agentes);
   - sin textos de relleno;
   - **solo colores de la paleta** (lista blanca);
-  - **chat de Joel sin degradados**.
+  - **chat sin degradados**.
 
 ### 2b. HTML pre-generado (`tests/seo/dist.test.ts`, con `pnpm test:seo`)
 
@@ -183,16 +164,11 @@ Además:
   - cotizador: exige la autorización, envía por correo y el WhatsApp lleva la
     solicitud (`/api/contact` simulado con `page.route`);
   - segmento abierto desde el menú;
-  - chat de Joel con texto libre y sin precios;
-  - chat con un asesor dentro de Joel (`/api/advisor` simulado): se escribe y
-    se responde en la misma ventana, con el nombre del asesor;
-  - chat con un asesor por el puente (ventana de Zoho falsa): Zoho trabaja
-    escondido, la pregunta y los mensajes llegan a Zoho y sus respuestas y
-    opciones aparecen en Joel;
-  - chat con un asesor en la ventana de Zoho (Zoho simulado): Joel funciona sin cargar Zoho; se
-    carga solo al elegir "Chatear con un asesor", en español y con el diseño
-    del sitio; si no carga, Joel ofrece WhatsApp y el formulario;
-  - el texto del visitante se muestra como texto, nunca como HTML;
+  - chat (Zoho simulado; `fixtures.ts` reemplaza el script real en todas las
+    pruebas): se precarga escondido y al tocar el ícono abre ya en la
+    conversación, accesible y con el saludo del bot, sin enviar nada; la X del
+    botón la cierra; reabrir no vuelve a disparar el bot; si Zoho no carga, la
+    ventana del sitio ofrece WhatsApp y el formulario;
   - cambio de idioma conservando la página.
 
 - `seo.spec.ts`:

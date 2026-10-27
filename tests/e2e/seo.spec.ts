@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // SEO en el navegador: contenido sin JavaScript (lo que ve un rastreador
 // simple o una red social) y etiquetas que se actualizan al navegar.

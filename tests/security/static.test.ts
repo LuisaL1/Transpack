@@ -70,17 +70,12 @@ describe("Código", () => {
     expect(api).not.toMatch(/VITE_BREVO/);
   });
 
-  it("las credenciales de Zoho solo existen en el servidor (api/), nunca en el navegador", () => {
+  it("el chat no usa credenciales de Zoho: es el widget público (código de sitio web)", () => {
     for (const [f, s] of code)
-      expect(s, f).not.toMatch(
-        /ZOHO_(CLIENT_SECRET|REFRESH_TOKEN|CLIENT_ID)|ADVISOR_SECRET|oauth\/v2\/token/,
-      );
-    const api = readFileSync("api/advisor.mjs", "utf8");
-    expect(api).toContain('env("ZOHO_REFRESH_TOKEN")');
-    expect(api).not.toMatch(/VITE_ZOHO/);
+      expect(s, f).not.toMatch(/ZOHO_(CLIENT_SECRET|REFRESH_TOKEN|CLIENT_ID)|ADVISOR_SECRET|oauth\/v2\/token/);
   });
 
-  it("el chat de Joel no ejecuta ni interpreta HTML del visitante", () => {
+  it("el chat no ejecuta ni interpreta HTML del visitante", () => {
     for (const [f, s] of code.filter(([f]) => /chat|joel/i.test(f)))
       expect(s, f).not.toMatch(/innerHTML|dangerouslySetInnerHTML|DOMParser/);
   });

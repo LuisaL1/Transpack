@@ -34,11 +34,11 @@
 
 - **Política:** `/privacidad` (texto en `PRIVACY`, `src/data/site.ts` y sus
   traducciones). Se enlaza desde el pie, el aviso de cookies, la autorización
-  del formulario y del cotizador, el chat y Joel.
+  del formulario y del cotizador.
 - **Autorización:** el formulario de contacto y el cotizador exigen marcar la
   casilla (sin marcar por defecto); la solicitud lleva "Autorización de datos:
-  Sí" y la función `/api/contact` la vuelve a verificar. El chat informa el uso
-  de los datos antes de pedir el nombre.
+  Sí" y la función `/api/contact` la vuelve a verificar. El chat (Zoho
+  SalesIQ) solo se precarga si se aceptan las cookies (`docs/chat-crm.md`).
 - **Qué recibe Google Analytics:** solo eventos e intenciones, nunca el texto
   que escribe el visitante ni sus datos de contacto (nombre, correo, teléfono o
   mensaje no se envían en ningún evento).
@@ -47,16 +47,15 @@
 
 ## Eventos
 
-| Evento              | Cuándo                                                                                                                                                                                                                                             | Parámetros                                                                                                                                                                                                                                                                                             |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `page_view`         | Cada cambio de ruta (es una SPA: `send_page_view: false` y envío manual)                                                                                                                                                                           | `page_path`, `page_location`, `page_title` (ya con el título de la página nueva: `SeoHead` se monta antes)                                                                                                                                                                                             |
-| `generate_lead`     | **Solicitud enviada**: en el cotizador, al pulsar "Enviar por WhatsApp" o cuando el envío por correo **se confirma**; en el formulario de contacto, cuando el envío se confirma; en el chat de Joel, al pulsar "Enviar por WhatsApp" en el resumen | `method` (`whatsapp`, `email` = cotizador por correo, `form` = formulario de contacto, `chat_whatsapp`), `service` (local, nacional, internacional, empresarial, bodegaje), `level` (cotizador), `reason` (motivo del formulario: cotizacion, informacion, soporte, pqrs, datos, empleo, otro), `lang` |
-| `contact_click`     | Clic en un enlace `tel:` o `https://wa.me/`, apertura del formulario de contacto (cualquier enlace a `#contacto`) o "Chatear con un asesor" en el chat de Joel (abre Zoho SalesIQ)                                                                 | `method` (`phone`, `whatsapp`, `form`, `advisor_chat`)                                                                                                                                                                                                                                                 |
-| `chat_open`         | Al abrir el chat de Joel (botón, invitación, menú o buscador)                                                                                                                                                                                      | `lang`                                                                                                                                                                                                                                                                                                 |
-| `chat_message`      | Cada mensaje escrito al chat. **Nunca se envía el texto del visitante**, solo lo que Joel entendió                                                                                                                                                 | `intent` (p. ej. `precio`, `fact-seguro`, `pain-exterior`, `obj-caro`; en otros idiomas `step-<paso>`), `service`, `lang`                                                                                                                                                                              |
-| `search`            | Al elegir un resultado del buscador                                                                                                                                                                                                                | `search_term`, `result` (ruta elegida), `lang`                                                                                                                                                                                                                                                         |
-| `hero_service_pick` | Pestaña elegida en "¿Qué necesitas hoy?" (portada)                                                                                                                                                                                                 | `service`                                                                                                                                                                                                                                                                                              |
-| `quote_step`        | Cada paso del cotizador (para medir en qué paso se abandona)                                                                                                                                                                                       | `step` (2 a 6 o `resumen`), `service`                                                                                                                                                                                                                                                                  |
+| Evento | Cuándo | Parámetros |
+| --- | --- | --- |
+| `page_view` | Cada cambio de ruta (es una SPA: `send_page_view: false` y envío manual) | `page_path`, `page_location`, `page_title` (ya con el título de la página nueva: `SeoHead` se monta antes) |
+| `generate_lead` | **Solicitud enviada**: en el cotizador, al pulsar "Enviar por WhatsApp" o cuando el envío por correo **se confirma**; en el formulario de contacto, cuando el envío se confirma; en el chat con un asesor, cuando el visitante inicia una conversación en Zoho SalesIQ (una vez por página) | `method` (`whatsapp`, `email` = cotizador por correo, `form` = formulario de contacto, `advisor_chat` = chat), `service` (local, nacional, internacional, empresarial, bodegaje), `level` (cotizador), `reason` (motivo del formulario: cotizacion, informacion, soporte, pqrs, datos, empleo, otro), `lang` |
+| `contact_click` | Clic en un enlace `tel:` o `https://wa.me/`, apertura del formulario de contacto (cualquier enlace a `#contacto`) o apertura del chat con un asesor (Zoho SalesIQ) | `method` (`phone`, `whatsapp`, `form`, `advisor_chat`) |
+| `chat_open` | Al abrir el chat (botón, invitación, menú o buscador). **Nunca se envía lo que escribe el visitante** | `lang` |
+| `search` | Al elegir un resultado del buscador | `search_term`, `result` (ruta elegida), `lang` |
+| `hero_service_pick` | Pestaña elegida en "¿Qué necesitas hoy?" (portada) | `service` |
+| `quote_step` | Cada paso del cotizador (para medir en qué paso se abandona) | `step` (2 a 6 o `resumen`), `service` |
 
 ## Recomendaciones en GA4
 
@@ -66,10 +65,10 @@
    `page_view` → `chat_open` o `search` → `quote_step` → `generate_lead`.
 3. **Abandono del cotizador:** informe de `quote_step` por `step`.
 4. **Dimensiones personalizadas** (Administrar → Definiciones personalizadas):
-   `method`, `service`, `intent`, `step` y `lang`, con alcance de evento, para
+   `method`, `service`, `step` y `lang`, con alcance de evento, para
    poder filtrar por ellas.
-5. **Qué pregunta la gente a Joel:** informe de `chat_message` por `intent`.
-   Las intenciones `fallback` son preguntas que Joel no supo responder.
+5. **Conversaciones del chat:** `generate_lead` con `method` `advisor_chat`
+   (lo que se habla queda en Zoho SalesIQ, no en Google Analytics).
 6. Con `method` `email` o `form`, `generate_lead` se registra solo cuando la
    solicitud llegó a Brevo. Con WhatsApp significa que el visitante pulsó
    enviar: WhatsApp se abre con la solicitud lista, pero el envío final lo hace

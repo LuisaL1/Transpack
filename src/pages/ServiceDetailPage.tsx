@@ -1,11 +1,9 @@
-import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSite } from "@/hooks/useContent";
 import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import { track } from "@/lib/joelProfile";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";
@@ -20,11 +18,6 @@ export function ServiceDetailPage() {
   const { FAQS, SERVICES, waLink } = useSite();
   // En inglés la URL trae el slug traducido; internamente se usa el de español
   const service = SERVICES.find((s) => s.slug === slugEs(slug ?? "", lang));
-  // Servicio abierto (perfil del visitante para Joel)
-  const serviceSlug = service?.slug;
-  useEffect(() => {
-    if (serviceSlug) track("service", serviceSlug);
-  }, [serviceSlug]);
   if (!service) return <NotFoundPage />;
 
   const others = SERVICES.filter((s) => s.slug !== service.slug);

@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Google Analytics 4 con Consent Mode v2. Se ejecuta con `pnpm test:ga`
 // (compila con VITE_GA_MEASUREMENT_ID); en `pnpm test:e2e` se omite porque el
@@ -77,3 +77,30 @@ test("la política de datos permite cambiar la decisión sobre cookies", async (
   await expect(banner).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("tp-analytics-consent"))).toBeNull();
 });
+
+
+// Chat (Zoho SalesIQ): se precarga al entrar solo si el visitante acepta las
+// cookies; si no responde o las rechaza, Zoho se carga al abrir el chat.
+// fixtures.ts bloquea el script real: aquí solo se cuentan los pedidos.
+for (const choice of ["Rechazar", "Aceptar"] as const) {
+  test(`chat: Zoho ${choice === "Aceptar" ? "se precarga al aceptar" : "no se precarga sin aceptar"} las cookies`, async ({
+    page,
+  }) => {
+    const zoho: string[] = [];
+    page.on("request", (r) => {
+      if (r.url().startsWith("https://salesiq.zohopublic.com/")) zoho.push(r.url());
+    });
+    await page.goto("/");
+    const banner = page.getByRole("dialog", { name: "Aviso de cookies" });
+    test.skip(!(await banner.isVisible().catch(() => false)), "Build sin VITE_GA_MEASUREMENT_ID");
+    // Sin decidir todavía: no se precarga
+    await page.waitForTimeout(4000);
+    expect(zoho).toEqual([]);
+    await banner.getByRole("button", { name: choice }).click();
+    if (choice === "Aceptar") await expect.poll(() => zoho.length, { timeout: 10_000 }).toBe(1);
+    else {
+      await page.waitForTimeout(4000);
+      expect(zoho).toEqual([]);
+    }
+  });
+}

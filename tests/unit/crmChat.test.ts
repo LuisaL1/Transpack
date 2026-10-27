@@ -1,14 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import {
-  CRM_CHAT_EVENT,
   SALESIQ_SRC,
+  closeCrmChat,
   loadCrmChat,
   openCrmChat,
+  preloadCrmChat,
   resetCrmChatForTests,
   setZohoHostForTests,
   styleChatWindow,
 } from "@/lib/crmChat";
+import { CHAT_LEAD_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 
 // Cargador del chat de Zoho SalesIQ (sin cargar el script real). En el sitio,
 // Zoho vive en una página aislada (iframe); aquí esa página es la ventana de
@@ -19,7 +21,11 @@ afterEach(() => {
   document.getElementById("zsiqscript")?.remove();
   delete window.$zoho;
   document.getElementById("siq_chatwindow")?.remove();
+  document.documentElement.classList.remove("tp-zoho-open");
 });
+
+// Lo que Zoho registra de la API (para simular sus avisos en las pruebas)
+const zoho: { open?: () => void; chat?: () => void } = {};
 
 // Simula lo que hace el script de Zoho al cargar: completa la API y llama a ready()
 function zohoLoads() {
@@ -30,13 +36,35 @@ function zohoLoads() {
     floatbutton: { visible: (v: string) => calls.push(`button:${v}`) },
     floatwindow: {
       visible: (v: string) => calls.push(`window:${v}`),
-      open: () => {},
+      open: (cb: () => void) => (zoho.open = cb),
       close: () => {},
       minimize: () => {},
     },
+    visitor: { chat: (cb: () => void) => (zoho.chat = cb) },
   });
   z.ready!();
   return calls;
+}
+
+// Espera a que el script de Zoho esté en la página y lo "carga"
+async function zohoLoadsSoon() {
+  for (let i = 0; i < 20 && !document.getElementById("zsiqscript"); i++) await Promise.resolve();
+  return zohoLoads();
+}
+
+// Iframe de la página aislada (en el sitio lo crea crmChat) y ventana de Zoho
+// ya dentro de una conversación
+function zohoFrames(conversation = "") {
+  const host = document.createElement("iframe");
+  host.id = "tp-zoho-frame";
+  host.setAttribute("aria-hidden", "true");
+  host.tabIndex = -1;
+  document.body.appendChild(host);
+  const chat = document.createElement("iframe");
+  chat.id = "siq_chatwindow";
+  document.body.appendChild(chat);
+  chat.contentDocument!.body.innerHTML = `${conversation}<textarea class="siqcw-textarea"></textarea>`;
+  return { host, chat };
 }
 
 describe("chat de Zoho SalesIQ", () => {
@@ -59,10 +87,20 @@ describe("chat de Zoho SalesIQ", () => {
     expect(calls).toEqual(["language:es", "button:hide"]);
   });
 
-  it("abre la ventana y avisa al sitio", async () => {
+  it("abre la ventana, avisa al sitio y entra directo a una conversación nueva", async () => {
     const events: boolean[] = [];
     const on = (e: Event) => events.push((e as CustomEvent<{ open: boolean }>).detail.open);
     window.addEventListener(CRM_CHAT_EVENT, on);
+    // Ventana de Zoho falsa en su lista de conversaciones (sin ninguna en curso)
+    const frame = document.createElement("iframe");
+    frame.id = "siq_chatwindow";
+    document.body.appendChild(frame);
+    frame.contentDocument!.body.innerHTML = `<div data-zsqa="new_conversation" role="button">Conversación nueva</div>`;
+    // Al tocar "Conversación nueva", Zoho muestra la conversación (campo de escribir)
+    const newChat = vi.fn(() => {
+      frame.contentDocument!.body.innerHTML = `<textarea class="siqcw-textarea"></textarea>`;
+    });
+    frame.contentDocument!.querySelector("[data-zsqa=new_conversation]")!.addEventListener("click", newChat);
     const p = openCrmChat();
     await Promise.resolve();
     await Promise.resolve();
@@ -70,7 +108,60 @@ describe("chat de Zoho SalesIQ", () => {
     await p;
     expect(calls).toContain("window:show");
     expect(events).toEqual([true]);
+    expect(newChat).toHaveBeenCalledTimes(1);
+    // Se avisa al sitio (se muestra la ventana) solo ya dentro de la conversación
+    expect(events).toEqual([true]);
     window.removeEventListener(CRM_CHAT_EVENT, on);
+    frame.remove();
+  });
+
+  it("precargada no se muestra ni avisa al sitio hasta que se abre el chat", async () => {
+    const events: boolean[] = [];
+    const on = (e: Event) => events.push((e as CustomEvent<{ open: boolean }>).detail.open);
+    window.addEventListener(CRM_CHAT_EVENT, on);
+    const { host } = zohoFrames();
+    const p = preloadCrmChat();
+    const calls = await zohoLoadsSoon();
+    // Zoho avisa que abrió su ventana (escondida): el sitio no la muestra
+    zoho.open?.();
+    await p;
+    expect(calls).toContain("window:show");
+    expect(events).toEqual([]);
+    expect(document.documentElement.classList.contains("tp-zoho-open")).toBe(false);
+    expect(host.getAttribute("aria-hidden")).toBe("true");
+    // Al abrir el chat se muestra, accesible y con el foco en el campo
+    expect(await openCrmChat()).toBe(true);
+    expect(events).toEqual([true]);
+    expect(host.hasAttribute("aria-hidden")).toBe(false);
+    expect(host.tabIndex).toBe(0);
+    // Al cerrar, vuelve a quedar oculta
+    closeCrmChat();
+    expect(events).toEqual([true, false]);
+    expect(host.getAttribute("aria-hidden")).toBe("true");
+    expect(host.tabIndex).toBe(-1);
+    window.removeEventListener(CRM_CHAT_EVENT, on);
+    document.documentElement.classList.remove("tp-zoho-open");
+    host.remove();
+  });
+
+  it("avisa si la conversación está vacía: al reabrir con mensajes, el bot no vuelve a saludar", async () => {
+    const { host } = zohoFrames(`<div data-zsqa="agent_msg message_bubble">¡Hola!</div>`);
+    const p = openCrmChat();
+    await zohoLoadsSoon();
+    expect(await p).toBe(false);
+    document.documentElement.classList.remove("tp-zoho-open");
+    host.remove();
+  });
+
+  it("cuando el visitante inicia una conversación, avisa al sitio (conversión)", async () => {
+    const lead = vi.fn();
+    window.addEventListener(CHAT_LEAD_EVENT, lead);
+    const p = loadCrmChat();
+    await zohoLoadsSoon();
+    await p;
+    zoho.chat?.();
+    expect(lead).toHaveBeenCalledTimes(1);
+    window.removeEventListener(CHAT_LEAD_EVENT, lead);
   });
 
   it("si el script no carga, falla y permite reintentar", async () => {
@@ -112,7 +203,27 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
     expect(css).toContain("rgba(255, 118, 25, 0.25)");
     expect(css).toContain("rotate(45deg)");
     expect(css).not.toMatch(/#356b58/i);
-    expect(css).toMatch(/\.siqcw-bot-logo \{[^}]*url\("\/brand\/joel-avatar\.png"\)/);
+    // Foto de Joel embebida en el avatar (robot del bot, logo de marca y espera)
+    expect(css).toMatch(
+      /\.siqcw-bot-logo,\n\.siqcw-header \.embed-prof-cont,\n\.embed-prof-cont:has\([^)]*\.siqico-brand[^)]*\) \{[^}]*url\("data:image\/png;base64,/,
+    );
     expect(existsSync("public/brand/joel-avatar.png")).toBe(true);
+  });
+});
+
+describe("CSS para subir a Zoho (public/zoho-salesiq.css)", () => {
+  // Cuerpo del CSS sin su comentario de cabecera
+  const body = (path: string) => readFileSync(path, "utf8").replace(/^\/\*[\s\S]*?\*\/\s*/, "");
+
+  it("es el mismo diseño que se inyecta en el sitio (src/styles/zoho-chat.css)", () => {
+    const site = body("src/styles/zoho-chat.css");
+    const zoho = body("public/zoho-salesiq.css");
+    expect(zoho).toBe(site);
+  });
+
+  it("no usa rutas relativas (Zoho no conoce las del sitio): la foto va embebida", () => {
+    const css = body("public/zoho-salesiq.css");
+    expect(css).not.toMatch(/url\(["']?\//);
+    expect(css).toContain("data:image/png;base64,");
   });
 });

@@ -57,7 +57,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://*.nimbuspop.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com https://*.nimbuspop.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         },
         {
           "key": "X-Frame-Options",
@@ -94,7 +94,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://salesiq.zohopublic.com https://salesiq.zoho.com https://static.zohocdn.com; style-src 'self' 'unsafe-inline' https://static.zohocdn.com https://*.nimbuspop.com https://fonts.googleapis.com; font-src 'self' https://static.zohocdn.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https://static.zohocdn.com https://*.zohopublic.com https://*.nimbuspop.com; media-src 'self' https://static.zohocdn.com; connect-src 'self' https://salesiq.zoho.com https://*.zohopublic.com wss://*.zohopublic.com https://static.zohocdn.com; frame-src https://*.zohopublic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         },
         {
           "key": "X-Frame-Options",

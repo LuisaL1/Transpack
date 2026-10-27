@@ -1,25 +1,25 @@
 // ─── Chat con un asesor: Zoho SalesIQ (CRM) ─────────────────────────────────
-// Joel atiende primero. Cuando la persona elige "Chatear con un asesor" (en el
-// chat de Joel), se carga Zoho SalesIQ. El script de Zoho NO se carga al entrar
-// al sitio: solo en ese momento. Así, antes de eso Zoho no guarda cookies ni
-// rastrea la visita (Ley 1581 de 2012; ver la política de datos).
-//
+// El chat del sitio es el widget de Zoho SalesIQ, con el diseño del sitio.
+// · Precarga (src/hooks/useAdvisorChat.ts): si el visitante aceptó las cookies
+//   (o el sitio no muestra el aviso), Zoho se carga al entrar, cuando el
+//   navegador está libre, y deja su ventana lista y escondida, ya dentro de una
+//   conversación; al tocar el ícono solo se muestra (~0,2 s). Si no, se carga al
+//   abrir el chat. Ver la política de datos (Ley 1581 de 2012).
 // · Zoho vive en una PÁGINA AISLADA del sitio (public/chat-asesor.html) que se
-//   carga en un iframe escondido. Esa página tiene su propia CSP (vercel.json)
-//   con los scripts en línea que Zoho necesita; el resto del sitio conserva su
-//   CSP estricta.
-// · Normalmente trabaja escondida como puente (src/lib/zohoBridge.ts): la
-//   conversación se ve en Joel. Su ventana solo se muestra como respaldo o para
-//   llenar un formulario de Zoho (clase tp-zoho-open, src/styles/index.css).
-// · Diseño: src/styles/zoho-chat.css (adentro de la ventana) y
-//   src/styles/zoho-host.css (marco y botón de cerrar).
+//   carga en un iframe. Esa página tiene su propia CSP (vercel.json) con los
+//   scripts en línea que Zoho necesita; el resto del sitio conserva su CSP
+//   estricta. El iframe se muestra en la esquina solo con la clase tp-zoho-open
+//   (src/styles/index.css).
+// · La ventana abre en la conversación (no en el inicio de Zoho) y no se muestra
+//   hasta estar dentro de una. El bot saluda por la acción personalizada
+//   ADVISOR_START_ACTION (se configura en Zoho), solo con la conversación vacía.
+// · Diseño: src/styles/zoho-chat.css (adentro de la ventana; su copia para subir
+//   a Zoho es public/zoho-salesiq.css) y src/styles/zoho-host.css.
 // · Solo en español. El código del widget no es secreto.
 // Documentación: docs/chat-crm.md.
 import chatCss from "@/styles/zoho-chat.css?raw";
 import hostCss from "@/styles/zoho-host.css?raw";
-import { CRM_CHAT_EVENT } from "@/lib/advisorEvents";
-
-export { ADVISOR_EVENT, CRM_CHAT_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
+import { CHAT_LEAD_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
 
 /** Código del widget de SalesIQ (Zoho → Configuración → Canales → Sitio web) */
 export const SALESIQ_WIDGET = "siq8d38e38af4540824c78096b7725bb11aa5c42288eecc3028007e86bb9e4360dc";
@@ -31,6 +31,8 @@ export const HOST_ID = "tp-zoho-frame";
  *  configura un disparador/bot proactivo para esta acción, de modo que el bot
  *  salude solo sin que el visitante envíe ningún mensaje (ver docs/chat-crm.md). */
 export const ADVISOR_START_ACTION = "abrir_chat_asesor";
+/** Pestaña con la que abre la ventana de Zoho: la conversación (no su inicio) */
+const DEFAULT_VIEW = "chat";
 /** Tiempo máximo para que Zoho responda antes de ofrecer otros canales */
 const TIMEOUT_MS = 15_000;
 
@@ -43,8 +45,16 @@ type SalesIQ = {
     open?: (cb: () => void) => void;
     close?: (cb: () => void) => void;
     minimize?: (cb: () => void) => void;
+    /** Pestaña con la que abre la ventana ("home", "chat"…) */
+    defaultview?: (view: string) => void;
   };
-  visitor?: { customaction?: (action: string) => void };
+  /** Lo lee la ventana de Zoho para elegir la pestaña inicial */
+  defaultview?: string;
+  visitor?: {
+    customaction?: (action: string) => void;
+    /** Se invoca cuando el visitante inicia una conversación */
+    chat?: (cb: (visitid: string, data: unknown) => void) => void;
+  };
 };
 declare global {
   interface Window {
@@ -56,9 +66,6 @@ declare global {
 let host: Promise<Window> | null = null;
 let hostWin: Window | null = null;
 
-/** Ventana de la página aislada (o null si todavía no se creó). */
-export const zohoWindow = () => hostWin;
-
 /** Crea (una vez) el iframe escondido con la página aislada y espera a que cargue. */
 function zohoHost(): Promise<Window> {
   if (host) return host;
@@ -66,12 +73,13 @@ function zohoHost(): Promise<Window> {
     const frame = document.createElement("iframe");
     frame.id = HOST_ID;
     frame.title = "Chat con un asesor de Transpack";
+    // Escondido hasta que se muestra (announce)
     frame.setAttribute("aria-hidden", "true");
     frame.tabIndex = -1;
     frame.onload = () => {
       const w = frame.contentWindow;
       if (!w?.document?.body) return reject(new Error("host"));
-      // Marco y botón de cerrar de la ventana de Zoho
+      // La ventana de Zoho llena el iframe, sin marco propio
       const style = w.document.createElement("style");
       style.textContent = hostCss;
       w.document.head.appendChild(style);
@@ -120,18 +128,34 @@ function watchChatWindow(w: Window) {
   window.setTimeout(() => obs.disconnect(), 30_000);
 }
 
+/** Documento de la ventana de Zoho (iframe del mismo origen) */
+const chatDoc = () =>
+  (hostWin?.document.getElementById("siq_chatwindow") as HTMLIFrameElement | null)?.contentDocument ??
+  null;
+
 // ─── Visible o escondida ────────────────────────────────────────────────────
-// En modo puente (src/lib/zohoBridge.ts) la ventana de Zoho trabaja escondida:
-// no se muestra ni se avisa al sitio, para que Joel siga a la vista.
-let bridging = false;
-export const setBridging = (on: boolean) => {
-  bridging = on;
-  if (on) document.documentElement.classList.remove("tp-zoho-open");
-};
-/** Muestra u oculta la ventana de Zoho y avisa al sitio (salvo en modo puente). */
+// Abriendo: la ventana no se muestra hasta estar dentro de una conversación
+// (así no se alcanza a ver el inicio ni la lista de conversaciones de Zoho)
+let opening = false;
+// Precargada: la ventana quedó lista y escondida al entrar al sitio; no se
+// muestra hasta que la persona abre el chat
+let hidden = false;
+
+/** Muestra u oculta la ventana de Zoho y avisa al sitio. A la vista, el iframe
+ *  deja de estar oculto para lectores de pantalla y teclado y el foco va al
+ *  campo de escribir; al cerrarla, el foco vuelve al botón del chat. */
 export const announce = (open: boolean) => {
-  if (bridging) return;
+  if ((opening || hidden) && open) return;
   document.documentElement.classList.toggle("tp-zoho-open", open);
+  const frame = document.getElementById(HOST_ID) as HTMLIFrameElement | null;
+  if (frame) {
+    const hadFocus = document.activeElement === frame;
+    if (open) frame.removeAttribute("aria-hidden");
+    else frame.setAttribute("aria-hidden", "true");
+    frame.tabIndex = open ? 0 : -1;
+    if (open) chatDoc()?.querySelector<HTMLElement>("textarea")?.focus();
+    else if (hadFocus) document.querySelector<HTMLElement>("[data-chat-launcher]")?.focus();
+  }
   window.dispatchEvent(new CustomEvent(CRM_CHAT_EVENT, { detail: { open } }));
 };
 
@@ -154,14 +178,21 @@ export function loadCrmChat(): Promise<SalesIQ> {
         w.$zoho = w.$zoho || {};
         w.$zoho.salesiq = {
           ...w.$zoho.salesiq,
+          // Abre directo en la conversación, no en el inicio de Zoho
+          defaultview: DEFAULT_VIEW,
           ready() {
             window.clearTimeout(timer);
             const z = w.$zoho!.salesiq!;
             z.language?.("es");
             z.floatbutton?.visible("hide");
+            z.defaultview = DEFAULT_VIEW;
+            z.floatwindow?.defaultview?.(DEFAULT_VIEW);
             z.floatwindow?.open?.(() => announce(true));
             z.floatwindow?.close?.(() => announce(false));
             z.floatwindow?.minimize?.(() => announce(false));
+            // Conversación iniciada por el visitante: el sitio registra la
+            // conversión (sin nada de lo que escribe)
+            z.visitor?.chat?.(() => window.dispatchEvent(new Event(CHAT_LEAD_EVENT)));
             watchChatWindow(w);
             resolve(z);
           },
@@ -178,13 +209,69 @@ export function loadCrmChat(): Promise<SalesIQ> {
   return loading;
 }
 
-/** Abre la ventana del chat de Zoho a la vista (respaldo). */
-export async function openCrmChat(): Promise<void> {
-  const z = await loadCrmChat();
-  setBridging(false);
-  z.floatwindow?.visible("show");
-  styleChatWindow();
+let warm: Promise<void> | null = null;
+
+/** Abre la ventana del chat de Zoho a la vista, ya dentro de una conversación.
+ *  Devuelve si la conversación está vacía (para que el bot salude solo entonces). */
+export async function openCrmChat(): Promise<boolean> {
+  // Si la precarga sigue en curso, se termina con ella (ya entra a la conversación)
+  await warm;
+  // Antes de cargar: si Zoho avisa que abrió, no se muestra todavía
+  opening = true;
+  try {
+    const z = await loadCrmChat();
+    z.floatwindow?.visible("show");
+    styleChatWindow();
+    await enterConversation();
+  } finally {
+    opening = false;
+  }
+  hidden = false;
   announce(true);
+  return !chatDoc()?.querySelector('[data-zsqa$="message_bubble"]');
+}
+
+/** Precarga (al entrar al sitio, src/hooks/useAdvisorChat.ts): carga Zoho y deja
+ *  su ventana armada, escondida y ya dentro de una conversación, para que abrir
+ *  el chat sea inmediato. No muestra nada, no envía mensajes ni avisa la acción
+ *  del bot (eso pasa solo cuando la persona abre el chat). */
+export function preloadCrmChat(): Promise<void> {
+  warm ??= (async () => {
+    // Antes de cargar: si Zoho restaura una ventana abierta, no se muestra
+    hidden = true;
+    const z = await loadCrmChat();
+    z.floatwindow?.visible("show");
+    styleChatWindow();
+    await enterConversation();
+  })().catch(() => {
+    // Si falla, abrir el chat lo vuelve a intentar como siempre
+    hidden = false;
+    warm = null;
+  });
+  return warm;
+}
+
+/** Si Zoho muestra su lista de conversaciones ("No hay ninguna conversación en
+ *  curso") o su inicio en vez de una conversación, entra a una conversación
+ *  nueva: el visitante ve directo el chat. No envía ningún mensaje. */
+async function enterConversation(ms = 8000) {
+  const end = Date.now() + ms;
+  let clicked = false;
+  while (Date.now() < end) {
+    const doc = chatDoc();
+    // Ya en una conversación (el campo de escribir está a la vista)
+    if (doc?.querySelector("textarea")) return;
+    if (!clicked) {
+      const start =
+        doc?.querySelector<HTMLElement>('[data-zsqa="new_conversation"]') ??
+        doc?.querySelector(".siqico-chat-start")?.closest<HTMLElement>(".home-icon-optns");
+      if (start) {
+        start.click();
+        clicked = true;
+      }
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
 }
 
 /** Avisa a Zoho que se abrió el chat mediante una acción personalizada, para que
@@ -209,6 +296,9 @@ export function setZohoHostForTests(w: Window) {
 /** Solo para pruebas: olvida la carga anterior. */
 export function resetCrmChatForTests() {
   loading = null;
+  warm = null;
+  hidden = false;
+  opening = false;
   host = null;
   hostWin = null;
   document.getElementById(HOST_ID)?.remove();

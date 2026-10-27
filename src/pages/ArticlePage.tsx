@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { readMinutes, type Item } from "@/data/blogData";
 import { usePosts } from "@/hooks/useContent";
@@ -6,7 +5,6 @@ import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import { track } from "@/lib/joelProfile";
 
 function ListItem({ item }: { item: Item }) {
   if (typeof item === "string") return <li>{item}</li>;
@@ -26,11 +24,6 @@ export function ArticlePage() {
   const t = articleText(tr);
   const blogPosts = usePosts();
   const post = blogPosts.find((p) => p.slug === slugEs(slug ?? "", lang));
-  // Artículo leído (perfil del visitante para Joel)
-  const postSlug = post?.slug;
-  useEffect(() => {
-    if (postSlug) track("article", postSlug);
-  }, [postSlug]);
   if (!post) return <NotFoundPage />;
 
   const others = blogPosts.filter((p) => p.slug !== post.slug);

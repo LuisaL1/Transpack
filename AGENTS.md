@@ -24,7 +24,7 @@ publica en Vercel.
 
 - El JS principal debe quedar **por debajo de 450 KB** sin comprimir
   (`.github/workflows/ci.yml`). Lo pesado va aparte: React y React Router en el
-  chunk `vendor` (`vite.config.ts`), el cerebro de Joel y Zoho con `import()`.
+  chunk `vendor` (`vite.config.ts`) y el chat de Zoho con `import()`.
 - Fotos: JPG de **máximo 1200 px** en el lado largo (900 px en la galería),
   calidad ~72, idealmente **menos de 200 KB** cada una. Los originales del
   cliente van en `RecursosTranspack/Imagenes/`, no en la raíz del proyecto.
@@ -56,8 +56,9 @@ src/
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (WorldMap), el cotizador (QuoteWizard + QuoteFields)
-│   ├── chat/               Chat de Joel: AdvisorChat (ventana), ChatLauncher,
-│   │                       ChatTeaser, ChatBubble, ChatOptions, ChatAvatar
+│   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
+│   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
+│   │                       ChatBubble, ChatOptions, ChatAvatar
 │   └── ui/                 Primitivas: Bi (íconos), btn, Eyebrow, SectionHead,
 │                           Reveal, StatValue, Checks y medidas de sección (layout.ts)
 ├── data/                   CONTENIDO del sitio (fuente única de verdad)
@@ -70,8 +71,7 @@ src/
 │   ├── pages.ts            Textos de servicio, artículo, 404 y franja CTA
 │   ├── navigation.ts       Megamenús, soporte, pie y franja de idiomas
 │   ├── quote.ts            Opciones y textos del cotizador
-│   ├── chat.ts             Pasos del chat guiado y textos del chat
-│   ├── joelKnowledge.ts    Conocimiento que recibe el cerebro de Joel
+│   ├── chat.ts             Textos del botón del chat, la invitación y el respaldo
 │   ├── search.ts           Qué encuentra el buscador y búsquedas sugeridas
 │   ├── meta.ts             Títulos, descripciones y migas de cada página por idioma (SEO)
 │   ├── consent.ts          Textos del aviso de cookies
@@ -79,35 +79,27 @@ src/
 │   ├── clientLogos.ts      Logos de clientes
 │   └── worldMap.ts         Mapamundi: siluetas de los países y destinos (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
-│   ├── joel.ts             "Cerebro" del asesor virtual (sin IA externa; ~120 KB,
-│   │                       se descarga aparte al abrir el chat)
-│   ├── joelProfile.ts      Perfil del visitante (localStorage) y memoria del chat:
-│   │                       la parte ligera de Joel que usan las páginas (track…)
-│   ├── chatRoute.ts        Chat en inglés: palabras clave → paso
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
-│   ├── advisorChat.ts      Chat con un asesor DENTRO de Joel (habla con /api/advisor)
-│   ├── advisorEvents.ts    Eventos del chat con un asesor
-│   ├── zohoBridge.ts       Puente: chat con un asesor dentro de Joel con Zoho escondido
-│   ├── crmChat.ts          Respaldo: ventana de Zoho SalesIQ, solo al elegirla (docs/chat-crm.md)
+│   ├── advisorEvents.ts    Eventos del chat (ventana a la vista, conversación iniciada)
+│   ├── crmChat.ts          Chat: widget de Zoho SalesIQ (precarga, apertura, diseño; docs/chat-crm.md)
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
 │                           meta.ts (metadatos, hreflang, JSON-LD y rutas públicas)
 ├── hooks/                  useContent (useSite/usePosts), useAdvisorChat,
-│                           useScrollToHash, useVisitorTracking
-├── i18n/                   Idiomas: rutas y slugs traducidos, tr()
+│                           useScrollToHash
+├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
                             zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
-api/advisor.mjs              Función de Vercel: chat con un asesor dentro de Joel → Zoho SalesIQ (docs/chat-crm.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
 scripts/                    generate-world-map.mjs (pnpm map), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
-                            (diagnóstico de envíos) y zoho-token.mjs / zoho-advisor-check.mjs (API de Zoho)
-docs/                       agregar-servicio.md, chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
+                            (diagnóstico de envíos)
+docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
 tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
@@ -219,74 +211,38 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   en blanco translúcido, **Estados Unidos iluminado** en naranja claro (capa
   `LAND_USA`, pedido del cliente), Colombia en naranja.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
-- Chat de Joel: **sin degradados**, mismo estilo de los menús (cabecera azul
-  sólida con el cuadrado naranja translúcido girado 45°, rótulo naranja en
-  mayúsculas, opciones como lista con íconos en cuadros grises).
+- Chat: **sin degradados**, mismo estilo de los menús (cabecera azul sólida con
+  el cuadrado naranja translúcido girado 45°, rótulo naranja en mayúsculas,
+  opciones como lista con íconos en cuadros grises). La ventana de Zoho lo
+  recibe de `src/styles/zoho-chat.css`.
 - Las fotos actuales se reemplazarán cuando el cliente entregue nuevas: no
   cambiarlas por fotos de banco sin su aprobación.
 
-## Joel (asesor virtual)
+## Chat (Zoho SalesIQ)
 
-- **Nombre visible: "Joelito"** (`NAME` en `src/data/chat.ts`, pedido del
-  cliente en octubre de 2026). En el código y la documentación sigue llamándose
-  Joel (`joel.ts`, `createJoel`…).
-
-- `src/lib/joel.ts` (cerebro, solo en español; **pesa ~120 KB y se carga con
-  `import()` desde `useAdvisorChat`**, nunca con import estático desde las
-  páginas: lo ligero —`track`, `trackVisit`, `trackSearch`, `newMemory`,
-  `QUOTE_TOPIC`— se importa de `src/lib/joelProfile.ts`):
-  - entiende texto libre: palabras clave, sinónimos, raíces y errores de tipeo;
-  - responde preguntas específicas (FACTS) antes que el resumen del servicio;
-  - recuerda de qué servicio se venía hablando;
-  - detecta el problema del cliente y asesora (p. ej. "me trasladan a Alemania
-    en dos meses");
-  - maneja objeciones;
-  - se defiende de manipulación, insultos y temas ajenos.
-- Aprende y personaliza:
-  - si no entiende algo y el visitante elige después una opción, asocia esas
-    palabras a esa opción;
-  - saluda según el comportamiento del visitante (comprador, técnico o
-    explorador).
-- Perfil y aprendizaje viven en el `localStorage` del visitante
-  (`tp-joel-profile`). No hay servidor: los datos nunca salen del navegador.
-- Conocimiento: lo recibe al crearse desde `src/data/joelKnowledge.ts`
-  (mismos datos del sitio). Si no tiene un dato, lo dice y ofrece el contacto.
-- Conversación guiada (cotización por pasos) y textos: `src/data/chat.ts`.
-  Lógica de la ventana: `src/hooks/useAdvisorChat.ts`.
-- En inglés el texto libre se enruta por
-  palabras clave (`src/lib/chatRoute.ts`).
-- Otros componentes abren el chat con `window.dispatchEvent(new Event("tp:open-chat"))`
+- **El chat del sitio es el widget de Zoho SalesIQ** (bot "Joelito" y asesores
+  desde el panel de SalesIQ), con el diseño del sitio. **Nunca se menciona
+  Zoho.** La cara y el nombre de Joel quedan como marca del chat (botón,
+  invitación, avatar del bot). Detalle completo en `docs/chat-crm.md`.
+- `src/lib/crmChat.ts` carga el script de Zoho una sola vez (con `import()`, en
+  español y sin su botón) en la página aislada `public/chat-asesor.html`. **Se
+  precarga al entrar** (`preloadCrmChat`, ventana lista y escondida, ya en una
+  conversación) **solo si el visitante aceptó las cookies** o si el sitio no
+  muestra el aviso; si no, se carga al abrir el chat.
+- Al abrir: la ventana no se muestra hasta estar dentro de una conversación (no
+  se ve el inicio de Zoho); si está vacía, se avisa la acción personalizada
+  `abrir_chat_asesor` para que el bot salude (se configura en Zoho). Si Zoho no
+  carga, la ventana del sitio ofrece WhatsApp y el formulario (respaldo).
+- Lógica: `src/hooks/useAdvisorChat.ts`. Textos: `src/data/chat.ts`. Otros
+  componentes abren el chat con `window.dispatchEvent(new Event("tp:open-chat"))`
   (`openChat()` en `components/layout/MenuLink.tsx`).
-
-### Chat con un asesor (Zoho SalesIQ)
-
-- **El chat es solo el chat con un asesor.** Al abrir el ícono se conecta de una
-  vez (sin menú de Joel, sin "Te conecto…", sin la franja "Chat con un asesor" y
-  sin esperar a que escriban); en vez de enviar un mensaje, el puente avisa a
-  Zoho una acción personalizada (`ADVISOR_START_ACTION`, "abrir_chat_asesor") y
-  un bot proactivo configurado en Zoho saluda solo (`docs/chat-crm.md`). **Nunca
-  se menciona Zoho.** El asesor virtual Joel y su cotizador guiado **ya
-  no se alcanzan desde el chat** (el código sigue ahí; el cotizador de la portada
-  es aparte). Modos (`docs/chat-crm.md`):
-  - **dentro de Joel** si `/api/advisor` está configurado: como la API de
-    visitante necesita un primer mensaje, pide la consulta antes de abrir; el
-    asesor responde desde SalesIQ (API REST, sin cargar Zoho en el navegador).
-    Credenciales `ZOHO_*` y `ADVISOR_SECRET` solo en el servidor; cada
-    conversación con un pase firmado;
-  - si no, por el **puente** (`src/lib/zohoBridge.ts`, el que se usa hoy): el
-    widget de Zoho se carga escondido sin enviar ningún mensaje (el bot saluda
-    primero) y la ventana muestra sus respuestas; si Zoho pide un formulario,
-    ofrece completarlo en la ventana de Zoho u omitirlo;
-  - si el puente falla, se abre la **ventana de Zoho** (respaldo, abajo).
-- `src/lib/crmChat.ts` carga el script de Zoho **solo al abrir el chat** (no al
-  entrar al sitio), una sola vez, en español y con el botón de Zoho oculto. El
-  uso de los datos lo explica la política (`/privacidad`).
-- Acciones con `crm: true` (`ChatAction` y `JoelAction`) abren ese chat.
-- **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
-  chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de
-  `src/styles/index.css`. Solo colores de la marca.
+- **Diseño:** `src/styles/zoho-chat.css` se inyecta dentro de la ventana de
+  Zoho; `public/zoho-salesiq.css` es su copia para subir en Zoho (se genera del
+  original; la prueba de `crmChat` avisa si difieren). Tamaño y lugar de la
+  ventana: `#tp-zoho-frame` en `src/styles/index.css`. Solo colores de la marca.
 - **Zoho nunca se carga en las páginas del sitio:** vive en
-  `public/chat-asesor.html` (iframe escondido), que tiene su propia CSP en
-  `vercel.json` (con los scripts en línea que Zoho exige). La CSP del sitio no
-  autoriza nada de Zoho; no la relaje para Zoho.
-- Las pruebas simulan el script de Zoho: nunca cargan el real.
+  `public/chat-asesor.html`, con su propia CSP en `vercel.json` (con los scripts
+  en línea que Zoho exige). La CSP del sitio no autoriza nada de Zoho; no la
+  relaje para Zoho.
+- Las pruebas nunca cargan el Zoho real: lo simulan (`tests/e2e/fixtures.ts` lo
+  reemplaza en todas las pruebas e2e).

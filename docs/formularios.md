@@ -4,16 +4,15 @@ Todo contacto por correo del sitio pasa por formularios propios. Ningún enlace
 abre el programa de correo del visitante, y ningún dato se envía a servicios de
 formularios de terceros (FormSubmit, Formspree, etc.).
 
-| Formulario                                                            | Dónde se abre                                                                                                                                                                                                      | Qué envía                                                                                             |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| **Formulario de contacto** (`src/components/layout/ContactModal.tsx`) | Panel de soporte, menú Contacto (escritorio y celular), sección de contacto del inicio, pie de página, chat de Joel ("Enviar un correo" y "Enviar por correo" del resumen), respuestas de Joel y política de datos | Nombre, empresa, correo, teléfono, motivo, mensaje, idioma (si no es español) y autorización de datos |
-| **Cotizador** (`src/components/home/QuoteWizard.tsx`)                 | Sección `#cotizar` del inicio                                                                                                                                                                                      | Servicio y respuestas de cada paso, nombre, celular, correo, idioma y autorización de datos           |
+| Formulario | Dónde se abre | Qué envía |
+| --- | --- | --- |
+| **Formulario de contacto** (`src/components/layout/ContactModal.tsx`) | Panel de soporte, menú Contacto (escritorio y celular), sección de contacto del inicio, pie de página, ventana de respaldo del chat ("Dejar un mensaje", si Zoho no carga) y política de datos | Nombre, empresa, correo, teléfono, motivo, mensaje, idioma (si no es español) y autorización de datos |
+| **Cotizador** (`src/components/home/QuoteWizard.tsx`) | Sección `#cotizar` del inicio | Servicio y respuestas de cada paso, nombre, celular, correo, idioma y autorización de datos |
 
 - **Enlaces:** cualquier enlace a `#contacto` abre el formulario. Con
   `contactHref({ motivo, mensaje, nombre, empresa })` (`src/data/contact.ts`)
-  se abre con datos precargados, por ejemplo `#contacto?motivo=datos`. Así lo
-  hace el chat al terminar una cotización (nombre, empresa y resumen).
-- **Motivos:** cotización, información sobre un servicio, soporte, PQRS, datos personales
+  se abre con datos precargados, por ejemplo `#contacto?motivo=datos`.
+- **Motivos:** cotización, información general, soporte, PQRS, datos personales
   (Ley 1581), trabajar con nosotros y otro. El correo al equipo llega siempre
   con el motivo en español.
 - **Autorización:** ambos formularios exigen la casilla de **autorización de
@@ -37,11 +36,11 @@ Navegador ──POST /api/contact──► Función de Vercel (api/contact.mjs) 
                                                                                      └─► confirmación al visitante
 ```
 
-| Solicitud                                                                                                    | Llega a                            | Variable para cambiarlo |
-| ------------------------------------------------------------------------------------------------------------ | ---------------------------------- | ----------------------- |
-| Cotizador (`kind: "cotizacion"`)                                                                             | mercadeo@transpacksas.com          | `LEADS_TO_QUOTES`       |
-| Formulario de contacto con motivo "Cotización" (también el "Enviar por correo" del resumen del chat de Joel) | mercadeo@transpacksas.com          | `LEADS_TO_QUOTES`       |
-| Formulario de contacto con cualquier otro motivo                                                             | servicioalcliente@transpacksas.com | `LEADS_TO`              |
+| Solicitud | Llega a | Variable para cambiarlo |
+| --- | --- | --- |
+| Cotizador (`kind: "cotizacion"`) | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
+| Formulario de contacto con motivo "Cotización" | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
+| Formulario de contacto con cualquier otro motivo | servicioalcliente@transpacksas.com | `LEADS_TO` |
 
 - **Protección:**
   - rechaza envíos desde otros dominios (403);
