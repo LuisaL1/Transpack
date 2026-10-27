@@ -7,7 +7,7 @@
 | Configuración    | Variable `VITE_GA_MEASUREMENT_ID`                               | ID de medición de GA4. Si falta o no es válido (formato `G-…`), GA no se carga y no aparece el aviso de cookies. El ejemplo `G-XXXXXXXXXX` se ignora. |
 | Motor            | `src/lib/analytics.ts`                                          | Carga `gtag.js` una sola vez, Consent Mode v2, páginas vistas y eventos.                                                                              |
 | Rastreador       | `AnalyticsTracker` en `src/components/layout/Analytics.tsx`     | Página vista en cada cambio de ruta y clics en teléfono, correo y WhatsApp en todo el sitio.                                                          |
-| Aviso de cookies | `CookieBanner` (mismo archivo), textos en `src/data/consent.ts` | En los seis idiomas. Botones "Aceptar" y "Rechazar" equivalentes. Mientras está visible, en celular se oculta el botón de Joel.                       |
+| Aviso de cookies | `CookieBanner` (mismo archivo), textos en `src/data/consent.ts` | En los español e inglés. Botones "Aceptar" y "Rechazar" equivalentes. Mientras está visible, en celular se oculta el botón de Joel.                       |
 | Seguridad        | CSP de `vercel.json`                                            | Solo autoriza `*.googletagmanager.com` (script e imagen) y `*.google-analytics.com`, `*.analytics.google.com` (envío de datos).                       |
 
 - **Desarrollo:** `pnpm dev` nunca envía datos. El ID local va en

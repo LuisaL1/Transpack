@@ -45,15 +45,11 @@ const C = {
 export const DEFAULT_LEADS_TO = "servicioalcliente@transpacksas.com";
 /** Destino de las solicitudes de cotización (cotizador y formulario con motivo "Cotización") */
 export const DEFAULT_QUOTES_TO = "mercadeo@transpacksas.com";
-const LANGS = ["es", "en", "fr", "de", "it", "ar"];
+const LANGS = ["es", "en"];
 /** Política de datos en cada idioma (mismas rutas que src/i18n) */
 export const PRIVACY_PATH = {
   es: "/privacidad",
   en: "/en/privacy",
-  fr: "/fr/confidentialite",
-  de: "/de/datenschutz",
-  it: "/it/privacy",
-  ar: "/ar/privacy",
 };
 
 const json = (data, status = 200) =>
@@ -99,58 +95,6 @@ const CONFIRM = {
     auto: "This is an automatic confirmation message. We process your data in accordance with our",
     policy: "data processing policy",
   },
-  fr: {
-    subject: "Nous avons bien reçu votre demande · Transpack",
-    title: "Nous avons bien reçu votre demande !",
-    hello: (n) => `Bonjour${n ? ` ${n}` : ""},`,
-    quote: (s) => `votre demande de devis pour ${s}`,
-    message: (m) => `votre message (${m})`,
-    body: (a) =>
-      `Merci de nous avoir écrit. Nous avons bien reçu ${a} et un conseiller de notre équipe vous répondra à cet e-mail dans les meilleurs délais.`,
-    urgent: "Pour une aide immédiate, écrivez-nous sur WhatsApp ou appelez-nous :",
-    phones: "Téléphones",
-    auto: "Ceci est un message automatique de confirmation. Nous traitons vos données conformément à notre",
-    policy: "politique de traitement des données",
-  },
-  de: {
-    subject: "Wir haben Ihre Anfrage erhalten · Transpack",
-    title: "Wir haben Ihre Anfrage erhalten!",
-    hello: (n) => `Hallo${n ? ` ${n}` : ""},`,
-    quote: (s) => `Ihre Angebotsanfrage für ${s}`,
-    message: (m) => `Ihre Nachricht (${m})`,
-    body: (a) =>
-      `Vielen Dank für Ihre Nachricht. Wir haben ${a} erhalten, und ein Berater unseres Teams antwortet Ihnen so bald wie möglich auf diese E-Mail.`,
-    urgent: "Wenn Sie sofort Hilfe brauchen, schreiben Sie uns per WhatsApp oder rufen Sie uns an:",
-    phones: "Telefon",
-    auto: "Dies ist eine automatische Bestätigung. Wir verarbeiten Ihre Daten gemäß unserer",
-    policy: "Datenschutzrichtlinie",
-  },
-  it: {
-    subject: "Abbiamo ricevuto la tua richiesta · Transpack",
-    title: "Abbiamo ricevuto la tua richiesta!",
-    hello: (n) => `Ciao${n ? ` ${n}` : ""},`,
-    quote: (s) => `la tua richiesta di preventivo per ${s}`,
-    message: (m) => `il tuo messaggio (${m})`,
-    body: (a) =>
-      `Grazie per averci scritto. Abbiamo ricevuto ${a} e un consulente del nostro team ti risponderà a questa e-mail il prima possibile.`,
-    urgent: "Se hai bisogno di assistenza immediata, scrivici su WhatsApp o chiamaci:",
-    phones: "Telefoni",
-    auto: "Questo è un messaggio automatico di conferma. Trattiamo i tuoi dati secondo la nostra",
-    policy: "informativa sul trattamento dei dati",
-  },
-  ar: {
-    subject: "تلقّينا طلبك · ترانسباك",
-    title: "تلقّينا طلبك!",
-    hello: (n) => `مرحبًا${n ? ` ${n}` : ""}،`,
-    quote: (s) => `طلب عرض السعر الخاص بك لخدمة ${s}`,
-    message: (m) => `رسالتك (${m})`,
-    body: (a) =>
-      `شكرًا لتواصلك معنا. تلقّينا ${a}، وسيرد عليك أحد مستشاري فريقنا على هذا البريد الإلكتروني في أقرب وقت ممكن.`,
-    urgent: "إذا كنت بحاجة إلى مساعدة فورية، راسلنا عبر واتساب أو اتصل بنا:",
-    phones: "الهواتف",
-    auto: "هذه رسالة تأكيد تلقائية. نعالج بياناتك وفقًا لـ",
-    policy: "سياسة معالجة البيانات",
-  },
 };
 
 /** Dominio desde el que llegó la solicitud: el banner carga desde ahí (producción o vista previa de Vercel). */
@@ -172,10 +116,8 @@ export function baseUrl(req) {
  * `content` debe venir ya escapado.
  */
 export function layout(base, title, content, lang = "es") {
-  const dir = lang === "ar" ? "rtl" : "ltr";
-  const align = dir === "rtl" ? "right" : "left";
   return `<!doctype html>
-<html lang="${lang}" dir="${dir}">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -188,9 +130,9 @@ export function layout(base, title, content, lang = "es") {
 <tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:100%;max-width:560px;background:#FFFFFF;border:1px solid ${C.linea};border-radius:16px;border-collapse:separate;overflow:hidden">
 <tr><td bgcolor="${C.azul}" style="background:${C.azul};padding:0;line-height:0;font-size:0;border-radius:16px 16px 0 0"><img src="${base}/brand/email-header.png" width="560" alt="${BRAND.legalName}" style="display:block;width:100%;max-width:560px;height:auto;border:0;border-radius:16px 16px 0 0"></td></tr>
-<tr><td dir="${dir}" style="padding:28px 28px 4px;text-align:${align}"><h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:${C.azul}">${esc(title)}</h1></td></tr>
-<tr><td dir="${dir}" style="padding:16px 28px 28px;text-align:${align};font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:${C.texto}">${content}</td></tr>
-<tr><td dir="${dir}" style="padding:16px 28px;border-top:1px solid ${C.linea};background:${C.gris};text-align:${align};font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${C.suave};border-radius:0 0 16px 16px"><strong style="color:${C.tinta}">${BRAND.legalName}</strong><br>${esc(BRAND.address)}<br>${BRAND.phones[0]}</td></tr>
+<tr><td style="padding:28px 28px 4px;text-align:left"><h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:${C.azul}">${esc(title)}</h1></td></tr>
+<tr><td style="padding:16px 28px 28px;text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:${C.texto}">${content}</td></tr>
+<tr><td style="padding:16px 28px;border-top:1px solid ${C.linea};background:${C.gris};text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${C.suave};border-radius:0 0 16px 16px"><strong style="color:${C.tinta}">${BRAND.legalName}</strong><br>${esc(BRAND.address)}<br>${BRAND.phones[0]}</td></tr>
 </table>
 </td></tr>
 </table>

@@ -2,7 +2,7 @@
 
 Sitio corporativo de Transpack S.A.S. (mudanzas locales, nacionales e
 internacionales, bodegaje y movilidad corporativa, Bogotá) hecho con React 19 +
-Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en seis idiomas. Se
+Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en español e inglés. Se
 publica en Vercel.
 
 ## Comandos
@@ -61,7 +61,7 @@ src/
 │   └── ui/                 Primitivas: Bi (íconos), btn, Eyebrow, SectionHead,
 │                           Reveal, StatValue, Checks y medidas de sección (layout.ts)
 ├── data/                   CONTENIDO del sitio (fuente única de verdad)
-│   ├── site.ts (+ .en/.fr/.de/.it/.ar)   Contacto, cifras, servicios, segmentos,
+│   ├── site.ts (+ .en)                   Contacto, cifras, servicios, segmentos,
 │   │                                     niveles, proceso, preguntas frecuentes
 │   ├── blogData.ts (+ idiomas)           Artículos del blog
 │   ├── content.ts          siteFor(lang) / postsFor(lang) y nombres de destinos
@@ -83,7 +83,7 @@ src/
 │   │                       se descarga aparte al abrir el chat)
 │   ├── joelProfile.ts      Perfil del visitante (localStorage) y memoria del chat:
 │   │                       la parte ligera de Joel que usan las páginas (track…)
-│   ├── chatRoute.ts        Chat en en/fr/de/it/ar: palabras clave → paso
+│   ├── chatRoute.ts        Chat en inglés: palabras clave → paso
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
 │   ├── advisorChat.ts      Chat con un asesor DENTRO de Joel (habla con /api/advisor)
@@ -96,7 +96,7 @@ src/
 │                           meta.ts (metadatos, hreflang, JSON-LD y rutas públicas)
 ├── hooks/                  useContent (useSite/usePosts), useAdvisorChat,
 │                           useScrollToHash, useVisitorTracking
-├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
+├── i18n/                   Idiomas: rutas y slugs traducidos, tr()
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
                             zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
@@ -128,29 +128,18 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
   `const t = heroText(tr);` → `{t.title}`. Así el buscador, el chat y las
   páginas leen la misma fuente.
 
-### Idiomas (publicados: es / en)
+### Idiomas (es / en)
 
-- **Solo se publican español e inglés** (`LANGS` en `src/i18n/index.ts`).
-  Francés, alemán, italiano y árabe están **desactivados** desde octubre de
-  2026 porque la revisión del cliente encontró errores de gramática: sus
-  textos se conservan (`dict/` y `site.<idioma>.ts`, `ALL_LANGS`), pero no
-  tienen rutas, no aparecen en el selector ni en el sitemap, y sus URLs
-  antiguas redirigen a `/en` (`vercel.json`). No los borre. Su contenido
-  tampoco viaja en el JS del sitio: `src/data/content.ts` y el `DICT` de
-  `src/i18n/index.ts` solo importan los idiomas publicados. Para volver a
-  publicar uno, revise su traducción y agréguelo a `LANGS`, a `content.ts`
-  (`SITES`, `POSTS`) y a `DICT`.
-
-- Español en la raíz (`/`, `/nosotros`, `/servicios/...`); los demás con prefijo
-  y URLs traducidas (`/en/about`, `/fr/services/...`, `/de/leistungen/...`).
-  El árabe se muestra de derecha a izquierda.
+- **El sitio está solo en español e inglés** (`LANGS` en `src/i18n/index.ts`).
+  Francés, alemán, italiano y árabe se eliminaron en octubre de 2026 (la
+  revisión del cliente encontró errores de gramática); sus URLs antiguas
+  redirigen a `/en` (`vercel.json`).
+- Español en la raíz (`/`, `/nosotros`, `/servicios/...`); inglés con prefijo
+  y URLs traducidas (`/en/about`, `/en/services/...`).
 - Rutas, slugs e información de cada idioma: `src/i18n/index.ts`.
 - Textos cortos: `tr("español", "English")` dentro de las funciones de `src/data/`.
-  El francés, alemán, italiano y árabe se buscan **por el texto en inglés** en
-  `src/i18n/dict/{fr,de,it,ar}.ts`. Si cambia el inglés, cambie también la clave
-  del diccionario (la prueba de contenido avisa si falta una traducción).
-- Contenido largo: `src/data/site.<idioma>.ts` y `src/data/blogData.<idioma>.ts`.
-  **Si cambia un texto en español, actualice también sus traducciones.**
+- Contenido largo: `src/data/site.ts` / `site.en.ts` y `src/data/blogData.ts` /
+  `blogData.en.ts`. **Si cambia un texto en español, actualice también el inglés.**
 
 ### SEO y analítica
 
@@ -159,7 +148,7 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
     render ni en el valor inicial de `useState` (úselos en `useEffect`);
   - un solo `<h1>` por página;
   - cada ruta nueva va en `getPageMeta` y `PUBLIC_ROUTES` (`src/seo/meta.ts`),
-    con título (30–70 caracteres) y descripción (70–160) en los seis idiomas.
+    con título (30–70 caracteres) y descripción (70–160) en español e inglés.
 - La indexación está desactivada (`VITE_SITE_INDEXABLE`) hasta que el dominio
   apunte a este sitio.
 - Google Analytics solo se carga con `VITE_GA_MEASUREMENT_ID` y respeta el
@@ -206,7 +195,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `/privacidad`): es un borrador pendiente de aprobación legal. El NIT
   (`CONTACT.nit`) está vacío hasta que el cliente lo entregue: no inventarlo. Si se pide un dato nuevo al visitante
   (cotizador, chat) o se agrega una herramienta que recoja datos, actualice la
-  política en los seis idiomas. La versión en español es la oficial.
+  política en español e inglés. La versión en español es la oficial.
 - El cotizador **no calcula precios** (la Lógica de Cotización no los define):
   perfila la solicitud y la envía por WhatsApp o correo.
 - Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez
@@ -225,6 +214,10 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   naranja a rojizo. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
+- Mapa del inicio (`WorldMap` sobre el panel azul de marca del `Hero`, el mismo
+  del selector de servicios): países
+  en blanco translúcido, **Estados Unidos iluminado** en naranja claro (capa
+  `LAND_USA`, pedido del cliente), Colombia en naranja.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat de Joel: **sin degradados**, mismo estilo de los menús (cabecera azul
   sólida con el cuadrado naranja translúcido girado 45°, rótulo naranja en
@@ -260,7 +253,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   (mismos datos del sitio). Si no tiene un dato, lo dice y ofrece el contacto.
 - Conversación guiada (cotización por pasos) y textos: `src/data/chat.ts`.
   Lógica de la ventana: `src/hooks/useAdvisorChat.ts`.
-- En inglés, francés, alemán, italiano y árabe el texto libre se enruta por
+- En inglés el texto libre se enruta por
   palabras clave (`src/lib/chatRoute.ts`).
 - Otros componentes abren el chat con `window.dispatchEvent(new Event("tp:open-chat"))`
   (`openChat()` en `components/layout/MenuLink.tsx`).

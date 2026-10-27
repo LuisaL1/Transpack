@@ -2,7 +2,7 @@
 // del build del cliente (dist/) y del build de servidor (dist-ssr/).
 //  · Escribe dist/<ruta>.html con el contenido ya renderizado, el idioma del
 //    <html> y las etiquetas SEO propias de cada página (título, descripción,
-//    canónica, hreflang, Open Graph, JSON-LD), en los seis idiomas.
+//    canónica, hreflang, Open Graph, JSON-LD), en español e inglés.
 //  · Escribe dist/404.html (Vercel lo sirve con estado 404), sitemap.xml y robots.txt.
 // Vercel sirve /servicios/x desde dist/servicios/x.html gracias a "cleanUrls".
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -23,9 +23,9 @@ for (const mark of [
 
 function page(url) {
   const meta = getPageMeta(url);
-  const { locale, dir } = LANG_INFO[meta.lang];
+  const { locale } = LANG_INFO[meta.lang];
   const html = template
-    .replace('<html lang="es-CO" dir="ltr">', `<html lang="${locale}" dir="${dir}">`)
+    .replace('<html lang="es-CO" dir="ltr">', `<html lang="${locale}" dir="ltr">`)
     .replace(/<!--seo:start-->[\s\S]*?<!--seo:end-->/, renderHeadTags(meta))
     .replace(
       '<div id="root"><!--app-html--></div>',

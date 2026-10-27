@@ -87,22 +87,22 @@ export const placeLabels = (tr: Tr): Record<QuoteService, [string, string, strin
 export const step4Title = (tr: Tr): Record<QuoteService, string> => ({
   local: tr("Cuéntanos sobre el inmueble", "Tell us about the property"),
   nacional: tr("Cuéntanos sobre el inmueble", "Tell us about the property"),
-  internacional: tr("Cuéntanos sobre tu traslado", "Tell us about your move"),
+  internacional: tr("Cuéntanos sobre su traslado", "Tell us about your move"),
   empresarial: tr("Datos de la empresa", "Company details"),
   bodegaje: tr("¿Qué vas a almacenar?", "What will you store?"),
 });
 
 export const doneMsg = (tr: Tr): Partial<Record<QuoteService, string>> => ({
   internacional: tr(
-    "Por tratarse de una mudanza internacional, un asesor especializado revisará contigo requisitos, tiempos y costos antes de la cotización formal. Envía tu solicitud por WhatsApp para agilizar el contacto.",
+    "Por tratarse de una mudanza internacional, un asesor especializado revisará contigo requisitos, tiempos y costos antes de la cotización formal. Envía su solicitud por WhatsApp para agilizar el contacto.",
     "Since this is an international move, a specialized advisor will review requirements, timelines and costs with you before the formal quote. Send your request on WhatsApp to speed things up.",
   ),
   empresarial: tr(
-    "Un ejecutivo de cuenta revisará las condiciones corporativas y te enviará una propuesta. Envía tu solicitud por WhatsApp o correo.",
+    "Un ejecutivo de cuenta revisará las condiciones corporativas y te enviará una propuesta. Envía su solicitud por WhatsApp o correo.",
     "An account executive will review the corporate terms and send you a proposal. Send your request on WhatsApp or by email.",
   ),
   bodegaje: tr(
-    "Un asesor te confirmará disponibilidad y condiciones de almacenamiento. Envía tu solicitud por WhatsApp.",
+    "Un asesor te confirmará disponibilidad y condiciones de almacenamiento. Envía su solicitud por WhatsApp.",
     "An advisor will confirm availability and storage terms. Send your request on WhatsApp.",
   ),
 });
@@ -141,7 +141,7 @@ export const quoteText = (tr: Tr) => ({
   indicaLugarOrigen: tr("Indica el lugar de origen.", "Enter the origin location."),
   indicaLugarDestino: tr("Indica el lugar de destino.", "Enter the destination location."),
   cuentanosCuandoNecesitas: tr("Cuéntanos para cuándo lo necesitas.", "Tell us when you need it."),
-  escribeNombre: tr("Escribe tu nombre.", "Enter your name."),
+  escribeNombre: tr("Escribe su nombre.", "Enter your name."),
   escribeNumeroCelularValido: tr(
     "Escribe un número de celular válido.",
     "Enter a valid mobile number.",
@@ -181,7 +181,7 @@ export const quoteText = (tr: Tr) => ({
   correo: tr("Correo", "Email"),
   selecciona: tr("Selecciona", "Select"),
   listoSolicitudEstaPreparada: tr(
-    "¡Listo! Tu solicitud está preparada",
+    "¡Listo! Su solicitud está preparada",
     "Done! Your request is ready",
   ),
   envialaWhatsappAsesorTe: tr(
@@ -192,43 +192,21 @@ export const quoteText = (tr: Tr) => ({
   solicitudCotizacion: tr("Solicitud de cotización", "Quote request"),
   enviarCorreo: tr("Enviar por correo", "Send by email"),
   tuCorreoParaEnviar: tr(
-    "Escribe tu correo para recibir la respuesta por este medio:",
+    "Escribe su correo para recibir la respuesta por este medio:",
     "Enter your email to get the reply this way:",
   ),
   autorizacionDatos: tr("Autorización de datos", "Data authorization"),
   // Envío automático de la solicitud a un asesor (Zoho Desk) al llegar al final
-  enviandoSolicitud: tr("Enviando tu solicitud…", "Sending your request…", {
-    fr: "Envoi de votre demande…",
-    de: "Ihre Anfrage wird gesendet…",
-    it: "Invio della tua richiesta…",
-    ar: "جارٍ إرسال طلبك…",
-  }),
+  enviandoSolicitud: tr("Enviando su solicitud…", "Sending your request…"),
   solicitudEnviadaAsesor: tr(
-    "¡Enviada! Un asesor revisará tu solicitud y te contactará pronto.",
+    "¡Enviada! Un asesor revisará su solicitud y te contactará pronto.",
     "Sent! An advisor will review your request and contact you soon.",
-    {
-      fr: "Envoyée ! Un conseiller examinera votre demande et vous contactera bientôt.",
-      de: "Gesendet! Ein Berater prüft Ihre Anfrage und meldet sich bald bei Ihnen.",
-      it: "Inviata! Un consulente esaminerà la tua richiesta e ti contatterà presto.",
-      ar: "تم الإرسال! سيراجع أحد المستشارين طلبك وسيتواصل معك قريبًا.",
-    },
   ),
   noPudimosEnviarSolicitud: tr(
-    "No pudimos enviar tu solicitud. Inténtalo de nuevo.",
+    "No pudimos enviar su solicitud. Inténtalo de nuevo.",
     "We couldn't send your request. Please try again.",
-    {
-      fr: "Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.",
-      de: "Wir konnten Ihre Anfrage nicht senden. Bitte versuchen Sie es erneut.",
-      it: "Non siamo riusciti a inviare la tua richiesta. Riprova.",
-      ar: "لم نتمكن من إرسال طلبك. حاول مرة أخرى.",
-    },
   ),
-  reintentar: tr("Reintentar", "Try again", {
-    fr: "Réessayer",
-    de: "Erneut versuchen",
-    it: "Riprova",
-    ar: "إعادة المحاولة",
-  }),
+  reintentar: tr("Reintentar", "Try again"),
   hacerOtraSolicitud: tr("Hacer otra solicitud", "Start a new request"),
   paso: tr("Paso", "Step"),
   stepOf: tr("de", "of"),
@@ -344,7 +322,7 @@ export const quoteText = (tr: Tr) => ({
   atras: tr("Atrás", "Back"),
   verSolicitud: tr("Ver mi solicitud", "Review my request"),
   continuar: tr("Continuar", "Continue"),
-  solicitud: tr("Tu solicitud", "Your request"),
+  solicitud: tr("Su solicitud", "Your request"),
   eligeServicioComenzar: tr("Elige un servicio para comenzar.", "Choose a service to get started."),
   prefieresHablarAlguien: tr("¿Prefieres hablar con alguien?", "Prefer to talk to someone?"),
 });

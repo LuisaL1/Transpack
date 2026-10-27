@@ -40,7 +40,7 @@ export function ChatRow({ icon, label }: { icon: string; label: string }) {
       </span>
       <Bi
         n="chevron-right"
-        className="shrink-0 text-[0.8rem] text-suave transition-transform group-hover:translate-x-0.5 group-hover:text-naranja rtl:rotate-180"
+        className="shrink-0 text-[0.8rem] text-suave transition-transform group-hover:translate-x-0.5 group-hover:text-naranja"
       />
     </>
   );

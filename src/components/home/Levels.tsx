@@ -7,7 +7,7 @@ import { container, section } from "@/components/ui/layout";
 
 // Niveles de servicio (LEVELS de src/data/site.ts)
 export function Levels() {
-  const { lang, lp, tr } = useLang();
+  const { lp, tr } = useLang();
   const t = levelsText(tr);
   const { LEVELS } = useSite();
   return (
@@ -46,7 +46,7 @@ export function Levels() {
                   to={lp(`/?nivel=${i + 1}#cotizar`)}
                   className={`${l.featured ? btn.primary : btn.outline} ${btn.md} w-full`}
                 >
-                  {t.choose} {lang === "de" || lang === "ar" ? l.title : l.title.toLowerCase()}
+                  {t.choose} {l.title.toLowerCase()}
                 </Link>
               </article>
             </Reveal>

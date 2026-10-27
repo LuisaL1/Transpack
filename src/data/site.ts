@@ -3,8 +3,10 @@
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
+import imgCargador from "@/assets/images/cargador.jpeg";
 import imgGuacales from "@/assets/images/guacales.jpg";
-import imgNuevaEtapa from "@/assets/images/nueva-etapa.jpg";
+import imgOficina from "@/assets/images/oficina.jpg";
+import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
@@ -78,7 +80,7 @@ export const STATS = [
     short: "países de destino",
   },
   { value: 60, suffix: "K+", label: "toneladas de menaje doméstico exportadas" },
-  { value: 2000, suffix: "+", label: "representantes" },
+  { value: 2000, suffix: "+", label: "agentes y aliados estratégicos", short: "representantes" },
 ];
 
 export const EMBASSIES = [
@@ -129,7 +131,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgEmbalajeHogar,
     kicker: "Trasteos en Bogotá",
-    headline: "Tu trasteo en la ciudad, sin estrés y sin contratiempos",
+    headline: "Su trasteo en la ciudad, sin estrés y sin contratiempos",
     intro:
       "Planeamos cada mudanza local según el inmueble de origen y de destino: piso, ascensor, escaleras, acceso del vehículo y horarios permitidos por la administración. Así llegamos con el equipo y el tiempo justos.",
     includes: [
@@ -137,16 +139,16 @@ export const SERVICES: Service[] = [
       "Personal de cargue capacitado en manipulación de muebles",
       "Protección de mobiliario, electrodomésticos y objetos delicados",
       "Desarme y armado de muebles",
-      "Vehículo adecuado al volumen de tu inventario",
+      "Vehículo adecuado al volumen de su inventario",
       "Opción de bodegaje temporal",
     ],
     steps: [
       {
-        title: "Cuéntanos tu trasteo",
+        title: "Cuéntanos su trasteo",
         text: "Origen, destino, fecha, tipo de inmueble y lo que vas a mover.",
       },
       {
-        title: "Recibe tu estimado",
+        title: "Recibe su estimado",
         text: "Te enviamos un valor estimado y, si estás de acuerdo, la cotización formal.",
       },
       {
@@ -155,7 +157,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Entregamos en destino",
-        text: "Descargamos y ubicamos todo en tu nuevo espacio.",
+        text: "Descargamos y ubicamos todo en su nuevo espacio.",
       },
     ],
     note: "Las mudanzas locales suelen programarse con 1 a 2 semanas de anticipación, pero también atendemos solicitudes urgentes según disponibilidad.",
@@ -170,7 +172,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgCargue,
     kicker: "Entre ciudades de Colombia",
-    headline: "Tu patrimonio protegido de puerta a puerta",
+    headline: "Su patrimonio protegido de puerta a puerta",
     intro:
       "En una mudanza nacional el inventario es la base de todo: nos permite calcular el volumen, el vehículo y los recursos necesarios. Cuidamos la seguridad, la protección y el cumplimiento de tiempos en cada ruta.",
     includes: [
@@ -179,7 +181,7 @@ export const SERVICES: Service[] = [
       "Monitoreo del vehículo durante el trayecto",
       "Condiciones de cargue y descargue planeadas en origen y destino",
       "Servicio puerta a puerta en todo el país",
-      "Bodegaje en Bogotá si tu nuevo espacio aún no está listo",
+      "Bodegaje en Bogotá si su nuevo espacio aún no está listo",
     ],
     steps: [
       {
@@ -196,7 +198,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Entrega",
-        text: "Descargamos y ubicamos todo en tu nueva ciudad.",
+        text: "Descargamos y ubicamos todo en su nueva ciudad.",
       },
     ],
   },
@@ -236,7 +238,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Tránsito y entrega",
-        text: "Seguimiento hasta que tu nuevo hogar está habitable.",
+        text: "Seguimiento hasta que su nuevo hogar está habitable.",
       },
     ],
     note: "Recomendamos iniciar el proceso entre 1 y 2 meses antes de la fecha de empaque.",
@@ -251,18 +253,18 @@ export const SERVICES: Service[] = [
     icon: "boxes",
     title: "Bodegaje",
     short:
-      "Almacenamiento seguro en Bogotá, por días, meses o mientras se completa tu traslado. Infraestructura propia y control de inventario.",
+      "Almacenamiento seguro en Bogotá, por días, meses o mientras se completa su traslado. Infraestructura propia y control de inventario.",
     quote: "bodegaje",
     cta: "Cotizar",
-    image: imgContenedor,
+    image: imgCargador,
     kicker: "Almacenamiento en Bogotá",
-    headline: "Un lugar seguro para tus pertenencias, el tiempo que lo necesites",
+    headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesites",
     intro:
-      "Nuestra infraestructura de bodegaje en Bogotá te permite guardar menaje, mobiliario de oficina o archivo mientras te instalas, remodelas o esperas tu fecha de viaje. Puedes contratarlo solo o como parte de tu mudanza.",
+      "Nuestra infraestructura de bodegaje en Bogotá te permite guardar menaje, mobiliario de oficina o archivo mientras te instalas, remodelas o esperas su fecha de viaje. Puedes contratarlo solo o como parte de su mudanza.",
     includes: [
       "Bodegas propias en Bogotá",
       "Control de inventario de lo almacenado",
-      "Recogida en tu ubicación y entrega cuando lo pidas",
+      "Recogida en su ubicación y entrega cuando lo pidas",
       "Embalaje adecuado para almacenamiento prolongado",
       "Planes por días, meses o largo plazo",
       "Ideal para empresas, expatriados y familias en transición",
@@ -274,11 +276,11 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Recogemos",
-        text: "Embalamos e inventariamos en tu ubicación.",
+        text: "Embalamos e inventariamos en su ubicación.",
       },
       {
         title: "Almacenamos",
-        text: "Tus bienes quedan bajo control en nuestras bodegas.",
+        text: "Sus bienes quedan bajo control en nuestras bodegas.",
       },
       {
         title: "Entregamos",
@@ -297,7 +299,7 @@ export const SERVICES: Service[] = [
     image: imgGuacales,
     kicker: "Ingeniería de empaque",
     headline:
-      "Tus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
+      "Sus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
     intro:
       "Obras de arte, colecciones, cristalería y mobiliario de diseñador requieren ingeniería de empaque: guacales de madera a la medida para lienzos, amortiguación de impacto de alta densidad y protección contra la humedad en tránsitos largos.",
     includes: [
@@ -348,7 +350,7 @@ export const SERVICES: Service[] = [
     steps: [
       {
         title: "Diagnóstico",
-        text: "Revisamos tu caso y los documentos requeridos.",
+        text: "Revisamos su caso y los documentos requeridos.",
       },
       {
         title: "Preparación",
@@ -360,7 +362,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Liberación",
-        text: "Seguimiento hasta la entrega de tus bienes.",
+        text: "Seguimiento hasta la entrega de sus bienes.",
       },
     ],
   },
@@ -374,8 +376,8 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residencial",
     kicker: "Transpack Residencial",
-    title: "Tu hogar, en las mismas condiciones en el nuevo destino",
-    text: "Mudanzas de hogar locales, nacionales e internacionales. Elige cuánto quieres delegar: desde el traslado básico hasta un servicio integral en el que nos ocupamos de todo.",
+    title: "Su hogar, en las mismas condiciones en el nuevo destino",
+    text: "",
     points: [
       "Embalaje, desarme y armado de muebles",
       "Protección de objetos delicados y de alto valor",
@@ -390,26 +392,25 @@ export const SEGMENTS = [
   {
     id: "corporate",
     icon: "buildings",
-    tab: "Corporate Mobility",
-    kicker: "Transpack Corporate Mobility",
+    tab: "Movilidad corporativa",
+    kicker: "Transpack Movilidad corporativa",
     title: "Un solo operador para trasladar oficinas y talento",
-    text: "Traslados de oficinas y reubicación de personal nacional e internacional. Trabajamos con Compras y Recursos Humanos bajo acuerdos o contratos, con un ejecutivo de cuenta dedicado.",
+    text: "",
     points: [
       "Ejecutivo de cuenta y operación recurrente",
-      "Jornadas nocturnas o de fin de semana según cronograma",
       "Reportes, trazabilidad y condiciones corporativas",
     ],
     cta: "Solicitar propuesta corporativa",
     quote: "empresarial" as QuoteService,
-    image: imgContenedor,
+    image: imgOficina,
   },
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomatic & Institutional",
-    kicker: "Transpack Diplomatic & Institutional",
+    tab: "Diplomático e institucional",
+    kicker: "Transpack Diplomático e institucional",
     title: "Discreción, protocolo y precisión para misiones diplomáticas",
-    text: "Embajadas de Estados Unidos, España, Canadá, México, India, Francia, Alemania, Egipto, Emiratos Árabes e Italia, y entidades como la CAF, han confiado en nosotros el traslado de su personal.",
+    text: "",
     points: [
       "Atención protocolaria y absoluta confidencialidad",
       "Proceso de registro como proveedor institucional",
@@ -424,16 +425,16 @@ export const SEGMENTS = [
     icon: "airplane",
     tab: "Vivir en el exterior",
     kicker: "Te mudas a otro país o regresas a Colombia",
-    title: "No solo llevamos tus cosas: facilitamos tu transición",
-    text: "Si te vas a vivir a Estados Unidos, Canadá, Europa u otro destino, o regresas a Colombia, te acompañamos desde la planeación para que llegues con todo en orden.",
+    title: "No solo llevamos sus cosas: facilitamos su transición",
+    text: "",
     points: [
       "Asesoría sobre requisitos, tiempos y costos antes de empacar",
-      "Elección entre envío marítimo o aéreo según tu caso",
+      "Elección entre envío marítimo o aéreo según su caso",
       "Red de representantes que te recibe en el país de destino",
     ],
     cta: "Planear mi mudanza internacional",
     quote: "internacional" as QuoteService,
-    image: imgNuevaEtapa,
+    image: imgExterior,
   },
 ];
 
@@ -450,7 +451,7 @@ export const LEVELS = [
   {
     n: "02",
     title: "Protección y empaque",
-    text: "Empacamos tus cajas y protegemos el mobiliario con manipulación profesional.",
+    text: "Empacamos sus cajas y protegemos el mobiliario con manipulación profesional.",
     points: [
       "Todo lo del nivel básico",
       "Empaque de cajas",
@@ -493,7 +494,7 @@ export const PROCESS = [
   },
   {
     title: "Entrega puerta a puerta",
-    text: "Terminamos cuando tu nuevo espacio está listo para habitar.",
+    text: "Terminamos cuando su nuevo espacio está listo para habitar.",
   },
 ];
 
@@ -508,15 +509,15 @@ export const FAQS = [
   },
   {
     q: "¿Es mejor una mudanza marítima o aérea?",
-    a: "La marítima es ideal para grandes volúmenes, mobiliario completo y pertenencias familiares. La aérea es más rápida y se recomienda para cargas pequeñas o urgentes. Te asesoramos según tu presupuesto, tiempos y tipo de pertenencias.",
+    a: "La marítima es ideal para grandes volúmenes, mobiliario completo y pertenencias familiares. La aérea es más rápida y se recomienda para cargas pequeñas o urgentes. Te asesoramos según su presupuesto, tiempos y tipo de pertenencias.",
   },
   {
     q: "¿Necesito una visita técnica para cotizar?",
-    a: "No siempre. Si la información de tu inventario y del inmueble es suficiente, podemos darte un estimado. Cuando hay complejidad o riesgo de error (accesos difíciles, objetos especiales, grandes volúmenes), recomendamos una visita o videollamada.",
+    a: "No siempre. Si la información de su inventario y del inmueble es suficiente, podemos darte un estimado. Cuando hay complejidad o riesgo de error (accesos difíciles, objetos especiales, grandes volúmenes), recomendamos una visita o videollamada.",
   },
   {
     q: "¿Por qué es tan importante el inventario?",
-    a: "El inventario nos permite estimar el volumen, los recursos y el tiempo necesarios. Una omisión puede cambiar el costo final, por eso entre más preciso sea, más exacta será tu cotización.",
+    a: "El inventario nos permite estimar el volumen, los recursos y el tiempo necesarios. Una omisión puede cambiar el costo final, por eso entre más preciso sea, más exacta será su cotización.",
   },
   {
     q: "¿Qué pasa si el camión no puede parquear cerca del inmueble?",
@@ -561,14 +562,14 @@ export type PrivacySection = {
 export const PRIVACY = {
   title: "Política de tratamiento de datos personales",
   intro:
-    "En Transpack S.A.S. tratamos tus datos personales de acuerdo con la Ley 1581 de 2012 y el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015). Aquí te explicamos qué datos recogemos en este sitio, para qué los usamos, cómo se transmiten y cómo puedes ejercer tus derechos.",
+    "En Transpack S.A.S. tratamos sus datos personales de acuerdo con la Ley 1581 de 2012 y el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015). Aquí te explicamos qué datos recogemos en este sitio, para qué los usamos, cómo se transmiten y cómo puedes ejercer sus derechos.",
   updated: "Última actualización: 8 de octubre de 2026",
   notice: "",
   sections: [
     {
       id: "responsable",
       title: "Responsable del tratamiento",
-      text: ["La empresa responsable de tus datos personales es:"],
+      text: ["La empresa responsable de sus datos personales es:"],
     },
     {
       id: "datos",
@@ -582,7 +583,7 @@ export const PRIVACY = {
           [
             "Formulario de contacto",
             "Nombre, empresa (opcional), correo, teléfono (opcional), motivo y mensaje.",
-            "Responder tu mensaje o solicitud, incluidas las solicitudes sobre tus datos personales.",
+            "Responder su mensaje o solicitud, incluidas las solicitudes sobre sus datos personales.",
           ],
           [
             "Cotizador",
@@ -591,18 +592,18 @@ export const PRIVACY = {
           ],
           [
             "Chat de Joelito (asesor virtual)",
-            "Las opciones que eliges y lo que escribes en la conversación, incluido tu nombre, tu celular o WhatsApp y, si aplica, el nombre de tu empresa.",
-            "Orientarte y preparar tu solicitud. Si eliges enviar tu cotización a un asesor, el resumen (con tu nombre y celular) se envía a nuestro equipo comercial por Zoho SalesIQ para contactarte y darte seguimiento. Lo demás de la conversación se queda en tu navegador.",
+            "Las opciones que eliges y lo que escribes en la conversación, incluido su nombre, su celular o WhatsApp y, si aplica, el nombre de su empresa.",
+            "Orientarte y preparar su solicitud. Si eliges enviar su cotización a un asesor, el resumen (con su nombre y celular) se envía a nuestro equipo comercial por Zoho SalesIQ para contactarte y darte seguimiento. Lo demás de la conversación se queda en su navegador.",
           ],
           [
             "Chat con un asesor (Zoho SalesIQ)",
             "Lo que escribes en la conversación y los datos que decidas darnos (por ejemplo, nombre, correo o teléfono), junto con datos técnicos de la visita: páginas vistas, ubicación aproximada, navegador y dispositivo.",
-            "Atender tu consulta con un asesor de nuestro equipo, en la misma ventana del chat de Joelito. Solo se usa si eliges «Chatear con un asesor».",
+            "Atender su consulta con un asesor de nuestro equipo, en la misma ventana del chat de Joelito. Solo se usa si eliges «Chatear con un asesor».",
           ],
           [
             "WhatsApp y teléfono",
-            "Tu número y lo que decidas contarnos.",
-            "Atender tu consulta o solicitud.",
+            "Su número y lo que decidas contarnos.",
+            "Atender su consulta o solicitud.",
           ],
           [
             "Analítica del sitio (solo si aceptas las cookies)",
@@ -611,33 +612,33 @@ export const PRIVACY = {
           ],
         ],
       },
-      after: ["No vendemos tus datos ni los usamos para publicidad."],
+      after: ["No vendemos sus datos ni los usamos para publicidad."],
     },
     {
       id: "sensibles",
       title: "Datos sensibles y de menores de edad",
       text: [
-        "No pedimos datos sensibles (como información de salud, origen étnico, creencias o datos biométricos) ni datos de niñas, niños o adolescentes. Te pedimos no incluirlos en tus mensajes; si lo haces, los usaremos solo para atender tu solicitud.",
+        "No pedimos datos sensibles (como información de salud, origen étnico, creencias o datos biométricos) ni datos de niñas, niños o adolescentes. Te pedimos no incluirlos en sus mensajes; si lo haces, los usaremos solo para atender su solicitud.",
         "Este sitio no está dirigido a menores de edad.",
       ],
     },
     {
       id: "transmision",
-      title: "Cómo se transmiten y conservan tus datos",
+      title: "Cómo se transmiten y conservan sus datos",
       items: [
-        "Formulario de contacto y cotizador por correo: tus datos viajan cifrados (HTTPS) a una función del propio sitio, que los envía por correo a Transpack mediante Brevo, nuestro proveedor de correo, que actúa como encargado del tratamiento. Brevo también te envía una confirmación de que recibimos tu solicitud. El sitio no guarda copia de lo que envías.",
-        "WhatsApp: si eliges enviar tu solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
-        "En tu navegador: las preferencias del asesor virtual y tu decisión sobre cookies se guardan solo en tu navegador (almacenamiento local) y nunca se envían a Transpack. Puedes borrarlas cuando quieras borrando los datos de este sitio en tu navegador.",
-        "Chat con un asesor: si lo eliges en el chat de Joelito, tus mensajes se envían desde nuestro sitio a Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. La conversación se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM. Mientras no elijas ese chat, no se envía nada a Zoho.",
+        "Formulario de contacto y cotizador por correo: sus datos viajan cifrados (HTTPS) a una función del propio sitio, que los envía por correo a Transpack mediante Brevo, nuestro proveedor de correo, que actúa como encargado del tratamiento. Brevo también te envía una confirmación de que recibimos su solicitud. El sitio no guarda copia de lo que envías.",
+        "WhatsApp: si eliges enviar su solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
+        "En su navegador: las preferencias del asesor virtual y su decisión sobre cookies se guardan solo en su navegador (almacenamiento local) y nunca se envían a Transpack. Puedes borrarlas cuando quieras borrando los datos de este sitio en su navegador.",
+        "Chat con un asesor: si lo eliges en el chat de Joelito, sus mensajes se envían desde nuestro sitio a Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. La conversación se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM. Mientras no elijas ese chat, no se envía nada a Zoho.",
         "Conservación: guardamos las solicitudes que recibimos durante el tiempo necesario para atenderlas y prestar el servicio, y después el que exijan las normas contables, tributarias y legales.",
       ],
     },
     {
       id: "compartir",
-      title: "Con quién compartimos tus datos",
+      title: "Con quién compartimos sus datos",
       items: [
-        "En mudanzas internacionales, con nuestros agentes y aliados en el país de origen o de destino y con las autoridades aduaneras, solo en lo necesario para hacer la mudanza. Esto puede implicar transferir tus datos fuera de Colombia.",
-        "Con los proveedores que nos ayudan a operar el sitio y a comunicarnos contigo, como encargados del tratamiento: Vercel (alojamiento del sitio), Brevo (envío de correos), Zoho (chat con un asesor y CRM) y Google (analítica, solo si la aceptas). Algunos están fuera de Colombia, por lo que tus datos pueden transmitirse a otros países.",
+        "En mudanzas internacionales, con nuestros agentes y aliados en el país de origen o de destino y con las autoridades aduaneras, solo en lo necesario para hacer la mudanza. Esto puede implicar transferir sus datos fuera de Colombia.",
+        "Con los proveedores que nos ayudan a operar el sitio y a comunicarnos contigo, como encargados del tratamiento: Vercel (alojamiento del sitio), Brevo (envío de correos), Zoho (chat con un asesor y CRM) y Google (analítica, solo si la aceptas). Algunos están fuera de Colombia, por lo que sus datos pueden transmitirse a otros países.",
         "Con autoridades, cuando la ley lo exija.",
       ],
     },
@@ -650,22 +651,22 @@ export const PRIVACY = {
     },
     {
       id: "derechos",
-      title: "Tus derechos",
+      title: "Sus derechos",
       text: ["Como titular de los datos puedes:"],
       items: [
-        "Conocer, actualizar y rectificar tus datos.",
+        "Conocer, actualizar y rectificar sus datos.",
         "Pedir prueba de la autorización que nos diste.",
         "Saber qué uso les hemos dado.",
-        "Revocar la autorización o pedir que eliminemos tus datos, cuando no exista un deber legal o contractual de conservarlos.",
-        "Acceder gratis a tus datos.",
-        "Presentar quejas ante la Superintendencia de Industria y Comercio (SIC), después de haber hecho tu solicitud a Transpack.",
+        "Revocar la autorización o pedir que eliminemos sus datos, cuando no exista un deber legal o contractual de conservarlos.",
+        "Acceder gratis a sus datos.",
+        "Presentar quejas ante la Superintendencia de Industria y Comercio (SIC), después de haber hecho su solicitud a Transpack.",
       ],
     },
     {
       id: "como-ejercerlos",
-      title: "Cómo ejercer tus derechos",
+      title: "Cómo ejercer sus derechos",
       text: [
-        `Usa el formulario de contacto con el motivo «Datos personales» o escríbenos a ${CONTACT.email}. Indica tu nombre, tu solicitud y un medio para responderte.`,
+        `Usa el formulario de contacto con el motivo «Datos personales» o escríbenos a ${CONTACT.email}. Indica su nombre, su solicitud y un medio para responderte.`,
       ],
       items: [
         "Consultas: respondemos en máximo 10 días hábiles, prorrogables hasta 5 días hábiles más, avisándote el motivo.",
@@ -679,14 +680,14 @@ export const PRIVACY = {
       id: "autorizacion",
       title: "Autorización",
       text: [
-        "Al marcar la casilla de autorización en el formulario de contacto o en el cotizador, nos autorizas a tratar tus datos para las finalidades de esta política. Si nos escribes por el chat con un asesor o por WhatsApp, o nos llamas, nos das tu autorización con esa acción, para atender tu solicitud. Puedes revocarla en cualquier momento por los medios de «Cómo ejercer tus derechos».",
+        "Al marcar la casilla de autorización en el formulario de contacto o en el cotizador, nos autorizas a tratar sus datos para las finalidades de esta política. Si nos escribes por el chat con un asesor o por WhatsApp, o nos llamas, nos das su autorización con esa acción, para atender su solicitud. Puedes revocarla en cualquier momento por los medios de «Cómo ejercer sus derechos».",
       ],
     },
     {
       id: "seguridad",
       title: "Seguridad",
       text: [
-        "Aplicamos medidas técnicas, humanas y administrativas razonables para proteger tus datos contra pérdida, consulta, uso o acceso no autorizado.",
+        "Aplicamos medidas técnicas, humanas y administrativas razonables para proteger sus datos contra pérdida, consulta, uso o acceso no autorizado.",
       ],
     },
     {

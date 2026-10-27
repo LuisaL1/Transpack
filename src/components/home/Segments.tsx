@@ -70,7 +70,7 @@ export function Segments() {
               <h3 className="mb-4 text-[clamp(1.4rem,1.1rem+1vw,2rem)] leading-tight">
                 {seg.title}
               </h3>
-              <p className="mb-6">{seg.text}</p>
+              {seg.text && <p className="mb-6">{seg.text}</p>}
               <Checks items={seg.points} />
               <Link
                 to={lp(`/?servicio=${seg.quote}#cotizar`)}

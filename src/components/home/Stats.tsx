@@ -108,7 +108,7 @@ export function Stats() {
               </span>
               <span aria-hidden="true" className="hidden h-20 w-px bg-linea md:block" />
               <span className="max-w-[440px] text-balance font-title text-[clamp(1.2rem,1.02rem+.8vw,1.8rem)] font-semibold leading-snug text-tinta">
-                {s.label}
+                {s.label.charAt(0).toUpperCase() + s.label.slice(1)}
               </span>
             </div>
           ))}

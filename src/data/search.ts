@@ -57,7 +57,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
     })),
     page(
       "ui-checks",
-      tr("Cotiza tu mudanza", "Get a moving quote"),
+      tr("Cotiza su mudanza", "Get a moving quote"),
       tr("Cotizador en 6 pasos, sin compromiso", "6-step quote form, no commitment"),
       "/#cotizar",
       "precio cotizacion presupuesto valor price quote cost estimate",
@@ -123,7 +123,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       "shield-lock",
       PRIVACY.title,
       tr(
-        "Qué datos usamos, para qué y cómo ejercer tus derechos",
+        "Qué datos usamos, para qué y cómo ejercer sus derechos",
         "What data we use, why, and how to exercise your rights",
       ),
       "/privacidad",
@@ -139,24 +139,6 @@ export const searchSite = (lang: Lang, query: string) => search(searchIndex(lang
 export const SEARCH_SUGGESTIONS: Record<Lang, string[]> = {
   es: ["Mudanza internacional", "Bodegaje", "Cuánto tarda", "Embajadas", "Obras de arte", "Canadá"],
   en: ["International moving", "Storage", "How long", "Embassies", "Artwork", "Canada"],
-  fr: [
-    "Déménagement international",
-    "Garde-meubles",
-    "Combien de temps",
-    "Ambassades",
-    "Œuvres d'art",
-    "Canada",
-  ],
-  de: ["Internationaler Umzug", "Einlagerung", "Wie lange", "Botschaften", "Kunstwerke", "Kanada"],
-  it: [
-    "Trasloco internazionale",
-    "Deposito mobili",
-    "Quanto dura",
-    "Ambasciate",
-    "Opere d'arte",
-    "Canada",
-  ],
-  ar: ["النقل الدولي", "التخزين", "كم يستغرق", "السفارات", "الأعمال الفنية", "كندا"],
 };
 
 export const searchText = (tr: Tr) => ({

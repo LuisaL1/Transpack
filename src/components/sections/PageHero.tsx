@@ -1,27 +1,49 @@
 import type { ReactNode } from "react";
 
-// Encabezado de páginas internas (nosotros, servicio, artículo). Con foto, la
-// foto se ve bien (pedido del cliente, oct. 2026): azul oscuro solo a la
-// izquierda, donde va el texto, y hacia la derecha tonos naranja a rojizo.
+// Encabezado de páginas internas (nosotros, servicio, artículo, política, 404).
+// Sin degradados (pedido del cliente, oct. 2026): la información va sobre un
+// panel azul sólido a la izquierda, con un corte diagonal como la franja del
+// logo, y la foto se ve limpia y completa a la derecha, sin capas encima. En
+// celular y tableta la foto va arriba y el panel debajo. Sin foto, el panel
+// ocupa todo el ancho.
 export function PageHero({ children, image }: { children: ReactNode; image?: string }) {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#272b7c_0%,#1b1e5c_55%,#2f2959_100%)] pb-20 pt-40 text-white/80 md:pb-28 md:pt-48">
-      {image && (
-        <>
-          <img
-            fetchPriority="high"
-            src={image}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
+    <section className="relative overflow-hidden bg-azul-900 pt-[116px] text-white/80 md:pt-[132px] wide:pt-[146px]">
+      <div className="relative">
+        {image && (
+          <div className="relative lg:absolute lg:inset-y-0 lg:right-0 lg:w-[58%]">
+            <img
+              fetchPriority="high"
+              src={image}
+              alt=""
+              className="h-[240px] w-full object-cover sm:h-[340px] lg:h-full"
+            />
+          </div>
+        )}
+        {/* Franja naranja a lo largo del corte diagonal: la misma forma del
+            panel, 8 px más ancha, por detrás */}
+        {image && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 hidden w-[calc(52%+8px)] bg-naranja lg:block lg:[clip-path:polygon(0_0,100%_0,calc(100%-110px)_100%,0_100%)]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,15,51,.94)_0%,rgba(27,30,92,.86)_34%,rgba(27,30,92,.45)_58%,rgba(232,64,28,.28)_82%,rgba(255,118,25,.22)_100%)]" />
-        </>
-      )}
-      <span
-        aria-hidden="true"
-        className="absolute -left-[40%] top-[62%] h-[140px] w-[180%] -rotate-[38deg] bg-gradient-to-r from-transparent via-white/5 to-transparent"
-      />
-      <div className="relative mx-auto w-[min(100%-32px,1200px)]">{children}</div>
+        )}
+        <div
+          className={`relative bg-azul-900 py-10 md:py-14 ${
+            image
+              ? "lg:flex lg:min-h-[600px] lg:w-[52%] lg:flex-col lg:justify-center lg:py-14 lg:pe-32 lg:[clip-path:polygon(0_0,100%_0,calc(100%-110px)_100%,0_100%)]"
+              : "pb-20 md:pb-28"
+          }`}
+        >
+          <div
+            className={`relative mx-auto w-[min(100%-32px,1200px)] ${
+              image ? "lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:w-auto" : ""
+            }`}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

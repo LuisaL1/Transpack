@@ -15,7 +15,7 @@ describe("SEO · metadatos por página", () => {
     expect(LANGS).toEqual(["es", "en"]);
     expect(PUBLIC_ROUTES).toHaveLength(24);
     expect(new Set(PUBLIC_ROUTES).size).toBe(24);
-    // Francés, alemán, italiano y árabe no se publican (traducciones en revisión)
+    // Francés, alemán, italiano y árabe se retiraron: sus URLs antiguas redirigen a /en (vercel.json)
     expect(PUBLIC_ROUTES.some((r) => /^\/(fr|de|it|ar)(\/|$)/.test(r))).toBe(false);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));
     expect(PUBLIC_ROUTES.filter((r) => r.startsWith("/servicios/"))).toHaveLength(6);
@@ -27,7 +27,7 @@ describe("SEO · metadatos por página", () => {
     for (const m of metas) {
       expect(m.title.length, m.title).toBeGreaterThanOrEqual(30);
       expect(m.title.length, m.title).toBeLessThanOrEqual(70);
-      expect(m.title, m.path).toMatch(/\| (Transpack|ترانسباك)$/);
+      expect(m.title, m.path).toMatch(/\| Transpack$/);
     }
   });
 
@@ -52,7 +52,7 @@ describe("SEO · metadatos por página", () => {
     }
   });
 
-  it("cada página enlaza su versión en los seis idiomas + x-default (hreflang recíproco)", () => {
+  it("cada página enlaza su versión en español e inglés + x-default (hreflang recíproco)", () => {
     for (const m of metas) {
       expect(m.alternates.map((a) => a.hreflang)).toEqual([...LANGS, "x-default"]);
       expect(m.alternates.map((a) => a.href)).toContain(m.canonical);

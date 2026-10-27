@@ -7,7 +7,7 @@ import { BRAND, GOOGLE_VERIFICATION, INDEXABLE, SITE_URL, abs } from "@/seo/site
 // ─── Metadatos por ruta ─────────────────────────────────────────────────────
 // Una sola función para el servidor (pre-generación de HTML en el build,
 // scripts/prerender.mjs) y el navegador (SeoHead al cambiar de ruta), así ambos
-// dicen exactamente lo mismo. El sitio está en seis idiomas: cada ruta lleva su
+// dicen exactamente lo mismo. El sitio está en español e inglés: cada ruta lleva su
 // idioma, su canónica y los enlaces hreflang a la misma página en los demás.
 
 export type JsonLd = Record<string, unknown>;
@@ -45,10 +45,6 @@ export function clip(text: string, max = 158) {
 export const OG_LOCALE: Record<Lang, string> = {
   es: "es_CO",
   en: "en_US",
-  fr: "fr_FR",
-  de: "de_DE",
-  it: "it_IT",
-  ar: "ar_AR",
 };
 
 const AREA = [
@@ -356,7 +352,7 @@ export function getPageMeta(pathname: string): PageMeta {
   return page ?? notFoundMeta(path, lang);
 }
 
-/** Todas las rutas públicas en los seis idiomas (pre-generación y sitemap). */
+/** Todas las rutas públicas en español e inglés (pre-generación y sitemap). */
 export const PUBLIC_ROUTES: string[] = LANGS.flatMap((l) => [
   localize("/", l),
   localize("/nosotros", l),

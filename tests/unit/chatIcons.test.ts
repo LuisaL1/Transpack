@@ -14,7 +14,7 @@ const optionsOf = (o: ChatOption[] | ((d: Record<string, string>) => ChatOption[
   typeof o === "function" ? o(DATA) : (o ?? []);
 
 describe("Íconos del chat", () => {
-  it("cada opción del chat guiado tiene un ícono propio que existe, en los seis idiomas", () => {
+  it("cada opción del chat guiado tiene un ícono propio que existe, en español e inglés", () => {
     for (const lang of LANGS)
       for (const [id, step] of Object.entries(buildChat(lang))) {
         for (const o of optionsOf(step.options)) {

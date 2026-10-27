@@ -1,16 +1,15 @@
 // Textos de las secciones del inicio (src/components/home). Cada función recibe
-// `tr` (ver src/i18n): el español va primero y el inglés después; el francés,
-// alemán, italiano y árabe se buscan por el texto en inglés en src/i18n/dict.
+// `tr` (ver src/i18n): el español va primero y el inglés después.
 // Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
-// están en src/data/site.ts (y sus traducciones site.<idioma>.ts).
+// están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
 
 export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
   certifications: tr("Certificados LACMA, IAM y PAIMA", "LACMA, IAM and PAIMA certified"),
   certificationsShort: "LACMA · IAM · PAIMA",
-  title: tr("Prometemos con el corazón", "We promise from the heart"),
-  titlePrefix: tr("y cumplimos ", "and deliver "),
+  title: tr("Prometemos con el corazón,", "We promise from the heart,"),
+  titlePrefix: tr("cumplimos ", "deliver "),
   titleHighlight: tr("con excelencia.", "with excellence."),
   sub: tr(
     "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
@@ -36,20 +35,8 @@ export const statsText = (tr: Tr) => ({
   // Carrusel de cifras (Stats.tsx)
   carousel: tr("carrusel", "carousel"),
   slide: tr("cifra", "figure"),
-  of: (a: number, b: number) =>
-    tr(`${a} de ${b}`, `${a} of ${b}`, {
-      fr: `${a} sur ${b}`,
-      de: `${a} von ${b}`,
-      it: `${a} di ${b}`,
-      ar: `${a} من ${b}`,
-    }),
-  goTo: (a: number) =>
-    tr(`Ver cifra ${a}`, `Show figure ${a}`, {
-      fr: `Voir le chiffre ${a}`,
-      de: `Zahl ${a} anzeigen`,
-      it: `Vedi cifra ${a}`,
-      ar: `عرض الرقم ${a}`,
-    }),
+  of: (a: number, b: number) => tr(`${a} de ${b}`, `${a} of ${b}`),
+  goTo: (a: number) => tr(`Ver cifra ${a}`, `Show figure ${a}`),
 });
 
 export const servicesText = (tr: Tr) => ({
@@ -77,7 +64,7 @@ export const segmentsText = (tr: Tr) => ({
 
 export const levelsText = (tr: Tr) => ({
   eyebrow: tr("Niveles de servicio", "Service levels"),
-  title: tr("Tú decides cuánto delegar", "You decide how much to hand over"),
+  title: tr("Elige cuánto quieres delegar", "Choose how much to hand over"),
   sub: tr(
     "No cotizamos solo “una mudanza”: cotizamos la mudanza con el nivel de servicio que necesitas.",
     "We don't just quote “a move”: we quote your move with the service level you need.",
@@ -93,7 +80,7 @@ export const coverageText = (tr: Tr) => ({
     "From Colombia to the world, with a network you can't improvise",
   ),
   text: tr(
-    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Tu mudanza se opera con los mismos estándares en origen y en destino.",
+    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Su mudanza se opera con los mismos estándares en origen y en destino.",
     "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
   ),
   modes: [
@@ -169,13 +156,13 @@ export const galleryText = (tr: Tr) => ({
 });
 
 export const quoteSectionText = (tr: Tr) => ({
-  eyebrow: tr("Cotiza tu mudanza", "Get a moving quote"),
+  eyebrow: tr("Cotiza su mudanza", "Get a moving quote"),
   title: tr(
-    "Cuéntanos tu traslado en menos de 2 minutos",
+    "Cuéntanos su traslado en menos de 2 minutos",
     "Tell us about your move in under 2 minutes",
   ),
   sub: tr(
-    "Con esta información un asesor te contactará con una propuesta a tu medida. Sin compromiso.",
+    "Con esta información un asesor te contactará con una propuesta a su medida. Sin compromiso.",
     "With this information an advisor will contact you with a tailored proposal. No commitment.",
   ),
 });
@@ -184,7 +171,7 @@ export const blogSectionText = (tr: Tr) => ({
   eyebrow: "Blog",
   title: tr("Guías para mudarte con tranquilidad", "Guides for a stress-free move"),
   sub: tr(
-    "Lo que debes saber antes de tu próximo traslado, explicado por quienes lo hacen todos los días.",
+    "Lo que debes saber antes de su próximo traslado, explicado por quienes lo hacen todos los días.",
     "What you should know before your next move, explained by the people who do it every day.",
   ),
   read: tr("Leer artículo", "Read article"),
@@ -192,9 +179,9 @@ export const blogSectionText = (tr: Tr) => ({
 
 export const faqText = (tr: Tr) => ({
   eyebrow: tr("Preguntas frecuentes", "Frequently asked questions"),
-  title: tr("Resolvemos tus dudas", "Your questions, answered"),
+  title: tr("Resolvemos sus dudas", "Your questions, answered"),
   sub: tr(
-    "¿No encuentras tu pregunta? Escríbenos por WhatsApp y te respondemos.",
+    "¿No encuentras su pregunta? Escríbenos por WhatsApp y te respondemos.",
     "Can't find your question? Message us on WhatsApp and we'll answer.",
   ),
 });

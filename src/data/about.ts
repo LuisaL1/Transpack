@@ -127,7 +127,7 @@ export const aboutText = (tr: Tr) => ({
     "Real processes, expert care",
   ),
   nuestroTrabajoBasaPrecision: tr(
-    "Nuestro trabajo se basa en la precisión, el cuidado y la metodología: inventarios detallados, embalaje técnico y una operación estructurada de principio a fin. Las certificaciones internacionales respaldan que tu mudanza se opera con el mismo estándar en cualquier parte del mundo.",
+    "Nuestro trabajo se basa en la precisión, el cuidado y la metodología: inventarios detallados, embalaje técnico y una operación estructurada de principio a fin. Las certificaciones internacionales respaldan que su mudanza se opera con el mismo estándar en cualquier parte del mundo.",
     "Our work is built on precision, care and method: detailed inventories, technical packing and a structured operation from start to finish. International certifications ensure your move runs to the same standard anywhere in the world.",
   ),
   selloLacmaCertifiedPackers: tr("Sello LACMA Certified Packers", "LACMA Certified Packers seal"),
@@ -135,7 +135,7 @@ export const aboutText = (tr: Tr) => ({
     "Asociaciones internacionales de empresas de mudanzas",
     "International associations of moving companies",
   ),
-  cotizaMudanza: tr("Cotiza tu mudanza", "Get a moving quote"),
+  cotizaMudanza: tr("Cotiza su mudanza", "Get a moving quote"),
 });
 
 // ─── Nuestro CEO ─────────────────────────────────────────────────────────────

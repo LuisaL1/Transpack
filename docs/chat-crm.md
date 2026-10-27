@@ -58,7 +58,7 @@ Cuando el visitante termina la cotización guiada de Joel:
 4. Siguen disponibles los botones de WhatsApp y correo (no el cotizador: la cotización ya se hizo en el chat).
 
 Se registra `generate_lead` con `method: "chat_advisor"`. La política de datos
-(fila del chat de Joel) lo explica en los seis idiomas.
+(fila del chat de Joel) lo explica en español e inglés.
 
 ## Modo "puente" (activo)
 
@@ -224,16 +224,12 @@ Notas:
 
 ## Protección de datos
 
-- **Al abrir el chat se carga Zoho** (modo puente): como la ventana conecta de
-  una vez con un asesor, el widget de Zoho y sus cookies se cargan apenas se
-  abre el chat (antes solo al pedir un asesor). En el modo API dentro de Joel el
-  navegador nunca carga Zoho ni sus cookies: todo pasa por `/api/advisor`.
-- Para que el paso al asesor sea directo, no se muestra un aviso previo ni se
-  nombra la plataforma: el uso de los datos lo explica la política.
-- **Pendiente (legal):** la política dice que las cookies de Zoho se cargan
-  "solo si se abre su ventana"; ahora se cargan al abrir el chat. Revisar ese
-  texto en `/privacidad` (fila del chat con un asesor) en los seis idiomas.
-- La política (`/privacidad`, seis idiomas) lo explica:
+- Mientras la persona no pida un asesor (o no pulse "Enviar a un asesor" en
+  la cotización), no se envía nada a Zoho. En el modo dentro de Joel, el
+  navegador nunca carga Zoho ni sus cookies.
+- Para que el paso al asesor sea directo, Joel no muestra un aviso previo
+  ni nombra la plataforma: el uso de los datos lo explica la política.
+- La política (`/privacidad`, español e inglés) lo explica:
   - fila "Chat con un asesor (Zoho SalesIQ)";
   - Zoho como encargado del tratamiento, con servidores que pueden estar fuera
     de Colombia;

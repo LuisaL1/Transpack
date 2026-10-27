@@ -18,8 +18,8 @@ describe("HTML pre-generado", () => {
     it(`${r}: idioma, título, descripción, canónica, hreflang, OG, JSON-LD y contenido`, () => {
       const html = read(file(r));
       const m = getPageMeta(r);
-      const { locale, dir } = LANG_INFO[m.lang];
-      expect(html).toContain(`<html lang="${locale}" dir="${dir}">`);
+      const { locale } = LANG_INFO[m.lang];
+      expect(html).toContain(`<html lang="${locale}" dir="ltr">`);
       const head = html.slice(0, html.indexOf("</head>"));
       expect(head.match(/<title/g)).toHaveLength(1);
       expect(head).toContain(`<link data-seo rel="canonical" href="${m.canonical}"`);
