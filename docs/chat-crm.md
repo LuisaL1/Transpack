@@ -14,7 +14,14 @@
 > (`enterConversation` en `src/lib/crmChat.ts`, sin enviar mensajes). La
 > ventana se muestra solo cuando ya está dentro de la conversación (mientras
 > tanto el botón flotante muestra que está cargando): no se alcanza a ver el
-> inicio ni la lista de Zoho. El saludo
+> inicio ni la lista de Zoho.
+>
+> **Precarga:** para que abra al instante (~0,2 s en vez de ~3,6 s), Zoho se
+> carga al entrar al sitio, cuando el navegador está libre (`preloadCrmChat`),
+> y deja su ventana armada, escondida y dentro de una conversación; al tocar el
+> ícono solo se muestra. No envía mensajes ni avisa la acción del bot (eso pasa
+> al abrir). Si el visitante **rechazó las cookies** en el aviso, no se precarga
+> y Zoho se carga al abrir el chat. La política de datos lo explica (es y en). El saludo
 > del bot depende del disparador del bot en Zoho; si no salta, el primer
 > mensaje del visitante lo atiende quien Zoho tenga configurado (bot o asesores). Lo que sigue describe el
 > modo normal (`WIDGET_ONLY = false`); sus pruebas e2e del puente no aplican
@@ -240,15 +247,16 @@ Notas:
 
 ## Protección de datos
 
-- **Al abrir el chat se carga Zoho** (modo puente): como la ventana conecta de
-  una vez con un asesor, el widget de Zoho y sus cookies se cargan apenas se
-  abre el chat (antes solo al pedir un asesor). En el modo API dentro de Joel el
-  navegador nunca carga Zoho ni sus cookies: todo pasa por `/api/advisor`.
+- **Zoho se carga al entrar al sitio** (modo solo widget, precarga), salvo que
+  el visitante rechace las cookies en el aviso; en ese caso se carga al abrir el
+  chat. En el modo API dentro de Joel el navegador nunca carga Zoho ni sus
+  cookies: todo pasa por `/api/advisor`.
 - Para que el paso al asesor sea directo, no se muestra un aviso previo ni se
   nombra la plataforma: el uso de los datos lo explica la política.
-- **Pendiente (legal):** la política dice que las cookies de Zoho se cargan
-  "solo si se abre su ventana"; ahora se cargan al abrir el chat. Revisar ese
-  texto en `/privacidad` (fila del chat con un asesor) en los seis idiomas.
+- **Política actualizada (octubre de 2026)** en español e inglés: Zoho se carga
+  al entrar al sitio (salvo que se rechacen las cookies) y recibe datos técnicos
+  de la visita. Las versiones en francés, alemán, italiano y árabe están
+  desactivadas y **no** se actualizaron: revisarlas antes de volver a publicarlas.
 - La política (`/privacidad`, seis idiomas) lo explica:
   - fila "Chat con un asesor (Zoho SalesIQ)";
   - Zoho como encargado del tratamiento, con servidores que pueden estar fuera

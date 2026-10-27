@@ -477,7 +477,7 @@ export const PRIVACY = {
           [
             "Advisor chat (Zoho SalesIQ)",
             "What you write in the conversation and any details you choose to give us (for example, name, email or phone), along with technical data about the visit: pages viewed, approximate location, browser and device.",
-            "To handle your question with an advisor from our team, in the same window as Joel's chat. It is only used if you choose “Chat with an advisor”.",
+            "To handle your question with an advisor from our team in the site's chat.",
           ],
           [
             "WhatsApp and phone",
@@ -510,7 +510,7 @@ export const PRIVACY = {
         "Contact form and quote form by email: your data travels encrypted (HTTPS) to a function of the site itself, which emails it to Transpack through Brevo, our email provider, acting as data processor. Brevo also sends you a confirmation that we received your request. The site keeps no copy of what you send.",
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: the virtual advisor's preferences and your cookie choice are stored only in your browser (local storage) and are never sent to Transpack. You can delete them at any time by clearing this site's data in your browser.",
-        "Advisor chat: if you choose it in Joel's chat, your messages are sent from our site to Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. The conversation is stored on Zoho's servers, which may be outside Colombia, and in our CRM. Until you choose that chat, nothing is sent to Zoho.",
+        "Advisor chat: the site's chat runs on Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. So that the chat opens instantly, Zoho loads in the background when you arrive on the site, unless you reject cookies in the notice; from then on it receives technical data about the visit (pages viewed, approximate location, browser and device). What you write in the chat is stored on Zoho's servers, which may be outside Colombia, and in our CRM.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },
@@ -527,7 +527,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies and analytics",
       text: [
-        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same. If you choose to chat with an advisor, Zoho SalesIQ loads and stores the cookies needed for the conversation to work.",
+        "We use Google Analytics only if you accept analytics cookies in the notice shown when you arrive. Google acts as data processor. We do not use cookies for advertising, and if you reject them the site works the same. Zoho SalesIQ, which runs the advisor chat, loads when you arrive on the site and stores the cookies the chat needs; if you reject cookies in the notice, Zoho only loads when you open the chat.",
       ],
     },
     {

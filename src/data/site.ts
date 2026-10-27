@@ -596,7 +596,7 @@ export const PRIVACY = {
           [
             "Chat con un asesor (Zoho SalesIQ)",
             "Lo que escribes en la conversación y los datos que decidas darnos (por ejemplo, nombre, correo o teléfono), junto con datos técnicos de la visita: páginas vistas, ubicación aproximada, navegador y dispositivo.",
-            "Atender tu consulta con un asesor de nuestro equipo, en la misma ventana del chat de Joel. Solo se usa si eliges «Chatear con un asesor».",
+            "Atender tu consulta con un asesor de nuestro equipo en el chat del sitio.",
           ],
           [
             "WhatsApp y teléfono",
@@ -629,7 +629,7 @@ export const PRIVACY = {
         "Formulario de contacto y cotizador por correo: tus datos viajan cifrados (HTTPS) a una función del propio sitio, que los envía por correo a Transpack mediante Brevo, nuestro proveedor de correo, que actúa como encargado del tratamiento. Brevo también te envía una confirmación de que recibimos tu solicitud. El sitio no guarda copia de lo que envías.",
         "WhatsApp: si eliges enviar tu solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
         "En tu navegador: las preferencias del asesor virtual y tu decisión sobre cookies se guardan solo en tu navegador (almacenamiento local) y nunca se envían a Transpack. Puedes borrarlas cuando quieras borrando los datos de este sitio en tu navegador.",
-        "Chat con un asesor: si lo eliges en el chat de Joel, tus mensajes se envían desde nuestro sitio a Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. La conversación se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM. Mientras no elijas ese chat, no se envía nada a Zoho.",
+        "Chat con un asesor: el chat del sitio funciona con Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. Para que el chat abra al instante, Zoho se carga en segundo plano al entrar al sitio, salvo que rechaces las cookies en el aviso; desde ese momento recibe datos técnicos de la visita (páginas vistas, ubicación aproximada, navegador y dispositivo). Lo que escribas en el chat se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM.",
         "Conservación: guardamos las solicitudes que recibimos durante el tiempo necesario para atenderlas y prestar el servicio, y después el que exijan las normas contables, tributarias y legales.",
       ],
     },
@@ -646,7 +646,7 @@ export const PRIVACY = {
       id: "cookies",
       title: "Cookies y analítica",
       text: [
-        "Usamos Google Analytics solo si aceptas las cookies analíticas en el aviso que aparece al entrar. Google actúa como encargado del tratamiento. No usamos cookies con fines publicitarios y, si las rechazas, el sitio funciona igual. Si eliges chatear con un asesor, Zoho SalesIQ se carga y guarda las cookies necesarias para que la conversación funcione.",
+        "Usamos Google Analytics solo si aceptas las cookies analíticas en el aviso que aparece al entrar. Google actúa como encargado del tratamiento. No usamos cookies con fines publicitarios y, si las rechazas, el sitio funciona igual. Zoho SalesIQ, que hace funcionar el chat con un asesor, se carga al entrar al sitio y guarda las cookies que necesita el chat; si rechazas las cookies en el aviso, Zoho solo se carga cuando abres el chat.",
       ],
     },
     {

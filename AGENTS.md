@@ -277,9 +277,11 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
     primero) y la ventana muestra sus respuestas; si Zoho pide un formulario,
     ofrece completarlo en la ventana de Zoho u omitirlo;
   - si el puente falla, se abre la **ventana de Zoho** (respaldo, abajo).
-- `src/lib/crmChat.ts` carga el script de Zoho **solo al abrir el chat** (no al
-  entrar al sitio), una sola vez, en español y con el botón de Zoho oculto. El
-  uso de los datos lo explica la política (`/privacidad`).
+- `src/lib/crmChat.ts` carga el script de Zoho una sola vez, en español y con el
+  botón de Zoho oculto. En el modo solo widget **se precarga al entrar al sitio**
+  (`preloadCrmChat`, ventana lista y escondida) para que el chat abra al
+  instante, salvo que el visitante rechace las cookies en el aviso; si no, al
+  abrir el chat. El uso de los datos lo explica la política (`/privacidad`).
 - Acciones con `crm: true` (`ChatAction` y `JoelAction`) abren ese chat.
 - **Diseño:** la ventana de Zoho recibe `src/styles/zoho-chat.css` (estilo del
   chat de Joel y foto de Joel); el marco y el botón de cerrar están al final de

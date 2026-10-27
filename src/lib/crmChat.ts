@@ -133,13 +133,16 @@ let bridging = false;
 // Abriendo: la ventana no se muestra hasta estar dentro de una conversación
 // (así no se alcanza a ver el inicio ni la lista de conversaciones de Zoho)
 let opening = false;
+// Precargada: la ventana quedó lista y escondida al entrar al sitio; no se
+// muestra hasta que la persona abre el chat
+let hidden = false;
 export const setBridging = (on: boolean) => {
   bridging = on;
   if (on) document.documentElement.classList.remove("tp-zoho-open");
 };
 /** Muestra u oculta la ventana de Zoho y avisa al sitio (salvo en modo puente). */
 export const announce = (open: boolean) => {
-  if (bridging || (opening && open)) return;
+  if (bridging || ((opening || hidden) && open)) return;
   document.documentElement.classList.toggle("tp-zoho-open", open);
   window.dispatchEvent(new CustomEvent(CRM_CHAT_EVENT, { detail: { open } }));
 };
@@ -193,6 +196,8 @@ export function loadCrmChat(): Promise<SalesIQ> {
 
 /** Abre la ventana del chat de Zoho a la vista, ya dentro de una conversación. */
 export async function openCrmChat(): Promise<void> {
+  // Si la precarga sigue en curso, se termina con ella (ya entra a la conversación)
+  await warm;
   const z = await loadCrmChat();
   setBridging(false);
   opening = true;
@@ -203,7 +208,29 @@ export async function openCrmChat(): Promise<void> {
   } finally {
     opening = false;
   }
+  hidden = false;
   announce(true);
+}
+
+let warm: Promise<void> | null = null;
+
+/** Precarga (al entrar al sitio, src/hooks/useAdvisorChat.ts): carga Zoho y deja
+ *  su ventana armada, escondida y ya dentro de una conversación, para que abrir
+ *  el chat sea inmediato. No muestra nada, no envía mensajes ni avisa la acción
+ *  del bot (eso pasa solo cuando la persona abre el chat). */
+export function preloadCrmChat(): Promise<void> {
+  warm ??= (async () => {
+    const z = await loadCrmChat();
+    hidden = true;
+    z.floatwindow?.visible("show");
+    styleChatWindow();
+    await enterConversation();
+  })().catch(() => {
+    // Si falla, abrir el chat lo vuelve a intentar como siempre
+    hidden = false;
+    warm = null;
+  });
+  return warm;
 }
 
 /** Documento de la ventana de Zoho (iframe del mismo origen) */
@@ -256,6 +283,8 @@ export function setZohoHostForTests(w: Window) {
 /** Solo para pruebas: olvida la carga anterior. */
 export function resetCrmChatForTests() {
   loading = null;
+  warm = null;
+  hidden = false;
   host = null;
   hostWin = null;
   document.getElementById(HOST_ID)?.remove();

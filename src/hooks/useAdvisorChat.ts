@@ -19,7 +19,7 @@ import { makeTr, useLang } from "@/i18n";
 import { routeChat } from "@/lib/chatRoute";
 import type { JoelReply } from "@/lib/joel";
 import { newMemory, QUOTE_TOPIC, track } from "@/lib/joelProfile";
-import { trackEvent } from "@/lib/analytics";
+import { getConsent, trackEvent } from "@/lib/analytics";
 import { ADVISOR_EVENT, CRM_CHAT_EVENT, QUOTE_EVENT, requestAdvisorChat } from "@/lib/advisorEvents";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
@@ -171,6 +171,25 @@ export function useAdvisorChat() {
     const id = window.setTimeout(() => void loadJoel(), 3000);
     return () => clearTimeout(id);
   }, [brain]);
+
+  // Solo widget: Zoho se precarga al entrar (cuando el navegador está libre) y
+  // deja su ventana lista y escondida, para que el chat abra al instante. No se
+  // hace si el visitante rechazó las cookies en el aviso: para él, Zoho se carga
+  // al abrir el chat. Ver docs/chat-crm.md y la política de datos.
+  useEffect(() => {
+    if (!WIDGET_ONLY || getConsent() === "denied") return;
+    const run = () => void import("@/lib/crmChat").then((m) => m.preloadCrmChat());
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(run, { timeout: 3000 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(run, 2000);
+    return () => clearTimeout(id);
+  }, []);
 
   // Si cambia el idioma, la conversación se reinicia en el idioma nuevo
   const firstLang = useRef(lang);

@@ -295,8 +295,9 @@ p {
   position: fixed;
   left: -10000px;
   bottom: 0;
-  width: 440px;
-  height: min(800px, 100vh);
+  /* Mismo tamaño que abierta: precargada y escondida, Zoho ya queda armado */
+  width: 400px;
+  height: min(620px, calc(100vh - 130px));
   border: 0;
   background: transparent;
   color-scheme: normal;
