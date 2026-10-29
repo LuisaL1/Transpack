@@ -107,10 +107,10 @@ export function searchIndex(lang: Lang): SearchEntry[] {
     ),
     page(
       "play-btn",
-      tr("Transpack en video", "Transpack on video"),
-      tr("Shorts de nuestro canal de YouTube", "Shorts from our YouTube channel"),
-      "/#videos",
-      "youtube videos",
+      tr("Nuestros empaques", "Our packing"),
+      tr("Todos los videos de nuestro canal de YouTube", "Every video from our YouTube channel"),
+      "/videos",
+      "youtube videos shorts embalaje empaque packing transpack en video",
     ),
     page(
       "geo-alt",

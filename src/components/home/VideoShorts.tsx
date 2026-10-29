@@ -1,5 +1,6 @@
 // Sección de videos: Shorts del canal de YouTube de Transpack (VIDEOS de
 // src/data/site.ts).
+import { Link } from "react-router-dom";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
 import { videosText } from "@/data/home";
@@ -8,7 +9,7 @@ import { ShortCard } from "@/components/home/ShortCard";
 
 export function VideoShorts() {
   const { VIDEOS, YOUTUBE_CHANNEL } = useSite();
-  const { tr } = useLang();
+  const { lp, tr } = useLang();
   const t = videosText(tr);
   return (
     <section
@@ -31,14 +32,19 @@ export function VideoShorts() {
             {t.title}
           </h2>
           <p className="mb-8 max-w-md">{t.text}</p>
-          <a
-            href={YOUTUBE_CHANNEL}
-            target="_blank"
-            rel="noopener"
-            className={`${btn.ghost} ${btn.md}`}
-          >
-            <Bi n="youtube" /> {t.more}
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <Link to={lp("/videos")} className={`${btn.primary} ${btn.md}`}>
+              <Bi n="play-btn" /> {t.all}
+            </Link>
+            <a
+              href={YOUTUBE_CHANNEL}
+              target="_blank"
+              rel="noopener"
+              className={`${btn.ghost} ${btn.md}`}
+            >
+              <Bi n="youtube" /> {t.more}
+            </a>
+          </div>
         </Reveal>
 
         <Reveal delay={120} className="min-w-0">

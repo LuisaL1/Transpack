@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "format": "oxfmt",
     "map": "node scripts/generate-world-map.mjs src/data/worldMap.ts",
+    "videos": "node scripts/fetch-youtube-videos.mjs src/data/youtubeVideos.ts",
     "email:header": "node scripts/generate-email-header.mjs",
     "brevo:events": "node scripts/brevo-events.mjs",
     "test": "vitest run",

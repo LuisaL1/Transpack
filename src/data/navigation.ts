@@ -3,7 +3,7 @@
 // una lista de enlaces: "to" = ruta interna, "href" = enlace externo,
 // "chat" = abre a Joel.
 import { ceoInfo } from "@/data/about";
-import { privacyLink } from "@/data/pages";
+import { privacyLink, videosPageText } from "@/data/pages";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
@@ -217,7 +217,7 @@ export function menusFor(lang: Lang): Menu[] {
       },
       items: [
         { label: tr("Preguntas frecuentes", "FAQ"), icon: "question-circle", to: lp("/#faq") },
-        { label: tr("Videos", "Videos"), icon: "play-btn", to: lp("/#videos") },
+        { label: videosPageText(tr).title, icon: "play-btn", to: lp("/videos") },
         {
           label: tr("Canal de YouTube", "YouTube channel"),
           icon: "youtube",
@@ -301,6 +301,8 @@ export function supportFor(lang: Lang): MenuItem[] {
 
 export const headerText = (tr: Tr) => ({
   mainNav: tr("Principal", "Main"),
+  // Enlace directo (sin megamenú) entre Blog y Contacto
+  videos: videosPageText(tr).title,
   search: tr("Buscar en el sitio (Ctrl + K)", "Search the site (Ctrl + K)"),
   searchTitle: tr("Buscar (Ctrl + K)", "Search (Ctrl + K)"),
   searchMobile: tr("Buscar en el sitio", "Search the site"),
@@ -323,6 +325,7 @@ export const footerText = (tr: Tr) => ({
   services: tr("Servicios", "Services"),
   solutions: tr("Soluciones", "Solutions"),
   about: tr("Quiénes somos", "About us"),
+  videos: videosPageText(tr).title,
   contact: tr("Contacto", "Contact"),
   legal: "Transpack S.A.S. · Bogotá, Colombia",
   privacy: privacyLink(tr),

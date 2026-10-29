@@ -17,6 +17,8 @@ publica en Vercel.
 - `pnpm test:ga` — verifica Google Analytics con el ID real (necesita internet)
 - `pnpm check:all` — lo anterior + auditoría de dependencias + extremo a extremo
 - `pnpm map` — regenera `src/data/worldMap.ts` (países y destinos del mapamundi)
+- `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
+  YouTube para "Nuestros empaques"; necesita internet). Córralo cuando el canal publique
 - `pnpm format` — formatea con oxfmt
 - `pnpm brevo:events` — motivo de cada error de envío en Brevo (`docs/formularios.md`)
 
@@ -43,6 +45,7 @@ src/
 │   ├── ServiceDetailPage.tsx   "/servicios/:slug"
 │   ├── ArticlePage.tsx         "/blog/:slug"
 │   ├── PrivacyPage.tsx         "/privacidad" (texto en PRIVACY de site.ts)
+│   ├── VideosPage.tsx          "/videos": Nuestros empaques (todos los videos del canal)
 │   └── NotFoundPage.tsx        404
 ├── components/
 │   ├── layout/             Layout (cabecera + contenido + pie + chat), SeoHead,
@@ -56,6 +59,7 @@ src/
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (WorldMap), el cotizador (QuoteWizard + QuoteFields)
+│   ├── videos/             VideoCard (tarjeta de video de Nuestros empaques)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -77,6 +81,7 @@ src/
 │   ├── consent.ts          Textos del aviso de cookies
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes
+│   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
 │   └── worldMap.ts         Mapamundi: siluetas de los países y destinos (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
@@ -96,7 +101,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs (pnpm map), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs (pnpm map), fetch-youtube-videos.mjs (pnpm videos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md

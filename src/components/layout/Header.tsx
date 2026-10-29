@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { headerText, menusFor, type Menu } from "@/data/navigation";
 import { useLang } from "@/i18n";
@@ -103,6 +103,7 @@ export function Header() {
       : "text-white/90 hover:bg-white/15 hover:text-white"
   }`;
   const current = MENUS.find((m) => m.key === active);
+  const videosPage = /^(\/en)?\/videos\/?$/.test(pathname);
   const sectionOf = (m: Menu) =>
     (m.key === "nosotros" && /^(\/en)?\/(nosotros|about)/.test(pathname)) ||
     (m.key === "servicios" && /^(\/en)?\/(servicios|services)/.test(pathname)) ||
@@ -122,7 +123,9 @@ export function Header() {
           ref={navRef}
           onMouseLeave={hoverClose}
           className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-6 wide:w-[min(100%-120px,1320px)] ${
-            scrolled ? "h-[70px] md:h-[86px] wide:h-[100px]" : "h-[88px] md:h-[112px] wide:h-[126px]"
+            scrolled
+              ? "h-[70px] md:h-[86px] wide:h-[100px]"
+              : "h-[88px] md:h-[112px] wide:h-[126px]"
           }`}
         >
           <Logo light={!dark} small={scrolled} className="xl:-ms-6 wide:ms-0" />
@@ -131,24 +134,37 @@ export function Header() {
           <nav className="hidden items-center gap-3 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
+              const underline = `relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${dark ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`;
               return (
-                <button
-                  key={m.key}
-                  onMouseEnter={() => hoverOpen(m.key)}
-                  onFocus={() => hoverOpen(m.key)}
-                  onClick={() => setActive(open ? null : m.key)}
-                  aria-expanded={open}
-                  aria-haspopup="true"
-                  className={`relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${
-                    open || sectionOf(m) ? "after:scale-x-100" : "after:scale-x-0"
-                  } ${dark ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`}
-                >
-                  {m.label}
-                  <Bi
-                    n="chevron-down"
-                    className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-                  />
-                </button>
+                <Fragment key={m.key}>
+                  <button
+                    onMouseEnter={() => hoverOpen(m.key)}
+                    onFocus={() => hoverOpen(m.key)}
+                    onClick={() => setActive(open ? null : m.key)}
+                    aria-expanded={open}
+                    aria-haspopup="true"
+                    className={`${underline} ${
+                      open || sectionOf(m) ? "after:scale-x-100" : "after:scale-x-0"
+                    }`}
+                  >
+                    {m.label}
+                    <Bi
+                      n="chevron-down"
+                      className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {/* Nuestros empaques: enlace directo entre Blog y Contacto */}
+                  {m.key === "blog" && (
+                    <Link
+                      to={lp("/videos")}
+                      onMouseEnter={hoverClose}
+                      aria-current={videosPage ? "page" : undefined}
+                      className={`${underline} ${videosPage ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"}`}
+                    >
+                      {t.videos}
+                    </Link>
+                  )}
+                </Fragment>
               );
             })}
             <span className={`h-5 w-px ${dark ? "bg-linea" : "bg-white/25"}`} aria-hidden="true" />

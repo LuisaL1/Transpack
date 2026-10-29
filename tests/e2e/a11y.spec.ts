@@ -12,6 +12,7 @@ for (const route of [
   "/",
   "/nosotros",
   "/privacidad",
+  "/videos",
   "/servicios/mudanzas-internacionales",
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",
   "/en",

@@ -3,6 +3,7 @@
 // Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
 // están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
+import { videosPageText } from "@/data/pages";
 
 export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
@@ -201,6 +202,7 @@ export const videosText = (tr: Tr) => ({
     "Real processes, told by our team: how we plan, protect and move what matters most, in Colombia and abroad.",
   ),
   more: tr("Ver más en YouTube", "More on YouTube"),
+  all: videosPageText(tr).title,
   play: tr("Reproducir video", "Play video"),
   short: "Short",
 });

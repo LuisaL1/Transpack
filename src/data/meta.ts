@@ -11,13 +11,15 @@ export type SeoText = {
   homeDescription: string;
   aboutTitle: string;
   privacyTitle: string;
+  videosTitle: string;
+  videosDescription: string;
   privacyDescription: string;
   /** "en Bogotá, Colombia": se agrega al nombre del servicio en su título */
   inCity: string;
   inCityShort: string;
   notFoundTitle: string;
   notFoundDescription: string;
-  breadcrumb: { home: string; services: string; about: string; privacy: string };
+  breadcrumb: { home: string; services: string; about: string; privacy: string; videos: string };
   servicesList: string;
 };
 
@@ -29,6 +31,9 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       "Transpack S.A.S.: mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa desde Bogotá. Más de 58 años de experiencia y cobertura en 176 países.",
     aboutTitle: "Quiénes somos: mudanzas desde 1968 en Bogotá | Transpack",
     privacyTitle: "Política de tratamiento de datos personales | Transpack",
+    videosTitle: "Nuestros empaques: videos de mudanzas en Bogotá | Transpack",
+    videosDescription:
+      "Mira cómo embalamos y movemos muebles, arte e instrumentos: todos los videos del canal de YouTube de Transpack, empresa de mudanzas en Bogotá desde 1968.",
     privacyDescription:
       "Cómo Transpack S.A.S. trata sus datos personales según la Ley 1581 de 2012: qué datos recogemos, para qué los usamos y cómo ejercer sus derechos.",
     inCity: "en Bogotá, Colombia",
@@ -41,6 +46,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       services: "Servicios",
       about: "Nosotros",
       privacy: "Política de datos",
+      videos: "Nuestros empaques",
     },
     servicesList: "Servicios de mudanza y bodegaje",
   },
@@ -51,6 +57,9 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       "Transpack S.A.S.: local, national and international moving, storage and corporate mobility from Bogotá, Colombia. 58 years of experience and coverage in 176 countries.",
     aboutTitle: "About us: movers in Bogotá since 1968 | Transpack",
     privacyTitle: "Personal Data Processing Policy | Transpack",
+    videosTitle: "Our packing: moving videos from Bogotá | Transpack",
+    videosDescription:
+      "See how we pack and move furniture, art and musical instruments: every video from the YouTube channel of Transpack, movers in Bogotá since 1968.",
     privacyDescription:
       "How Transpack S.A.S. processes your personal data under Colombian Law 1581 of 2012: what we collect, why we use it and how to exercise your rights.",
     inCity: "in Bogotá, Colombia",
@@ -58,7 +67,13 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
     notFoundTitle: "Page not found | Transpack",
     notFoundDescription:
       "The page you are looking for does not exist or has moved. Go back home to see our moving and storage services.",
-    breadcrumb: { home: "Home", services: "Services", about: "About", privacy: "Privacy policy" },
+    breadcrumb: {
+      home: "Home",
+      services: "Services",
+      about: "About",
+      privacy: "Privacy policy",
+      videos: "Our packing",
+    },
     servicesList: "Moving and storage services",
   },
 };

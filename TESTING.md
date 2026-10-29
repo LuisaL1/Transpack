@@ -68,7 +68,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
 - `components.test.tsx` — el cotizador (elegir servicio → paso 2, validación,
   preselección por URL y textos en el idioma de la ruta) y las pestañas de
   soluciones.
-- `seo.test.ts` — metadatos de las 72 rutas:
+- `seo.test.ts` — metadatos de las 26 rutas:
   - títulos únicos (30–70 caracteres, con marca, y ciudad en los servicios);
   - descripciones únicas (70–160 caracteres);
   - canónicas absolutas sin barra final;
@@ -99,7 +99,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
 
 ### 2b. HTML pre-generado (`tests/seo/dist.test.ts`, con `pnpm test:seo`)
 
-Por cada una de las 72 rutas:
+Por cada una de las 26 rutas:
 
 - existe su `.html`, con el idioma y la dirección del `<html>`;
 - un solo `<title>` y una sola descripción, su canónica, 7 enlaces hreflang,

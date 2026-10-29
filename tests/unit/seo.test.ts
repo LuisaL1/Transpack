@@ -11,10 +11,11 @@ const nodes = (path: string) => getPageMeta(path).jsonLd.flatMap((g) => g["@grap
 const types = (path: string) => nodes(path).map((n) => n["@type"]);
 
 describe("SEO · metadatos por página", () => {
-  it("cubre inicio, nosotros, política de datos, 6 servicios y 3 artículos en español e inglés (24 rutas)", () => {
+  it("cubre inicio, nosotros, política de datos, nuestros empaques, 6 servicios y 3 artículos en español e inglés (26 rutas)", () => {
     expect(LANGS).toEqual(["es", "en"]);
-    expect(PUBLIC_ROUTES).toHaveLength(24);
-    expect(new Set(PUBLIC_ROUTES).size).toBe(24);
+    expect(PUBLIC_ROUTES).toHaveLength(26);
+    expect(new Set(PUBLIC_ROUTES).size).toBe(26);
+    expect(PUBLIC_ROUTES).toEqual(expect.arrayContaining(["/videos", "/en/videos"]));
     // Francés, alemán, italiano y árabe se retiraron: sus URLs antiguas redirigen a /en (vercel.json)
     expect(PUBLIC_ROUTES.some((r) => /^\/(fr|de|it|ar)(\/|$)/.test(r))).toBe(false);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));

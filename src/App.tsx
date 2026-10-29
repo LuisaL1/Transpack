@@ -9,6 +9,7 @@ import { ServiceDetailPage } from "@/pages/ServiceDetailPage";
 import { ArticlePage } from "@/pages/ArticlePage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { PrivacyPage } from "@/pages/PrivacyPage";
+import { VideosPage } from "@/pages/VideosPage";
 import { LANGS, localize, type Lang } from "@/i18n";
 
 // Rutas de cada idioma con prefijo (/en, /fr, /de, /it, /ar)
@@ -18,6 +19,7 @@ const LOCAL_ROUTES = (LANGS.filter((l) => l !== "es") as Lang[]).map((l) => ({
   about: localize("/nosotros", l),
   services: localize("/servicios", l),
   privacy: localize("/privacidad", l),
+  videos: localize("/videos", l),
 }));
 
 // Rutas del sitio (una página por ruta, en cada idioma)
@@ -31,6 +33,7 @@ export function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/nosotros" element={<NosotrosPage />} />
           <Route path="/privacidad" element={<PrivacyPage />} />
+          <Route path="/videos" element={<VideosPage />} />
           <Route path="/servicios/:slug" element={<ServiceDetailPage />} />
           <Route path="/blog/:slug" element={<ArticlePage />} />
           <Route path="*" element={<NotFoundPage />} />
@@ -39,6 +42,7 @@ export function App() {
             <Route key={`${r.lang}-home`} path={r.home} element={<LandingPage />} />,
             <Route key={`${r.lang}-about`} path={r.about} element={<NosotrosPage />} />,
             <Route key={`${r.lang}-privacy`} path={r.privacy} element={<PrivacyPage />} />,
+            <Route key={`${r.lang}-videos`} path={r.videos} element={<VideosPage />} />,
             <Route
               key={`${r.lang}-svc`}
               path={`${r.services}/:slug`}

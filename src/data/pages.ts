@@ -91,4 +91,31 @@ export const privacyText = (tr: Tr) => ({
 });
 
 /** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
+// Nuestros empaques (/videos): todos los videos del canal de YouTube
+export const videosPageText = (tr: Tr) => ({
+  title: tr("Nuestros empaques", "Our packing"),
+  eyebrow: tr("Canal de YouTube", "YouTube channel"),
+  intro: tr(
+    "Todos los videos del canal de Transpack en un solo lugar: cómo embalamos, protegemos y movemos lo que más importa, dentro y fuera de Colombia.",
+    "Every video from the Transpack channel in one place: how we pack, protect and move what matters most, in Colombia and abroad.",
+  ),
+  home: tr("Inicio", "Home"),
+  path: tr("Ruta de navegación", "Breadcrumb"),
+  count: (n: number) => tr(`${n} videos`, `${n} videos`),
+  subscribe: tr("Suscríbete al canal", "Subscribe to the channel"),
+  featured: tr("Video destacado", "Featured video"),
+  shorts: "Shorts",
+  short: "Short",
+  shortsSub: tr("Del más reciente al más antiguo", "From newest to oldest"),
+  play: tr("Reproducir video", "Play video"),
+  watch: tr("Ver en YouTube", "Watch on YouTube"),
+  more: (n: number) => tr(`Ver más Shorts (${n})`, `See more Shorts (${n})`),
+  less: tr("Ver menos", "See less"),
+  ctaTitle: tr("¿Listo para tu próxima mudanza?", "Ready for your next move?"),
+  ctaText: tr(
+    "Cuéntanos qué necesitas y te ayudamos a embalarlo y moverlo con cuidado.",
+    "Tell us what you need and we'll help you pack it and move it with care.",
+  ),
+});
+
 export const privacyLink = (tr: Tr) => tr("Política de datos", "Privacy policy");

@@ -57,6 +57,9 @@ export function Footer() {
           <Link to={lp("/nosotros")} className={linkCls}>
             {t.about}
           </Link>
+          <Link to={lp("/videos")} className={linkCls}>
+            {t.videos}
+          </Link>
         </div>
         <div className="flex flex-col gap-2.5">
           <h4 className="mb-2 text-[0.82rem] uppercase tracking-[0.14em] !text-white">
