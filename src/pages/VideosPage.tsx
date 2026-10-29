@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import imgGuacales from "@/assets/images/guacales.jpg";
+import empaques from "@/assets/images/empaques.jpg";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
 import { videosPageText } from "@/data/pages";
@@ -20,7 +20,7 @@ export function VideosPage() {
   const cardText = { playLabel: t.play, watchLabel: t.watch, shortLabel: t.short };
   return (
     <>
-      <PageHero image={imgGuacales}>
+      <PageHero image={empaques}>
         <nav aria-label={t.path} className="mb-6 flex items-center gap-2 text-[0.85rem] text-suave">
           <Link to={lp("/")} className="hover:text-azul">
             {t.home}
