@@ -31,10 +31,8 @@ test.describe("sin JavaScript", () => {
 
 test("al navegar se actualizan título, descripción, canónica e idioma", async ({ page }) => {
   await page.goto("/");
-  await page
-    .getByRole("link", { name: /Ver servicio/ })
-    .first()
-    .click();
+  // Una tarjeta de la sección Servicios del inicio
+  await page.locator('#servicios a[href*="/servicios/"]').first().click();
   await expect(page).toHaveURL(/\/servicios\//);
   const path = new URL(page.url()).pathname;
   await expect(page).toHaveTitle(/Bogotá.*\| Transpack/);

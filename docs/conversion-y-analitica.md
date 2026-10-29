@@ -54,7 +54,6 @@
 | `contact_click` | Clic en un enlace `tel:` o `https://wa.me/`, apertura del formulario de contacto (cualquier enlace a `#contacto`) o apertura del chat con un asesor (Zoho SalesIQ) | `method` (`phone`, `whatsapp`, `form`, `advisor_chat`) |
 | `chat_open` | Al abrir el chat (botón, invitación, menú o buscador). **Nunca se envía lo que escribe el visitante** | `lang` |
 | `search` | Al elegir un resultado del buscador | `search_term`, `result` (ruta elegida), `lang` |
-| `hero_service_pick` | Pestaña elegida en "¿Qué necesitas hoy?" (portada) | `service` |
 | `quote_step` | Cada paso del cotizador (para medir en qué paso se abandona) | `step` (2 a 6 o `resumen`), `service` |
 
 ## Recomendaciones en GA4

@@ -13,17 +13,14 @@ export const heroText = (tr: Tr) => ({
   titlePrefix: tr("cumplimos ", "deliver "),
   titleHighlight: tr("con excelencia.", "with excellence."),
   sub: tr(
-    "Mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa con el respaldo de 58 años de experiencia.",
-    "Local, national and international moving, storage and corporate mobility, backed by 58 years of experience.",
+    // Texto pedido por el cliente (oct. 2026)
+    "Hemos exportado en los últimos 56 años 60.000 toneladas de menaje doméstico, efectos personales, enseres y obras de arte con destino a 176 países.",
+    "Over the last 56 years we have exported 60,000 tons of household goods, personal effects, furnishings and works of art to 176 countries.",
   ),
-  legend: {
-    origin: tr("Bogotá, punto de origen", "Bogotá, point of origin"),
-    operate: tr("Países donde operamos", "Countries where we operate"),
-    network: tr(
-      "Red de agentes y aliados estratégicos en 176 países",
-      "Network of agents and strategic partners in 176 countries",
-    ),
-  },
+  // Cifras que se resaltan dentro de "sub" (deben aparecer tal cual en el texto)
+  subHighlights: [tr("60.000 toneladas", "60,000 tons"), tr("176 países", "176 countries")],
+  cta: tr("Cotiza tu mudanza", "Get a moving quote"),
+  ctaServices: tr("Ver servicios", "See services"),
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
   clientsTitle: tr(
     "Empresas, embajadas y organismos que han confiado su movilidad a Transpack",
@@ -216,22 +213,18 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
-  eyebrow: tr("Cobertura global", "Global coverage"),
-  title: tr("Desde Bogotá hacia el mundo", "From Bogotá to the world"),
-});
-
-// "¿Qué necesitas hoy?" (portada): selector de los seis servicios. Las
-// etiquetas cortas van por slug del servicio (SERVICES en site.ts).
-export const quickPickText = (tr: Tr) => ({
-  title: tr("¿Qué necesitas hoy?", "What do you need today?"),
-  more: tr("Ver servicio", "View service"),
-  cta: tr("Cotizar este servicio", "Quote this service"),
-  labels: {
-    "mudanzas-locales": tr("Locales", "Local"),
-    "mudanzas-nacionales": tr("Nacionales", "National"),
-    "mudanzas-internacionales": tr("Internacionales", "International"),
-    bodegaje: tr("Bodegaje", "Storage"),
-    "embalaje-especializado": tr("Embalaje", "Packing"),
-    "gestion-aduanera": tr("Aduanas", "Customs"),
+  // Globo del inicio (src/lib/globe.ts): capitales de los países con embajadas
+  // atendidas (EMBASSIES), por su nombre en DESTINATIONS (src/data/worldMap.ts)
+  capitals: {
+    "Estados Unidos": tr("Washington D. C.", "Washington, D.C."),
+    España: "Madrid",
+    Canadá: "Ottawa",
+    México: tr("Ciudad de México", "Mexico City"),
+    Francia: tr("París", "Paris"),
+    Alemania: tr("Berlín", "Berlin"),
+    Italia: tr("Roma", "Rome"),
+    Egipto: tr("El Cairo", "Cairo"),
+    "Emiratos Árabes": tr("Abu Dabi", "Abu Dhabi"),
+    India: tr("Nueva Delhi", "New Delhi"),
   } as Record<string, string>,
 });

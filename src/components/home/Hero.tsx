@@ -1,116 +1,98 @@
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
-import { heroText, mapText } from "@/data/home";
+import { heroText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
 import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
-import { Bi, StatValue } from "@/components/ui";
-import { WorldMap } from "@/components/home/WorldMap";
-import { HeroQuickStart } from "@/components/home/HeroQuickStart";
+import { Bi, btn, StatValue } from "@/components/ui";
+import { Globe } from "@/components/home/Globe";
 import { container } from "@/components/ui/layout";
 
-// Fondo blanco (pedido del cliente, oct. 2026) con detalles de marca para que
-// no quede plano: retícula azul muy tenue, semitono de puntos, luz naranja
-// detrás del titular y una franja beige al pie. Bajo el titular, el mapamundi
-// de rutas reales (izquierda) y el selector "¿Qué necesitas hoy?" (derecha,
-// HeroQuickStart) sobre un tablero con sombra para que se despegue del fondo;
-// los clientes al pie.
+// Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular, los
+// botones y dos cifras; a la derecha el globo animado (Globe), grande y
+// recortado por el borde de la página, como en la web de referencia del
+// cliente (Spectrum). En celular el globo va debajo del texto. Los clientes al pie.
+// Resalta en negrita y azul las cifras indicadas dentro de un texto
+function highlight(text: string, marks: string[]) {
+  const parts: React.ReactNode[] = [];
+  let rest = text;
+  for (const mark of marks) {
+    const at = rest.indexOf(mark);
+    if (at < 0) continue;
+    parts.push(
+      rest.slice(0, at),
+      <strong key={mark} className="font-bold text-azul">
+        {mark}
+      </strong>,
+    );
+    rest = rest.slice(at + mark.length);
+  }
+  return [...parts, rest];
+}
+
 export function Hero() {
   const { lp, tr } = useLang();
   const t = heroText(tr);
-  const m = mapText(tr);
   const { STATS } = useSite();
   // Cifras reales del sitio (STATS): países de destino y agentes y aliados
   const chips = [STATS[1], STATS[3]];
   return (
-    <section className="relative overflow-hidden bg-white pt-[158px] text-texto md:pt-[192px]">
-      <div className={`${container} animate-fade-up relative text-center`}>
-        <Link
-          to={lp("/#cobertura")}
-          className="group mb-6 inline-flex items-center gap-2 rounded-full border border-linea bg-white px-3.5 py-1.5 text-[0.76rem] font-medium text-texto shadow-[0_6px_18px_-12px_rgba(39,43,124,.45)] transition-colors hover:border-azul/30 hover:text-azul"
-        >
-          <span className="h-2 w-2 rounded-full bg-naranja shadow-[0_0_0_4px_rgba(255,118,25,.25)]" />
-          <span>
-            {t.since} · <span className="hidden sm:inline">{t.certifications}</span>
-            <span className="sm:hidden">{t.certificationsShort}</span>
-          </span>
-          <Bi
-            n="chevron-right"
-            className="text-[0.7rem] transition-transform group-hover:translate-x-0.5"
-          />
-        </Link>
-        <h1 className="mx-auto mb-5 max-w-[900px] text-[clamp(2rem,1.3rem+2.2vw,3.3rem)] leading-[1.12] text-azul">
-          {t.title}
-          <br />
-          {t.titlePrefix}
-          <span className="text-naranja-600">{t.titleHighlight}</span>
-        </h1>
-        <p className="mx-auto max-w-[560px] text-[clamp(.98rem,.94rem+.2vw,1.08rem)] font-medium text-texto">
-          {t.sub}
-        </p>
-      </div>
-
-      {/* Mapamundi con rutas reales desde Bogotá (izquierda; en móvil se recorta
-          lo justo para que se vean de las Américas a Japón) y el selector de
-          servicios (derecha; en móvil va primero) */}
-      <div
-        className={`${container} relative mt-10 grid items-center gap-8 overflow-hidden rounded-[28px] bg-white p-5 shadow-[0_2px_8px_rgba(13,15,51,.08),0_24px_50px_-18px_rgba(39,43,124,.35),0_60px_120px_-40px_rgba(13,15,51,.45)] ring-1 ring-azul/10 md:mt-12 md:p-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-8`}
-      >
-        <div className="order-2 min-w-0 lg:order-1">
-          {/* Panel del mapa: el mismo azul sólido del selector de servicios, con
-              una trama fina de puntos, para que el mapa resalte sobre el tablero */}
-          <div className="relative overflow-hidden rounded-[22px] bg-azul p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.1)] md:p-5">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,.12)_1px,transparent_1.5px)] bg-[size:14px_14px] [mask-image:radial-gradient(70%_70%_at_50%_50%,#000_30%,transparent_100%)]"
-            />
-            <div className="relative mb-2 flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <p className="flex items-center gap-2 font-title text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-naranja">
-                  <Bi n="globe-americas" /> {m.eyebrow}
-                </p>
-                <p className="font-title text-[1.15rem] font-semibold leading-tight text-white">
-                  {m.title}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                {chips.map((c) => (
-                  <span
-                    key={c.label}
-                    className="rounded-xl bg-white px-3 py-1.5 text-center shadow-[0_6px_16px_-10px_rgba(39,43,124,.5)] ring-1 ring-linea"
-                  >
-                    <span className="block font-title text-[1.05rem] font-bold leading-none text-azul">
-                      <StatValue value={c.value} suffix={c.suffix} />
-                    </span>
-                    <span className="text-[0.68rem] font-medium text-suave">
-                      {c.short ?? c.label}
-                    </span>
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div
-              dir="ltr"
-              className="relative mx-auto w-[125%] max-w-[1180px] -translate-x-[10%] md:w-full md:translate-x-0"
+    <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[180px]">
+      <div className="relative">
+        <div className={`${container} relative z-10 lg:min-h-[560px] lg:py-8`}>
+          <div className="animate-fade-up mx-auto max-w-[600px] text-center lg:mx-0 lg:max-w-[540px] lg:text-start">
+            <Link
+              to={lp("/#cobertura")}
+              className="group mb-6 inline-flex items-center gap-2 rounded-full border border-linea bg-white px-3.5 py-1.5 text-[0.76rem] font-medium text-texto shadow-[0_6px_18px_-12px_rgba(39,43,124,.45)] transition-colors hover:border-azul/30 hover:text-azul"
             >
-              <WorldMap />
+              <span className="h-2 w-2 rounded-full bg-naranja shadow-[0_0_0_4px_rgba(255,118,25,.25)]" />
+              <span>
+                {t.since} · <span className="hidden sm:inline">{t.certifications}</span>
+                <span className="sm:hidden">{t.certificationsShort}</span>
+              </span>
+              <Bi
+                n="chevron-right"
+                className="text-[0.7rem] transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
+            <h1 className="mb-5 text-[clamp(2.1rem,1.3rem+2.6vw,3.6rem)] leading-[1.08] text-azul">
+              {t.title}
+              <br />
+              {t.titlePrefix}
+              <span className="text-naranja-600">{t.titleHighlight}</span>
+            </h1>
+            <p className="mx-auto mb-8 max-w-[60ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-texto lg:mx-0 lg:text-start">
+              {highlight(t.sub, t.subHighlights)}
+            </p>
+            <div className="mb-10 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <Link to={lp("/#cotizar")} className={`${btn.primary} ${btn.lg}`}>
+                {t.cta}
+              </Link>
+              <Link to={lp("/#servicios")} className={`${btn.outline} ${btn.lg}`}>
+                {t.ctaServices}
+              </Link>
             </div>
-          </div>
-          <div className="relative flex flex-wrap justify-center gap-x-5 gap-y-2 px-2 pt-4 text-[0.8rem] font-medium text-texto lg:justify-start">
-            <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-naranja shadow-[0_0_0_3px_rgba(255,118,25,.25)]" />{" "}
-              {t.legend.origin}
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-3.5 rounded-[3px] bg-azul/45" /> {t.legend.operate}
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-white ring-2 ring-tinta" />{" "}
-              {t.legend.network}
-            </span>
+            <div className="flex justify-center gap-3 lg:justify-start">
+              {chips.map((c) => (
+                <span
+                  key={c.label}
+                  className="rounded-2xl border border-linea bg-white px-4 py-2.5 text-start shadow-[0_10px_24px_-16px_rgba(39,43,124,.5)]"
+                >
+                  <span className="block font-title text-[1.4rem] font-bold leading-none text-azul">
+                    <StatValue value={c.value} suffix={c.suffix} />
+                  </span>
+                  <span className="text-[0.75rem] font-medium text-suave">
+                    {c.short ?? c.label}
+                  </span>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="order-1 animate-fade-up lg:order-2">
-          <HeroQuickStart />
+
+        {/* Globo: debajo del texto en celular; a la derecha, pegado al borde de la
+            página, en escritorio */}
+        <div className="relative mx-auto mt-4 aspect-square w-[min(100vw,560px)] lg:absolute lg:inset-y-0 lg:right-[-3vw] lg:mt-0 lg:aspect-auto lg:w-[54vw] lg:max-w-[900px]">
+          <Globe className="h-full w-full" />
         </div>
       </div>
 

@@ -16,7 +16,8 @@ publica en Vercel.
   debe quedar en verde antes de cada commit
 - `pnpm test:ga` — verifica Google Analytics con el ID real (necesita internet)
 - `pnpm check:all` — lo anterior + auditoría de dependencias + extremo a extremo
-- `pnpm map` — regenera `src/data/worldMap.ts` (países y destinos del mapamundi)
+- `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos) y
+  `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
   YouTube para "Nuestros empaques"; necesita internet). Córralo cuando el canal publique
 - `pnpm format` — formatea con oxfmt
@@ -58,7 +59,7 @@ src/
 │   │                       Services, Segments, Levels, Coverage, Process,
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
-│   │                       (WorldMap), el cotizador (QuoteWizard + QuoteFields)
+│   │                       (Globe), el cotizador (QuoteWizard + QuoteFields)
 │   ├── videos/             VideoCard (tarjeta de video de Nuestros empaques)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
@@ -82,17 +83,19 @@ src/
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes
 │   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
-│   └── worldMap.ts         Mapamundi: siluetas de los países y destinos (GENERADO con `pnpm map`, no editar a mano)
+│   ├── worldMap.ts         Bogotá y destinos con longitud y latitud (GENERADO con `pnpm map`, no editar a mano)
+│   └── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
 ├── lib/                    Lógica pura, sin React
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
 │   ├── advisorEvents.ts    Eventos del chat (ventana a la vista, conversación iniciada)
 │   ├── crmChat.ts          Chat: widget de Zoho SalesIQ (precarga, apertura, diseño; docs/chat-crm.md)
+│   ├── globe.ts            Globo de la portada: proyección, rutas, recorrido y dibujo en canvas
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
 │                           meta.ts (metadatos, hreflang, JSON-LD y rutas públicas)
-├── hooks/                  useContent (useSite/usePosts), useAdvisorChat,
+├── hooks/                  useContent (useSite/usePosts), useAdvisorChat, useGlobe,
 │                           useScrollToHash
 ├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
@@ -219,10 +222,15 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
-- Mapa del inicio (`WorldMap` sobre el panel azul de marca del `Hero`, el mismo
-  del selector de servicios): países
-  en blanco translúcido, **Estados Unidos iluminado** en naranja claro (capa
-  `LAND_USA`, pedido del cliente), Colombia en naranja.
+- Portada (`Hero`): titular a la izquierda y **globo animado** a la derecha
+  (`Globe`, con la web de Spectrum como referencia del cliente; sin el selector
+  "¿Qué necesitas hoy?", que se quitó en octubre de 2026). El globo es azul de
+  marca con la tierra en puntos; **Estados Unidos iluminado** en naranja claro
+  (pedido del cliente) y Colombia en naranja. Historia en bucle: Colombia de
+  cerca → rutas desde Bogotá a las capitales de `EMBASSIES` (nombres en
+  `mapText` de `src/data/home.ts`) → panorama girando con todos los destinos.
+  Lógica y dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts`
+  (pausa fuera de pantalla; vista fija con movimiento reducido).
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat: **sin degradados**, mismo estilo de los menús (cabecera azul sólida con
   el cuadrado naranja translúcido girado 45°, rótulo naranja en mayúsculas,

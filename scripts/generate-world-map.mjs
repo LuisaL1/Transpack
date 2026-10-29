@@ -1,20 +1,18 @@
-import { geoNaturalEarth1, geoPath } from "d3-geo";
+// Datos del globo de la portada (Globe.tsx), generados de Natural Earth
+// (world-atlas, 1:110m): `pnpm map`.
+// - src/data/worldMap.ts: Bogotá y los destinos (capitales) con su longitud y latitud.
+// - src/data/worldGlobe.ts: puntos de tierra sobre la esfera (el globo se dibuja
+//   con puntos, como luces), marcados por zona: resto del mundo, regiones donde
+//   opera, Estados Unidos y Colombia. Se carga aparte (import()) para no pesar en
+//   el JS principal.
+import { geoBounds, geoContains } from "d3-geo";
 import { feature } from "topojson-client";
 import { createRequire } from "module";
 import fs from "fs";
 const require = createRequire(import.meta.url);
 const world = require("world-atlas/countries-110m.json");
 const countries = feature(world, world.objects.countries).features.filter((f) => f.id !== "010"); // sin Antártida
-
-const W = 1000,
-  H = 500;
-const proj = geoNaturalEarth1().fitExtent(
-  [
-    [0, 8],
-    [W, H - 8],
-  ],
-  { type: "FeatureCollection", features: countries },
-);
+const outDir = process.argv[2] ?? "src/data";
 
 // Destinos con ruta y nombre en el mapa (capital de cada país) + origen.
 // "embassy": países donde Transpack ha atendido embajadas (blog #3); el resto
@@ -167,51 +165,45 @@ const ASIA = [
 const hotIds = new Set([...DEST.map((d) => d.id), ...SOUTH_AMERICA, ...AFRICA, ...ASIA]);
 const keyOf = (f) => f.id ?? f.properties.name;
 
-// Siluetas de los países (rellenos sólidos, como un mapa político), agrupadas
-// en cuatro capas: resto del mundo, países y regiones donde opera, Estados
-// Unidos y Colombia.
-// Coordenadas con un decimal: suficiente a este tamaño y mantiene el archivo liviano.
-const path = geoPath(proj).digits(1);
-const layer = (pick) =>
-  countries
-    .filter(pick)
-    .map((f) => path(f))
-    .join("");
-// Estados Unidos va en su propia capa: es el principal mercado y el cliente
-// pidió verlo "iluminado" en el mapa (oct. 2026)
 const USA_ID = "840";
-const base = layer((f) => f.id !== ORIGIN.id && !hotIds.has(keyOf(f)));
-const hot = layer((f) => f.id !== ORIGIN.id && f.id !== USA_ID && hotIds.has(keyOf(f)));
-const usa = layer((f) => f.id === USA_ID);
-const origin = layer((f) => f.id === ORIGIN.id);
-const n = countries.length;
-const pt = (ll) => proj(ll).map((v) => +v.toFixed(1));
-const out = `// Mapa mundial (siluetas de los países), generado a partir de Natural Earth
-// (world-atlas, 1:110m) con proyección Natural Earth. No editar a mano: lo genera
-// \`pnpm map\` (scripts/generate-world-map.mjs). Para cambiar los países
-// resaltados hay que regenerar el archivo.
+// Zona de cada país: 0 resto del mundo, 1 donde opera, 2 Estados Unidos
+// (principal mercado, se ilumina aparte: pedido del cliente), 3 Colombia
+const zoneOf = (f) =>
+  f.id === ORIGIN.id ? 3 : f.id === USA_ID ? 2 : hotIds.has(keyOf(f)) ? 1 : 0;
 
-export const MAP_W = ${W};
-export const MAP_H = ${H};
+// Rejilla casi uniforme sobre la esfera: cada STEP grados de latitud, y en
+// longitud más espaciada cerca del ecuador que en los polos
+const STEP = 1.5;
+const boxes = countries.map((f) => ({ f, b: geoBounds(f), zone: zoneOf(f) }));
+const inBox = ([lon, lat], [[x0, y0], [x1, y1]]) =>
+  lat >= y0 && lat <= y1 && (x0 <= x1 ? lon >= x0 && lon <= x1 : lon >= x0 || lon <= x1);
+const dots = [];
+for (let lat = -56; lat <= 82; lat += STEP) {
+  const step = STEP / Math.max(Math.cos((lat * Math.PI) / 180), 0.2);
+  for (let lon = -180; lon < 180; lon += step) {
+    const p = [lon, lat];
+    const hit = boxes.find(({ f, b }) => inBox(p, b) && geoContains(f, p));
+    if (hit) dots.push(Math.round(lon * 10), Math.round(lat * 10), hit.zone);
+  }
+}
 
-/** Siluetas del resto del mundo */
-export const LAND_BASE = "${base}";
-/** Siluetas de los países y regiones con operación (destinos, Suramérica, África y Asia) */
-export const LAND_HOT = "${hot}";
-/** Silueta de Estados Unidos (principal mercado: se ilumina aparte) */
-export const LAND_USA = "${usa}";
-/** Silueta de Colombia */
-export const LAND_ORIGIN = "${origin}";
+const ll = ([lon, lat]) => `lon: ${lon}, lat: ${lat}`;
+const map = `// Bogotá y los destinos con ruta en el globo de la portada. GENERADO con
+// \`pnpm map\` (scripts/generate-world-map.mjs): no editar a mano.
 
-export const ORIGIN = { name: "${ORIGIN.name}", x: ${pt(ORIGIN.lonlat)[0]}, y: ${pt(ORIGIN.lonlat)[1]} };
+export const ORIGIN = { name: "${ORIGIN.name}", ${ll(ORIGIN.lonlat)} };
 
-/** Destinos con ruta en el mapa (capitales). "embassy": país donde Transpack ha atendido embajadas */
+/** Destinos con ruta en el globo (capitales). "embassy": país donde Transpack ha atendido embajadas */
 export const DESTINATIONS = [
-${DEST.map((d) => {
-  const [x, y] = pt(d.lonlat);
-  return `  { name: "${d.name}", x: ${x}, y: ${y}, embassy: ${!!d.embassy} },`;
-}).join("\n")}
+${DEST.map((d) => `  { name: "${d.name}", ${ll(d.lonlat)}, embassy: ${!!d.embassy} },`).join("\n")}
 ];
 `;
-fs.writeFileSync(process.argv[2], out);
-console.log("países", n, "bytes", out.length);
+const globe = `// Puntos de tierra del globo de la portada. GENERADO con \`pnpm map\`
+// (scripts/generate-world-map.mjs): no editar a mano.
+// De tres en tres: longitud × 10, latitud × 10 y zona (0 resto del mundo,
+// 1 regiones donde opera, 2 Estados Unidos, 3 Colombia).
+export const LAND_DOTS = [${dots.join(",")}];
+`;
+fs.writeFileSync(`${outDir}/worldMap.ts`, map);
+fs.writeFileSync(`${outDir}/worldGlobe.ts`, globe);
+console.log("puntos", dots.length / 3, "bytes", globe.length);

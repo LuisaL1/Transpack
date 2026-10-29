@@ -60,8 +60,6 @@ servicio existente y cambiar sus datos:
 
 - la sección **Servicios** del inicio y su **página propia** (`/servicios/<slug>`);
 - el **menú Servicios**, el **pie de página** y el **buscador**;
-- el selector **"¿Qué necesitas hoy?"** de la portada (después de Internacionales,
-  Nacionales y Locales, que van primero);
 - el **SEO**: título y descripción de la página, mapa del sitio y datos para Google;
 - el **conocimiento de Joel**: puede describirlo, decir qué incluye y cómo se hace.
 
@@ -70,7 +68,6 @@ servicio existente y cambiar sus datos:
 | Qué                                   | Archivo                                                                                                                      | Para qué                                                                                      |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Dirección en inglés                   | `SLUGS` en [`src/i18n/index.ts`](../src/i18n/index.ts): `"mudanzas-de-oficina": { en: "office-moving", … }`                  | Que la página en inglés sea `/en/services/office-moving` (si no, usa la dirección en español) |
-| Etiqueta corta en la portada          | `labels` de `quickPickText` en [`src/data/home.ts`](../src/data/home.ts): `"mudanzas-de-oficina": tr("Oficinas", "Offices")` | Que la pestaña diga una palabra y no el nombre completo                                       |
 | Palabras con las que Joel lo reconoce | Lista de palabras clave por servicio en [`src/lib/joel.ts`](../src/lib/joel.ts) (busque `bodegaje: [` como ejemplo)          | Que entienda "quiero mover mi oficina" y no solo el nombre exacto                             |
 | Conteo de servicios en las pruebas    | [`tests/unit/seo.test.ts`](../tests/unit/seo.test.ts): `toHaveLength(6)` → `7`                                               | La prueba de rutas cuenta los servicios publicados                                            |
 

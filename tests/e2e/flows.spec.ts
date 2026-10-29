@@ -95,16 +95,15 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);
 });
 
-test("portada: '¿Qué necesitas hoy?' muestra el servicio y lleva al cotizador con ese servicio", async ({
-  page,
-}) => {
+test("portada: globo animado al lado del titular y botón para cotizar", async ({ page }) => {
   await page.goto("/");
   await closeCookies(page);
-  await page.getByRole("tab", { name: "Bodegaje" }).click();
-  await expect(page.locator("#qs-panel")).toContainText("Almacenamiento seguro en Bogotá");
-  await page.getByRole("link", { name: /Cotizar este servicio/ }).click();
-  await expect(page).toHaveURL(/servicio=bodegaje#cotizar/);
-  await expect(page.locator("#cotizar")).toContainText("Bodegaje");
+  await expect(
+    page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" }),
+  ).toBeVisible();
+  await expect(page.getByText("¿Qué necesitas hoy?")).toHaveCount(0);
+  await page.getByRole("link", { name: "Cotiza tu mudanza" }).click();
+  await expect(page).toHaveURL(/#cotizar/);
 });
 
 test("cotizador: preselección por URL y validación", async ({ page }) => {
@@ -149,7 +148,9 @@ test("chat: se precarga escondido y al tocar el ícono abre ya en la conversaci�
   await expect(chat.locator("textarea")).toBeVisible();
   await expect(chat.getByText("¡Hola! Soy Laura. ¿En qué te ayudo?")).toBeVisible();
   const log = await zohoLog(page);
-  expect(log?.calls).toEqual(expect.arrayContaining(["language:es", "button:hide", "action:abrir_chat_asesor"]));
+  expect(log?.calls).toEqual(
+    expect.arrayContaining(["language:es", "button:hide", "action:abrir_chat_asesor"]),
+  );
   expect(log?.sent).toEqual([]);
 
   // El botón flotante muestra la X y cierra la ventana
