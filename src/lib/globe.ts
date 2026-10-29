@@ -15,8 +15,6 @@ export type GlobeLabels = { origin: string; stop: (p: Place) => string };
 export type Interaction = {
   /** Puntero sobre el lienzo (px del canvas), o null si no está encima */
   pointer: { x: number; y: number } | null;
-  /** true mientras el puntero está encima: la historia se detiene */
-  hold: boolean;
 };
 /** Resultado del dibujo: el destino bajo el puntero, si hay uno */
 export type DrawResult = { hovered: Place | null };
@@ -213,7 +211,7 @@ export function drawGlobe(
   labels: GlobeLabels,
   dpr: number,
   still = false,
-  inter: Interaction = { pointer: null, hold: false },
+  inter: Interaction = { pointer: null },
 ): DrawResult {
   const { width: W, height: H } = ctx.canvas;
   const s = still
