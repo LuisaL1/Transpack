@@ -11,7 +11,7 @@ export function BlogSection() {
   const t = blogSectionText(tr);
   const blogPosts = usePosts();
   return (
-    <section id="blog" className={`${section} bg-gris`}>
+    <section id="blog" className={`${section} bg-white`}>
       <div className={container}>
         <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-x-16 gap-y-4 md:mb-16">
           <div>

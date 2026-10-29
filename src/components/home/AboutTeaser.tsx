@@ -11,7 +11,7 @@ export function AboutTeaser() {
   const t = aboutTeaserText(tr);
   const { ABOUT_IMAGES } = useSite();
   return (
-    <section id="nosotros" className={`${section} bg-gris`}>
+    <section id="nosotros" className={`${section} bg-white`}>
       <div className={`${container} grid items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-24`}>
         <Reveal className="relative aspect-[1/1.08] max-w-[560px]">
           <img

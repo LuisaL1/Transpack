@@ -21,14 +21,14 @@ export function Segments() {
   }, [wanted, SEGMENTS]);
   const seg = SEGMENTS[active];
   return (
-    <section id="soluciones" className={`${section} bg-gris`}>
+    <section id="soluciones" className={`${section} bg-white`}>
       <div className={container}>
         <SectionHead eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         <Reveal>
           <div
             role="tablist"
             aria-label={t.tabsLabel}
-            className="mb-8 flex w-full max-w-full gap-1.5 overflow-x-auto rounded-2xl bg-white p-1.5 shadow-sm [scrollbar-width:none] sm:w-fit sm:rounded-full"
+            className="mb-8 flex w-full max-w-full gap-1.5 overflow-x-auto rounded-2xl border border-linea bg-white p-1.5 shadow-sm [scrollbar-width:none] sm:w-fit sm:rounded-full"
           >
             {SEGMENTS.map((s, i) => (
               <button
@@ -47,7 +47,7 @@ export function Segments() {
           <div
             key={seg.id}
             role="tabpanel"
-            className="animate-fade-up grid items-center gap-8 rounded-[22px] bg-white p-4 shadow-sm md:p-6 lg:grid-cols-2 lg:gap-16"
+            className="animate-fade-up grid items-center gap-8 rounded-[22px] border border-linea bg-white p-4 shadow-sm md:p-6 lg:grid-cols-2 lg:gap-16"
           >
             <div className="aspect-[4/3.3] overflow-hidden">
               <img

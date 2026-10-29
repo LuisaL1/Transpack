@@ -23,32 +23,6 @@ export function Hero() {
   const chips = [STATS[1], STATS[3]];
   return (
     <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[176px]">
-      {/* Retícula sutil */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(39,43,124,.05)_1px,transparent_1px),linear-gradient(rgba(39,43,124,.05)_1px,transparent_1px)] bg-[size:120px_120px] [mask-image:linear-gradient(180deg,#000_0%,#000_40%,transparent_75%)]"
-      />
-      {/* Semitono de puntos, esquina superior derecha */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 -top-24 h-[640px] w-[640px] bg-[radial-gradient(rgba(39,43,124,.16)_1.2px,transparent_1.6px)] bg-[size:9px_9px] [mask-image:radial-gradient(circle,#000_0%,transparent_65%)]"
-      />
-      {/* Cuadrado naranja girado de la marca, esquina superior izquierda */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-28 hidden h-56 w-56 rotate-45 rounded-[22%] bg-naranja/10 md:block"
-      />
-      {/* Luz naranja tenue detrás del titular */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-naranja/15 blur-[110px]"
-      />
-      {/* Franja beige al pie, detrás del tablero y de los clientes */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-[linear-gradient(180deg,rgba(250,238,217,0)_0%,rgba(250,238,217,.7)_45%,#ffffff_100%)]"
-      />
-
       <div className={`${container} animate-fade-up relative text-center`}>
         <Link
           to={lp("/#cobertura")}

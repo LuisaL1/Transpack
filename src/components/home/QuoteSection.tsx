@@ -12,7 +12,7 @@ export function QuoteSection() {
   const t = quoteSectionText(tr);
   const [params] = useSearchParams();
   return (
-    <section id="cotizar" className={`${section} bg-gradient-to-b from-white to-gris`}>
+    <section id="cotizar" className={`${section} bg-white`}>
       <div className={container}>
         <SectionHead center eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         <Reveal>

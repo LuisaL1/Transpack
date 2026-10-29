@@ -201,8 +201,11 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `linea`, `rojizo` `#E8401C`…). La lista blanca de colores está en `tests/unit/content.test.ts`:
   para usar un color nuevo, agréguelo ahí a propósito.
 - Tipografías: IBM Plex Sans (títulos) y Montserrat (texto).
-- Portada del inicio en **fondo blanco** (con detalles de marca, no blanco y
-  negro); las páginas internas usan `PageHero` con la foto bien visible y tonos
+- **Fondo general de la página totalmente blanco** (pedido del cliente, octubre
+  de 2026): sin franjas grises entre secciones ni manchas beige o naranja en la
+  portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
+  y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
+  violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
