@@ -41,11 +41,8 @@ export const statsText = (tr: Tr) => ({
 
 export const servicesText = (tr: Tr) => ({
   eyebrow: tr("Servicios", "Services"),
+  // Va debajo de las tarjetas, como cierre de la sección
   title: tr("Una solución integral para cada traslado", "A complete solution for every move"),
-  sub: tr(
-    "La mudanza es el centro de lo que hacemos. Alrededor de ella combinamos embalaje, bodegaje, documentación y coordinación especializada para que no tengas que preocuparte por nada.",
-    "Moving is at the heart of what we do. Around it we combine packing, storage, documentation and specialized coordination so you don't have to worry about a thing.",
-  ),
   more: tr("Ver servicio", "View service"),
 });
 
