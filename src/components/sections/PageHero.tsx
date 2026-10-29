@@ -5,10 +5,25 @@ import type { ReactNode } from "react";
 // panel azul sólido a la izquierda, con un corte diagonal como la franja del
 // logo, y la foto se ve limpia y completa a la derecha, sin capas encima. En
 // celular y tableta la foto va arriba y el panel debajo. Sin foto, el panel
-// ocupa todo el ancho.
-export function PageHero({ children, image }: { children: ReactNode; image?: string }) {
+// ocupa todo el ancho. Con `light` (páginas de servicio, pedido del cliente,
+// oct. 2026) el panel es blanco con texto oscuro; la franja naranja del corte se
+// mantiene entre el panel y la foto.
+export function PageHero({
+  children,
+  image,
+  light = false,
+}: {
+  children: ReactNode;
+  image?: string;
+  light?: boolean;
+}) {
+  const bg = light ? "bg-white" : "bg-azul-900";
   return (
-    <section className="relative overflow-hidden bg-azul-900 pt-[124px] text-white/80 md:pt-[148px] wide:pt-[162px]">
+    <section
+      className={`relative overflow-hidden ${bg} pt-[124px] md:pt-[148px] wide:pt-[162px] ${
+        light ? "border-b border-linea text-texto" : "text-white/80"
+      }`}
+    >
       <div className="relative">
         {image && (
           <div className="relative lg:absolute lg:inset-y-0 lg:right-0 lg:w-[58%]">
@@ -29,7 +44,7 @@ export function PageHero({ children, image }: { children: ReactNode; image?: str
           />
         )}
         <div
-          className={`relative bg-azul-900 py-10 md:py-14 ${
+          className={`relative ${bg} py-10 md:py-14 ${
             image
               ? "lg:flex lg:min-h-[600px] lg:w-[52%] lg:flex-col lg:justify-center lg:py-14 lg:pe-32 lg:[clip-path:polygon(0_0,100%_0,calc(100%-110px)_100%,0_100%)]"
               : "pb-20 md:pb-28"

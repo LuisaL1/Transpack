@@ -91,10 +91,12 @@ export function Header() {
   };
 
   const solid = scrolled || menuOpen || active !== null;
-  // La portada del inicio es blanca: ahí la cabecera usa letras oscuras desde
-  // arriba. Las páginas internas tienen portada oscura (PageHero): letras blancas.
+  // El inicio y las páginas de servicio tienen portada blanca: ahí la cabecera
+  // usa letras oscuras desde arriba. Las demás páginas internas tienen portada
+  // oscura (PageHero): letras blancas.
   const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
-  const dark = solid || home;
+  const lightTop = home || /^(\/en)?\/(servicios|services)\/[^/]+\/?$/.test(pathname);
+  const dark = solid || lightTop;
   const iconCls = `grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors ${
     dark
       ? "text-tinta hover:bg-gris hover:text-azul"

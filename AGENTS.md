@@ -209,7 +209,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
-  naranja a rojizo. El efecto de "velocidad" del brochure de referencia del
+  naranja a rojizo. En las páginas de servicio el panel de `PageHero` es blanco
+  (`light`, con la franja naranja del corte) y la cabecera usa letras oscuras. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
 - Mapa del inicio (`WorldMap` sobre el panel azul de marca del `Hero`, el mismo

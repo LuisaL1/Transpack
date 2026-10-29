@@ -26,30 +26,30 @@ export function ServiceDetailPage() {
 
   return (
     <>
-      <PageHero image={service.image}>
+      <PageHero image={service.image} light>
         <nav
           aria-label={t.ruta}
-          className="mb-4 flex items-center gap-2 text-[0.85rem] text-white/60"
+          className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave"
         >
-          <Link to={lp("/")} className="hover:text-white">
+          <Link to={lp("/")} className="hover:text-azul">
             {t.inicio}
           </Link>
           <Bi n="chevron-right" className="text-[0.7rem]" />
-          <Link to={lp("/#servicios")} className="hover:text-white">
+          <Link to={lp("/#servicios")} className="hover:text-azul">
             {t.servicios}
           </Link>
           <Bi n="chevron-right" className="text-[0.7rem]" />
-          <span className="text-white">{service.title}</span>
+          <span className="font-semibold text-azul">{service.title}</span>
         </nav>
         <div className="animate-fade-up max-w-3xl">
-          <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-white/10 text-[1.6rem] text-naranja">
+          <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-azul text-[1.6rem] text-naranja shadow-[0_12px_26px_-12px_rgba(39,43,124,.8)]">
             <Bi n={service.icon} />
           </span>
-          <Eyebrow light>{service.kicker}</Eyebrow>
-          <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] !text-white">
+          <Eyebrow>{service.kicker}</Eyebrow>
+          <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] text-tinta">
             {service.headline}
           </h1>
-          <p className="mb-8 max-w-2xl text-[1.08rem]">{service.short}</p>
+          <p className="mb-8 max-w-2xl text-[1.08rem] text-texto">{service.short}</p>
           <div className="flex flex-wrap gap-3">
             <Link to={quoteLink} className={`${btn.primary} ${btn.lg} w-full sm:w-auto`}>
               {generic ? t.quoteService(service.title) : service.cta}
@@ -58,7 +58,7 @@ export function ServiceDetailPage() {
               href={waLink(t.whatsappAbout(service.title))}
               target="_blank"
               rel="noopener"
-              className={`${btn.ghost} ${btn.lg} w-full sm:w-auto`}
+              className={`${btn.outline} ${btn.lg} w-full sm:w-auto`}
             >
               <Bi n="whatsapp" /> {t.escribenos}
             </a>
