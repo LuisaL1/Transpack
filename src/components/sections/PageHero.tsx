@@ -5,24 +5,14 @@ import type { ReactNode } from "react";
 // panel azul sólido a la izquierda, con un corte diagonal como la franja del
 // logo, y la foto se ve limpia y completa a la derecha, sin capas encima. En
 // celular y tableta la foto va arriba y el panel debajo. Sin foto, el panel
-// ocupa todo el ancho. Con `light` (páginas de servicio, pedido del cliente,
-// oct. 2026) el panel es blanco con texto oscuro; la franja naranja del corte se
-// mantiene entre el panel y la foto.
-export function PageHero({
-  children,
-  image,
-  light = false,
-}: {
-  children: ReactNode;
-  image?: string;
-  light?: boolean;
-}) {
-  const bg = light ? "bg-white" : "bg-azul-900";
+// ocupa todo el ancho. El panel es blanco con texto oscuro en todas las páginas
+// (pedido del cliente, oct. 2026); la franja naranja del corte se mantiene
+// entre el panel y la foto.
+export function PageHero({ children, image }: { children: ReactNode; image?: string }) {
+  const bg = "bg-white";
   return (
     <section
-      className={`relative overflow-hidden ${bg} pt-[124px] md:pt-[148px] wide:pt-[162px] ${
-        light ? "border-b border-linea text-texto" : "text-white/80"
-      }`}
+      className={`relative overflow-hidden ${bg} pt-[124px] md:pt-[148px] wide:pt-[162px] border-b border-linea text-texto`}
     >
       <div className="relative">
         {image && (

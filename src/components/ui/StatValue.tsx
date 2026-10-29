@@ -1,13 +1,21 @@
 import { useEffect, useLayoutEffect, useState } from "react";
+import { LANG_INFO, useLang } from "@/i18n";
 
 // En el servidor (HTML pre-generado) useLayoutEffect avisa; allí no hace falta
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+// Separador de miles según el idioma de la página (2.000 en español, 2,000 en inglés)
+const useNumberFormat = () => {
+  const locale = LANG_INFO[useLang().lang].locale;
+  return (n: number) => n.toLocaleString(locale);
+};
+
 // Cifra con sufijo en naranja (ej. 2.000+)
 export function StatValue({ value, suffix }: { value: number; suffix: string }) {
+  const fmt = useNumberFormat();
   return (
     <span>
-      {value.toLocaleString("es-CO")}
+      {fmt(value)}
       <span className="text-naranja">{suffix}</span>
     </span>
   );
@@ -33,6 +41,7 @@ export function StatCounter({
   duration?: number;
 }) {
   const [shown, setShown] = useState(value);
+  const fmt = useNumberFormat();
 
   // Al activarse, vuelve a 0 antes de pintarse (sin parpadeo del valor final)
   useIsoLayoutEffect(() => {
@@ -62,8 +71,8 @@ export function StatCounter({
 
   return (
     <span>
-      <span aria-hidden="true">{shown.toLocaleString("es-CO")}</span>
-      <span className="sr-only">{value.toLocaleString("es-CO")}</span>
+      <span aria-hidden="true">{fmt(shown)}</span>
+      <span className="sr-only">{fmt(value)}</span>
       <span className="text-naranja">{suffix}</span>
     </span>
   );

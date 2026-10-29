@@ -34,18 +34,18 @@ export function ArticlePage() {
         <div className="animate-fade-up mx-auto max-w-3xl">
           <Link
             to={lp("/#blog")}
-            className="mb-6 inline-flex items-center gap-2 text-[0.88rem] text-white/70 hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-[0.88rem] text-suave hover:text-azul"
           >
             <Bi n="arrow-left" /> {t.volverBlog}
           </Link>
           <p className="mb-4 flex flex-wrap items-center gap-3 text-[0.8rem] font-semibold uppercase tracking-[0.12em]">
             <span className="text-naranja">{post.cat}</span>
-            <span className="text-white/40">•</span>
-            <span className="text-beige">
+            <span className="text-linea">•</span>
+            <span className="text-suave">
               {readMinutes(post)} {t.minLectura}
             </span>
           </p>
-          <h1 className="text-[clamp(1.7rem,1.15rem+2vw,2.7rem)] leading-[1.14] !text-white">
+          <h1 className="text-[clamp(1.7rem,1.15rem+2vw,2.7rem)] leading-[1.14] text-tinta">
             {post.title}
           </h1>
         </div>

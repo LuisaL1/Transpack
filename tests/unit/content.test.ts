@@ -179,7 +179,7 @@ describe("Reglas de contenido (lo que la empresa no puede afirmar)", () => {
     for (const [f, s] of ALL) expect(s, f).not.toMatch(/ISO\s?9001|\bFIDI\b|\bBASC\b|\bOEA\b/i);
   });
 
-  it("las cifras de la empresa coinciden con STATS (58 años, 176 países, 2.000 representantes)", () => {
+  it("las cifras de la empresa coinciden con STATS (58 años, 176 países, 2.000 agentes y aliados estratégicos)", () => {
     const stat = (re: RegExp) => es.STATS.find((s) => re.test(s.label))!.value;
     const years = stat(/años/);
     const countries = stat(/países/);

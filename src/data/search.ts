@@ -92,11 +92,11 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       "globe2",
       tr("Cobertura global", "Global coverage"),
       tr(
-        "2.000+ agentes en 176 países, vía marítima o aérea",
-        "2,000+ agents in 176 countries, by sea or air",
+        "2.000+ agentes y aliados estratégicos en 176 países, vía marítima o aérea",
+        "2,000+ agents and strategic partners in 176 countries, by sea or air",
       ),
       "/#cobertura",
-      "paises red agentes destinos countries network agents destinations",
+      "paises red agentes aliados representantes destinos countries network agents partners destinations",
     ),
     page(
       "layers",

@@ -17,7 +17,7 @@ export function Coverage() {
   const { tr } = useLang();
   const t = coverageText(tr);
   const { STATS } = useSite();
-  // Cifras reales del sitio (STATS): representantes y países
+  // Cifras reales del sitio (STATS): agentes y aliados, y países
   const chips = [STATS[3], STATS[1]];
   return (
     <section

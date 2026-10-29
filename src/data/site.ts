@@ -80,7 +80,7 @@ export const STATS = [
     short: "países de destino",
   },
   { value: 60, suffix: "K+", label: "toneladas de menaje doméstico exportadas" },
-  { value: 2000, suffix: "+", label: "agentes y aliados estratégicos", short: "representantes" },
+  { value: 2000, suffix: "+", label: "agentes y aliados estratégicos", short: "agentes y aliados" },
 ];
 
 export const EMBASSIES = [
@@ -214,7 +214,7 @@ export const SERVICES: Service[] = [
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
-      "Una mudanza internacional no se trata igual que una urbana. Primero entiendes el proceso, los requisitos, los tiempos y los costos; después cotizamos. Un asesor especializado te acompaña desde el primer contacto, con el respaldo de más de 2.000 representantes en 176 países.",
+      "Una mudanza internacional no se trata igual que una urbana. Primero entiendes el proceso, los requisitos, los tiempos y los costos; después cotizamos. Un asesor especializado te acompaña desde el primer contacto, con el respaldo de más de 2.000 agentes y aliados estratégicos en 176 países.",
     includes: [
       "Asesoría inicial sobre requisitos de origen y destino",
       "Modalidad marítima (grandes volúmenes) o aérea (cargas urgentes)",
@@ -430,7 +430,7 @@ export const SEGMENTS = [
     points: [
       "Asesoría sobre requisitos, tiempos y costos antes de empacar",
       "Elección entre envío marítimo o aéreo según su caso",
-      "Red de representantes que te recibe en el país de destino",
+      "Red de agentes y aliados estratégicos que te recibe en el país de destino",
     ],
     cta: "Planear mi mudanza internacional",
     quote: "internacional" as QuoteService,

@@ -179,8 +179,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   horarios de atención, listas de artículos prohibidos ni certificaciones.
 - Certificaciones reales: **LACMA, IAM y PAIMA** (no ISO 9001, FIDI, BASC, OEA).
 - Cifras: más de **58 años** (desde 1968), **176 países** (de destino, importación
-  y exportación), **2.000+ representantes** (el cliente pidió "representantes",
-  no "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
+  y exportación), **2.000+ agentes y aliados estratégicos** (así lo pidió el
+  cliente, octubre de 2026; ni "representantes" ni "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran como carrusel con
   movimiento (`Stats.tsx`), una cifra a la vez (5 s cada una): al entrar, cada
@@ -214,8 +214,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
-  naranja a rojizo. En las páginas de servicio el panel de `PageHero` es blanco
-  (`light`, con la franja naranja del corte) y la cabecera usa letras oscuras. El efecto de "velocidad" del brochure de referencia del
+  naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
+  política, Nuestros empaques, 404) el panel de `PageHero` es blanco, con la franja
+  naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
 - Mapa del inicio (`WorldMap` sobre el panel azul de marca del `Hero`, el mismo

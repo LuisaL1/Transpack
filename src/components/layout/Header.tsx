@@ -91,17 +91,10 @@ export function Header() {
   };
 
   const solid = scrolled || menuOpen || active !== null;
-  // El inicio y las páginas de servicio tienen portada blanca: ahí la cabecera
-  // usa letras oscuras desde arriba. Las demás páginas internas tienen portada
-  // oscura (PageHero): letras blancas.
-  const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
-  const lightTop = home || /^(\/en)?\/(servicios|services)\/[^/]+\/?$/.test(pathname);
-  const dark = solid || lightTop;
-  const iconCls = `grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors ${
-    dark
-      ? "text-tinta hover:bg-gris hover:text-azul"
-      : "text-white/90 hover:bg-white/15 hover:text-white"
-  }`;
+  // Todas las portadas son blancas (inicio y PageHero): la cabecera siempre
+  // usa letras oscuras.
+  const iconCls =
+    "grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors text-tinta hover:bg-gris hover:text-azul";
   const current = MENUS.find((m) => m.key === active);
   const videosPage = /^(\/en)?\/videos\/?$/.test(pathname);
   const sectionOf = (m: Menu) =>
@@ -128,13 +121,13 @@ export function Header() {
               : "h-[88px] md:h-[112px] wide:h-[126px]"
           }`}
         >
-          <Logo light={!dark} small={scrolled} className="xl:-ms-6 wide:ms-0" />
+          <Logo light={false} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
           <nav className="hidden items-center gap-3 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
-              const underline = `relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 ${dark ? "text-tinta hover:text-azul" : "text-white/90 hover:text-white"}`;
+              const underline = `relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 text-tinta hover:text-azul`;
               return (
                 <Fragment key={m.key}>
                   <button
@@ -167,7 +160,7 @@ export function Header() {
                 </Fragment>
               );
             })}
-            <span className={`h-5 w-px ${dark ? "bg-linea" : "bg-white/25"}`} aria-hidden="true" />
+            <span className="h-5 w-px bg-linea" aria-hidden="true" />
             <div className="flex items-center gap-1">
               <button
                 onClick={() => {
@@ -188,7 +181,7 @@ export function Header() {
                 aria-label={t.support}
                 aria-expanded={active === "soporte"}
                 title={t.support}
-                className={`${iconCls} ${active === "soporte" ? (dark ? "bg-gris text-azul" : "bg-white/15") : ""}`}
+                className={`${iconCls} ${active === "soporte" ? "bg-gris text-azul" : ""}`}
               >
                 <Bi n="headset" />
               </button>
@@ -249,7 +242,7 @@ export function Header() {
 
           {/* Botón de menú móvil */}
           <button
-            className={`relative z-10 grid h-11 w-11 place-items-center text-2xl lg:hidden ${dark ? "text-azul" : "text-white"}`}
+            className={`relative z-10 grid h-11 w-11 place-items-center text-2xl text-azul lg:hidden`}
             aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}

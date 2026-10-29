@@ -26,11 +26,8 @@ export function ServiceDetailPage() {
 
   return (
     <>
-      <PageHero image={service.image} light>
-        <nav
-          aria-label={t.ruta}
-          className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave"
-        >
+      <PageHero image={service.image}>
+        <nav aria-label={t.ruta} className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave">
           <Link to={lp("/")} className="hover:text-azul">
             {t.inicio}
           </Link>

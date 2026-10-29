@@ -47,7 +47,12 @@ export const STATS = [
     short: "destination countries",
   },
   { value: 60, suffix: "K+", label: "tons of household goods exported" },
-  { value: 2000, suffix: "+", label: "agents and strategic partners", short: "representatives" },
+  {
+    value: 2000,
+    suffix: "+",
+    label: "agents and strategic partners",
+    short: "agents and partners",
+  },
 ];
 
 export const EMBASSIES = [
@@ -150,7 +155,7 @@ export const SERVICES: Service[] = [
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
-      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs; then we quote. A specialized advisor guides you from the first contact, backed by more than 2,000 representatives in 176 countries.",
+      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs; then we quote. A specialized advisor guides you from the first contact, backed by more than 2,000 agents and strategic partners in 176 countries.",
     includes: [
       "Initial advice on origin and destination requirements",
       "Sea freight (large volumes) or air freight (urgent shipments)",
@@ -222,8 +227,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgGuacales,
     kicker: "Packing engineering",
-    headline:
-      "Your most valuable items in professional hands. Specialized packing and total care",
+    headline: "Your most valuable items in professional hands. Specialized packing and total care",
     intro:
       "Artwork, collections, glassware and designer furniture require packing engineering: custom wooden crates for canvases, high-density impact cushioning and moisture protection for long transits.",
     includes: [
@@ -333,7 +337,7 @@ export const SEGMENTS = [
     points: [
       "Advice on requirements, timelines and costs before you pack",
       "Sea or air shipping, depending on your case",
-      "A network of representatives that receives you in your destination country",
+      "A network of agents and strategic partners that receives you in your destination country",
     ],
     cta: "Plan my international move",
     quote: "internacional" as QuoteService,

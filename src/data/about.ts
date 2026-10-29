@@ -48,8 +48,8 @@ export const aboutTimeline = (tr: Tr) => [
   {
     year: tr("Décadas de red", "Decades of network"),
     text: tr(
-      "Construimos una red de más de 2.000 representantes en 176 países.",
-      "We built a network of more than 2,000 representatives in 176 countries.",
+      "Construimos una red de más de 2.000 agentes y aliados estratégicos en 176 países.",
+      "We built a network of more than 2,000 agents and strategic partners in 176 countries.",
     ),
   },
   {

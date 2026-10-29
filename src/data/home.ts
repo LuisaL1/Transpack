@@ -20,8 +20,8 @@ export const heroText = (tr: Tr) => ({
     origin: tr("Bogotá, punto de origen", "Bogotá, point of origin"),
     operate: tr("Países donde operamos", "Countries where we operate"),
     network: tr(
-      "Red de representantes en 176 países",
-      "Network of representatives in 176 countries",
+      "Red de agentes y aliados estratégicos en 176 países",
+      "Network of agents and strategic partners in 176 countries",
     ),
   },
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
@@ -78,8 +78,8 @@ export const coverageText = (tr: Tr) => ({
     "From Colombia to the world, with a network you can't improvise",
   ),
   text: tr(
-    "Casi seis décadas construyendo una red operativa con más de 2.000 representantes en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Su mudanza se opera con los mismos estándares en origen y en destino.",
-    "Almost six decades building an operating network of more than 2,000 representatives in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
+    "Casi seis décadas construyendo una red operativa con más de 2.000 agentes y aliados estratégicos en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Su mudanza se opera con los mismos estándares en origen y en destino.",
+    "Almost six decades building an operating network of more than 2,000 agents and strategic partners in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
   ),
   modes: [
     {
@@ -104,8 +104,11 @@ export const coverageText = (tr: Tr) => ({
   certifications: "LACMA · IAM · PAIMA",
   imageAlt: tr("Avión y buque portacontenedores en puerto", "Airplane and container ship in port"),
   shipAlt: tr("Cargue de un contenedor de mudanza", "Loading a moving container"),
-  agents: "2.000+",
-  agentsLabel: tr("representantes en 176 países", "representatives in 176 countries"),
+  agents: tr("2.000+", "2,000+"),
+  agentsLabel: tr(
+    "agentes y aliados estratégicos en 176 países",
+    "agents and strategic partners in 176 countries",
+  ),
 });
 
 export const processText = (tr: Tr) => ({

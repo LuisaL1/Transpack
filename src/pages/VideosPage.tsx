@@ -21,19 +21,16 @@ export function VideosPage() {
   return (
     <>
       <PageHero image={imgGuacales}>
-        <nav
-          aria-label={t.path}
-          className="mb-6 flex items-center gap-2 text-[0.85rem] text-white/60"
-        >
-          <Link to={lp("/")} className="hover:text-white">
+        <nav aria-label={t.path} className="mb-6 flex items-center gap-2 text-[0.85rem] text-suave">
+          <Link to={lp("/")} className="hover:text-azul">
             {t.home}
           </Link>
           <Bi n="chevron-right" className="text-[0.7rem]" />
-          <span className="text-white">{t.title}</span>
+          <span className="font-semibold text-azul">{t.title}</span>
         </nav>
         <div className="animate-fade-up max-w-3xl">
-          <Eyebrow light>{t.eyebrow}</Eyebrow>
-          <h1 className="mb-6 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.1] !text-white">
+          <Eyebrow>{t.eyebrow}</Eyebrow>
+          <h1 className="mb-6 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.1] text-tinta">
             {t.title}
           </h1>
           <p className="max-w-2xl text-[1.05rem]">{t.intro}</p>
@@ -46,7 +43,7 @@ export function VideosPage() {
             >
               <Bi n="youtube" /> {t.subscribe}
             </a>
-            <span className="font-title text-[0.9rem] font-semibold text-beige">
+            <span className="font-title text-[0.9rem] font-semibold text-azul">
               {t.count(total)}
             </span>
           </div>

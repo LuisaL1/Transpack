@@ -231,7 +231,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Hoy esa red se traduce en más de 2.000 representantes en 176 países, con cobertura en Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Esta cobertura es la razón por la cual empresas y familias confían su patrimonio a Transpack cuando cruzan fronteras.",
+        text: "Hoy esa red se traduce en más de 2.000 agentes y aliados estratégicos en 176 países, con cobertura en Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Esta cobertura es la razón por la cual empresas y familias confían su patrimonio a Transpack cuando cruzan fronteras.",
       },
       { t: "h2", text: "Especialistas en rutas marítimas y aéreas" },
       {

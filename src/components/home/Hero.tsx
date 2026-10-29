@@ -19,7 +19,7 @@ export function Hero() {
   const t = heroText(tr);
   const m = mapText(tr);
   const { STATS } = useSite();
-  // Cifras reales del sitio (STATS): países de destino y representantes
+  // Cifras reales del sitio (STATS): países de destino y agentes y aliados
   const chips = [STATS[1], STATS[3]];
   return (
     <section className="relative overflow-hidden bg-white pt-[158px] text-texto md:pt-[192px]">

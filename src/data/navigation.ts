@@ -162,7 +162,10 @@ export function menusFor(lang: Lang): Menu[] {
       label: tr("Cobertura", "Coverage"),
       feature: {
         kicker: tr("Cobertura global", "Global coverage"),
-        title: tr("2.000+ agentes en 176 países", "2,000+ agents in 176 countries"),
+        title: tr(
+          "2.000+ agentes y aliados estratégicos en 176 países",
+          "2,000+ agents and strategic partners in 176 countries",
+        ),
         text: tr(
           "Operamos con los mismos estándares en origen y en destino, por vía marítima o aérea.",
           "We operate to the same standards at origin and destination, by sea or by air.",

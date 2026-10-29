@@ -199,7 +199,7 @@ export const blogPosts: Post[] = [
       },
       {
         t: "p",
-        text: "Today that network means more than 2,000 representatives in 176 countries, covering the United States, Canada, the European Union, Asia and all of Latin America. That coverage is why companies and families trust Transpack with their belongings when they cross borders.",
+        text: "Today that network means more than 2,000 agents and strategic partners in 176 countries, covering the United States, Canada, the European Union, Asia and all of Latin America. That coverage is why companies and families trust Transpack with their belongings when they cross borders.",
       },
       { t: "h2", text: "Specialists in sea and air routes" },
       {
