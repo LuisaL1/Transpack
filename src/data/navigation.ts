@@ -317,7 +317,6 @@ export const headerText = (tr: Tr) => ({
   ),
   supportFaq: tr("Ver preguntas frecuentes", "See frequently asked questions"),
   logoLabel: tr("Transpack, inicio", "Transpack, home"),
-  logoText: "TRANSPACK",
 });
 
 export const footerText = (tr: Tr) => ({

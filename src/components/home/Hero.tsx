@@ -22,7 +22,7 @@ export function Hero() {
   // Cifras reales del sitio (STATS): países de destino y representantes
   const chips = [STATS[1], STATS[3]];
   return (
-    <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[176px]">
+    <section className="relative overflow-hidden bg-white pt-[158px] text-texto md:pt-[192px]">
       <div className={`${container} animate-fade-up relative text-center`}>
         <Link
           to={lp("/#cobertura")}

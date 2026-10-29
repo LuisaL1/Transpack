@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 // ocupa todo el ancho.
 export function PageHero({ children, image }: { children: ReactNode; image?: string }) {
   return (
-    <section className="relative overflow-hidden bg-azul-900 pt-[116px] text-white/80 md:pt-[132px] wide:pt-[146px]">
+    <section className="relative overflow-hidden bg-azul-900 pt-[124px] text-white/80 md:pt-[148px] wide:pt-[162px]">
       <div className="relative">
         {image && (
           <div className="relative lg:absolute lg:inset-y-0 lg:right-0 lg:w-[58%]">
