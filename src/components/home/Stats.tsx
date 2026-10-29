@@ -16,6 +16,11 @@ import { container } from "@/components/ui/layout";
 // giro de la última a la primera sea continuo.
 // Tiempo de cada cifra: el conteo (~1,8 s) y unos segundos para leerla
 const INTERVAL = 5000;
+// Duración del deslizamiento (debe coincidir con duration-700 de la tira)
+const SLIDE_MS = 700;
+// En la copia de la primera cifra, cuándo volver al inicio sin animación: ya
+// terminado el deslizamiento y el conteo (~1,8 s), para no cortarlo
+const JUMP_MS = SLIDE_MS + 1900;
 const ICONS = ["award", "globe-americas", "box-seam", "people"];
 
 export function Stats() {
@@ -30,6 +35,9 @@ export function Stats() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const raf = useRef(0);
+  // Se acaba de volver al inicio desde la copia: a la primera cifra le queda
+  // INTERVAL - JUMP_MS (en total dura lo mismo que las demás)
+  const fromCopy = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -54,17 +62,44 @@ export function Stats() {
     return () => m.removeEventListener("change", on);
   }, []);
 
-  const running = !reduced && visible;
+  // Con la pestaña en segundo plano se pausa: el navegador no anima y no
+  // llegaría el fin del deslizamiento (antes el carrusel quedaba en blanco)
+  const [pageShown, setPageShown] = useState(true);
+  useEffect(() => {
+    const on = () => setPageShown(!document.hidden);
+    on();
+    document.addEventListener("visibilitychange", on);
+    return () => document.removeEventListener("visibilitychange", on);
+  }, []);
 
-  // Avanza una cifra cada INTERVAL mientras corre
+  const running = !reduced && visible && pageShown;
+
+  // Avanza una cifra cada INTERVAL mientras corre (nunca más allá de la copia
+  // de la primera, para que la tira no se salga de las cifras)
   useEffect(() => {
     if (!running) return;
+    const wait = fromCopy.current ? INTERVAL - JUMP_MS : INTERVAL;
+    fromCopy.current = false;
     const id = window.setTimeout(() => {
       setAnimate(true);
-      setI((v) => v + 1);
-    }, INTERVAL);
+      setI((v) => Math.min(v + 1, n));
+    }, wait);
     return () => window.clearTimeout(id);
-  }, [running, i]);
+  }, [running, i, n]);
+
+  // En la copia de la primera, vuelve al inicio sin animación (se ve igual) una
+  // vez terminados el deslizamiento y el conteo. Se programa con un temporizador:
+  // no depende de transitionend, que no llega si la animación no corre (pestaña
+  // en segundo plano) o se interrumpe (antes el carrusel quedaba en blanco).
+  useEffect(() => {
+    if (i !== n) return;
+    const id = window.setTimeout(() => {
+      fromCopy.current = true;
+      setAnimate(false);
+      setI(0);
+    }, JUMP_MS);
+    return () => window.clearTimeout(id);
+  }, [i, n]);
 
   // Tras llegar a la copia de la primera, salta al inicio sin animación
   useEffect(() => {
@@ -101,12 +136,6 @@ export function Stats() {
           className={`relative flex ${animate && !reduced ? "transition-transform duration-700 ease-[cubic-bezier(.65,0,.35,1)]" : ""}`}
           style={{ transform: `translateX(-${i * 100}%)` }}
           aria-live={running ? "off" : "polite"}
-          onTransitionEnd={(e) => {
-            if (e.target === e.currentTarget && i === n) {
-              setAnimate(false);
-              setI(0);
-            }
-          }}
         >
           {slides.map((s, k) => (
             <div
