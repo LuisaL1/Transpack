@@ -5,4 +5,4 @@ export { Checks } from "./Checks";
 export { Eyebrow } from "./Eyebrow";
 export { Reveal } from "./Reveal";
 export { SectionHead } from "./SectionHead";
-export { StatValue } from "./StatValue";
+export { StatCounter, StatValue } from "./StatValue";

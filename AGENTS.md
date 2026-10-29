@@ -178,7 +178,10 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   no "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran como carrusel con
-  movimiento (`Stats.tsx`), una cifra a la vez.
+  movimiento (`Stats.tsx`), una cifra a la vez (5 s cada una): al entrar, cada
+  cifra cuenta desde 0 hasta su valor (`StatCounter`), desde que el carrusel se
+  ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
+  valor completo.
 - Embajadas atendidas: las 10 de `EMBASSIES`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en

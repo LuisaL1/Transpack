@@ -2,18 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/i18n";
 import { statsText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
-import { Bi, StatValue } from "@/components/ui";
+import { Bi, StatCounter } from "@/components/ui";
 import { container } from "@/components/ui/layout";
 
 // Cifras bajo el hero (datos en STATS de src/data/site.ts) como carrusel con
 // movimiento, a pedido del cliente: una cifra a la vez, cada una con su espacio
 // y su tiempo, deslizándose hacia la izquierda como los logos de clientes.
-// Avanza solo, sin pausa (pedido del cliente); solo se queda quieto si el
-// visitante pidió reducir el movimiento en su equipo. Las barras de abajo
+// Avanza solo, sin pausa (pedido del cliente), desde que el carrusel se ve en
+// pantalla; solo se queda quieto si el visitante pidió reducir el movimiento en
+// su equipo. Cada cifra cuenta desde 0 hasta su valor al entrar (StatCounter). Las barras de abajo
 // muestran el avance y permiten saltar a otra cifra. Todas las cifras están en el
 // HTML pre-generado (SEO); al final va una copia de la primera para que el
 // giro de la última a la primera sea continuo.
-const INTERVAL = 4500;
+// Tiempo de cada cifra: el conteo (~1,8 s) y unos segundos para leerla
+const INTERVAL = 5000;
 const ICONS = ["award", "globe-americas", "box-seam", "people"];
 
 export function Stats() {
@@ -24,7 +26,25 @@ export function Stats() {
   const [i, setI] = useState(0); // 0..n (n = copia de la primera)
   const [animate, setAnimate] = useState(true);
   const [reduced, setReduced] = useState(false);
+  // El carrusel ya se vio en pantalla (antes no cuenta ni avanza)
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLElement>(null);
   const raf = useRef(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !("IntersectionObserver" in window)) return setVisible(true);
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setVisible(true);
+        obs.disconnect();
+      },
+      { threshold: 0.4 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     const m = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -34,7 +54,7 @@ export function Stats() {
     return () => m.removeEventListener("change", on);
   }, []);
 
-  const running = !reduced;
+  const running = !reduced && visible;
 
   // Avanza una cifra cada INTERVAL mientras corre
   useEffect(() => {
@@ -64,6 +84,7 @@ export function Stats() {
 
   return (
     <section
+      ref={ref}
       className="pb-4 pt-6"
       aria-label={t.label}
       aria-roledescription={t.carousel}
@@ -92,7 +113,7 @@ export function Stats() {
               key={`${s.label}-${k}`}
               role="group"
               aria-roledescription={t.slide}
-              aria-label={t.of(Math.min(k, n - 1) + 1, n)}
+              aria-label={t.of((k % n) + 1, n)}
               aria-hidden={k !== i}
               className="flex w-full shrink-0 flex-col items-center gap-4 px-6 py-9 text-center sm:px-12 md:flex-row md:justify-center md:gap-9 md:py-12 md:text-start"
             >
@@ -104,7 +125,7 @@ export function Stats() {
                 <Bi n={ICONS[k % n]} className="relative" />
               </span>
               <span className="font-title text-[clamp(3.2rem,2.3rem+3.6vw,5.6rem)] font-bold leading-none text-azul">
-                <StatValue value={s.value} suffix={s.suffix} />
+                <StatCounter value={s.value} suffix={s.suffix} active={visible && k === i} instant={!animate} />
               </span>
               <span aria-hidden="true" className="hidden h-20 w-px bg-linea md:block" />
               <span className="max-w-[440px] text-balance font-title text-[clamp(1.2rem,1.02rem+.8vw,1.8rem)] font-semibold leading-snug text-tinta">
