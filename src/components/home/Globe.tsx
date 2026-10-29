@@ -22,7 +22,7 @@ export function Globe({ className = "" }: { className?: string }) {
       {/* Esfera de respaldo (misma luz que la del canvas) */}
       <div
         aria-hidden="true"
-        className={`absolute left-1/2 top-1/2 aspect-square h-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_32%_30%,#34399A,#272B7C_55%,#0D0F33)] shadow-[0_0_80px_10px_rgba(52,57,154,.3)] transition-opacity duration-700 ${
+        className={`absolute left-1/2 top-1/2 aspect-square h-[94%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_32%_30%,#34399A,#272B7C_55%,#0D0F33)] transition-opacity duration-700 ${
           ready ? "opacity-0" : "opacity-100"
         }`}
       />
@@ -30,7 +30,9 @@ export function Globe({ className = "" }: { className?: string }) {
         ref={canvasRef}
         role="img"
         aria-label={t.label}
-        className="absolute inset-0 h-full w-full"
+        className={`absolute inset-0 h-full w-full transition-[opacity,transform] duration-1000 ease-out ${
+          ready ? "scale-100 opacity-100" : "scale-90 opacity-0"
+        }`}
       />
     </div>
   );

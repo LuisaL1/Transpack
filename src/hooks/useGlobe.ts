@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { drawGlobe, type GlobeLabels } from "@/lib/globe";
+import { drawGlobe, type GlobeLabels, type Interaction } from "@/lib/globe";
 
 /**
  * Anima el globo de la portada en un <canvas> (dibujo en src/lib/globe.ts).
  * Los puntos de tierra se cargan aparte (import()) para no pesar en el JS
  * principal; hasta entonces se ve la esfera de respaldo del componente. Se
  * pausa fuera de pantalla y con la pestaña oculta. Con movimiento reducido
- * queda una vista fija.
+ * queda una vista fija. Al pasar el puntero por un destino muestra su nombre;
+ * mientras el puntero está sobre la esfera, la historia se detiene y luego
+ * sigue sola.
  */
 export function useGlobe(labels: GlobeLabels) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,8 +28,32 @@ export function useGlobe(labels: GlobeLabels) {
     let onScreen = true;
     let dpr = 1;
     let cancelled = false;
+    // Puntero sobre el lienzo (para mostrar el nombre del destino)
+    const inter: Interaction = { pointer: null, hold: false };
 
-    const draw = () => dots && drawGlobe(ctx, dots, time, labelsRef.current, dpr, still);
+    const draw = () => {
+      if (!dots) return;
+      const { hovered } = drawGlobe(ctx, dots, time, labelsRef.current, dpr, still, inter);
+      canvas.style.cursor = hovered ? "pointer" : "";
+    };
+    const toCanvas = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      return { x: (e.clientX - r.left) * dpr, y: (e.clientY - r.top) * dpr };
+    };
+    const onCanvasMove = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") inter.pointer = toCanvas(e);
+    };
+    const onCanvasEnter = () => {
+      inter.hold = true;
+    };
+    const onCanvasLeave = () => {
+      inter.pointer = null;
+      inter.hold = false;
+    };
+    // En celular, un toque sobre un punto muestra su nombre
+    const onTap = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") inter.pointer = toCanvas(e);
+    };
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(canvas.clientWidth * dpr);
@@ -35,8 +61,9 @@ export function useGlobe(labels: GlobeLabels) {
       draw();
     };
     const tick = (now: number) => {
-      // Saltos largos (pestaña oculta) no adelantan la historia
-      if (last) time += Math.min(now - last, 250);
+      // Saltos largos (pestaña oculta) no adelantan la historia; mientras el
+      // visitante interactúa, la historia se detiene
+      if (last && !inter.hold) time += Math.min(now - last, 250);
       last = now;
       draw();
       raf = requestAnimationFrame(tick);
@@ -55,6 +82,12 @@ export function useGlobe(labels: GlobeLabels) {
     });
     io.observe(canvas);
     document.addEventListener("visibilitychange", play);
+    if (!still) {
+      canvas.addEventListener("pointermove", onCanvasMove, { passive: true });
+      canvas.addEventListener("pointerenter", onCanvasEnter);
+      canvas.addEventListener("pointerleave", onCanvasLeave);
+      canvas.addEventListener("pointerup", onTap);
+    }
 
     import("@/data/worldGlobe").then((m) => {
       if (cancelled) return;
@@ -70,6 +103,10 @@ export function useGlobe(labels: GlobeLabels) {
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", play);
+      canvas.removeEventListener("pointermove", onCanvasMove);
+      canvas.removeEventListener("pointerenter", onCanvasEnter);
+      canvas.removeEventListener("pointerleave", onCanvasLeave);
+      canvas.removeEventListener("pointerup", onTap);
     };
   }, []);
 

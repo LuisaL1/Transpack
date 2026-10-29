@@ -11,6 +11,15 @@ export type Place = { name: string; lon: number; lat: number; embassy?: boolean 
 export type View = { lon: number; lat: number; zoom: number };
 /** Textos que dibuja el globo (vienen de src/data/home.ts, en el idioma de la página) */
 export type GlobeLabels = { origin: string; stop: (p: Place) => string };
+/** Interacción del visitante: el puntero sobre el lienzo */
+export type Interaction = {
+  /** Puntero sobre el lienzo (px del canvas), o null si no está encima */
+  pointer: { x: number; y: number } | null;
+  /** true mientras el puntero está encima: la historia se detiene */
+  hold: boolean;
+};
+/** Resultado del dibujo: el destino bajo el puntero, si hay uno */
+export type DrawResult = { hovered: Place | null };
 
 const RAD = Math.PI / 180;
 type Vec = [number, number, number];
@@ -71,7 +80,9 @@ const ROUTES = new Map(DESTINATIONS.map((d) => [d.name, route(d)]));
 
 // ─── Recorrido de la cámara ─────────────────────────────────────────────────
 
-const START: View = { lon: ORIGIN.lon, lat: ORIGIN.lat, zoom: 1.15 };
+// Acercamientos de 1 como máximo: la esfera siempre cabe completa en el lienzo
+// (no se ve recortada al empezar en Colombia)
+const START: View = { lon: ORIGIN.lon, lat: ORIGIN.lat, zoom: 1 };
 const INTRO = 1800; // Colombia de cerca
 const STEP = 2000; // cada capital
 const MOVE = 1000; // la cámara gira hacia la capital
@@ -99,7 +110,7 @@ function frame(to: Place): View {
   const b = toVec(to);
   const mid = toPlace(slerp(a, b, 0.6));
   const far = angle(a, b) / Math.PI;
-  return { lon: mid.lon, lat: Math.max(-10, Math.min(35, mid.lat)), zoom: 1.12 - far * 0.17 };
+  return { lon: mid.lon, lat: Math.max(-10, Math.min(35, mid.lat)), zoom: 1 - far * 0.08 };
 }
 const PANO_LAT = 14;
 const lastFrame = frame(STOPS[STOPS.length - 1]);
@@ -202,24 +213,22 @@ export function drawGlobe(
   labels: GlobeLabels,
   dpr: number,
   still = false,
-) {
+  inter: Interaction = { pointer: null, hold: false },
+): DrawResult {
   const { width: W, height: H } = ctx.canvas;
   const s = still
     ? { ...STILL, t: 0, current: -1, pano: 1, drawn: () => 1, spinning: true }
     : scene(time);
   const v = s.view;
-  const R = Math.min(W, H) * 0.4 * v.zoom;
+  // Sin halo ni elementos fuera de la esfera (pedido del cliente): el globo
+  // ocupa casi todo el lienzo
+  const R = Math.min(W, H) * 0.47 * v.zoom;
   const cx = W / 2;
   const cy = H / 2;
   const px = (p: { x: number; y: number }) => [cx + R * p.x, cy - R * p.y] as const;
   ctx.clearRect(0, 0, W, H);
 
-  // Halo de atmósfera y esfera azul de marca, iluminada arriba a la izquierda
-  const halo = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.15);
-  halo.addColorStop(0, "rgba(52,57,154,.35)");
-  halo.addColorStop(1, "rgba(52,57,154,0)");
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, W, H);
+  // Esfera azul de marca, iluminada arriba a la izquierda
   const sphere = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
   sphere.addColorStop(0, "#34399A");
   sphere.addColorStop(0.55, "#272B7C");
@@ -229,8 +238,9 @@ export function drawGlobe(
   ctx.arc(cx, cy, R, 0, Math.PI * 2);
   ctx.fill();
 
-  // Meridianos y paralelos muy tenues
-  ctx.strokeStyle = "rgba(255,255,255,.07)";
+  // Malla de meridianos y paralelos (cada 15°), tenue pero presente, como la
+  // retícula del planeta de la referencia
+  ctx.strokeStyle = "rgba(255,255,255,.11)";
   ctx.lineWidth = dpr;
   ctx.beginPath();
   const line = (pts: [number, number][]) => {
@@ -247,9 +257,9 @@ export function drawGlobe(
       pen = true;
     }
   };
-  for (let lon = -180; lon < 180; lon += 30)
+  for (let lon = -180; lon < 180; lon += 15)
     line(Array.from({ length: 41 }, (_, i): [number, number] => [lon, -80 + i * 4]));
-  for (let lat = -60; lat <= 60; lat += 30)
+  for (let lat = -75; lat <= 75; lat += 15)
     line(Array.from({ length: 91 }, (_, i): [number, number] => [-180 + i * 4, lat]));
   ctx.stroke();
 
@@ -275,6 +285,21 @@ export function drawGlobe(
     for (let j = 0; j < g.length; j += 2)
       ctx.fillRect(g[j] - size / 2, g[j + 1] - size / 2, size, size);
   });
+  // Destino bajo el puntero (el más cercano a menos de 22 px, en la cara visible)
+  let hovered: Place | null = null;
+  if (inter.pointer) {
+    let best = 22 * dpr;
+    for (const d of DESTINATIONS) {
+      const q = project(d.lon, d.lat, v);
+      if (q.z <= 0) continue;
+      const [x, y] = px(q);
+      const dist = Math.hypot(x - inter.pointer.x, y - inter.pointer.y);
+      if (dist < best) {
+        best = dist;
+        hovered = d;
+      }
+    }
+  }
 
   // Rutas: la de la capital en turno en naranja; las demás en blanco
   // Por detrás del globo solo se ve lo que asoma por encima del borde
@@ -285,7 +310,7 @@ export function drawGlobe(
     const amount = s.drawn(d);
     if (amount <= 0) continue;
     const pts = ROUTES.get(d.name)!;
-    const on = STOPS[s.current] === d;
+    const on = STOPS[s.current] === d || hovered === d;
     const end = Math.max(1, Math.round(ease(amount) * ROUTE_STEPS));
     ctx.save();
     ctx.strokeStyle = on ? ORANGE : `rgba(255,255,255,${d.embassy ? 0.7 : 0.45})`;
@@ -310,17 +335,29 @@ export function drawGlobe(
     ctx.stroke();
     ctx.restore();
 
-    // En el giro, una luz recorre cada ruta
-    if (s.spinning && amount >= 1) {
-      const k = Math.floor(((time / 2600 + d.lon / 90) % 1) * ROUTE_STEPS);
-      const q = project(pts[k].lon, pts[k].lat, v, pts[k].alt);
-      if (visible(q)) {
+    // Una luz recorre cada ruta terminada, con estela (cometa); en naranja la
+    // ruta en turno
+    if (amount >= 1 && !still) {
+      const head = ((time / 2400 + d.lon / 90) % 1 + 1) % 1;
+      const kh = Math.floor(head * ROUTE_STEPS);
+      ctx.save();
+      for (let j = 6; j >= 0; j--) {
+        const k = kh - j * 2;
+        if (k < 0) continue;
+        const q = project(pts[k].lon, pts[k].lat, v, pts[k].alt);
+        if (!visible(q)) continue;
         const [x, y] = px(q);
-        ctx.fillStyle = "#ffffff";
+        const a = 1 - j / 7;
+        ctx.fillStyle = on ? `rgba(255,178,122,${a})` : `rgba(255,255,255,${a * 0.9})`;
+        if (j === 0) {
+          ctx.shadowColor = on ? ORANGE : "#ffffff";
+          ctx.shadowBlur = 10 * dpr;
+        }
         ctx.beginPath();
-        ctx.arc(x, y, 2 * dpr, 0, Math.PI * 2);
+        ctx.arc(x, y, (on ? 2.8 : 2.2) * dpr * (0.45 + 0.55 * a), 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.restore();
     }
 
     // Punto del destino (cuando la ruta llegó)
@@ -346,6 +383,29 @@ export function drawGlobe(
     }
   }
 
+  // Luz de borde: filo claro arriba a la izquierda (lado del sol) y sombra del
+  // lado nocturno
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.clip();
+  const night = ctx.createRadialGradient(cx + R * 0.45, cy + R * 0.45, R * 0.2, cx, cy, R * 1.05);
+  night.addColorStop(0, "rgba(13,15,51,0)");
+  night.addColorStop(0.7, "rgba(13,15,51,.18)");
+  night.addColorStop(1, "rgba(13,15,51,.55)");
+  ctx.fillStyle = night;
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+  const rim = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+  rim.addColorStop(0, "rgba(255,255,255,.7)");
+  rim.addColorStop(0.45, "rgba(255,255,255,.12)");
+  rim.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.strokeStyle = rim;
+  ctx.lineWidth = 1.6 * dpr;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R - dpr, 0, Math.PI * 2);
+  ctx.stroke();
+
   // Bogotá: punto naranja con pulso
   const o = project(ORIGIN.lon, ORIGIN.lat, v);
   if (o.z > 0) {
@@ -365,13 +425,16 @@ export function drawGlobe(
     if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, true, false);
   }
 
-  // Nombre de la capital en turno, cuando la ruta ya llegó
+  // Nombre del destino bajo el puntero; si no, el de la capital en turno
+  // cuando su ruta ya llegó
   const stop = STOPS[s.current];
-  if (stop && s.drawn(stop) >= 1) {
-    const q = project(stop.lon, stop.lat, v);
+  const show = hovered ?? (stop && s.drawn(stop) >= 1 ? stop : null);
+  if (show) {
+    const q = project(show.lon, show.lat, v);
     if (q.z > 0) {
       const [x, y] = px(q);
-      pill(ctx, x, y, labels.stop(stop), dpr, false, true);
+      pill(ctx, x, y, labels.stop(show), dpr, false, true);
     }
   }
+  return { hovered };
 }

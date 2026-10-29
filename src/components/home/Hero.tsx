@@ -38,8 +38,10 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[180px]">
       <div className="relative">
-        <div className={`${container} relative z-10 lg:min-h-[560px] lg:py-8`}>
-          <div className="animate-fade-up mx-auto max-w-[600px] text-center lg:mx-0 lg:max-w-[540px] lg:text-start">
+        {/* El bloque de texto va encima del globo pero deja pasar el puntero fuera
+            de sus elementos, para que el globo se pueda girar y apuntar */}
+        <div className={`${container} pointer-events-none relative z-10 lg:min-h-[700px] lg:py-8`}>
+          <div className="animate-fade-up pointer-events-auto mx-auto max-w-[600px] text-center lg:mx-0 lg:max-w-[540px] lg:text-start">
             <Link
               to={lp("/#cobertura")}
               className="group mb-6 inline-flex items-center gap-2 rounded-full border border-linea bg-white px-3.5 py-1.5 text-[0.76rem] font-medium text-texto shadow-[0_6px_18px_-12px_rgba(39,43,124,.45)] transition-colors hover:border-azul/30 hover:text-azul"
@@ -89,9 +91,10 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Globo: debajo del texto en celular; a la derecha, pegado al borde de la
-            página, en escritorio */}
-        <div className="relative mx-auto mt-4 aspect-square w-[min(100vw,560px)] lg:absolute lg:inset-y-0 lg:right-[-3vw] lg:mt-0 lg:aspect-auto lg:w-[54vw] lg:max-w-[900px]">
+        {/* Globo: grande, como el planeta de la referencia del cliente. En celular
+            va debajo del texto y se sale un poco por los lados; en escritorio ocupa
+            la derecha y desborda el borde de la página (la sección lo recorta) */}
+        <div className="relative left-1/2 mt-2 aspect-square w-[min(108vw,600px)] -translate-x-1/2 lg:absolute lg:left-auto lg:top-[2%] lg:bottom-[0] lg:right-[-2vw] lg:mt-0 lg:aspect-auto lg:w-[56vw] lg:max-w-[940px] lg:translate-x-0">
           <Globe className="h-full w-full" />
         </div>
       </div>
