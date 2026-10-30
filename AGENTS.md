@@ -19,7 +19,7 @@ publica en Vercel.
 - `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos) y
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
-  YouTube para "Nuestros empaques"; necesita internet). Córralo cuando el canal publique
+  YouTube para "Experiencias Transpack"; necesita internet). Córralo cuando el canal publique
 - `pnpm format` — formatea con oxfmt
 - `pnpm brevo:events` — motivo de cada error de envío en Brevo (`docs/formularios.md`)
 
@@ -46,7 +46,7 @@ src/
 │   ├── ServiceDetailPage.tsx   "/servicios/:slug"
 │   ├── ArticlePage.tsx         "/blog/:slug"
 │   ├── PrivacyPage.tsx         "/privacidad" (texto en PRIVACY de site.ts)
-│   ├── VideosPage.tsx          "/videos": Nuestros empaques (todos los videos del canal)
+│   ├── VideosPage.tsx          "/videos": Experiencias Transpack (todos los videos del canal)
 │   └── NotFoundPage.tsx        404
 ├── components/
 │   ├── layout/             Layout (cabecera + contenido + pie + chat), SeoHead,
@@ -60,7 +60,7 @@ src/
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (Globe), el cotizador (QuoteWizard + QuoteFields)
-│   ├── videos/             VideoCard (tarjeta de video de Nuestros empaques)
+│   ├── videos/             VideoCard (tarjeta de video de Experiencias Transpack)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -218,19 +218,23 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
-  política, Nuestros empaques, 404) el panel de `PageHero` es blanco, con la franja
+  política, Experiencias Transpack, 404) el panel de `PageHero` es blanco, con la franja
   naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
-- Portada (`Hero`): titular a la izquierda y **globo animado** a la derecha
-  (`Globe`, con la web de Spectrum como referencia del cliente; sin el selector
-  "¿Qué necesitas hoy?", que se quitó en octubre de 2026). El globo es azul de
-  marca con la tierra en puntos; **Estados Unidos iluminado** en naranja claro
-  (pedido del cliente) y Colombia en naranja. Historia en bucle: Colombia de
-  cerca → rutas desde Bogotá a las capitales de `EMBASSIES` (nombres en
-  `mapText` de `src/data/home.ts`) → panorama girando con todos los destinos.
-  Lógica y dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts`
-  (pausa fuera de pantalla; vista fija con movimiento reducido).
+- Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
+  mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
+  octubre de 2026). En grises (sin azules), con Colombia y las rutas en naranja
+  y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (velocidad
+  1,6× en `useGlobe`): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
+  en un círculo con Colombia de cerca y rutas desde Bogotá a las principales
+  capitales de departamento (`CITIES`, menos de 2 s) → por continente
+  (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
+  solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo
+  girando con todos los destinos → vuelve la foto. Ciudades y destinos: `scripts/generate-world-map.mjs`
+  (`pnpm map`); nombres de capitales en `mapText` de `src/data/home.ts`. Lógica y
+  dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa fuera
+  de pantalla; mapa fijo con movimiento reducido).
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat: **sin degradados**, mismo estilo de los menús (cabecera azul sólida con
   el cuadrado naranja translúcido girado 45°, rótulo naranja en mayúsculas,

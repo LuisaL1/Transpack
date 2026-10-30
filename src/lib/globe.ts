@@ -1,23 +1,32 @@
-// Globo de la portada: proyección 3D, rutas en arco, recorrido de la cámara y
-// dibujo en <canvas>. Sin React (el bucle de animación está en
-// src/hooks/useGlobe.ts y el componente en components/home/Globe.tsx).
+// Mapa animado de la portada: recorrido de la cámara, rutas y dibujo en
+// <canvas>, en grises con Colombia y las rutas en naranja. Se carga aparte con
+// import() desde src/hooks/useGlobe.ts (trae d3-geo y las siluetas de los
+// países), así no pesa en el JS principal.
 //
-// Historia (en bucle): Colombia de cerca → una a una las capitales de los
-// países con embajadas atendidas, de la más cercana a la más lejana, con su
-// ruta desde Bogotá → el globo se aleja y gira mostrando todos los destinos.
-import { DESTINATIONS, ORIGIN } from "@/data/worldMap";
+// Historia (en bucle), pedida por el cliente (oct. 2026):
+// 1. La foto de la portada (imagen-transpack-inicio2.jpg), completa.
+// 2. La foto se cierra en un círculo y en él aparece Colombia de cerca: desde
+//    Bogotá salen, casi a la vez, las rutas a las principales capitales de
+//    departamento (CITIES).
+// 3. Por continente (América, Europa, África y Asia): la cámara encuadra el
+//    continente y desde Bogotá salen, casi a la vez, las rutas a sus países.
+// 4. Panorama: el globo gira con las rutas a todos los destinos.
+// 5. Vuelve la foto.
+// Todas las rutas internacionales tienen el mismo estilo.
+import { geoGraticule10, geoOrthographic, geoPath, type GeoProjection } from "d3-geo";
+import { feature, mesh } from "topojson-client";
+import { COLOMBIA, WORLD } from "@/data/worldGlobe";
+import { CITIES, DESTINATIONS, ORIGIN } from "@/data/worldMap";
 
-export type Place = { name: string; lon: number; lat: number; embassy?: boolean };
+export type Place = { name: string; lon: number; lat: number; embassy?: boolean; region?: string };
 export type View = { lon: number; lat: number; zoom: number };
-/** Textos que dibuja el globo (vienen de src/data/home.ts, en el idioma de la página) */
-export type GlobeLabels = { origin: string; stop: (p: Place) => string };
-/** Interacción del visitante: el puntero sobre el lienzo */
-export type Interaction = {
-  /** Puntero sobre el lienzo (px del canvas), o null si no está encima */
-  pointer: { x: number; y: number } | null;
+/** Textos que dibuja el mapa (vienen de src/data/home.ts, en el idioma de la página) */
+export type GlobeLabels = {
+  origin: string;
+  country: string;
+  /** Nombre del país (Suramérica y África) */
+  place: (p: Place) => string;
 };
-/** Resultado del dibujo: el destino bajo el puntero, si hay uno */
-export type DrawResult = { hovered: Place | null };
 
 const RAD = Math.PI / 180;
 type Vec = [number, number, number];
@@ -45,10 +54,10 @@ function slerp(a: Vec, b: Vec, t: number): Vec {
 }
 
 /**
- * Proyección ortográfica: x a la derecha, y hacia arriba, z hacia quien mira
- * (z > 0 = cara visible). `alt` eleva el punto sobre la superficie (rutas).
+ * Proyección ortográfica (la misma de d3-geo): x a la derecha, y hacia arriba,
+ * z hacia quien mira (z > 0 = cara visible). `alt` eleva el punto (rutas).
  */
-export function project(lon: number, lat: number, v: View, alt = 0) {
+function project(lon: number, lat: number, v: View, alt = 0) {
   const dl = (lon - v.lon) * RAD;
   const f = lat * RAD;
   const f0 = v.lat * RAD;
@@ -61,14 +70,26 @@ export function project(lon: number, lat: number, v: View, alt = 0) {
   };
 }
 
-// ─── Rutas ──────────────────────────────────────────────────────────────────
+// ─── Países ─────────────────────────────────────────────────────────────────
 
-const ROUTE_STEPS = 64;
+const countries = WORLD.objects.countries;
+const FEATURES = feature(WORLD, countries).features;
+const BY_ZONE = [0, 1, 2].map((z) => ({
+  type: "FeatureCollection",
+  features: FEATURES.filter((f) => f.properties.z === z),
+}));
+const BORDERS = mesh(WORLD, countries, (a, b) => a !== b);
+const GRATICULE = geoGraticule10();
+const SPHERE = { type: "Sphere" };
+
+// ─── Rutas internacionales ──────────────────────────────────────────────────
+
+const ROUTE_STEPS = 96;
 /** Puntos de la ruta Bogotá → destino, elevada en el medio según la distancia */
 function route(to: Place) {
   const a = toVec(ORIGIN);
   const b = toVec(to);
-  const h = 0.04 + 0.16 * (angle(a, b) / Math.PI);
+  const h = 0.02 + 0.1 * (angle(a, b) / Math.PI);
   return Array.from({ length: ROUTE_STEPS + 1 }, (_, i) => {
     const t = i / ROUTE_STEPS;
     return { ...toPlace(slerp(a, b, t)), alt: h * Math.sin(Math.PI * t) };
@@ -76,42 +97,71 @@ function route(to: Place) {
 }
 const ROUTES = new Map(DESTINATIONS.map((d) => [d.name, route(d)]));
 
-// ─── Recorrido de la cámara ─────────────────────────────────────────────────
+// Continentes en el orden del recorrido, con su encuadre (centro y acercamiento)
+const CONTINENTS = [
+  { key: "america", view: { lon: -72, lat: 6, zoom: 1.12 } },
+  // Europa de cerca; las rutas entran por el Atlántico
+  { key: "europa", view: { lon: -2, lat: 44, zoom: 1.75 } },
+  { key: "africa", view: { lon: -18, lat: 2, zoom: 1 } },
+  { key: "asia", view: { lon: 62, lat: 24, zoom: 1 } },
+].map((c) => ({
+  ...c,
+  places: DESTINATIONS.filter((d) => d.region === c.key) as Place[],
+}));
 
-// Acercamientos de 1 como máximo: la esfera siempre cabe completa en el lienzo
-// (no se ve recortada al empezar en Colombia)
-const START: View = { lon: ORIGIN.lon, lat: ORIGIN.lat, zoom: 1 };
-const INTRO = 1800; // Colombia de cerca
-const STEP = 2000; // cada capital
-const MOVE = 1000; // la cámara gira hacia la capital
-const DRAW_FROM = 350; // la ruta empieza a trazarse
-const DRAW = 900;
-const HOLD = 700; // pausa en la última capital
-const OPEN = 1800; // el globo se aleja para el panorama
-const TURN = 24000; // una vuelta completa mostrando todos los destinos
-const BACK = 2200; // regreso a Colombia
+// ─── Tiempos (ms de historia; la animación corre más rápido, ver useGlobe) ───
 
-/** Capitales con embajadas atendidas, de la más cercana a la más lejana de Bogotá */
-export const STOPS: Place[] = DESTINATIONS.filter((d) => d.embassy).sort(
-  (a, b) => angle(toVec(ORIGIN), toVec(a)) - angle(toVec(ORIGIN), toVec(b)),
-);
-const stopAt = (i: number) => INTRO + i * STEP;
-const PANORAMA = stopAt(STOPS.length) + HOLD;
-const SPIN = PANORAMA + OPEN;
-/** Duración de una vuelta completa de la historia (ms) */
-export const LOOP = SPIN + TURN + BACK;
+const PHOTO = 3500; // la foto
+const MORPH = 1000; // la foto se cierra en el círculo y aparece Colombia
+const ENTER = PHOTO + MORPH;
+const LOOK = 200; // Colombia de cerca, antes de las rutas
+const GAP = 85; // las rutas por Colombia salen casi a la vez, en abanico
+const LEG = 750; // cada ruta por Colombia
+// Colombia se ve unos 2,7 s de historia, con la entrada y la salida (unos 2 s
+// en pantalla)
+const LOCAL = ENTER + LOOK + (CITIES.length - 2) * GAP + LEG + 150;
+const legAt = (i: number) => ENTER + LOOK + i * GAP;
 
-// Encuadre de cada capital: mira al punto medio de la ruta (algo más cerca de
-// la capital) y se aleja más cuanto más lejos está
-function frame(to: Place): View {
-  const a = toVec(ORIGIN);
-  const b = toVec(to);
-  const mid = toPlace(slerp(a, b, 0.6));
-  const far = angle(a, b) / Math.PI;
-  return { lon: mid.lon, lat: Math.max(-10, Math.min(35, mid.lat)), zoom: 1 - far * 0.08 };
+const REGION_MOVE = 1300; // la cámara viaja al continente
+// Las rutas del continente salen casi a la vez: entre más países, más seguidas
+// (todas salen en unos 2,6 s)
+const regionGap = (n: number) => Math.min(160, 2600 / Math.max(1, n - 1));
+const REGION_DRAW = 1000; // cada ruta de un continente
+const REGION_HOLD = 1900; // pausa con el continente completo (se leen los nombres)
+const regionLength = (n: number) =>
+  REGION_MOVE + (n - 1) * regionGap(n) + REGION_DRAW + REGION_HOLD;
+const REGION_AT: number[] = [];
+let at = LOCAL;
+for (const c of CONTINENTS) {
+  REGION_AT.push(at);
+  at += regionLength(c.places.length);
 }
+const PANORAMA = at;
+// Continente que se está mostrando en el momento t
+const regionAt = (t: number) => REGION_AT.filter((a) => t >= a).length - 1;
+const OPEN = 1600; // la cámara se aleja para el panorama
+const SPIN = PANORAMA + OPEN;
+const TURN = 14000; // una vuelta del globo con todos los destinos
+const LEAVE = SPIN + TURN;
+const OUT = 1500; // vuelve la foto
+/** Duración de una vuelta completa de la historia (ms) */
+export const LOOP = LEAVE + OUT;
+
+// ─── Cámara ─────────────────────────────────────────────────────────────────
+
+// Radio del círculo donde se ve el globo y de la esfera con zoom 1 (fracción
+// del lado menor del canvas)
+// Con BASE 0.38 las rutas más altas (hasta 0.12 sobre la superficie) caben en
+// el círculo y no se cortan al girar
+const LENS = 0.46;
+const BASE = 0.38;
+
+// Colombia de cerca y luego un encuadre con todas las capitales de CITIES
+const LOCAL_VIEWS: View[] = [
+  { lon: -74.2, lat: 4.6, zoom: 4.2 },
+  { lon: -74.6, lat: 7.0, zoom: 4.7 },
+];
 const PANO_LAT = 14;
-const lastFrame = frame(STOPS[STOPS.length - 1]);
 
 const ease = (p: number) => (p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2);
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -127,52 +177,93 @@ function mix(a: View, b: View, p: number): View {
   };
 }
 
-/** Estado de la historia en el momento t (ms, dentro del bucle) */
-export function scene(time: number) {
-  const t = ((time % LOOP) + LOOP) % LOOP;
-  const current = STOPS.findIndex((_, i) => t >= stopAt(i) && t < stopAt(i + 1));
-  let view: View;
-  if (t < INTRO) view = START;
-  else if (t < PANORAMA) {
-    const i = Math.min(Math.floor((t - INTRO) / STEP), STOPS.length - 1);
-    const from = i === 0 ? START : frame(STOPS[i - 1]);
-    view = mix(from, frame(STOPS[i]), progress(t, stopAt(i), MOVE));
-  } else if (t < SPIN)
-    view = mix(
-      lastFrame,
-      { lon: lastFrame.lon, lat: PANO_LAT, zoom: 1 },
-      progress(t, PANORAMA, OPEN),
-    );
-  else if (t < SPIN + TURN)
-    // La Tierra gira de oeste a este: el centro del globo avanza hacia el oeste
-    view = { lon: lastFrame.lon - 360 * ((t - SPIN) / TURN), lat: PANO_LAT, zoom: 1 };
-  else
-    view = mix(
-      { lon: lastFrame.lon, lat: PANO_LAT, zoom: 1 },
-      START,
-      progress(t, SPIN + TURN, BACK),
-    );
-
-  // Cuánto de cada ruta se ve (0 a 1): las capitales en su turno, el resto en el panorama
-  const pano = progress(t, PANORAMA + 300, OPEN);
-  const back = 1 - progress(t, SPIN + TURN, BACK * 0.5);
-  const drawn = (p: Place) => {
-    const i = STOPS.indexOf(p);
-    const own = i >= 0 ? progress(t, stopAt(i) + DRAW_FROM, DRAW) : pano;
-    return own * back;
-  };
-  return { t, view, current, pano, drawn, spinning: t >= SPIN && t < SPIN + TURN };
+function camera(t: number): View {
+  const local = mix(LOCAL_VIEWS[0], LOCAL_VIEWS[1], progress(t, legAt(0), LOCAL - legAt(0)));
+  if (t < LOCAL) return local;
+  const last = CONTINENTS[CONTINENTS.length - 1].view;
+  if (t < PANORAMA) {
+    const i = regionAt(t);
+    const from = i === 0 ? local : CONTINENTS[i - 1].view;
+    return mix(from, CONTINENTS[i].view, progress(t, REGION_AT[i], REGION_MOVE));
+  }
+  const pano = { lon: last.lon, lat: PANO_LAT, zoom: 1 };
+  if (t < SPIN) return mix(last, pano, progress(t, PANORAMA, OPEN));
+  // La Tierra gira de oeste a este: el centro del globo avanza hacia el oeste
+  return { ...pano, lon: pano.lon - 360 * ((t - SPIN) / (TURN + OUT)) };
 }
 
+/** Estado de la historia en el momento `time` (ms) */
+export function scene(time: number) {
+  const t = ((time % LOOP) + LOOP) % LOOP;
+
+  // Foto: se cierra en el círculo del globo (morph 0 → 1) y se desvanece; al
+  // final vuelve
+  const back = ease(progress(t, LEAVE, OUT));
+  const morph = t >= LEAVE ? 1 - back : ease(progress(t, PHOTO, MORPH));
+  const photo = t >= LEAVE ? back : 1 - ease(progress(t, PHOTO + MORPH * 0.4, MORPH * 0.6));
+  const map = t >= LEAVE ? 1 - back : ease(progress(t, PHOTO + MORPH * 0.3, MORPH * 0.7));
+
+  // Recorrido por Colombia: cuánto de cada ruta se ve; se apaga al salir
+  const legs = CITIES.slice(1).map((_, i) => progress(t, legAt(i), LEG));
+  const localFade = 1 - progress(t, LOCAL, 1200);
+
+  // Rutas internacionales: cada continente en su turno
+  const region = t >= LOCAL && t < PANORAMA + 300 ? regionAt(t) : -1;
+  const pano = progress(t, PANORAMA, OPEN);
+  const drawn = (p: Place) => {
+    const i = CONTINENTS.findIndex((c) => c.places.includes(p));
+    if (i < 0) return pano;
+    const list = CONTINENTS[i].places;
+    return progress(
+      t,
+      REGION_AT[i] + REGION_MOVE * 0.6 + list.indexOf(p) * regionGap(list.length),
+      REGION_DRAW,
+    );
+  };
+  // Nombres de los países del continente, solo mientras se ve
+  const regionLabels = region >= 0 ? CONTINENTS[region].places : [];
+
+  return {
+    view: camera(t),
+    pano,
+    drawn,
+    regionLabels,
+    legs,
+    localFade,
+    spinning: t >= SPIN,
+    photo,
+    morph,
+    map,
+  };
+}
+export type Scene = ReturnType<typeof scene>;
+
 /** Vista fija (movimiento reducido): el Atlántico, de las Américas a Europa y África */
-export const STILL = { view: { lon: -35, lat: 18, zoom: 1 } as View };
+export const stillScene = (): Scene => ({
+  view: { lon: -38, lat: 14, zoom: 1 },
+  pano: 1,
+  drawn: () => 1,
+  regionLabels: [],
+  legs: CITIES.slice(1).map(() => 0),
+  localFade: 0,
+  spinning: false,
+  photo: 0,
+  morph: 1,
+  map: 1,
+});
+
+/** Radio del círculo del globo en píxeles (para cerrar la foto en él) */
+export const lensRadius = (w: number, h: number) => Math.min(w, h) * LENS;
 
 // ─── Dibujo ─────────────────────────────────────────────────────────────────
 
 const ORANGE = "#FF7619";
-const PEACH = "255,178,122";
+const INK = "62,65,96"; // gris oscuro (texto del sitio)
+const GRAY = "107,110,138"; // gris medio
 
-// Pastilla con texto (etiquetas de Bogotá y de la capital en turno)
+type Side = "above" | "below" | "right" | "left";
+
+// Pastilla con texto (Bogotá y la capital en turno)
 function pill(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -180,259 +271,365 @@ function pill(
   text: string,
   dpr: number,
   dark: boolean,
-  above: boolean,
+  side: Side,
 ) {
   ctx.font = `600 ${12 * dpr}px Montserrat, system-ui, sans-serif`;
   const w = ctx.measureText(text).width + 22 * dpr;
   const h = 24 * dpr;
-  const left = Math.min(Math.max(x - w / 2, 4 * dpr), ctx.canvas.width - w - 4 * dpr);
-  const top = above ? y - h - 12 * dpr : y + 12 * dpr;
+  const left = Math.min(
+    Math.max(
+      side === "right" ? x + 14 * dpr : side === "left" ? x - w - 14 * dpr : x - w / 2,
+      4 * dpr,
+    ),
+    ctx.canvas.width - w - 4 * dpr,
+  );
+  const top =
+    side === "right" || side === "left"
+      ? y - h / 2
+      : side === "above"
+        ? y - h - 12 * dpr
+        : y + 12 * dpr;
   ctx.save();
-  ctx.shadowColor = "rgba(13,15,51,.35)";
+  ctx.shadowColor = `rgba(${INK},.28)`;
   ctx.shadowBlur = 12 * dpr;
-  ctx.fillStyle = dark ? ORANGE : "#ffffff";
+  ctx.fillStyle = dark ? `rgb(${INK})` : "#ffffff";
   ctx.beginPath();
   ctx.roundRect(left, top, w, h, h / 2);
   ctx.fill();
   ctx.restore();
-  ctx.fillStyle = dark ? "#ffffff" : "#1b1e5c";
+  ctx.fillStyle = dark ? "#ffffff" : `rgb(${INK})`;
   ctx.textBaseline = "middle";
   ctx.fillText(text, left + 11 * dpr, top + h / 2 + 0.5 * dpr);
 }
 
-/**
- * Dibuja el globo en el momento t. `dots`: puntos de tierra de
- * src/data/worldGlobe.ts. `still`: vista fija sin historia.
- */
+// Nombre corto junto a un punto (ciudades de Colombia y países de una región),
+// con un borde blanco para que se lea sobre el mapa
+function tag(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  text: string,
+  dpr: number,
+  side: Side,
+) {
+  ctx.font = `600 ${11 * dpr}px Montserrat, system-ui, sans-serif`;
+  ctx.textBaseline = "middle";
+  const vertical = side === "below" || side === "above";
+  ctx.textAlign = vertical ? "center" : side === "left" ? "right" : "left";
+  const tx = x + (vertical ? 0 : side === "left" ? -9 : 9) * dpr;
+  const ty = y + (side === "below" ? 12 : side === "above" ? -12 : 0) * dpr;
+  ctx.lineWidth = 3 * dpr;
+  ctx.strokeStyle = "rgba(255,255,255,.85)";
+  ctx.strokeText(text, tx, ty);
+  ctx.fillStyle = `rgb(${INK})`;
+  ctx.fillText(text, tx, ty);
+  ctx.textAlign = "start";
+}
+
+// Punto de ciudad o destino
+function pin(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dpr: number,
+  r: number,
+  fill: string,
+  stroke: string,
+) {
+  ctx.fillStyle = fill;
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = 2 * dpr;
+  ctx.beginPath();
+  ctx.arc(x, y, r * dpr, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+}
+function pulse(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dpr: number,
+  time: number,
+  rgb: string,
+) {
+  const p = (time % 2000) / 2000;
+  ctx.fillStyle = `rgba(${rgb},${0.4 * (1 - p)})`;
+  ctx.beginPath();
+  ctx.arc(x, y, (6 + 18 * p) * dpr, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en
+// naranja claro con borde naranja, para que las rutas se lean encima.
+function drawLand(
+  ctx: CanvasRenderingContext2D,
+  path: ReturnType<typeof geoPath>,
+  dpr: number,
+  pano: number,
+  close: number,
+  borderWidth: number,
+) {
+  const fills = [
+    `rgba(${GRAY},.32)`,
+    `rgba(${GRAY},${0.42 + 0.18 * pano})`,
+    "rgba(255,178,122,.95)",
+  ];
+  BY_ZONE.forEach((fc, z) => {
+    ctx.fillStyle = fills[z];
+    ctx.beginPath();
+    path(fc);
+    ctx.fill();
+  });
+  ctx.strokeStyle = "#ffffff";
+  ctx.lineWidth = borderWidth * dpr;
+  ctx.beginPath();
+  path(BORDERS);
+  ctx.stroke();
+  ctx.fillStyle = `rgba(255,118,25,${0.95 - 0.75 * close})`;
+  ctx.beginPath();
+  path(COLOMBIA);
+  ctx.fill();
+  ctx.strokeStyle = close > 0 ? ORANGE : "#ffffff";
+  ctx.lineWidth = (close > 0 ? 2.2 : borderWidth) * dpr;
+  ctx.stroke();
+}
+
+// Rutas desde Bogotá a las capitales de Colombia, con sus nombres
+function drawLocal(
+  ctx: CanvasRenderingContext2D,
+  proj: GeoProjection,
+  s: Scene,
+  dpr: number,
+  time: number,
+  labels: GlobeLabels,
+  alpha: number,
+) {
+  if (alpha <= 0) return;
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.lineCap = "round";
+  // En línea recta: a esta escala la curva de la Tierra no se nota. La que se
+  // está trazando va en naranja.
+  const from = proj([CITIES[0].lon, CITIES[0].lat]);
+  s.legs.forEach((amount, i) => {
+    const b = proj([CITIES[i + 1].lon, CITIES[i + 1].lat]);
+    if (amount <= 0 || !from || !b) return;
+    const e = ease(amount);
+    const on = amount < 1;
+    ctx.save();
+    ctx.strokeStyle = on ? ORANGE : `rgba(${INK},.5)`;
+    ctx.lineWidth = (on ? 3 : 2) * dpr;
+    ctx.setLineDash([2 * dpr, 7 * dpr]);
+    if (on) {
+      ctx.shadowColor = "rgba(255,118,25,.5)";
+      ctx.shadowBlur = 8 * dpr;
+    }
+    ctx.beginPath();
+    ctx.moveTo(from[0], from[1]);
+    ctx.lineTo(from[0] + (b[0] - from[0]) * e, from[1] + (b[1] - from[1]) * e);
+    ctx.stroke();
+    ctx.restore();
+  });
+  const n = proj([-72.3, 1.4]);
+  if (n) {
+    ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
+    ctx.letterSpacing = `${4 * dpr}px`;
+    ctx.fillStyle = `rgba(${INK},.55)`;
+    ctx.textAlign = "center";
+    ctx.fillText(labels.country.toUpperCase(), n[0], n[1]);
+    ctx.textAlign = "start";
+    ctx.letterSpacing = "0px";
+  }
+  // Bogotá con pastilla; las demás capitales con punto y nombre al llegar su ruta
+  CITIES.forEach((c, i) => {
+    const p = proj([c.lon, c.lat]);
+    if (!p || (i > 0 && s.legs[i - 1] < 1)) return;
+    if (i === 0) {
+      pulse(ctx, p[0], p[1], dpr, time, "255,118,25");
+      pin(ctx, p[0], p[1], dpr, 6, "#ffffff", `rgb(${INK})`);
+      pill(ctx, p[0], p[1], labels.origin, dpr, true, "right");
+      return;
+    }
+    pin(ctx, p[0], p[1], dpr, 4, ORANGE, "#ffffff");
+    tag(ctx, p[0], p[1], c.name, dpr, c.side);
+  });
+  ctx.restore();
+}
+
+// Lado del nombre de algunos países, para que no se monten con un vecino (el
+// resto va a la derecha del punto)
+const LABEL_SIDE: Record<string, Side> = {
+  China: "left",
+  "Arabia Saudita": "left",
+  "Reino Unido": "left",
+  Portugal: "left",
+  "Países Bajos": "above",
+  Alemania: "below",
+  Suiza: "below",
+  Italia: "below",
+};
+
+/** Dibuja el mapa en el estado `s` (de scene o stillScene) */
 export function drawGlobe(
   ctx: CanvasRenderingContext2D,
-  dots: number[],
+  s: Scene,
   time: number,
   labels: GlobeLabels,
   dpr: number,
-  still = false,
-  inter: Interaction = { pointer: null },
-): DrawResult {
+) {
   const { width: W, height: H } = ctx.canvas;
-  const s = still
-    ? { ...STILL, t: 0, current: -1, pano: 1, drawn: () => 1, spinning: true }
-    : scene(time);
+  ctx.clearRect(0, 0, W, H);
+  if (s.map <= 0) return;
   const v = s.view;
-  // Sin halo ni elementos fuera de la esfera (pedido del cliente): el globo
-  // ocupa casi todo el lienzo
-  const R = Math.min(W, H) * 0.47 * v.zoom;
   const cx = W / 2;
   const cy = H / 2;
+  const lens = lensRadius(W, H);
+  const R = Math.min(W, H) * BASE * v.zoom;
+  // De cerca el círculo es una lupa sobre el mapa; de lejos se ve el globo entero
+  const near = clamp01((v.zoom - 1.05) / 0.6);
+  const close = clamp01((v.zoom - 1.8) / 1.6);
+  const proj = geoOrthographic()
+    .scale(R)
+    .translate([cx, cy])
+    .rotate([-v.lon, -v.lat])
+    .clipAngle(90)
+    .precision(0.6);
+  const path = geoPath(proj, ctx);
   const px = (p: { x: number; y: number }) => [cx + R * p.x, cy - R * p.y] as const;
-  ctx.clearRect(0, 0, W, H);
 
-  // Esfera azul de marca, iluminada arriba a la izquierda
-  const sphere = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
-  sphere.addColorStop(0, "#34399A");
-  sphere.addColorStop(0.55, "#272B7C");
-  sphere.addColorStop(1, "#0D0F33");
-  ctx.fillStyle = sphere;
+  ctx.save();
+  ctx.globalAlpha = s.map;
+
+  // Sombra suave del globo (solo de lejos)
+  if (near < 1) {
+    const shade = ctx.createRadialGradient(
+      cx,
+      cy + R * 0.05,
+      R * 0.85,
+      cx,
+      cy + R * 0.05,
+      R * 1.12,
+    );
+    shade.addColorStop(0, `rgba(${INK},${0.16 * (1 - near)})`);
+    shade.addColorStop(1, `rgba(${INK},0)`);
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  ctx.save();
   ctx.beginPath();
-  ctx.arc(cx, cy, R, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.arc(cx, cy, lens, 0, Math.PI * 2);
+  ctx.clip();
 
-  // Malla de meridianos y paralelos (cada 15°), tenue pero presente, como la
-  // retícula del planeta de la referencia
-  ctx.strokeStyle = "rgba(255,255,255,.11)";
+  // Mar gris muy claro, más luminoso arriba a la izquierda
+  const sea = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.05, cx, cy, R);
+  sea.addColorStop(0, "#FFFFFF");
+  sea.addColorStop(0.6, "#F0F6F6");
+  sea.addColorStop(1, "#E1E5EE");
+  ctx.fillStyle = sea;
+  ctx.beginPath();
+  path(SPHERE);
+  ctx.fill();
+  ctx.strokeStyle = `rgba(${GRAY},.14)`;
   ctx.lineWidth = dpr;
   ctx.beginPath();
-  const line = (pts: [number, number][]) => {
-    let pen = false;
-    for (const [lon, lat] of pts) {
-      const p = project(lon, lat, v);
-      if (p.z <= 0) {
-        pen = false;
-        continue;
-      }
-      const [x, y] = px(p);
-      if (pen) ctx.lineTo(x, y);
-      else ctx.moveTo(x, y);
-      pen = true;
-    }
-  };
-  for (let lon = -180; lon < 180; lon += 15)
-    line(Array.from({ length: 41 }, (_, i): [number, number] => [lon, -80 + i * 4]));
-  for (let lat = -75; lat <= 75; lat += 15)
-    line(Array.from({ length: 91 }, (_, i): [number, number] => [-180 + i * 4, lat]));
+  path(GRATICULE);
   ctx.stroke();
+  drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)));
+  drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close);
 
-  // Tierra: un punto por celda; más tenues hacia el borde de la esfera. Se
-  // agrupan por zona y brillo para cambiar de color pocas veces.
-  const size = Math.max(1.2 * dpr, R * 0.0072);
-  const groups: number[][] = Array.from({ length: 16 }, () => []);
-  for (let i = 0; i < dots.length; i += 3) {
-    const p = project(dots[i] / 10, dots[i + 1] / 10, v);
-    if (p.z <= 0.02) continue;
-    const [x, y] = px(p);
-    groups[dots[i + 2] * 4 + Math.min(3, Math.floor(p.z * 4))].push(x, y);
-  }
-  groups.forEach((g, k) => {
-    const zone = k >> 2;
-    const a = 0.35 + 0.65 * (((k & 3) + 0.5) / 4);
-    ctx.fillStyle =
-      zone === 3
-        ? ORANGE
-        : zone === 2
-          ? `rgba(${PEACH},${a})`
-          : `rgba(255,255,255,${a * (zone === 1 ? 0.5 + 0.35 * s.pano : 0.4)})`;
-    for (let j = 0; j < g.length; j += 2)
-      ctx.fillRect(g[j] - size / 2, g[j + 1] - size / 2, size, size);
-  });
-  // Destino bajo el puntero (el más cercano a menos de 22 px, en la cara visible)
-  let hovered: Place | null = null;
-  if (inter.pointer) {
-    let best = 22 * dpr;
-    for (const d of DESTINATIONS) {
-      const q = project(d.lon, d.lat, v);
-      if (q.z <= 0) continue;
-      const [x, y] = px(q);
-      const dist = Math.hypot(x - inter.pointer.x, y - inter.pointer.y);
-      if (dist < best) {
-        best = dist;
-        hovered = d;
-      }
-    }
-  }
-
-  // Rutas: la de la capital en turno en naranja; las demás en blanco
-  // Por detrás del globo solo se ve lo que asoma por encima del borde
-  const visible = (p: { x: number; y: number; z: number }) =>
-    p.z > 0 || (p.x * p.x + p.y * p.y > 1 && p.z > -0.35);
+  // Rutas internacionales: todas con el mismo estilo. Un tramo solo queda oculto
+  // si pasa por detrás del planeta (cara trasera y dentro de su silueta): ahí se
+  // dibuja tenue, así la línea se ve rodeando el globo en vez de cortarse; lo
+  // que asoma por fuera del borde se dibuja completo.
+  const hidden = (p: { x: number; y: number; z: number }) => p.z < 0 && p.x * p.x + p.y * p.y < 1;
   ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 1.8 * dpr;
+  const front = new Path2D();
+  const back = new Path2D();
   for (const d of DESTINATIONS) {
     const amount = s.drawn(d);
     if (amount <= 0) continue;
     const pts = ROUTES.get(d.name)!;
-    const on = STOPS[s.current] === d || hovered === d;
     const end = Math.max(1, Math.round(ease(amount) * ROUTE_STEPS));
-    ctx.save();
-    ctx.strokeStyle = on ? ORANGE : `rgba(255,255,255,${d.embassy ? 0.7 : 0.45})`;
-    ctx.lineWidth = (on ? 2.4 : 1.3) * dpr;
-    if (on) {
-      ctx.shadowColor = ORANGE;
-      ctx.shadowBlur = 10 * dpr;
-    }
-    ctx.beginPath();
-    let pen = false;
-    for (let i = 0; i <= end; i++) {
+    let prev = project(pts[0].lon, pts[0].lat, v, pts[0].alt);
+    for (let i = 1; i <= end; i++) {
       const q = project(pts[i].lon, pts[i].lat, v, pts[i].alt);
-      if (!visible(q)) {
-        pen = false;
-        continue;
-      }
-      const [x, y] = px(q);
-      if (pen) ctx.lineTo(x, y);
-      else ctx.moveTo(x, y);
-      pen = true;
-    }
-    ctx.stroke();
-    ctx.restore();
-
-    // Una luz recorre cada ruta terminada, con estela (cometa); en naranja la
-    // ruta en turno
-    if (amount >= 1 && !still) {
-      const head = ((time / 2400 + d.lon / 90) % 1 + 1) % 1;
-      const kh = Math.floor(head * ROUTE_STEPS);
-      ctx.save();
-      for (let j = 6; j >= 0; j--) {
-        const k = kh - j * 2;
-        if (k < 0) continue;
-        const q = project(pts[k].lon, pts[k].lat, v, pts[k].alt);
-        if (!visible(q)) continue;
-        const [x, y] = px(q);
-        const a = 1 - j / 7;
-        ctx.fillStyle = on ? `rgba(255,178,122,${a})` : `rgba(255,255,255,${a * 0.9})`;
-        if (j === 0) {
-          ctx.shadowColor = on ? ORANGE : "#ffffff";
-          ctx.shadowBlur = 10 * dpr;
-        }
-        ctx.beginPath();
-        ctx.arc(x, y, (on ? 2.8 : 2.2) * dpr * (0.45 + 0.55 * a), 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
+      const target = hidden(prev) && hidden(q) ? back : front;
+      const [x0, y0] = px(prev);
+      const [x1, y1] = px(q);
+      target.moveTo(x0, y0);
+      target.lineTo(x1, y1);
+      prev = q;
     }
 
-    // Punto del destino (cuando la ruta llegó)
-    if (amount >= 1) {
-      const q = project(d.lon, d.lat, v);
-      if (q.z > 0) {
+    // En el giro, una luz recorre cada ruta (solo por la parte a la vista)
+    if (s.spinning && amount >= 1) {
+      const k = Math.floor(((time / 3250 + d.lon / 90 + 10) % 1) * ROUTE_STEPS);
+      const q = project(pts[k].lon, pts[k].lat, v, pts[k].alt);
+      if (!hidden(q)) {
         const [x, y] = px(q);
-        if (on) {
-          const pulse = (time % 1600) / 1600;
-          ctx.fillStyle = `rgba(255,118,25,${0.45 * (1 - pulse)})`;
-          ctx.beginPath();
-          ctx.arc(x, y, (6 + 16 * pulse) * dpr, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.fillStyle = on ? ORANGE : "#ffffff";
-        ctx.strokeStyle = on ? "#ffffff" : "#1b1e5c";
-        ctx.lineWidth = 1.5 * dpr;
+        ctx.fillStyle = "#ffffff";
         ctx.beginPath();
-        ctx.arc(x, y, (on ? 5 : 3) * dpr, 0, Math.PI * 2);
+        ctx.arc(x, y, 2 * dpr, 0, Math.PI * 2);
         ctx.fill();
-        ctx.stroke();
       }
     }
   }
+  ctx.strokeStyle = "rgba(255,118,25,.22)";
+  ctx.stroke(back);
+  ctx.strokeStyle = ORANGE;
+  ctx.stroke(front);
+  // Destinos (cuando la ruta llegó) y, mientras se ve su continente, su nombre;
+  // un nombre que se montaría sobre otro ya puesto se omite
+  const placed: [number, number, number, number][] = [];
+  ctx.font = `600 ${11 * dpr}px Montserrat, system-ui, sans-serif`;
+  for (const d of DESTINATIONS) {
+    if (s.drawn(d) < 1) continue;
+    const q = project(d.lon, d.lat, v);
+    if (q.z <= 0) continue;
+    const [x, y] = px(q);
+    pin(ctx, x, y, dpr, 3.5, ORANGE, "#ffffff");
+    if (!s.regionLabels.includes(d)) continue;
+    const text = labels.place(d);
+    const side = LABEL_SIDE[d.name] ?? "right";
+    const w = ctx.measureText(text).width + 12 * dpr;
+    const h = 8 * dpr;
+    const box: [number, number, number, number] =
+      side === "left"
+        ? [x - w, y - h, x, y + h]
+        : side === "right"
+          ? [x, y - h, x + w, y + h]
+          : side === "above"
+            ? [x - w / 2, y - 3 * h, x + w / 2, y - h]
+            : [x - w / 2, y + h, x + w / 2, y + 3 * h];
+    if (placed.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]))
+      continue;
+    placed.push(box);
+    tag(ctx, x, y, text, dpr, side);
+  }
 
-  // Luz de borde: filo claro arriba a la izquierda (lado del sol) y sombra del
-  // lado nocturno
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(cx, cy, R, 0, Math.PI * 2);
-  ctx.clip();
-  const night = ctx.createRadialGradient(cx + R * 0.45, cy + R * 0.45, R * 0.2, cx, cy, R * 1.05);
-  night.addColorStop(0, "rgba(13,15,51,0)");
-  night.addColorStop(0.7, "rgba(13,15,51,.18)");
-  night.addColorStop(1, "rgba(13,15,51,.55)");
-  ctx.fillStyle = night;
-  ctx.fillRect(0, 0, W, H);
-  ctx.restore();
-  const rim = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-  rim.addColorStop(0, "rgba(255,255,255,.7)");
-  rim.addColorStop(0.45, "rgba(255,255,255,.12)");
-  rim.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.strokeStyle = rim;
-  ctx.lineWidth = 1.6 * dpr;
-  ctx.beginPath();
-  ctx.arc(cx, cy, R - dpr, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // Bogotá: punto naranja con pulso
+  // Bogotá (de cerca ya la marca el recorrido por Colombia)
   const o = project(ORIGIN.lon, ORIGIN.lat, v);
-  if (o.z > 0) {
-    const [x, y] = px(o);
-    const pulse = (time % 2200) / 2200;
-    ctx.fillStyle = `rgba(255,118,25,${0.5 * (1 - pulse)})`;
-    ctx.beginPath();
-    ctx.arc(x, y, (6 + 20 * pulse) * dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = ORANGE;
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 2 * dpr;
-    ctx.beginPath();
-    ctx.arc(x, y, 5.5 * dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, true, false);
+  // Solo si Bogotá queda dentro del círculo (de cerca a Europa queda fuera)
+  const [bx, by] = px(o);
+  if (o.z > 0 && s.localFade === 0 && Math.hypot(bx - cx, by - cy) < lens - 10 * dpr) {
+    const [x, y] = [bx, by];
+    pulse(ctx, x, y, dpr, time, INK);
+    pin(ctx, x, y, dpr, 5.5, "#ffffff", `rgb(${INK})`);
+    if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, true, "below");
   }
 
-  // Nombre del destino bajo el puntero; si no, el de la capital en turno
-  // cuando su ruta ya llegó
-  const stop = STOPS[s.current];
-  const show = hovered ?? (stop && s.drawn(stop) >= 1 ? stop : null);
-  if (show) {
-    const q = project(show.lon, show.lat, v);
-    if (q.z > 0) {
-      const [x, y] = px(q);
-      pill(ctx, x, y, labels.stop(show), dpr, false, true);
-    }
+  ctx.restore(); // fin del círculo
+
+  // Borde del círculo cuando funciona como lupa
+  if (near > 0) {
+    ctx.strokeStyle = `rgba(${INK},${0.18 * near})`;
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath();
+    ctx.arc(cx, cy, lens, 0, Math.PI * 2);
+    ctx.stroke();
   }
-  return { hovered };
+  ctx.restore();
 }

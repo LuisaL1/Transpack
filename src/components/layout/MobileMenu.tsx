@@ -73,7 +73,7 @@ export function MobileMenu({ menus }: { menus: Menu[] }) {
                 </div>
               )}
             </div>
-            {/* Nuestros empaques: enlace directo entre Blog y Contacto */}
+            {/* Experiencias Transpack: enlace directo entre Blog y Contacto */}
             {m.key === "blog" && (
               <Link
                 to={lp("/videos")}

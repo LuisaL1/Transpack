@@ -11,7 +11,7 @@ const nodes = (path: string) => getPageMeta(path).jsonLd.flatMap((g) => g["@grap
 const types = (path: string) => nodes(path).map((n) => n["@type"]);
 
 describe("SEO · metadatos por página", () => {
-  it("cubre inicio, nosotros, política de datos, nuestros empaques, 6 servicios y 3 artículos en español e inglés (26 rutas)", () => {
+  it("cubre inicio, nosotros, política de datos, Experiencias Transpack, 6 servicios y 3 artículos en español e inglés (26 rutas)", () => {
     expect(LANGS).toEqual(["es", "en"]);
     expect(PUBLIC_ROUTES).toHaveLength(26);
     expect(new Set(PUBLIC_ROUTES).size).toBe(26);

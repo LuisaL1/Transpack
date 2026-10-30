@@ -31,7 +31,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       "Transpack S.A.S.: mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa desde Bogotá. Más de 58 años de experiencia y cobertura en 176 países.",
     aboutTitle: "Quiénes somos: mudanzas desde 1968 en Bogotá | Transpack",
     privacyTitle: "Política de tratamiento de datos personales | Transpack",
-    videosTitle: "Nuestros empaques: videos de mudanzas en Bogotá | Transpack",
+    videosTitle: "Experiencias Transpack: videos de mudanzas | Transpack",
     videosDescription:
       "Mira cómo embalamos y movemos muebles, arte e instrumentos: todos los videos del canal de YouTube de Transpack, empresa de mudanzas en Bogotá desde 1968.",
     privacyDescription:
@@ -46,7 +46,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       services: "Servicios",
       about: "Nosotros",
       privacy: "Política de datos",
-      videos: "Nuestros empaques",
+      videos: "Experiencias Transpack",
     },
     servicesList: "Servicios de mudanza y bodegaje",
   },
@@ -57,7 +57,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       "Transpack S.A.S.: local, national and international moving, storage and corporate mobility from Bogotá, Colombia. 58 years of experience and coverage in 176 countries.",
     aboutTitle: "About us: movers in Bogotá since 1968 | Transpack",
     privacyTitle: "Personal Data Processing Policy | Transpack",
-    videosTitle: "Our packing: moving videos from Bogotá | Transpack",
+    videosTitle: "Transpack Experiences: moving videos | Transpack",
     videosDescription:
       "See how we pack and move furniture, art and musical instruments: every video from the YouTube channel of Transpack, movers in Bogotá since 1968.",
     privacyDescription:
@@ -72,7 +72,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
       services: "Services",
       about: "About",
       privacy: "Privacy policy",
-      videos: "Our packing",
+      videos: "Transpack Experiences",
     },
     servicesList: "Moving and storage services",
   },

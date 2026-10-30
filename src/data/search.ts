@@ -107,7 +107,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
     ),
     page(
       "play-btn",
-      tr("Nuestros empaques", "Our packing"),
+      tr("Experiencias Transpack", "Transpack Experiences"),
       tr("Todos los videos de nuestro canal de YouTube", "Every video from our YouTube channel"),
       "/videos",
       "youtube videos shorts embalaje empaque packing transpack en video",

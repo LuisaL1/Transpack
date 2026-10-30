@@ -5,7 +5,7 @@ import type { ChannelVideo } from "@/data/youtubeVideos";
 import { Bi, btn } from "@/components/ui";
 import { VideoCard } from "@/components/videos/VideoCard";
 
-// Shorts de Nuestros empaques: al entrar se ve una sola fila (2 en celular, 3
+// Shorts de Experiencias Transpack: al entrar se ve una sola fila (2 en celular, 3
 // en tableta, 4 en computador); "Ver más" muestra el resto y "Ver menos" vuelve
 // a la fila. Todos van en el HTML (buscadores); los demás solo se esconden, y
 // sus portadas no se descargan mientras estén escondidas.

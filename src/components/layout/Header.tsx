@@ -115,7 +115,7 @@ export function Header() {
         <div
           ref={navRef}
           onMouseLeave={hoverClose}
-          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-6 wide:w-[min(100%-120px,1320px)] ${
+          className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-3 xl:gap-6 wide:w-[min(100%-120px,1320px)] ${
             scrolled
               ? "h-[70px] md:h-[86px] wide:h-[100px]"
               : "h-[88px] md:h-[112px] wide:h-[126px]"
@@ -124,10 +124,10 @@ export function Header() {
           <Logo light={false} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          <nav className="hidden items-center gap-3 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
+          <nav className="hidden items-center gap-1.5 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
             {MENUS.map((m) => {
               const open = active === m.key;
-              const underline = `relative inline-flex items-center gap-1 py-1.5 text-[0.96rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 text-tinta hover:text-azul`;
+              const underline = `relative inline-flex items-center gap-1 whitespace-nowrap py-1.5 text-[0.82rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 text-tinta hover:text-azul`;
               return (
                 <Fragment key={m.key}>
                   <button
@@ -146,7 +146,7 @@ export function Header() {
                       className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
                     />
                   </button>
-                  {/* Nuestros empaques: enlace directo entre Blog y Contacto */}
+                  {/* Experiencias Transpack: enlace directo entre Blog y Contacto */}
                   {m.key === "blog" && (
                     <Link
                       to={lp("/videos")}
@@ -188,7 +188,7 @@ export function Header() {
             </div>
             <Link
               to={lp("/#cotizar")}
-              className={`${btn.primary} px-4 py-2 text-[0.975rem] font-bold!`}
+              className={`${btn.primary} whitespace-nowrap px-3 py-2 text-[0.82rem] font-bold! xl:px-4 xl:text-[0.975rem]`}
               onMouseEnter={hoverClose}
             >
               {t.quote}

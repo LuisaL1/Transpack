@@ -37,7 +37,7 @@ export function Hero() {
         {/* El bloque de texto va encima del globo pero deja pasar el puntero fuera
             de sus elementos, para que el globo se pueda girar y apuntar */}
         <div className={`${container} pointer-events-none relative z-10 lg:min-h-[700px] lg:py-8`}>
-          <div className="animate-fade-up pointer-events-auto mx-auto max-w-[600px] text-center lg:mx-0 lg:max-w-[540px] lg:text-start">
+          <div className="animate-fade-up pointer-events-auto mx-auto max-w-[600px] text-center lg:mx-0 lg:max-w-[460px] lg:text-start xl:max-w-[540px]">
             <Link
               to={lp("/#cobertura")}
               className="group mb-6 inline-flex items-center gap-2 rounded-full border border-linea bg-white px-3.5 py-1.5 text-[0.76rem] font-medium text-texto shadow-[0_6px_18px_-12px_rgba(39,43,124,.45)] transition-colors hover:border-azul/30 hover:text-azul"

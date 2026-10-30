@@ -1,53 +1,51 @@
-import { useEffect, useRef, useState } from "react";
-import { drawGlobe, type GlobeLabels, type Interaction } from "@/lib/globe";
+import { useEffect, useRef } from "react";
+import type { GlobeLabels } from "@/lib/globe";
 
 /**
- * Anima el globo de la portada en un <canvas> (dibujo en src/lib/globe.ts).
- * Los puntos de tierra se cargan aparte (import()) para no pesar en el JS
- * principal; hasta entonces se ve la esfera de respaldo del componente. Se
- * pausa fuera de pantalla y con la pestaña oculta. Con movimiento reducido
- * queda una vista fija. Al pasar el puntero por un destino muestra su nombre
- * (la historia no se detiene).
+ * Anima el mapa de la portada: la foto (photoRef) y el mapa en un <canvas>
+ * (canvasRef). El dibujo y la historia están en src/lib/globe.ts, que se carga
+ * aparte (import()) con d3-geo y las siluetas de los países; mientras tanto, y
+ * en el HTML pre-generado, se ve la foto. Se pausa fuera de pantalla y con la
+ * pestaña oculta. Con movimiento reducido queda el mapa fijo.
  */
 export function useGlobe(labels: GlobeLabels) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
   const labelsRef = useRef(labels);
   labelsRef.current = labels;
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const photo = photoRef.current;
     const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
+    if (!canvas || !photo || !ctx) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let dots: number[] | null = null;
+    // Velocidad de la historia (pedidos del cliente: el doble, luego un 25 % y
+    // después un 20 % más lento)
+    const speed = 1.6 / 1.2;
+    let globe: typeof import("@/lib/globe") | null = null;
     let raf = 0;
     let last = 0;
     let time = 0;
     let onScreen = true;
     let dpr = 1;
     let cancelled = false;
-    // Puntero sobre el lienzo (para mostrar el nombre del destino)
-    const inter: Interaction = { pointer: null };
 
     const draw = () => {
-      if (!dots) return;
-      const { hovered } = drawGlobe(ctx, dots, time, labelsRef.current, dpr, still, inter);
-      canvas.style.cursor = hovered ? "pointer" : "";
-    };
-    const toCanvas = (e: PointerEvent) => {
-      const r = canvas.getBoundingClientRect();
-      return { x: (e.clientX - r.left) * dpr, y: (e.clientY - r.top) * dpr };
-    };
-    const onCanvasMove = (e: PointerEvent) => {
-      if (e.pointerType === "mouse") inter.pointer = toCanvas(e);
-    };
-    const onCanvasLeave = () => {
-      inter.pointer = null;
-    };
-    // En celular, un toque sobre un punto muestra su nombre
-    const onTap = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") inter.pointer = toCanvas(e);
+      if (!globe) return;
+      const s = still ? globe.stillScene() : globe.scene(time);
+      globe.drawGlobe(ctx, s, time, labelsRef.current, dpr);
+      // La foto se cierra en el círculo del mapa: de cubrir todo a su radio
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      const full = Math.hypot(w, h) / 2;
+      const r = full + (globe.lensRadius(w, h) - full) * s.morph;
+      photo.style.clipPath = `circle(${r}px at 50% 50%)`;
+      photo.style.opacity = String(s.photo);
+      // La foto se ve completa y quieta; al dar paso al mapa se acerca, como si
+      // la cámara entrara en el círculo
+      const entering = time % globe.LOOP < globe.LOOP / 2;
+      photo.style.transform = `scale(${1 + (entering ? 0.3 : 0) * (1 - s.photo)})`;
     };
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -57,7 +55,7 @@ export function useGlobe(labels: GlobeLabels) {
     };
     const tick = (now: number) => {
       // Saltos largos (pestaña oculta) no adelantan la historia
-      if (last) time += Math.min(now - last, 250);
+      if (last) time += Math.min(now - last, 250) * speed;
       last = now;
       draw();
       raf = requestAnimationFrame(tick);
@@ -65,7 +63,7 @@ export function useGlobe(labels: GlobeLabels) {
     const play = () => {
       cancelAnimationFrame(raf);
       last = 0;
-      if (!still && dots && onScreen && !document.hidden) raf = requestAnimationFrame(tick);
+      if (!still && globe && onScreen && !document.hidden) raf = requestAnimationFrame(tick);
     };
 
     const ro = new ResizeObserver(resize);
@@ -76,16 +74,10 @@ export function useGlobe(labels: GlobeLabels) {
     });
     io.observe(canvas);
     document.addEventListener("visibilitychange", play);
-    if (!still) {
-      canvas.addEventListener("pointermove", onCanvasMove, { passive: true });
-      canvas.addEventListener("pointerleave", onCanvasLeave);
-      canvas.addEventListener("pointerup", onTap);
-    }
 
-    import("@/data/worldGlobe").then((m) => {
+    import("@/lib/globe").then((m) => {
       if (cancelled) return;
-      dots = m.LAND_DOTS;
-      setReady(true);
+      globe = m;
       resize();
       play();
     });
@@ -96,11 +88,8 @@ export function useGlobe(labels: GlobeLabels) {
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", play);
-      canvas.removeEventListener("pointermove", onCanvasMove);
-      canvas.removeEventListener("pointerleave", onCanvasLeave);
-      canvas.removeEventListener("pointerup", onTap);
     };
   }, []);
 
-  return { canvasRef, ready };
+  return { canvasRef, photoRef };
 }

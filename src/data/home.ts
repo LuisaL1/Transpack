@@ -213,18 +213,8 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
-  // Globo del inicio (src/lib/globe.ts): capitales de los países con embajadas
-  // atendidas (EMBASSIES), por su nombre en DESTINATIONS (src/data/worldMap.ts)
-  capitals: {
-    "Estados Unidos": tr("Washington D. C.", "Washington, D.C."),
-    España: "Madrid",
-    Canadá: "Ottawa",
-    México: tr("Ciudad de México", "Mexico City"),
-    Francia: tr("París", "Paris"),
-    Alemania: tr("Berlín", "Berlin"),
-    Italia: tr("Roma", "Rome"),
-    Egipto: tr("El Cairo", "Cairo"),
-    "Emiratos Árabes": tr("Abu Dabi", "Abu Dhabi"),
-    India: tr("Nueva Delhi", "New Delhi"),
-  } as Record<string, string>,
+  photoAlt: tr(
+    "Asesor de Transpack con un contenedor, una caja de mudanza, un avión y un camión",
+    "Transpack advisor with a container, a moving box, a plane and a truck",
+  ),
 });

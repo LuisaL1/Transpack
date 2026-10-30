@@ -3,8 +3,8 @@ import { CHANNEL_SHORTS, CHANNEL_VIDEOS } from "@/data/youtubeVideos";
 import { headerText, footerText } from "@/data/navigation";
 import { makeTr } from "@/i18n";
 
-// Nuestros empaques (/videos): lista generada con `pnpm videos`
-describe("Nuestros empaques · videos del canal", () => {
+// Experiencias Transpack (/videos): lista generada con `pnpm videos`
+describe("Experiencias Transpack · videos del canal", () => {
   const all = [...CHANNEL_VIDEOS, ...CHANNEL_SHORTS];
 
   it("tiene videos, sin repetidos y con ids de YouTube válidos", () => {
@@ -20,9 +20,9 @@ describe("Nuestros empaques · videos del canal", () => {
     }
   });
 
-  it("el enlace se llama «Nuestros empaques» en la cabecera y el pie", () => {
+  it("el enlace se llama «Experiencias Transpack» en la cabecera y el pie", () => {
     const tr = makeTr("es");
-    expect(headerText(tr).videos).toBe("Nuestros empaques");
-    expect(footerText(tr).videos).toBe("Nuestros empaques");
+    expect(headerText(tr).videos).toBe("Experiencias Transpack");
+    expect(footerText(tr).videos).toBe("Experiencias Transpack");
   });
 });

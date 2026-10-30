@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Bi } from "@/components/ui";
 
-// Tarjeta de un video del canal (página Nuestros empaques). El reproductor de
+// Tarjeta de un video del canal (página Experiencias Transpack). El reproductor de
 // YouTube solo se carga al hacer clic (más rápido y sin cookies de YouTube antes
 // de que el visitante decida verlo). `wide`: video horizontal; si no, Short.
 export function VideoCard({

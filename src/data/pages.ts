@@ -91,9 +91,9 @@ export const privacyText = (tr: Tr) => ({
 });
 
 /** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
-// Nuestros empaques (/videos): todos los videos del canal de YouTube
+// Experiencias Transpack (/videos): todos los videos del canal de YouTube
 export const videosPageText = (tr: Tr) => ({
-  title: tr("Nuestros empaques", "Our packing"),
+  title: tr("Experiencias Transpack", "Transpack Experiences"),
   eyebrow: tr("Canal de YouTube", "YouTube channel"),
   intro: tr(
     "Todos los videos del canal de Transpack en un solo lugar: cómo embalamos, protegemos y movemos lo que más importa, dentro y fuera de Colombia.",
