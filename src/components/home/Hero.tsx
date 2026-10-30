@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { heroText } from "@/data/home";
-import { useSite } from "@/hooks/useContent";
 import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
-import { Bi, btn, StatValue } from "@/components/ui";
+import { Bi, btn } from "@/components/ui";
 import { Globe } from "@/components/home/Globe";
 import { container } from "@/components/ui/layout";
 
-// Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular, los
-// botones y dos cifras; a la derecha el globo animado (Globe), grande y
+// Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular y los
+// botones; a la derecha el globo animado (Globe), grande y
 // recortado por el borde de la página, como en la web de referencia del
 // cliente (Spectrum). En celular el globo va debajo del texto. Los clientes al pie.
 // Resalta en negrita y azul las cifras indicadas dentro de un texto
@@ -32,9 +31,6 @@ function highlight(text: string, marks: string[]) {
 export function Hero() {
   const { lp, tr } = useLang();
   const t = heroText(tr);
-  const { STATS } = useSite();
-  // Cifras reales del sitio (STATS): países de destino y agentes y aliados
-  const chips = [STATS[1], STATS[3]];
   return (
     <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[180px]">
       <div className="relative">
@@ -65,28 +61,13 @@ export function Hero() {
             <p className="mx-auto mb-8 max-w-[60ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-texto lg:mx-0 lg:text-start">
               {highlight(t.sub, t.subHighlights)}
             </p>
-            <div className="mb-10 flex flex-wrap justify-center gap-3 lg:justify-start">
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link to={lp("/#cotizar")} className={`${btn.primary} ${btn.lg}`}>
                 {t.cta}
               </Link>
               <Link to={lp("/#servicios")} className={`${btn.outline} ${btn.lg}`}>
                 {t.ctaServices}
               </Link>
-            </div>
-            <div className="flex justify-center gap-3 lg:justify-start">
-              {chips.map((c) => (
-                <span
-                  key={c.label}
-                  className="rounded-2xl border border-linea bg-white px-4 py-2.5 text-start shadow-[0_10px_24px_-16px_rgba(39,43,124,.5)]"
-                >
-                  <span className="block font-title text-[1.4rem] font-bold leading-none text-azul">
-                    <StatValue value={c.value} suffix={c.suffix} />
-                  </span>
-                  <span className="text-[0.75rem] font-medium text-suave">
-                    {c.short ?? c.label}
-                  </span>
-                </span>
-              ))}
             </div>
           </div>
         </div>
