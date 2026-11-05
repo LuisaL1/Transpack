@@ -105,7 +105,8 @@ export function NosotrosPage() {
               {t.redOperativaGlobalNo}
             </h2>
             <p className="mb-4">{t.nuestraHistoriaEmpezoHace}</p>
-            <p>{t.hoyEsaRedNos}</p>
+            <p className="mb-4">{t.hoyEsaRedNos}</p>
+            <p>{t.hoyAcompanamos}</p>
           </Reveal>
           <ol className="relative grid gap-8 border-s-2 border-dashed border-naranja/50 ps-8">
             {TIMELINE.map((t, i) => (
