@@ -85,7 +85,7 @@ export function Hero() {
         <p className="mb-7 px-4 text-center text-[0.95rem] font-medium text-texto">
           {t.clientsTitle}
         </p>
-        <div className="marquee flex overflow-hidden" dir="ltr">
+        <div className="marquee flex overflow-hidden pt-10" dir="ltr">
           {[0, 1].map((k) => (
             <div
               key={k}
