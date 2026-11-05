@@ -376,7 +376,7 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residencial",
     kicker: "Transpack Residencial",
-    title: "Su hogar, en las mismas condiciones en el nuevo destino",
+    title: "Transportamos el hogar, no solo los bienes",
     text: "",
     points: [
       "Embalaje, desarme y armado de muebles",
@@ -394,7 +394,7 @@ export const SEGMENTS = [
     icon: "buildings",
     tab: "Movilidad corporativa",
     kicker: "Transpack Movilidad corporativa",
-    title: "Un solo operador para trasladar oficinas y talento",
+    title: "Transpack, un solo operador para trasladar su oficina con talento",
     text: "",
     points: [
       "Ejecutivo de cuenta y operación recurrente",
