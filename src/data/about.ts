@@ -46,17 +46,31 @@ export const aboutTimeline = (tr: Tr) => [
     ),
   },
   {
-    year: tr("Décadas de red", "Decades of network"),
+    year: tr("Construcción de Experiencia Internacional", "Decades of network"),
     text: tr(
-      "Construimos una red de más de 2.000 agentes y aliados estratégicos en 176 países.",
+      "En nuestras primeras décadas de operación fotalecimos nuestros conocimientos sobre procesos logisticos internacionales",
       "We built a network of more than 2,000 agents and strategic partners in 176 countries.",
     ),
   },
   {
-    year: tr("Hoy", "Today"),
+    year: tr("Red Operativa Global", "Today"),
+    text: tr(
+      "Constrimos una red de más de 2.000 agentes internacionales en 176 países",
+      "We run local, national and international moves, storage and corporate mobility.",
+    ),
+  },
+  {
+    year: "Estándar Diplomaico",
+    text: tr(
+      "Ampliamos nuestra experiencia al ámbito diplomático, atendiendo traslados de personal de emajadas de diferentes paises, Estados Unidos, canadá y Alemania entre otros.",
+      "Vision: to be one of the leading moving and storage companies in Bogotá.",
+    ),
+  },
+  {
+    year: "Hoy",
     text: tr(
       "Operamos mudanzas locales, nacionales, internacionales, bodegaje y movilidad corporativa.",
-      "We run local, national and international moves, storage and corporate mobility.",
+      "Vision: to be one of the leading moving and storage companies in Bogotá.",
     ),
   },
   {
@@ -83,11 +97,11 @@ export const aboutText = (tr: Tr) => ({
     "A global operating network you can't improvise",
   ),
   nuestraHistoriaEmpezoHace: tr(
-    "Nuestra historia empezó hace 58 años, en un momento en el que el comercio internacional era más lento, más manual y con muchas más incertidumbres logísticas. Con el paso de las décadas construimos algo que no se improvisa: una red operativa global.",
+    "Durante 58 años, Transpacksas ha construido una trayectoria dedicada a facilitar mudanzas y reubicaciones internacionales desde Colombia hacia el mundo. Lo que comenzó en una época en la que el comercio internacional era más lento, manual y enfrentaba mayores incertidumbres logísticas evolucionó hasta convertirse en una operación con alcance global, respaldada por una red de más de 2.000 agentes internacionales en 176 paises.",
     "Our story began 58 years ago, when international trade was slower, more manual and far more uncertain. Over the decades we built something you can't improvise: a global operating network.",
   ),
   hoyEsaRedNos: tr(
-    "Hoy, esa red nos permite operar mudanzas marítimas y aéreas hacia Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica, con los mismos estándares en origen y en destino.",
+    "A lo largo de est recorrido, la empresa ha fortalecido su capacidad para gestionar rutas marítimas y aéreas, atendiendo las necesidades de familias, ejecutivos, multinacionales, embajadas, instituciones y funcionarios militares. Esta experiencia ha permitido consolidar una reputación basada en la seguridad, la trazabilidad, la puntualidad, la confidencialidad y el cumplimiento, acompañando cada reubicacion consoluciones adaptadas al destino, al volumen y a las necesidades particulares de cada cliente.",
     "Today that network lets us run sea and air moves to the United States, Canada, the European Union, Asia and all of Latin America, with the same standards at origin and destination.",
   ),
   mision: tr("Misión", "Mission"),
