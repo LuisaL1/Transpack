@@ -131,7 +131,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgEmbalajeHogar,
     kicker: "Trasteos en Bogotá",
-    headline: "Su trasteo en la ciudad, sin estrés y sin contratiempos",
+    headline: "Su trasteo en la ciudad sin estrés",
     intro:
       "Planeamos cada mudanza local según el inmueble de origen y de destino: piso, ascensor, escaleras, acceso del vehículo y horarios permitidos por la administración. Así llegamos con el equipo y el tiempo justos.",
     includes: [
@@ -172,7 +172,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgCargue,
     kicker: "Entre ciudades de Colombia",
-    headline: "Su patrimonio protegido de puerta a puerta",
+    headline: "Su patrimonio de puerta a puerta",
     intro:
       "En una mudanza nacional el inventario es la base de todo: nos permite calcular el volumen, el vehículo y los recursos necesarios. Cuidamos la seguridad, la protección y el cumplimiento de tiempos en cada ruta.",
     includes: [
