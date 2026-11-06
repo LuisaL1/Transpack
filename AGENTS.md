@@ -204,11 +204,14 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   cifra cuenta desde 0 hasta su valor (`StatCounter`), desde que el carrusel se
   ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
   valor completo.
-- Embajadas atendidas: las 10 de `EMBASSIES`. En la franja de clientes del inicio y en
-  Nosotros se muestran con la **bandera** del país (flag-icons, MIT) y el nombre, no con
-  escudos ni sellos oficiales (su uso comercial está restringido en varios países;
-  decidido en noviembre de 2026). Al agregar una embajada, agregue su bandera en
-  `EMBASSY_FLAGS` (`src/data/clientLogos.ts`). En el mapa, solo esos destinos
+- Embajadas atendidas: las 10 de `EMBASSIES`. En la franja de clientes del inicio se
+  muestran con su **logo** en grises (`EMBASSY_LOGOS`, pedido del cliente en noviembre
+  de 2026: no le gustó bandera + nombre): el de la Embajada de Francia en Colombia y, para
+  las demás, el de su cancillería o gobierno o el emblema nacional (fuentes en
+  `src/assets/images/clientes/embajadas/FUENTES.txt`). Son emblemas oficiales: el
+  cliente debe confirmar que puede usarlos. En Nosotros siguen con su bandera
+  (`EMBASSY_FLAGS`). Al agregar una embajada, agregue su logo y su bandera en
+  `src/data/clientLogos.ts`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en
   `scripts/generate-world-map.mjs`.
@@ -243,8 +246,10 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
-  negro pedido en noviembre de 2026), con Colombia y las rutas en naranja
-  y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
+  negro pedido en noviembre de 2026), con Colombia en `#1800AD` (`--color-resaltado`;
+  antes naranja, cambio pedido en noviembre de 2026), Estados Unidos en un tono más claro
+  del mismo color, las localidades de Bogotá en tonos de ese color sobre gris, y las
+  rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
   1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
   en un círculo con **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden
   tocar) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
@@ -269,10 +274,14 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   redes), un **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG):
   silueta exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la
   portada y carreteras que pasan por los pueblos reales de cada troncal
-  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Misma estética del globo:
-  Colombia y rutas en naranja, puntos en tinta, Bogotá en naranja. Un solo
+  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Misma estética del globo
+  (el cliente pidió en noviembre de 2026 que resaltara más): el mapa va en un
+  círculo sobre fondo blanco, con el mar gris claro, sombra suave, los países
+  vecinos en negro carbón, Colombia en un tono claro de `#1800AD` con borde pleno y las
+  carreteras en gris oscuro; puntos en tinta, Bogotá en naranja. Un solo
   camión azul y blanco (visto desde arriba, para girar suave en las curvas sin
-  voltearse) viaja de la ciudad donde está a otra por el camino más corto,
+  voltearse) viaja de la ciudad donde está a otra por el camino más corto (al azar, pero
+  sin volver a una de sus últimas 6 ciudades, `RECENT`, para que recorra todo el país),
   dejando una estela naranja gruesa, con resplandor y un brillo blanco que la
   recorre; origen (casa azul) y destino (casa naranja) llevan un marcador.
   Animaciones del viaje (`.map-*` en `src/styles/index.css`): la casa del

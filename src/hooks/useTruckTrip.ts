@@ -4,6 +4,7 @@ import {
   FADE,
   buildJourney,
   journeyAt,
+  RECENT,
   pickDestination,
   shineDash,
   travelled,
@@ -25,12 +26,14 @@ import {
  * mueve el camión y la estela sin volver a pintar React (solo al cambiar de
  * momento o de viaje). En el HTML pre-generado el camión espera en el origen;
  * con movimiento reducido se ve el viaje ya hecho. Se pausa fuera de pantalla
- * y con la pestaña oculta.
+ * y con la pestaña oculta. El HTML pre-generado sale de `seed`; en el navegador,
+ * el primer destino se elige al azar en cada visita.
  */
 export function useTruckTrip(tracks: Track[], cities: RouteNode[], start: string, seed: number) {
   const [trip, setTrip] = useState(() => ({
     from: start,
-    ...pickDestination(cities, start, seed),
+    recent: [start],
+    ...pickDestination(cities, start, seed, [start]),
   }));
   const [phase, setPhase] = useState<TripPhase>("start");
   const journey = useMemo(() => buildJourney(tracks, trip.from, trip.to), [tracks, trip]);
@@ -40,6 +43,17 @@ export function useTruckTrip(tracks: Track[], cities: RouteNode[], start: string
   const shineRef = useRef<SVGPathElement>(null);
   // La dirección del camión sigue de un viaje al siguiente
   const angleRef = useRef<number | null>(null);
+
+  // Primer destino al azar en cada visita (no siempre el mismo). Va en un cuadro
+  // de animación: el HTML pre-generado y la hidratación usan `seed`, que es fijo.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      const random = Math.floor(Math.random() * 2 ** 31);
+      angleRef.current = null; // el camión arranca mirando hacia su nuevo destino
+      setTrip({ from: start, recent: [start], ...pickDestination(cities, start, random, [start]) });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [cities, start]);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -88,7 +102,10 @@ export function useTruckTrip(tracks: Track[], cities: RouteNode[], start: string
       const next = tripPhase(time, duration);
       if (next !== current) setPhase((current = next));
       if (fade >= 1) {
-        setTrip((t) => ({ from: t.to, ...pickDestination(cities, t.to, t.seed) }));
+        setTrip((t) => {
+          const recent = [...t.recent, t.to].slice(-RECENT);
+          return { from: t.to, recent, ...pickDestination(cities, t.to, t.seed, recent) };
+        });
         setPhase("start");
         return;
       }

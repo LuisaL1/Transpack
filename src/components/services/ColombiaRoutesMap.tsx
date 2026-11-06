@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { useLang } from "@/i18n";
 import { serviceDetailText } from "@/data/pages";
-import {
-  COLOMBIA_PATH,
-  COLOMBIA_VIEWBOX,
-  NEIGHBORS_PATH,
-  ROADS,
-  ROUTE_NODES,
-} from "@/data/colombiaMap";
+import { COLOMBIA_PATH, NEIGHBORS_PATH, ROADS, ROUTE_NODES } from "@/data/colombiaMap";
 import {
   buildTracks,
   journeyAt,
@@ -27,15 +21,31 @@ import { useTruckTrip } from "@/hooks/useTruckTrip";
 // aviso de llegada; luego se borra la estela, la casa del origen desaparece y
 // la del destino pasa a ser el nuevo origen. Misma estética del globo de la
 // portada: grises, Colombia y rutas en naranja, puntos en tinta y Bogotá en
-// naranja. Datos: `pnpm map` (src/data/colombiaMap.ts); recorrido:
+// naranja. Como en la portada (pedido del cliente, nov. 2026, para que resalte):
+// el mapa va en un círculo sobre fondo blanco, con el mar gris claro, los países
+// vecinos en negro carbón y Colombia en un tono claro de #1800AD con borde pleno
+// (antes naranja; pedido del cliente, nov. 2026). Datos: `pnpm
+// map` (src/data/colombiaMap.ts); recorrido:
 // src/lib/colombiaRoutes.ts; animaciones: .map-* en src/styles/index.css.
 const TRACKS = buildTracks(ROADS);
 const ROAD_PATHS = ROADS.map((r) => roadPath(r.points));
 const CITIES = ROUTE_NODES.filter((n) => n.name);
 const BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c])) as Record<string, RouteNode>;
-// El primer viaje sale de Bogotá; el destino sale de esta semilla (el mismo
-// en el HTML pre-generado y en el navegador)
+// El primer viaje sale de Bogotá; en el HTML pre-generado el destino sale de esta
+// semilla y en el navegador se elige al azar (useTruckTrip)
 const SEED = 7;
+// Círculo donde se ve el mapa: el más pequeño que contiene a Colombia, con un
+// margen (unidades del SVG; ver COLOMBIA_VIEWBOX)
+const LENS = { x: 356, y: 388, r: 412 };
+const PAD = 26; // para la sombra del círculo
+const VIEWBOX = [
+  LENS.x - LENS.r - PAD,
+  LENS.y - LENS.r - PAD,
+  2 * (LENS.r + PAD),
+  2 * (LENS.r + PAD),
+].join(" ");
+const INK = "62,65,96"; // gris oscuro del texto (como en src/lib/globe.ts)
+const CHARCOAL = "34,34,40"; // negro carbón de los continentes de la portada
 
 // Lugar del nombre junto al punto (en em, para que crezca con la letra)
 const LABEL: Record<Side, { dx: string; dy: string; anchor: "start" | "middle" | "end" }> = {
@@ -65,38 +75,76 @@ export function ColombiaRoutesMap() {
   const to = BY_ID[trip.to];
   const arrived = phase === "arrived" || phase === "leaving";
   return (
-    <div className="relative h-[420px] w-full overflow-hidden bg-gris sm:h-[480px] lg:h-full">
+    <div className="relative h-[440px] w-full overflow-hidden bg-white sm:h-[500px] lg:h-full">
       <svg
         ref={svgRef}
-        viewBox={COLOMBIA_VIEWBOX}
+        viewBox={VIEWBOX}
         role="img"
         aria-label={t.mapaRutas}
-        className="absolute inset-0 h-full w-full overflow-visible px-4 py-5 lg:py-8 lg:ps-[22%] lg:pe-8"
+        className="absolute inset-0 h-full w-full overflow-visible px-4 py-5 lg:py-2 lg:ps-[22%] lg:pe-6"
       >
         <defs>
           {/* Resplandor de la estela */}
           <filter id="tp-trail-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="4" />
           </filter>
+          <clipPath id="tp-co-lens">
+            <circle cx={LENS.x} cy={LENS.y} r={LENS.r} />
+          </clipPath>
+          {/* Mar gris muy claro, más luminoso arriba a la izquierda */}
+          <radialGradient id="tp-co-sea" cx="32%" cy="28%" r="80%">
+            <stop offset="0" stopColor="#FFFFFF" />
+            <stop offset="0.6" stopColor="#F0F6F6" />
+            <stop offset="1" stopColor="#E1E5EE" />
+          </radialGradient>
+          <radialGradient id="tp-co-shade">
+            <stop
+              offset={LENS.r / (LENS.r + PAD) - 0.08}
+              stopColor={`rgb(${INK})`}
+              stopOpacity={0.18}
+            />
+            <stop offset="1" stopColor={`rgb(${INK})`} stopOpacity={0} />
+          </radialGradient>
         </defs>
 
-        {/* Tierra alrededor y Colombia */}
-        <path d={NEIGHBORS_PATH} className="fill-white stroke-linea" strokeWidth={1} />
-        <path
-          d={COLOMBIA_PATH}
-          fill="#FFF7F0"
-          stroke="#FFB27A"
-          strokeWidth={1.6}
-          strokeLinejoin="round"
+        {/* Sombra suave del círculo */}
+        <circle cx={LENS.x} cy={LENS.y + 10} r={LENS.r + PAD} fill="url(#tp-co-shade)" />
+
+        {/* Mar, países vecinos en negro carbón y Colombia en el color resaltado */}
+        <g clipPath="url(#tp-co-lens)">
+          <circle cx={LENS.x} cy={LENS.y} r={LENS.r} fill="url(#tp-co-sea)" />
+          <path
+            d={NEIGHBORS_PATH}
+            fill={`rgba(${CHARCOAL},.82)`}
+            stroke="rgba(255,255,255,.55)"
+            strokeWidth={1.4}
+            strokeLinejoin="round"
+          />
+          <path
+            d={COLOMBIA_PATH}
+            fill="rgba(24,0,173,.14)"
+            stroke="#1800AD"
+            strokeWidth={3}
+            strokeLinejoin="round"
+          />
+        </g>
+        <circle
+          cx={LENS.x}
+          cy={LENS.y}
+          r={LENS.r}
+          fill="none"
+          stroke={`rgba(${INK},.18)`}
+          strokeWidth={2}
         />
 
         <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-          {/* Carreteras: borde blanco y vía naranja claro */}
+          {/* Carreteras: borde blanco y vía gris oscuro, para que se lean sobre
+              el naranja y la estela del viaje resalte */}
           {ROAD_PATHS.map((d) => (
-            <path key={`c${d}`} d={d} stroke="#FFFFFF" strokeWidth={5} />
+            <path key={`c${d}`} d={d} stroke="#FFFFFF" strokeWidth={6} strokeOpacity={0.9} />
           ))}
           {ROAD_PATHS.map((d) => (
-            <path key={`r${d}`} d={d} stroke="#FFB27A" strokeWidth={2.2} />
+            <path key={`r${d}`} d={d} stroke={`rgba(${INK},.62)`} strokeWidth={2.8} />
           ))}
           {/* Estela del viaje: crece detrás del camión, con resplandor, borde
               blanco y vía naranja; encima, el brillo que la recorre */}
@@ -204,7 +252,7 @@ export function ColombiaRoutesMap() {
               stroke="#FFFFFF"
               strokeWidth={4}
               strokeLinejoin="round"
-              className={`font-body text-[24px] sm:text-[20px] lg:text-[17px] ${
+              className={`font-body text-[30px] sm:text-[24px] lg:text-[19px] ${
                 c.main || end ? "fill-azul font-bold" : "fill-texto font-semibold"
               }`}
             >
@@ -270,7 +318,7 @@ function TripNotice({ node, phase, text }: { node: RouteNode; phase: TripPhase; 
   return (
     <g
       transform={`translate(${node.x} ${node.y - 34})`}
-      className={`font-body text-[22px] font-semibold transition-opacity duration-500 motion-reduce:hidden sm:text-[18px] lg:text-[15px] ${
+      className={`font-body text-[27px] font-semibold transition-opacity duration-500 motion-reduce:hidden sm:text-[22px] lg:text-[17px] ${
         shown ? "opacity-100" : "opacity-0"
       }`}
     >

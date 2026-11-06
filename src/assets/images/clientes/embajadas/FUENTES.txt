@@ -1,0 +1,15 @@
+Logos de las embajadas (franja de clientes del inicio). Todos de Wikimedia Commons,
+convertidos a PNG de 200 px de alto y recortados:
+
+us.png  Seal of the United States Department of State.svg — dominio público (U.S. Government)
+es.png  Escudo de España (mazonado).svg — dominio público
+ca.png  Canada wordmark.svg — dominio público (Gobierno de Canadá)
+mx.png  SRE logo.svg — dominio público (Secretaría de Relaciones Exteriores)
+in.png  Emblem of India.svg — dominio público (Gobierno de la India)
+fr.png  Ambassade de France en Colombie.svg — Licence Ouverte (Ministère de l'Europe et des Affaires étrangères)
+de.png  Auswärtiges Amt Logo.svg — dominio público
+eg.png  Coat of arms of Egypt (Official).svg — dominio público
+ae.png  Emblem of the United Arab Emirates.svg — dominio público
+it.png  Emblem of Italy.svg — dominio público
+
+Son emblemas oficiales: el cliente debe confirmar con cada embajada que puede mostrarlos.

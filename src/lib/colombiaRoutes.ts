@@ -32,8 +32,9 @@ export type Journey = {
   d: string;
 };
 
-/** Velocidad de crucero (unidades del mapa por segundo) y tramo de arranque y frenado */
-export const SPEED = 30;
+/** Velocidad de crucero (unidades del mapa por segundo; un 50 % más rápida desde
+ * nov. 2026, para que el recorrido se vea más dinámico) y tramo de arranque y frenado */
+export const SPEED = 45;
 export const EASE = 40;
 /** Pausa en el destino (ms, con el aviso de llegada) y duración del borrado de la estela */
 export const ARRIVE_PAUSE = 2600;
@@ -235,15 +236,31 @@ export function turnToward(from: number, to: number, dt: number, ms = 220) {
   return from + Math.max(-max, Math.min(max, step));
 }
 
-// Número pseudoaleatorio repetible (el mismo recorrido en cada visita)
+// Número pseudoaleatorio repetible (el mismo recorrido en cada visita):
+// mulberry32, con aritmética exacta de 32 bits (el anterior perdía precisión al
+// multiplicar y repetía destinos, sobre todo Santa Marta)
 export function nextSeed(seed: number) {
-  const s = (seed * 1103515245 + 12345) % 2147483648;
-  return { seed: s, value: s / 2147483648 };
+  const s = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(s ^ (s >>> 15), s | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return { seed: s, value: ((t ^ (t >>> 14)) >>> 0) / 4294967296 };
 }
 
-/** Otra ciudad como destino (nunca la misma en la que está el camión) */
-export function pickDestination(cities: RouteNode[], from: string, seed: number) {
-  const options = cities.filter((c) => c.id !== from);
+/** Viajes recientes a los que el camión no vuelve: recorre todo el país antes
+ * de repetir una ciudad (pedido del cliente, nov. 2026) */
+export const RECENT = 6;
+
+/** Otra ciudad como destino: nunca la misma en la que está el camión ni una de
+ * las `recent` (las últimas visitadas) */
+export function pickDestination(
+  cities: RouteNode[],
+  from: string,
+  seed: number,
+  recent: string[] = [],
+) {
+  const others = cities.filter((c) => c.id !== from);
+  const fresh = others.filter((c) => !recent.includes(c.id));
+  const options = fresh.length ? fresh : others;
   const r = nextSeed(seed);
   return { to: options[Math.floor(r.value * options.length)].id, seed: r.seed };
 }

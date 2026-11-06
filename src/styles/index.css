@@ -73,6 +73,7 @@
   --color-suave: #6b6e8a;
   --color-linea: #e1e5ee;
   --color-whatsapp: #25d366;
+  --color-resaltado: #1800ad; /* Países resaltados en los mapas (pedido del cliente, nov. 2026) */
 
   --font-title: "IBM Plex Sans", sans-serif;
   --font-body: "Montserrat", sans-serif;

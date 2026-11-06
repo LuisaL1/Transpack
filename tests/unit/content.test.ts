@@ -5,7 +5,7 @@ import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
 import { menusFor } from "@/data/navigation";
 import { serviceOptions } from "@/data/quote";
 import { CITIES, DESTINATIONS } from "@/data/worldMap";
-import { EMBASSY_FLAGS, embassyFlag } from "@/data/clientLogos";
+import { EMBASSY_FLAGS, EMBASSY_LOGOS, embassyFlag } from "@/data/clientLogos";
 import { CITY_PHOTOS, COUNTRY_PHOTOS, LOCALITY_PHOTOS } from "@/data/countryPhotos";
 import { LOCALITIES } from "@/data/bogotaMap";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
@@ -169,8 +169,9 @@ describe("Mapa y embajadas", () => {
     ).toEqual([...es.EMBASSIES].sort());
   });
 
-  it("cada embajada tiene su bandera, en el mismo orden en todos los idiomas", () => {
+  it("cada embajada tiene su bandera y su logo, en el mismo orden en todos los idiomas", () => {
     expect(Object.keys(EMBASSY_FLAGS).sort()).toEqual([...es.EMBASSIES].sort());
+    expect(Object.keys(EMBASSY_LOGOS).sort()).toEqual([...es.EMBASSIES].sort());
     for (const l of OTHERS) expect(siteFor(l).EMBASSIES, l).toHaveLength(es.EMBASSIES.length);
     es.EMBASSIES.forEach((e, i) => expect(embassyFlag(i), e).toBe(EMBASSY_FLAGS[e]));
   });
@@ -271,6 +272,8 @@ describe("Diseño", () => {
     "#FFB27A",
     "#FFA15C",
     "#FFF7F0",
+    // Países resaltados en los mapas (pedido del cliente, noviembre de 2026)
+    "#1800AD",
     // Funcionales: WhatsApp, YouTube, punto "en línea"
     "#25D366",
     "#FF3D3D",

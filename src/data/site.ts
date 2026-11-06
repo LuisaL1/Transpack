@@ -1,9 +1,9 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.png";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpeg";
+import imgCargador from "@/assets/images/cargador.png";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgOficina from "@/assets/images/oficina.jpg";
 import imgExterior from "@/assets/images/exterior.jpg";

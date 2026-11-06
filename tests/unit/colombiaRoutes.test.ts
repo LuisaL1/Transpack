@@ -9,6 +9,7 @@ import {
   MAX_TURN,
   journeyAt,
   pickDestination,
+  RECENT,
   roadPath,
   shineDash,
   shortestRoute,
@@ -93,6 +94,23 @@ describe("Mudanzas nacionales · mapa de rutas", () => {
     expect(Math.abs(turnToward(0, 180, 100))).toBeLessThanOrEqual(MAX_TURN * 100 + 1e-9);
     const j = buildJourney(tracks, "cali", "pasto");
     expect(Number.isFinite(journeyAt(j, j.length / 2).angle)).toBe(true);
+  });
+
+  it("el camión recorre el país: no vuelve a una ciudad de sus últimos viajes", () => {
+    let from = "bogota";
+    let seed = 7;
+    let recent = [from];
+    const seen: Record<string, number> = {};
+    for (let i = 0; i < 60; i++) {
+      const r = pickDestination(cities, from, seed, recent);
+      expect(recent, `viaje ${i}`).not.toContain(r.to);
+      seen[r.to] = (seen[r.to] ?? 0) + 1;
+      recent = [...recent, r.to].slice(-RECENT);
+      [from, seed] = [r.to, r.seed];
+    }
+    // Todas las ciudades salen, y ninguna mucho más que las otras
+    expect(Object.keys(seen)).toHaveLength(cities.length);
+    expect(Math.max(...Object.values(seen))).toBeLessThanOrEqual(7);
   });
 
   it("el nuevo destino nunca es la ciudad donde está el camión", () => {

@@ -1,5 +1,5 @@
 // Mapa animado de la portada: recorrido de la cámara, rutas y dibujo en
-// <canvas>, con los continentes en negro y Colombia y las rutas en naranja. Se carga aparte con
+// <canvas>, con los continentes en negro, Colombia en #1800AD y las rutas en naranja. Se carga aparte con
 // import() desde src/hooks/useGlobe.ts (trae d3-geo y las siluetas de los
 // países), así no pesa en el JS principal.
 //
@@ -301,6 +301,9 @@ export const lensRadius = (w: number, h: number) => Math.min(w, h) * LENS;
 // ─── Dibujo ─────────────────────────────────────────────────────────────────
 
 const ORANGE = "#FF7619";
+// Países resaltados (Colombia, Estados Unidos) y localidades de Bogotá: #1800AD
+// (pedido del cliente, nov. 2026; antes en naranja). Rutas y puntos siguen en naranja.
+const HIGHLIGHT = "24,0,173";
 const INK = "62,65,96"; // gris oscuro (texto del sitio)
 const GRAY = "107,110,138"; // gris medio
 const CHARCOAL = "34,34,40"; // negro carbón (continentes)
@@ -403,8 +406,9 @@ function pulse(
   ctx.fill();
 }
 
-// Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en
-// naranja claro con borde naranja, para que las rutas se lean encima.
+// Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en un
+// tono claro del color resaltado, con borde pleno, para que las rutas se lean
+// encima. `bogota` (0 a 1): mientras se ven las localidades, lo de afuera va en gris.
 function drawLand(
   ctx: CanvasRenderingContext2D,
   path: ReturnType<typeof geoPath>,
@@ -412,6 +416,7 @@ function drawLand(
   pano: number,
   close: number,
   borderWidth: number,
+  bogota: number,
 ) {
   // Continentes en negro (pedido del cliente, nov. 2026): un negro carbón algo
   // translúcido, no puro, para que no pese; las regiones donde opera más
@@ -419,7 +424,8 @@ function drawLand(
   const fills = [
     `rgba(${CHARCOAL},${0.48 + 0.08 * pano})`,
     `rgba(${CHARCOAL},${0.78 + 0.06 * pano})`,
-    "rgba(255,178,122,.95)",
+    // Estados Unidos: un tono más claro que Colombia (antes naranja claro)
+    `rgba(${HIGHLIGHT},.45)`,
   ];
   BY_ZONE.forEach((fc, z) => {
     ctx.fillStyle = fills[z];
@@ -432,11 +438,15 @@ function drawLand(
   ctx.beginPath();
   path(BORDERS);
   ctx.stroke();
-  ctx.fillStyle = `rgba(255,118,25,${0.95 - 0.75 * close})`;
   ctx.beginPath();
   path(COLOMBIA);
+  ctx.fillStyle = `rgba(${HIGHLIGHT},${(0.95 - 0.8 * close) * (1 - bogota)})`;
   ctx.fill();
-  ctx.strokeStyle = close > 0 ? ORANGE : "#ffffff";
+  if (bogota > 0) {
+    ctx.fillStyle = `rgba(${GRAY},${0.3 * bogota})`;
+    ctx.fill();
+  }
+  ctx.strokeStyle = close > 0 ? `rgb(${HIGHLIGHT})` : "#ffffff";
   ctx.lineWidth = (close > 0 ? 2.2 : borderWidth) * dpr;
   ctx.stroke();
 }
@@ -537,7 +547,7 @@ const span = (l: (typeof LOCALITIES)[number]) => {
 };
 const LOCALITY_LABELS = [...LOCALITIES].sort((a, b) => span(b) - span(a));
 
-// Bogotá con sus localidades, en tonos de naranja con bordes blancos y sus
+// Bogotá con sus localidades, en tonos del color resaltado con bordes blancos y sus
 // nombres (uno que se montaría sobre otro ya puesto se omite)
 function drawBogota(
   ctx: CanvasRenderingContext2D,
@@ -555,10 +565,10 @@ function drawBogota(
   if (s.bogota <= 0) return;
   ctx.save();
   ctx.globalAlpha *= s.bogota;
-  const tones = [0.22, 0.32, 0.42];
+  const tones = [0.16, 0.26, 0.36];
   LOCALITIES.forEach((l, i) => {
     const on = labels.selected === l.name;
-    ctx.fillStyle = on ? "rgba(255,118,25,.85)" : `rgba(255,118,25,${tones[i % 3]})`;
+    ctx.fillStyle = on ? `rgba(${HIGHLIGHT},.85)` : `rgba(${HIGHLIGHT},${tones[i % 3]})`;
     ctx.beginPath();
     path(l.geometry);
     ctx.fill();
@@ -699,7 +709,7 @@ export function drawGlobe(
   ctx.beginPath();
   path(GRATICULE);
   ctx.stroke();
-  drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)));
+  drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)), s.bogota);
   drawBogota(ctx, path, proj, s, dpr, labels);
   ctx.textAlign = "start";
   drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close * (1 - s.bogota), hits);

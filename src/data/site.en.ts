@@ -1,10 +1,10 @@
 // English version of the site content. Same structure as site.ts: when a text
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.png";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpeg";
+import imgCargador from "@/assets/images/cargador.png";
 import imgGuacales from "@/assets/images/guacales.jpg";
 import imgOficina from "@/assets/images/oficina.jpg";
 import imgExterior from "@/assets/images/exterior.jpg";

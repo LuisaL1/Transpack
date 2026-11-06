@@ -30,6 +30,20 @@ import flagDe from "@/assets/images/clientes/banderas/de.svg";
 import flagEg from "@/assets/images/clientes/banderas/eg.svg";
 import flagAe from "@/assets/images/clientes/banderas/ae.svg";
 import flagIt from "@/assets/images/clientes/banderas/it.svg";
+// Logos de las embajadas (Wikimedia Commons, dominio público o Licence Ouverte):
+// el de la Embajada de Francia en Colombia; para las demás, la imagen oficial de
+// su cancillería o gobierno (Estados Unidos: sello del Departamento de Estado) o
+// el escudo o emblema nacional (España: el logo del ministerio en grises no se leía). En PNG pequeño, recortados y a 200 px de alto.
+import logoUs from "@/assets/images/clientes/embajadas/us.png";
+import logoEs from "@/assets/images/clientes/embajadas/es.png";
+import logoCa from "@/assets/images/clientes/embajadas/ca.png";
+import logoMx from "@/assets/images/clientes/embajadas/mx.png";
+import logoIn from "@/assets/images/clientes/embajadas/in.png";
+import logoFr from "@/assets/images/clientes/embajadas/fr.png";
+import logoDe from "@/assets/images/clientes/embajadas/de.png";
+import logoEg from "@/assets/images/clientes/embajadas/eg.png";
+import logoAe from "@/assets/images/clientes/embajadas/ae.png";
+import logoIt from "@/assets/images/clientes/embajadas/it.png";
 import { EMBASSIES } from "@/data/site";
 
 export const CLIENT_LOGOS = [
@@ -69,11 +83,26 @@ export const EMBASSY_FLAGS: Record<string, string> = {
  * los idiomas) */
 export const embassyFlag = (i: number) => EMBASSY_FLAGS[EMBASSIES[i]];
 
+/** Logo de cada embajada, por su nombre en español ("ratio" = ancho / alto) */
+export const EMBASSY_LOGOS: Record<string, { src: string; ratio: number }> = {
+  "Estados Unidos": { src: logoUs, ratio: 1 },
+  España: { src: logoEs, ratio: 0.97 },
+  Canadá: { src: logoCa, ratio: 4.18 },
+  México: { src: logoMx, ratio: 1.5 },
+  India: { src: logoIn, ratio: 0.63 },
+  Francia: { src: logoFr, ratio: 1.1 },
+  Alemania: { src: logoDe, ratio: 1.82 },
+  Egipto: { src: logoEg, ratio: 0.73 },
+  "Emiratos Árabes": { src: logoAe, ratio: 0.78 },
+  Italia: { src: logoIt, ratio: 0.88 },
+};
+export const embassyLogo = (i: number) => EMBASSY_LOGOS[EMBASSIES[i]];
+
 /** Logos de clientes con las embajadas repartidas entre ellos (franja del hero) */
 export function logosWithEmbassies<E>(embassies: E[]) {
   const items: (
     | { kind: "logo"; logo: (typeof CLIENT_LOGOS)[number] }
-    | { kind: "embassy"; embassy: E; flag: string }
+    | { kind: "embassy"; embassy: E; logo: { src: string; ratio: number } }
   )[] = [];
   const n = CLIENT_LOGOS.length;
   CLIENT_LOGOS.forEach((logo, i) => {
@@ -81,7 +110,7 @@ export function logosWithEmbassies<E>(embassies: E[]) {
     const from = Math.floor((i * embassies.length) / n);
     const to = Math.floor(((i + 1) * embassies.length) / n);
     for (let k = from; k < to; k++)
-      items.push({ kind: "embassy", embassy: embassies[k], flag: embassyFlag(k) });
+      items.push({ kind: "embassy", embassy: embassies[k], logo: embassyLogo(k) });
   });
   return items;
 }

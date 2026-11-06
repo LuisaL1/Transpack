@@ -96,30 +96,20 @@ export function Hero() {
             >
               {items.map((item) => {
                 if (item.kind === "embassy") {
-                  // Embajadas: bandera a color y el nombre en el gris de los logos
+                  // Embajadas: su logo en grises (en silueta, como los demás, se
+                  // perderían los escudos); el nombre queda para lectores de pantalla
                   const name = `${t.embassyOf} ${t.embassyName(item.embassy)}`;
+                  const h = logoHeight(item.logo.ratio) * 2;
                   return (
-                    <div
+                    <img
+                      decoding="async"
                       key={item.embassy}
+                      src={item.logo.src}
+                      alt={k === 0 ? name : ""}
                       title={name}
-                      className="flex shrink-0 items-center gap-4 opacity-90 transition-opacity duration-300 hover:opacity-100"
-                    >
-                      <img
-                        decoding="async"
-                        src={item.flag}
-                        alt=""
-                        className="h-12 w-16 shrink-0 rounded-[5px] object-cover ring-1 ring-black/10"
-                      />
-                      <span className="text-left font-title leading-tight text-black/55">
-                        <span className="block text-[0.8rem] font-semibold uppercase tracking-[0.16em]">
-                          {t.embassyOf}
-                        </span>
-                        <span className="block whitespace-nowrap text-[1.45rem] font-semibold">
-                          {t.embassyName(item.embassy)}
-                        </span>
-                        {k === 0 && <span className="sr-only">{name}</span>}
-                      </span>
-                    </div>
+                      style={{ height: h, width: h * item.logo.ratio }}
+                      className="shrink-0 object-contain opacity-75 contrast-125 grayscale transition-opacity duration-300 hover:opacity-100"
+                    />
                   );
                 }
                 const c = item.logo;
