@@ -410,8 +410,7 @@ function pulse(
 
 // Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en un
 // tono claro del color resaltado, con borde pleno, para que las rutas se lean
-// encima. `bogota` (0 a 1): mientras se ven las localidades, lo de afuera va en
-// el negro carbón de los demás países.
+// encima. `bogota` (0 a 1): mientras se ven las localidades, Colombia se apaga.
 function drawLand(
   ctx: CanvasRenderingContext2D,
   path: ReturnType<typeof geoPath>,
@@ -445,12 +444,6 @@ function drawLand(
   path(COLOMBIA);
   ctx.fillStyle = `rgba(${HIGHLIGHT},${(0.95 - 0.8 * close) * (1 - bogota)})`;
   ctx.fill();
-  if (bogota > 0) {
-    // Lo de afuera de Bogotá, en el negro carbón de los demás países
-    // Un poco más claro que los demás países (pedido del cliente)
-    ctx.fillStyle = `rgba(${CHARCOAL},${0.62 * bogota})`;
-    ctx.fill();
-  }
   ctx.strokeStyle = close > 0 ? `rgb(${HIGHLIGHT})` : "#ffffff";
   ctx.lineWidth = (close > 0 ? 2.2 : borderWidth) * dpr;
   ctx.stroke();
@@ -534,13 +527,7 @@ function drawLocal(
 
 // Proyección del último cuadro con las localidades a la vista (para saber cuál
 // se toca); null si no se ven
-let localityView: {
-  proj: GeoProjection;
-  dpr: number;
-  cx: number;
-  cy: number;
-  lens: number;
-} | null = null;
+let localityView: { proj: GeoProjection; dpr: number } | null = null;
 
 // Nombres de las localidades: primero las grandes (por el tamaño de su recuadro);
 // las más pequeñas del centro, si no caben, muestran su nombre al tocarlas
@@ -563,17 +550,14 @@ function drawBogota(
   labels: GlobeLabels,
 ) {
   const { width: W, height: H } = ctx.canvas;
-  localityView =
-    s.bogota > 0.5 && s.map > 0.5
-      ? { proj, dpr, cx: W / 2, cy: H / 2, lens: lensRadius(W, H) }
-      : null;
+  localityView = s.bogota > 0.5 && s.map > 0.5 ? { proj, dpr } : null;
   if (s.bogota <= 0) return;
   ctx.save();
   ctx.globalAlpha *= s.bogota;
-  // Para que resalten (estilo elegido por el cliente, nov. 2026): todas las
-  // localidades en el mismo color resaltado, con bordes blancos gruesos, sobre el
-  // negro carbón de los demás países y con una sombra debajo; la que se toca o
-  // está bajo el puntero, en naranja
+  // Con los colores de Colombia en la vista nacional (elegido por el cliente, nov.
+  // 2026): las localidades en un tono claro del color resaltado con bordes en el
+  // color pleno y una sombra debajo, sobre el fondo de la página; la que se toca
+  // o está bajo el puntero, en naranja
   ctx.save();
   ctx.shadowColor = `rgba(${INK},.45)`;
   ctx.shadowBlur = 22 * dpr;
@@ -591,12 +575,11 @@ function drawBogota(
     ctx.beginPath();
     path(l.geometry);
     ctx.fill();
-    // Azul suavizado (sobre blanco), pedido del cliente
-    ctx.fillStyle = on ? ORANGE : `rgba(${HIGHLIGHT},.78)`;
+    ctx.fillStyle = on ? ORANGE : `rgba(${HIGHLIGHT},.15)`;
     ctx.fill();
   }
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 3 * dpr;
+  ctx.strokeStyle = `rgb(${HIGHLIGHT})`;
+  ctx.lineWidth = 2 * dpr;
   ctx.lineJoin = "round";
   for (const l of LOCALITIES) {
     ctx.beginPath();
@@ -607,13 +590,13 @@ function drawBogota(
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
-    ctx.fillStyle = "rgba(255,255,255,.75)";
+    ctx.fillStyle = `rgba(${INK},.55)`;
     ctx.textAlign = "center";
     ctx.fillText(labels.city.toUpperCase(), n[0], n[1]);
     ctx.letterSpacing = "0px";
   }
   ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
-  ctx.fillStyle = "rgba(255,255,255,.6)";
+  ctx.fillStyle = `rgba(${INK},.6)`;
   ctx.textAlign = "center";
   // Abajo a la derecha, donde no hay localidades
   const lens = lensRadius(W, H);
@@ -631,11 +614,11 @@ function drawBogota(
     placed.push(box);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    // En blanco con borde azul oscuro, para que se lea sobre las localidades
+    // Como los nombres de las ciudades de Colombia: gris oscuro con borde blanco
     ctx.lineWidth = 3 * dpr;
-    ctx.strokeStyle = "rgba(16,0,110,.55)";
+    ctx.strokeStyle = "rgba(255,255,255,.85)";
     ctx.strokeText(l.name, p[0], p[1]);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = `rgb(${INK})`;
     ctx.fillText(l.name, p[0], p[1]);
   }
   ctx.textAlign = "start";
@@ -645,7 +628,7 @@ function drawBogota(
 /** Localidad de Bogotá bajo el punto (px de CSS del canvas), si se ven */
 export function localityAt(x: number, y: number): Hit | null {
   const v = localityView;
-  if (!v || Math.hypot(x * v.dpr - v.cx, y * v.dpr - v.cy) > v.lens) return null;
+  if (!v) return null;
   const at = v.proj.invert([x * v.dpr, y * v.dpr]);
   const l = at && LOCALITIES.find((l) => geoContains(l.geometry, at));
   return l ? { kind: "locality", place: l, x, y } : null;
@@ -695,7 +678,9 @@ export function drawGlobe(
   const px = (p: { x: number; y: number }) => [cx + R * p.x, cy - R * p.y] as const;
 
   ctx.save();
-  ctx.globalAlpha = s.map;
+  // Mientras se ven las localidades de Bogotá no se ve el globo (pedido del
+  // cliente, nov. 2026): aparece cuando la cámara se aleja hacia Colombia
+  ctx.globalAlpha = s.map * (1 - s.bogota);
 
   // Sombra suave del globo (solo de lejos)
   if (near < 1) {
@@ -733,8 +718,6 @@ export function drawGlobe(
   path(GRATICULE);
   ctx.stroke();
   drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)), s.bogota);
-  drawBogota(ctx, path, proj, s, dpr, labels);
-  ctx.textAlign = "start";
   drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close * (1 - s.bogota), hits);
 
   // Rutas internacionales: todas con el mismo estilo. Un tramo solo queda oculto
@@ -841,5 +824,30 @@ export function drawGlobe(
     ctx.stroke();
   }
   ctx.restore();
+
+  // Bogotá: solo las localidades, sobre el fondo de la página, fuera del círculo;
+  // se dibujan aparte para desvanecer hacia abajo el sur rural, que sigue más
+  // allá del encuadre
+  localityView = null;
+  if (s.bogota > 0) {
+    layer ??= document.createElement("canvas");
+    if (layer.width !== W || layer.height !== H) [layer.width, layer.height] = [W, H];
+    const lc = layer.getContext("2d")!;
+    lc.clearRect(0, 0, W, H);
+    drawBogota(lc, geoPath(proj, lc), proj, s, dpr, labels);
+    lc.save();
+    lc.globalCompositeOperation = "destination-in";
+    const fade = lc.createLinearGradient(0, cy + lens * 0.55, 0, cy + lens * 0.98);
+    fade.addColorStop(0, "#000");
+    fade.addColorStop(1, "rgba(0,0,0,0)");
+    lc.fillStyle = fade;
+    lc.fillRect(0, 0, W, H);
+    lc.restore();
+    ctx.save();
+    ctx.globalAlpha = s.map;
+    ctx.drawImage(layer, 0, 0);
+    ctx.restore();
+  }
   return hits;
 }
+let layer: HTMLCanvasElement | null = null;

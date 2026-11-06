@@ -248,13 +248,15 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
   negro pedido en noviembre de 2026), con Colombia en `#1800AD` (`--color-resaltado`;
   antes naranja, cambio pedido en noviembre de 2026), Estados Unidos en un tono más claro
-  del mismo color, las localidades de Bogotá todas en ese color, con bordes
-  blancos gruesos, sobre el negro carbón de los demás países (estilo elegido por el
-  cliente en noviembre de 2026; la que se toca o está bajo el puntero, en naranja), y
+  del mismo color, las localidades de Bogotá con los colores de Colombia en la
+  vista nacional (tono claro de ese color con bordes en el color pleno), sin globo
+  alrededor (elegido por el cliente en noviembre de 2026; la que se
+  toca o está bajo el puntero, en naranja), y
   las rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
   1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
-  en un círculo con **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden
-  tocar) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
+  en **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden tocar; solo las
+  localidades sobre el fondo de la página, sin el globo, y el sur rural se desvanece
+  hacia abajo: pedido del cliente, noviembre de 2026) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
   capitales de departamento (`CITIES`, unos 8 s) → por continente
   (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
   solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo

@@ -360,14 +360,23 @@ function TripNotice({ node, phase, text }: { node: RouteNode; phase: TripPhase; 
 }
 
 // Camión visto desde arriba, mirando a la derecha y centrado en la vía (el
-// punto 0,0): furgón azul con franja blanca y cabina blanca con parabrisas
-// azul. Así gira con las curvas sin tener que voltearse.
+// punto 0,0): furgón azul con la franja diagonal del logo (ancha, con su flecha
+// y una línea delgada al lado) y cabina blanca con parabrisas azul. Así gira con
+// las curvas sin tener que voltearse.
 function Truck() {
   return (
     <g transform="scale(1.5)">
       <rect x={-14} y={-4.4} width={28} height={11} rx={2.2} fill="#1D2050" opacity={0.2} />
+      <clipPath id="tp-truck-box">
+        <rect x={-15} y={-5.5} width={19} height={11} rx={1.6} />
+      </clipPath>
       <rect x={-15} y={-5.5} width={19} height={11} rx={1.6} fill="#272B7C" />
-      <rect x={-15} y={-1} width={19} height={2} fill="#FFFFFF" />
+      {/* Franja diagonal del logo, de abajo a la izquierda hacia arriba a la derecha */}
+      <g clipPath="url(#tp-truck-box)" fill="#FFFFFF">
+        <path d="M-15.5,4.2L-1.6,-5.8H2.6L-11.3,4.2Z" />
+        <path d="M-1.6,-5.8L3.6,-5.8L3.6,-1.2Z" />
+        <path d="M-12.2,6.2L1.8,-3.8L2.3,-3.1L-11.7,6.9Z" />
+      </g>
       <rect
         x={5}
         y={-4.8}
