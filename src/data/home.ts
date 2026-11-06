@@ -22,6 +22,10 @@ export const heroText = (tr: Tr) => ({
   cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   ctaServices: tr("Ver servicios", "See services"),
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
+  embassyOf: tr("Embajada de", "Embassy of"),
+  // "the United States", "the United Arab Emirates"
+  embassyName: (country: string) =>
+    tr(country, /^United/.test(country) ? `the ${country}` : country),
   clientsTitle: tr(
     "Empresas, embajadas y organismos que han confiado su movilidad a Transpack",
     "Companies, embassies and institutions that have trusted Transpack with their mobility",

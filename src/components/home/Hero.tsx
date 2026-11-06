@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { heroText } from "@/data/home";
-import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
+import { logoHeight, logosWithEmbassies } from "@/data/clientLogos";
+import { useSite } from "@/hooks/useContent";
 import { Bi, btn } from "@/components/ui";
 import { Globe } from "@/components/home/Globe";
 import { container } from "@/components/ui/layout";
@@ -31,6 +32,7 @@ function highlight(text: string, marks: string[]) {
 export function Hero() {
   const { lp, tr } = useLang();
   const t = heroText(tr);
+  const items = logosWithEmbassies(useSite().EMBASSIES);
   return (
     <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[180px]">
       <div className="relative">
@@ -92,20 +94,50 @@ export function Hero() {
               className="animate-marquee flex shrink-0 items-center gap-16 pr-16"
               aria-hidden={k === 1}
             >
-              {CLIENT_LOGOS.map((c) => (
-                <img
-                  decoding="async"
-                  key={c.name}
-                  src={c.src}
-                  alt={k === 0 ? c.name : ""}
-                  title={c.name}
-                  style={{
-                    height: logoHeight(c.ratio) * 2,
-                    width: logoHeight(c.ratio) * c.ratio * 2,
-                  }}
-                  className="shrink-0 object-contain opacity-55 brightness-0 transition-opacity duration-300 hover:opacity-90"
-                />
-              ))}
+              {items.map((item) => {
+                if (item.kind === "embassy") {
+                  // Embajadas: bandera a color y el nombre en el gris de los logos
+                  const name = `${t.embassyOf} ${t.embassyName(item.embassy)}`;
+                  return (
+                    <div
+                      key={item.embassy}
+                      title={name}
+                      className="flex shrink-0 items-center gap-4 opacity-90 transition-opacity duration-300 hover:opacity-100"
+                    >
+                      <img
+                        decoding="async"
+                        src={item.flag}
+                        alt=""
+                        className="h-12 w-16 shrink-0 rounded-[5px] object-cover ring-1 ring-black/10"
+                      />
+                      <span className="text-left font-title leading-tight text-black/55">
+                        <span className="block text-[0.8rem] font-semibold uppercase tracking-[0.16em]">
+                          {t.embassyOf}
+                        </span>
+                        <span className="block whitespace-nowrap text-[1.45rem] font-semibold">
+                          {t.embassyName(item.embassy)}
+                        </span>
+                        {k === 0 && <span className="sr-only">{name}</span>}
+                      </span>
+                    </div>
+                  );
+                }
+                const c = item.logo;
+                return (
+                  <img
+                    decoding="async"
+                    key={c.name}
+                    src={c.src}
+                    alt={k === 0 ? c.name : ""}
+                    title={c.name}
+                    style={{
+                      height: logoHeight(c.ratio) * 2,
+                      width: logoHeight(c.ratio) * c.ratio * 2,
+                    }}
+                    className="shrink-0 object-contain opacity-55 brightness-0 transition-opacity duration-300 hover:opacity-90"
+                  />
+                );
+              })}
             </div>
           ))}
         </div>

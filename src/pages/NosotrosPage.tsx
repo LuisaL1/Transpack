@@ -7,7 +7,7 @@ import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
 import { aboutText, aboutTimeline, aboutValues, ceoInfo } from "@/data/about";
 import { container, section } from "@/components/ui/layout";
-import { CLIENT_LOGOS, logoHeight } from "@/data/clientLogos";
+import { CLIENT_LOGOS, embassyFlag, logoHeight } from "@/data/clientLogos";
 import { Bi, btn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 
@@ -210,9 +210,16 @@ export function NosotrosPage() {
               {t.embajadasHanConfiadoNosotros}
             </h2>
             <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {EMBASSIES.map((e) => (
-                <span key={e} className="flex items-center gap-2 text-[0.92rem] text-white">
-                  <Bi n="flag" className="text-naranja" /> {e}
+              {EMBASSIES.map((e, i) => (
+                <span key={e} className="flex items-center gap-2.5 text-[0.92rem] text-white">
+                  <img
+                    src={embassyFlag(i)}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="h-[15px] w-5 shrink-0 rounded-[2px] object-cover ring-1 ring-white/20"
+                  />
+                  {e}
                 </span>
               ))}
             </div>

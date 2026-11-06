@@ -18,6 +18,19 @@ import santander from "@/assets/images/clientes/santander.svg";
 import nexans from "@/assets/images/clientes/nexans.svg";
 import cencosud from "@/assets/images/clientes/cencosud.svg";
 import smartFit from "@/assets/images/clientes/smartfit.svg";
+// Banderas de las embajadas atendidas (flag-icons, licencia MIT; España y México
+// en PNG pequeño porque su escudo pesa mucho en SVG)
+import flagUs from "@/assets/images/clientes/banderas/us.svg";
+import flagEs from "@/assets/images/clientes/banderas/es.png";
+import flagCa from "@/assets/images/clientes/banderas/ca.svg";
+import flagMx from "@/assets/images/clientes/banderas/mx.png";
+import flagIn from "@/assets/images/clientes/banderas/in.svg";
+import flagFr from "@/assets/images/clientes/banderas/fr.svg";
+import flagDe from "@/assets/images/clientes/banderas/de.svg";
+import flagEg from "@/assets/images/clientes/banderas/eg.svg";
+import flagAe from "@/assets/images/clientes/banderas/ae.svg";
+import flagIt from "@/assets/images/clientes/banderas/it.svg";
+import { EMBASSIES } from "@/data/site";
 
 export const CLIENT_LOGOS = [
   { name: "DHL", src: dhl, ratio: 7.18 },
@@ -37,6 +50,41 @@ export const CLIENT_LOGOS = [
   { name: "Cencosud", src: cencosud, ratio: 1.9 },
   { name: "Smart Fit", src: smartFit, ratio: 2.74 },
 ];
+
+/** Bandera de cada embajada, por su nombre en español (EMBASSIES de site.ts) */
+export const EMBASSY_FLAGS: Record<string, string> = {
+  "Estados Unidos": flagUs,
+  España: flagEs,
+  Canadá: flagCa,
+  México: flagMx,
+  India: flagIn,
+  Francia: flagFr,
+  Alemania: flagDe,
+  Egipto: flagEg,
+  "Emiratos Árabes": flagAe,
+  Italia: flagIt,
+};
+
+/** Bandera de la embajada en la posición `i` de EMBASSIES (mismo orden en todos
+ * los idiomas) */
+export const embassyFlag = (i: number) => EMBASSY_FLAGS[EMBASSIES[i]];
+
+/** Logos de clientes con las embajadas repartidas entre ellos (franja del hero) */
+export function logosWithEmbassies<E>(embassies: E[]) {
+  const items: (
+    | { kind: "logo"; logo: (typeof CLIENT_LOGOS)[number] }
+    | { kind: "embassy"; embassy: E; flag: string }
+  )[] = [];
+  const n = CLIENT_LOGOS.length;
+  CLIENT_LOGOS.forEach((logo, i) => {
+    items.push({ kind: "logo", logo });
+    const from = Math.floor((i * embassies.length) / n);
+    const to = Math.floor(((i + 1) * embassies.length) / n);
+    for (let k = from; k < to; k++)
+      items.push({ kind: "embassy", embassy: embassies[k], flag: embassyFlag(k) });
+  });
+  return items;
+}
 
 // Altura que iguala el área visual de cada logo (los anchos se ven más bajos)
 export const logoHeight = (ratio: number) =>

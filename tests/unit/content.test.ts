@@ -5,6 +5,7 @@ import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
 import { menusFor } from "@/data/navigation";
 import { serviceOptions } from "@/data/quote";
 import { CITIES, DESTINATIONS } from "@/data/worldMap";
+import { EMBASSY_FLAGS, embassyFlag } from "@/data/clientLogos";
 import { CITY_PHOTOS, COUNTRY_PHOTOS, LOCALITY_PHOTOS } from "@/data/countryPhotos";
 import { LOCALITIES } from "@/data/bogotaMap";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
@@ -166,6 +167,12 @@ describe("Mapa y embajadas", () => {
         .map((d) => d.name)
         .sort(),
     ).toEqual([...es.EMBASSIES].sort());
+  });
+
+  it("cada embajada tiene su bandera, en el mismo orden en todos los idiomas", () => {
+    expect(Object.keys(EMBASSY_FLAGS).sort()).toEqual([...es.EMBASSIES].sort());
+    for (const l of OTHERS) expect(siteFor(l).EMBASSIES, l).toHaveLength(es.EMBASSIES.length);
+    es.EMBASSIES.forEach((e, i) => expect(embassyFlag(i), e).toBe(EMBASSY_FLAGS[e]));
   });
 
   it("cada destino tiene la foto de su capital, enlazada a Wikimedia (no descargada)", () => {

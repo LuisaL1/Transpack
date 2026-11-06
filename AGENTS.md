@@ -91,7 +91,7 @@ src/
 │   ├── meta.ts             Títulos, descripciones y migas de cada página por idioma (SEO)
 │   ├── consent.ts          Textos del aviso de cookies
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
-│   ├── clientLogos.ts      Logos de clientes
+│   ├── clientLogos.ts      Logos de clientes y banderas de las embajadas (franja del inicio y Nosotros)
 │   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
 │   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
 │   ├── bogotaMap.ts        Localidades de Bogotá (GENERADO con `pnpm map:bogota`, no editar a mano)
@@ -204,7 +204,11 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   cifra cuenta desde 0 hasta su valor (`StatCounter`), desde que el carrusel se
   ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
   valor completo.
-- Embajadas atendidas: las 10 de `EMBASSIES`. En el mapa, solo esos destinos
+- Embajadas atendidas: las 10 de `EMBASSIES`. En la franja de clientes del inicio y en
+  Nosotros se muestran con la **bandera** del país (flag-icons, MIT) y el nombre, no con
+  escudos ni sellos oficiales (su uso comercial está restringido en varios países;
+  decidido en noviembre de 2026). Al agregar una embajada, agregue su bandera en
+  `EMBASSY_FLAGS` (`src/data/clientLogos.ts`). En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en
   `scripts/generate-world-map.mjs`.
