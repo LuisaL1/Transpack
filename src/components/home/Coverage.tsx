@@ -9,8 +9,8 @@ import { container, section } from "@/components/ui/layout";
 // Cobertura global: la foto del avión y el buque con efecto de velocidad
 // (editada por el cliente, oct. 2026) es la protagonista: ocupa toda la
 // sección de borde a borde. El texto va a la izquierda sobre un degradado azul
-// que se abre hacia la derecha; la foto empieza a un tercio del ancho para que
-// el avión quede a la vista en el centro y el buque a la derecha; abajo, las
+// que se abre hacia la derecha; la foto empieza a un tercio del ancho y se
+// encuadra hacia la derecha para que el buque se vea completo; abajo, las
 // cifras de la red sobre tarjetas translúcidas. En celular la foto va arriba,
 // completa, y el texto debajo sobre azul.
 export function Coverage() {
@@ -29,7 +29,7 @@ export function Coverage() {
         decoding="async"
         src={imgGlobal}
         alt={t.imageAlt}
-        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-left lg:block"
+        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[85%_50%] lg:block"
       />
       {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
       <div
@@ -44,7 +44,7 @@ export function Coverage() {
             decoding="async"
             src={imgGlobal}
             alt={t.imageAlt}
-            className="aspect-[16/10] w-full object-cover shadow-[var(--shadow-float)]"
+            className="aspect-[1280/698] w-full object-cover shadow-[var(--shadow-float)]"
           />
         </Reveal>
         <Reveal>

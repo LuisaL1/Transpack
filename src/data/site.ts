@@ -17,6 +17,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
+import imgResidencial from "@/assets/images/residencial.jpeg"
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -385,9 +386,9 @@ export const SEGMENTS = [
     ],
     cta: "Cotizar mudanza de hogar",
     quote: "local" as QuoteService,
-    image: imgInspeccionCanina,
-    // Recorte desde la derecha: que no se corte el perro
-    imageRight: true,
+    image: imgResidencial,
+    // Foto panorámica: el marco usa su proporción para que se vea completa
+    imageWide: true,
   },
   {
     id: "corporate",
@@ -403,6 +404,8 @@ export const SEGMENTS = [
     cta: "Solicitar propuesta corporativa",
     quote: "empresarial" as QuoteService,
     image: imgOficina,
+    // Foto panorámica: el marco usa su proporción para que se vea completa
+    imageWide: true,
   },
   {
     id: "diplomatic",
@@ -418,7 +421,7 @@ export const SEGMENTS = [
     ],
     cta: "Contactar al área institucional",
     quote: "internacional" as QuoteService,
-    image: imgGuacales,
+    image: imgArteHogar,
   },
   {
     id: "diaspora",

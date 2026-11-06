@@ -49,13 +49,16 @@ export function Segments() {
             role="tabpanel"
             className="animate-fade-up grid items-center gap-8 rounded-[22px] border border-linea bg-white p-4 shadow-sm md:p-6 lg:grid-cols-2 lg:gap-16"
           >
-            <div className="aspect-[4/3.3] overflow-hidden">
+            {/* Las fotos panorámicas (imageWide) van completas, en su proporción */}
+            <div
+              className={`${"imageWide" in seg && seg.imageWide ? "aspect-[1280/698]" : "aspect-[4/3.3]"} overflow-hidden`}
+            >
               <img
                 loading="lazy"
                 decoding="async"
                 src={seg.image}
                 alt=""
-                className={`h-full w-full object-cover ${"imageRight" in seg && seg.imageRight ? "object-right" : ""}`}
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="px-2 py-2 lg:pr-6">

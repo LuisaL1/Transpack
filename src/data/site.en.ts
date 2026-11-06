@@ -81,7 +81,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgEmbalajeHogar,
     kicker: "Moving in Bogotá",
-    headline: "Your move across town, with no stress and no setbacks",
+    headline: "Your move across town, stress-free",
     intro:
       "We plan every local move around the origin and destination property: floor, elevator, stairs, truck access and the hours allowed by building management. That way we arrive with the right crew and the right time.",
     includes: [
@@ -119,7 +119,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgCargue,
     kicker: "Between Colombian cities",
-    headline: "Your belongings protected from door to door",
+    headline: "Your belongings, door to door",
     intro:
       "In a national move the inventory is the foundation of everything: it lets us calculate the volume, the vehicle and the resources needed. We take care of security, protection and on-time delivery on every route.",
     includes: [
@@ -283,7 +283,7 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residential",
     kicker: "Transpack Residential",
-    title: "Your home, in the same condition at its new destination",
+    title: "We move your home, not just your belongings",
     text: "",
     points: [
       "Packing, furniture disassembly and reassembly",
@@ -293,15 +293,15 @@ export const SEGMENTS = [
     cta: "Get a quote for a home move",
     quote: "local" as QuoteService,
     image: imgInspeccionCanina,
-    // Recorte desde la derecha: que no se corte el perro
-    imageRight: true,
+    // Foto panorámica: el marco usa su proporción para que se vea completa
+    imageWide: true,
   },
   {
     id: "corporate",
     icon: "buildings",
     tab: "Corporate Mobility",
     kicker: "Transpack Corporate Mobility",
-    title: "One provider to move offices and talent",
+    title: "Transpack, a single provider to move your office with talent",
     text: "",
     points: [
       "Account executive and recurring operations",
@@ -310,6 +310,8 @@ export const SEGMENTS = [
     cta: "Request a corporate proposal",
     quote: "empresarial" as QuoteService,
     image: imgOficina,
+    // Foto panorámica: el marco usa su proporción para que se vea completa
+    imageWide: true,
   },
   {
     id: "diplomatic",

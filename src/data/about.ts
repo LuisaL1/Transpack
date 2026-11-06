@@ -46,45 +46,45 @@ export const aboutTimeline = (tr: Tr) => [
     ),
   },
   {
-    year: tr("Experiencia Global", "Decades of network"),
+    year: tr("Experiencia Global", "Global Experience"),
     text: tr(
       "Transformamos décadas de experiencia en soluciones confiables para cada reubicación internacional.",
-      "We built a network of more than 2,000 agents and strategic partners in 176 countries.",
+      "We turned decades of experience into reliable solutions for every international relocation.",
     ),
   },
   {
-    year: tr("Mar y Aire", "Today"),
+    year: tr("Mar y Aire", "Sea and Air"),
     text: tr(
       "Ampliamos nuestras capacidades para trasladar cada patrimonio por vía marítima o aérea.",
-      "We run local, national and international moves, storage and corporate mobility.",
+      "We expanded our capabilities to move every household's belongings by sea or air.",
     ),
   },
   {
-    year: "Red Mundial",
+    year: tr("Red Mundial", "Worldwide Network"),
     text: tr(
       "Construimos una red de más de 2.000 agentes internacionales para llegar a 176 países.",
-      "Vision: to be one of the leading moving and storage companies in Bogotá.",
+      "We built a network of more than 2,000 international agents to reach 176 countries.",
     ),
   },
   {
-    year: "Confianza Empresarial",
+    year: tr("Confianza Empresarial", "Corporate Trust"),
     text: tr(
       "Nos convertimos en aliados de multinacionales que exigen seguridad, trazabilidad y puntualidad.",
-      "Vision: to be one of the leading moving and storage companies in Bogotá.",
+      "We became partners to multinationals that demand security, traceability and punctuality.",
     ),
   },
   {
-    year: "Rigor diplomático",
+    year: tr("Rigor diplomático", "Diplomatic Rigor"),
     text: tr(
-      "Fuimos elegidos por embajadas e instituciones para gestionar traslados con precisión y coonfidencialidad.",
-      "Vision: to be one of the leading moving and storage companies in Bogotá.",
+      "Fuimos elegidos por embajadas e instituciones para gestionar traslados con precisión y confidencialidad.",
+      "We were chosen by embassies and institutions to handle moves with precision and confidentiality.",
     ),
   },
   {
-    year: "Hoy",
+    year: tr("Hoy", "Today"),
     text: tr(
       "Operamos mudanzas locales, nacionales, internacionales, bodegaje y movilidad corporativa.",
-      "Vision: to be one of the leading moving and storage companies in Bogotá.",
+      "We run local, national and international moves, storage and corporate mobility.",
     ),
   },
   {
@@ -111,16 +111,16 @@ export const aboutText = (tr: Tr) => ({
     "A global operating network you can't improvise",
   ),
   nuestraHistoriaEmpezoHace: tr(
-    "Durante 58 años, en Transpacksas hemos acompañado a familias, ejecutivos y organizaciones en sus procesos de mudanza y reubicación internacional. Iniciamosnuestra trayectoria en una época en la que el comercio internacional era mas lento, manual y enfrentaba mayores incertidumbres logisticas; desde entonces, hemos convertido esa experiencia en conocimiento, capacidad operativa y confianza.",
-    "Our story began 58 years ago, when international trade was slower, more manual and far more uncertain. Over the decades we built something you can't improvise: a global operating network.",
+    "Durante 58 años, en Transpack SAS hemos acompañado a familias, ejecutivos y organizaciones en sus procesos de mudanza y reubicación internacional. Iniciamos nuestra trayectoria en una época en la que el comercio internacional era más lento, manual y enfrentaba mayores incertidumbres logísticas; desde entonces, hemos convertido esa experiencia en conocimiento, capacidad operativa y confianza.",
+    "For 58 years, Transpack SAS has supported families, executives and organizations through their moves and international relocations. We began our journey at a time when international trade was slower and more manual, and faced greater logistical uncertainty; since then, we have turned that experience into knowledge, operating capacity and trust.",
   ),
   hoyEsaRedNos: tr(
-    "Con el paso de las décadas, hemos consolidado una red de mas de 2.000 agentes internacionales en 176 países y desarrollando soluciones de transporte marítimo y aéreo para cada tipo de traslado. Esta cobertura nos permite conectar a Colombia con destinos en Estados Unidos, Canadá, la Union Europea, Asia y Latinoamérica, adaptándonos al volumnes, los tiempos y las necesidades de cada cliente,",
-    "Today that network lets us run sea and air moves to the United States, Canada, the European Union, Asia and all of Latin America, with the same standards at origin and destination.",
+    "Con el paso de las décadas, hemos consolidado una red de más de 2.000 agentes internacionales en 176 países y desarrollado soluciones de transporte marítimo y aéreo para cada tipo de traslado. Esta cobertura nos permite conectar a Colombia con destinos en Estados Unidos, Canadá, la Unión Europea, Asia y Latinoamérica, adaptándonos a los volúmenes, los tiempos y las necesidades de cada cliente.",
+    "Over the decades, we have built a network of more than 2,000 international agents in 176 countries and developed sea and air transport solutions for every type of move. This coverage lets us connect Colombia with destinations in the United States, Canada, the European Union, Asia and Latin America, adapting to each client's volumes, timelines and needs.",
   ),
   hoyAcompanamos: tr(
     "Hoy acompañamos a clientes particulares, multinacionales, embajadas e instituciones que encuentran en nosotros un aliado para sus operaciones más exigentes. Cada reubicación refleja nuestro compromiso con la seguridad, la precisión, la trazabilidad, la puntualidad y la confidencialidad, principios con los que continuamos construyendo nuestra historia y conectando personas y organizaciones con el mundo.",
-    "Today that network lets us run sea and air moves to the United States, Canada, the European Union, Asia and all of Latin America, with the same standards at origin and destination.",
+    "Today we support private clients, multinationals, embassies and institutions that find in us a partner for their most demanding operations. Every relocation reflects our commitment to security, precision, traceability, punctuality and confidentiality, the principles with which we keep building our history and connecting people and organizations with the world.",
   ),
   mision: tr("Misión", "Mission"),
   queremosMantenerCompromisoNuestros: tr(
