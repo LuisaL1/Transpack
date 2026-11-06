@@ -1,5 +1,5 @@
 // Mapa animado de la portada: recorrido de la cámara, rutas y dibujo en
-// <canvas>, en grises con Colombia y las rutas en naranja. Se carga aparte con
+// <canvas>, con los continentes en negro y Colombia y las rutas en naranja. Se carga aparte con
 // import() desde src/hooks/useGlobe.ts (trae d3-geo y las siluetas de los
 // países), así no pesa en el JS principal.
 //
@@ -122,11 +122,11 @@ const LEG = 750; // cada ruta por Colombia
 const LOCAL = ENTER + LOOK + (CITIES.length - 2) * GAP + LEG + 150;
 const legAt = (i: number) => ENTER + LOOK + i * GAP;
 
-const REGION_MOVE = 1300; // la cámara viaja al continente
+const REGION_MOVE = 2000; // la cámara viaja al continente (más pausado: pedido del cliente, nov. 2026)
 // Las rutas del continente salen casi a la vez: entre más países, más seguidas
-// (todas salen en unos 2,6 s)
-const regionGap = (n: number) => Math.min(160, 2600 / Math.max(1, n - 1));
-const REGION_DRAW = 1000; // cada ruta de un continente
+// (todas salen en unos 3,6 s)
+const regionGap = (n: number) => Math.min(220, 3600 / Math.max(1, n - 1));
+const REGION_DRAW = 1700; // cada ruta de un continente (más lenta: pedido del cliente, nov. 2026)
 const REGION_HOLD = 1900; // pausa con el continente completo (se leen los nombres)
 const regionLength = (n: number) =>
   REGION_MOVE + (n - 1) * regionGap(n) + REGION_DRAW + REGION_HOLD;
@@ -260,6 +260,7 @@ export const lensRadius = (w: number, h: number) => Math.min(w, h) * LENS;
 const ORANGE = "#FF7619";
 const INK = "62,65,96"; // gris oscuro (texto del sitio)
 const GRAY = "107,110,138"; // gris medio
+const CHARCOAL = "34,34,40"; // negro carbón (continentes)
 
 type Side = "above" | "below" | "right" | "left";
 
@@ -369,9 +370,12 @@ function drawLand(
   close: number,
   borderWidth: number,
 ) {
+  // Continentes en negro (pedido del cliente, nov. 2026): un negro carbón algo
+  // translúcido, no puro, para que no pese; las regiones donde opera más
+  // oscuras y el resto del mundo más suave
   const fills = [
-    `rgba(${GRAY},.32)`,
-    `rgba(${GRAY},${0.42 + 0.18 * pano})`,
+    `rgba(${CHARCOAL},${0.48 + 0.08 * pano})`,
+    `rgba(${CHARCOAL},${0.78 + 0.06 * pano})`,
     "rgba(255,178,122,.95)",
   ];
   BY_ZONE.forEach((fc, z) => {
@@ -380,7 +384,7 @@ function drawLand(
     path(fc);
     ctx.fill();
   });
-  ctx.strokeStyle = "#ffffff";
+  ctx.strokeStyle = "rgba(255,255,255,.55)";
   ctx.lineWidth = borderWidth * dpr;
   ctx.beginPath();
   path(BORDERS);
@@ -616,9 +620,10 @@ export function drawGlobe(
   const [bx, by] = px(o);
   if (o.z > 0 && s.localFade === 0 && Math.hypot(bx - cx, by - cy) < lens - 10 * dpr) {
     const [x, y] = [bx, by];
-    pulse(ctx, x, y, dpr, time, INK);
+    // En naranja y con pastilla blanca, para que se vean sobre los continentes negros
+    pulse(ctx, x, y, dpr, time, "255,118,25");
     pin(ctx, x, y, dpr, 5.5, "#ffffff", `rgb(${INK})`);
-    if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, true, "below");
+    if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, false, "below");
   }
 
   ctx.restore(); // fin del círculo

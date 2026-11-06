@@ -224,11 +224,12 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   de 2026): debe venir en las fotos que entregue el cliente.
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
-  octubre de 2026). En grises (sin azules), con Colombia y las rutas en naranja
+  octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
+  negro pedido en noviembre de 2026), con Colombia y las rutas en naranja
   y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (velocidad
-  1,6× en `useGlobe`): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
+  1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
   en un círculo con Colombia de cerca y rutas desde Bogotá a las principales
-  capitales de departamento (`CITIES`, menos de 2 s) → por continente
+  capitales de departamento (`CITIES`, unos 3 s) → por continente
   (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
   solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo
   girando con todos los destinos → vuelve la foto. Ciudades y destinos: `scripts/generate-world-map.mjs`

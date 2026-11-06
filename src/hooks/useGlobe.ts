@@ -20,9 +20,9 @@ export function useGlobe(labels: GlobeLabels) {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !photo || !ctx) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Velocidad de la historia (pedidos del cliente: el doble, luego un 25 % y
-    // después un 20 % más lento)
-    const speed = 1.6 / 1.2;
+    // Velocidad de la historia (pedidos del cliente: el doble, luego un 25 %,
+    // después un 20 % y en nov. 2026 un 50 % más lento)
+    const speed = 1.6 / 1.2 / 1.5;
     let globe: typeof import("@/lib/globe") | null = null;
     let raf = 0;
     let last = 0;
