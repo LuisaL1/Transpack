@@ -37,6 +37,8 @@ export type GlobeLabels = {
   place: (p: Place) => string;
   /** País que el visitante tocó (se marca con un anillo) */
   selected?: string;
+  /** Lugar bajo el puntero (las localidades se iluminan) */
+  hovered?: string;
 };
 /** Punto de un destino o de una ciudad de Colombia en pantalla (px de CSS), para
  * saber qué se toca */
@@ -408,7 +410,8 @@ function pulse(
 
 // Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en un
 // tono claro del color resaltado, con borde pleno, para que las rutas se lean
-// encima. `bogota` (0 a 1): mientras se ven las localidades, lo de afuera va en gris.
+// encima. `bogota` (0 a 1): mientras se ven las localidades, lo de afuera va en
+// el negro carbón de los demás países.
 function drawLand(
   ctx: CanvasRenderingContext2D,
   path: ReturnType<typeof geoPath>,
@@ -443,7 +446,9 @@ function drawLand(
   ctx.fillStyle = `rgba(${HIGHLIGHT},${(0.95 - 0.8 * close) * (1 - bogota)})`;
   ctx.fill();
   if (bogota > 0) {
-    ctx.fillStyle = `rgba(${GRAY},${0.3 * bogota})`;
+    // Lo de afuera de Bogotá, en el negro carbón de los demás países
+    // Un poco más claro que los demás países (pedido del cliente)
+    ctx.fillStyle = `rgba(${CHARCOAL},${0.62 * bogota})`;
     ctx.fill();
   }
   ctx.strokeStyle = close > 0 ? `rgb(${HIGHLIGHT})` : "#ffffff";
@@ -565,16 +570,33 @@ function drawBogota(
   if (s.bogota <= 0) return;
   ctx.save();
   ctx.globalAlpha *= s.bogota;
-  const tones = [0.16, 0.26, 0.36];
-  LOCALITIES.forEach((l, i) => {
-    const on = labels.selected === l.name;
-    ctx.fillStyle = on ? `rgba(${HIGHLIGHT},.85)` : `rgba(${HIGHLIGHT},${tones[i % 3]})`;
+  // Para que resalten (estilo elegido por el cliente, nov. 2026): todas las
+  // localidades en el mismo color resaltado, con bordes blancos gruesos, sobre el
+  // negro carbón de los demás países y con una sombra debajo; la que se toca o
+  // está bajo el puntero, en naranja
+  ctx.save();
+  ctx.shadowColor = `rgba(${INK},.45)`;
+  ctx.shadowBlur = 22 * dpr;
+  ctx.shadowOffsetY = 6 * dpr;
+  ctx.fillStyle = `rgb(${HIGHLIGHT})`;
+  for (const l of LOCALITIES) {
     ctx.beginPath();
     path(l.geometry);
     ctx.fill();
-  });
+  }
+  ctx.restore();
+  for (const l of LOCALITIES) {
+    const on = labels.selected === l.name || labels.hovered === l.name;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    path(l.geometry);
+    ctx.fill();
+    // Azul suavizado (sobre blanco), pedido del cliente
+    ctx.fillStyle = on ? ORANGE : `rgba(${HIGHLIGHT},.78)`;
+    ctx.fill();
+  }
   ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 1.6 * dpr;
+  ctx.lineWidth = 3 * dpr;
   ctx.lineJoin = "round";
   for (const l of LOCALITIES) {
     ctx.beginPath();
@@ -585,13 +607,13 @@ function drawBogota(
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
-    ctx.fillStyle = `rgba(${INK},.55)`;
+    ctx.fillStyle = "rgba(255,255,255,.75)";
     ctx.textAlign = "center";
     ctx.fillText(labels.city.toUpperCase(), n[0], n[1]);
     ctx.letterSpacing = "0px";
   }
   ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
-  ctx.fillStyle = `rgba(${INK},.6)`;
+  ctx.fillStyle = "rgba(255,255,255,.6)";
   ctx.textAlign = "center";
   // Abajo a la derecha, donde no hay localidades
   const lens = lensRadius(W, H);
@@ -609,10 +631,11 @@ function drawBogota(
     placed.push(box);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    // En blanco con borde azul oscuro, para que se lea sobre las localidades
     ctx.lineWidth = 3 * dpr;
-    ctx.strokeStyle = "rgba(255,255,255,.85)";
+    ctx.strokeStyle = "rgba(16,0,110,.55)";
     ctx.strokeText(l.name, p[0], p[1]);
-    ctx.fillStyle = `rgb(${INK})`;
+    ctx.fillStyle = "#ffffff";
     ctx.fillText(l.name, p[0], p[1]);
   }
   ctx.textAlign = "start";

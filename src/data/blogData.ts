@@ -1,7 +1,7 @@
 // Artículos del blog. Texto tomado de los PDF de RecursosTranspack/
 // (#1 mudanza marítima internacional, #2 elegancia en tránsito, #3 58 años).
 import imgContenedor from "@/assets/images/global.jpg";
-import imgGuacales from "@/assets/images/guacales.jpg";
+import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgGlobal from "@/assets/images/global.jpg";
 
 export type Item = string | { b: string; t: string };

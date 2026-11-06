@@ -5,7 +5,7 @@ import imgInspeccionCanina from "@/assets/images/inspeccion-canina.png";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgCargador from "@/assets/images/cargador.png";
-import imgGuacales from "@/assets/images/guacales.jpg";
+import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpg";
 import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";

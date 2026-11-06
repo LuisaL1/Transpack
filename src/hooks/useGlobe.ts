@@ -50,11 +50,12 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     let dpr = 1;
     let cancelled = false;
     let hits: Hit[] = [];
+    let hovered: string | undefined;
 
     const draw = () => {
       if (!globe) return;
       const s = still ? globe.stillScene() : globe.scene(time);
-      hits = globe.drawGlobe(ctx, s, time, labelsRef.current, dpr);
+      hits = globe.drawGlobe(ctx, s, time, { ...labelsRef.current, hovered }, dpr);
       // La foto se cierra en el círculo del mapa: de cubrir todo a su radio
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -109,7 +110,15 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       return best ?? globe?.localityAt(x, y) ?? null;
     };
     const onMove = (e: PointerEvent) => {
-      canvas.style.cursor = hitAt(e) ? "pointer" : "";
+      const hit = hitAt(e);
+      canvas.style.cursor = hit ? "pointer" : "";
+      // La localidad bajo el puntero se ilumina (con la animación detenida, se
+      // vuelve a dibujar)
+      const name = hit?.kind === "locality" ? hit.place.name : undefined;
+      if (name !== hovered) {
+        hovered = name;
+        if (paused || still) requestAnimationFrame(draw);
+      }
     };
     const onClick = (e: MouseEvent) => {
       const hit = globe && hitAt(e);
@@ -147,6 +156,11 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     io.observe(canvas);
     document.addEventListener("visibilitychange", play);
     canvas.addEventListener("pointermove", onMove);
+    const onLeave = () => {
+      hovered = undefined;
+      if (paused || still) requestAnimationFrame(draw);
+    };
+    canvas.addEventListener("pointerleave", onLeave);
     canvas.addEventListener("click", onClick);
 
     import("@/lib/globe").then((m) => {
@@ -163,6 +177,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       io.disconnect();
       document.removeEventListener("visibilitychange", play);
       canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerleave", onLeave);
       canvas.removeEventListener("click", onClick);
     };
   }, []);

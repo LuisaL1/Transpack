@@ -97,19 +97,32 @@ export function Hero() {
               {items.map((item) => {
                 if (item.kind === "embassy") {
                   // Embajadas: su logo en grises (en silueta, como los demás, se
-                  // perderían los escudos); el nombre queda para lectores de pantalla
+                  // perderían los escudos) y su nombre al lado, en el gris de la franja
                   const name = `${t.embassyOf} ${t.embassyName(item.embassy)}`;
-                  const h = logoHeight(item.logo.ratio) * 2;
+                  const h = Math.min(logoHeight(item.logo.ratio) * 2, 64);
                   return (
-                    <img
-                      decoding="async"
+                    <div
                       key={item.embassy}
-                      src={item.logo.src}
-                      alt={k === 0 ? name : ""}
                       title={name}
-                      style={{ height: h, width: h * item.logo.ratio }}
-                      className="shrink-0 object-contain opacity-75 contrast-125 grayscale transition-opacity duration-300 hover:opacity-100"
-                    />
+                      className="flex shrink-0 items-center gap-4 opacity-80 transition-opacity duration-300 hover:opacity-100"
+                    >
+                      <img
+                        decoding="async"
+                        src={item.logo.src}
+                        alt=""
+                        style={{ height: h, width: h * item.logo.ratio }}
+                        className="shrink-0 object-contain contrast-125 grayscale"
+                      />
+                      <span className="text-left font-title leading-tight text-black/55">
+                        <span className="block text-[0.8rem] font-semibold uppercase tracking-[0.16em]">
+                          {t.embassyOf}
+                        </span>
+                        <span className="block whitespace-nowrap text-[1.45rem] font-semibold">
+                          {t.embassyName(item.embassy)}
+                        </span>
+                        {k === 0 && <span className="sr-only">{name}</span>}
+                      </span>
+                    </div>
                   );
                 }
                 const c = item.logo;

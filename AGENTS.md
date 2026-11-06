@@ -205,8 +205,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
   valor completo.
 - Embajadas atendidas: las 10 de `EMBASSIES`. En la franja de clientes del inicio se
-  muestran con su **logo** en grises (`EMBASSY_LOGOS`, pedido del cliente en noviembre
-  de 2026: no le gustó bandera + nombre): el de la Embajada de Francia en Colombia y, para
+  muestran con su **logo** en grises y su nombre al lado ("Embajada de …";
+  `EMBASSY_LOGOS`, pedido del cliente en noviembre de 2026): el de la Embajada de Francia en Colombia y, para
   las demás, el de su cancillería o gobierno o el emblema nacional (fuentes en
   `src/assets/images/clientes/embajadas/FUENTES.txt`). Son emblemas oficiales: el
   cliente debe confirmar que puede usarlos. En Nosotros siguen con su bandera
@@ -248,8 +248,10 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
   negro pedido en noviembre de 2026), con Colombia en `#1800AD` (`--color-resaltado`;
   antes naranja, cambio pedido en noviembre de 2026), Estados Unidos en un tono más claro
-  del mismo color, las localidades de Bogotá en tonos de ese color sobre gris, y las
-  rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
+  del mismo color, las localidades de Bogotá todas en ese color, con bordes
+  blancos gruesos, sobre el negro carbón de los demás países (estilo elegido por el
+  cliente en noviembre de 2026; la que se toca o está bajo el puntero, en naranja), y
+  las rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
   1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
   en un círculo con **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden
   tocar) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales

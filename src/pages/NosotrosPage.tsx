@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import imgEquipo from "@/assets/images/equipo.jpg";
 import imgEmbalaje from "@/assets/images/embalaje-sala.jpg";
-import imgGuacales from "@/assets/images/guacales.jpg";
+import imgGuacales from "@/assets/images/guacales.jpeg";
 import lacmaImg from "@/assets/images/lacma.jpg";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
