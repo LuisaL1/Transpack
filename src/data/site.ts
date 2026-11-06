@@ -111,6 +111,9 @@ export type Service = {
   quote: QuoteService;
   cta: string;
   image: string;
+  // En el encabezado, el mapa animado de rutas por Colombia en vez de la foto
+  // (la foto sigue como imagen para compartir en redes)
+  heroMap?: boolean;
   kicker: string;
   headline: string;
   intro: string;
@@ -172,6 +175,7 @@ export const SERVICES: Service[] = [
     quote: "nacional",
     cta: "Cotizar",
     image: imgCargue,
+    heroMap: true,
     kicker: "Entre ciudades de Colombia",
     headline: "Su patrimonio de puerta a puerta",
     intro:

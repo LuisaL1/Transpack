@@ -7,6 +7,7 @@ const ROUTES = [
   "/nosotros",
   "/privacidad",
   "/servicios/mudanzas-locales",
+  "/servicios/mudanzas-nacionales",
   "/servicios/mudanzas-internacionales",
   "/servicios/bodegaje",
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",

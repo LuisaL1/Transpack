@@ -20,6 +20,14 @@ export const serviceDetailText = (tr: Tr) => ({
     "If you have another question, message us and an advisor will answer.",
   ),
   otrosServicios: tr("Otros servicios", "Other services"),
+  // Mapa animado de Mudanzas nacionales (ColombiaRoutesMap)
+  mapaRutas: tr(
+    "Mapa de Colombia con las carreteras entre las principales ciudades y un camión de Transpack viajando de una a otra",
+    "Map of Colombia with the roads between its main cities and a Transpack truck travelling from one to another",
+  ),
+  // Avisos del mapa: al salir hacia un destino nuevo y al llegar
+  mapaProximo: (city: string) => tr(`Próximo destino: ${city}`, `Next stop: ${city}`),
+  mapaLlegamos: (city: string) => tr(`¡Llegamos a ${city}!`, `We made it to ${city}!`),
   complementaTraslado: tr("Complementa su traslado", "Complete your move"),
   quoteService: (title: string) =>
     tr(`Cotizar ${title.toLowerCase()}`, `Get a ${title.toLowerCase()} quote`),

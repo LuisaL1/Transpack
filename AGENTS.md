@@ -16,8 +16,9 @@ publica en Vercel.
   debe quedar en verde antes de cada commit
 - `pnpm test:ga` — verifica Google Analytics con el ID real (necesita internet)
 - `pnpm check:all` — lo anterior + auditoría de dependencias + extremo a extremo
-- `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos) y
-  `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada)
+- `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos),
+  `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada) y
+  `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas nacionales)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
   YouTube para "Experiencias Transpack"; necesita internet). Córralo cuando el canal publique
 - `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
@@ -68,6 +69,7 @@ src/
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (Globe, con CountryCard al tocar un país), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
+│   ├── services/           ColombiaRoutesMap (mapa animado de Mudanzas nacionales)
 │   ├── videos/             VideoCard (tarjeta de video de Experiencias Transpack)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
@@ -94,19 +96,21 @@ src/
 │   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
 │   ├── bogotaMap.ts        Localidades de Bogotá (GENERADO con `pnpm map:bogota`, no editar a mano)
 │   ├── worldMap.ts         Bogotá y destinos con longitud y latitud (GENERADO con `pnpm map`, no editar a mano)
-│   └── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
+│   ├── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
+│   └── colombiaMap.ts      Silueta de Colombia, ciudades y carreteras (GENERADO con `pnpm map`, no editar a mano)
 ├── lib/                    Lógica pura, sin React
 │   ├── analytics.ts        Google Analytics 4 (Consent Mode v2, páginas vistas, eventos, resetConsent)
 │   ├── leads.ts            sendLead(): envía formularios a /api/contact
 │   ├── advisorEvents.ts    Eventos del chat (ventana a la vista, conversación iniciada)
 │   ├── crmChat.ts          Chat: widget de Zoho SalesIQ (precarga, apertura, diseño; docs/chat-crm.md)
 │   ├── globe.ts            Globo de la portada: proyección, rutas, recorrido y dibujo en canvas
+│   ├── colombiaRoutes.ts   Mapa de Mudanzas nacionales: curvas de las carreteras, camino más corto y viaje del camión
 │   ├── search.ts           Motor del buscador
 │   └── text.ts             Normalización de texto (sin tildes)
 ├── seo/                    site.ts (dominio, empresa, interruptor de indexación) y
 │                           meta.ts (metadatos, hreflang, JSON-LD y rutas públicas)
 ├── hooks/                  useContent (useSite/usePosts), useAdvisorChat, useGlobe,
-│                           useScrollToHash
+│                           useTruckTrip, useScrollToHash
 ├── i18n/                   Idiomas: rutas y slugs traducidos, tr(), dict/<idioma>.ts
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
@@ -114,7 +118,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -256,6 +260,25 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   dominios de Wikimedia que autoriza la CSP. Para
   cambiar la foto de un país, use `OVERRIDES` en `scripts/fetch-country-photos.mjs`
   y corra `pnpm fotos`. Están pendientes de que el cliente las apruebe.
+- Mudanzas nacionales (`/servicios/mudanzas-nacionales`): en el encabezado, en
+  vez de la foto (`heroMap` en `SERVICES`; `cargue.jpg` sigue como imagen para
+  redes), un **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG):
+  silueta exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la
+  portada y carreteras que pasan por los pueblos reales de cada troncal
+  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Misma estética del globo:
+  Colombia y rutas en naranja, puntos en tinta, Bogotá en naranja. Un solo
+  camión azul y blanco (visto desde arriba, para girar suave en las curvas sin
+  voltearse) viaja de la ciudad donde está a otra por el camino más corto,
+  dejando una estela naranja gruesa, con resplandor y un brillo blanco que la
+  recorre; origen (casa azul) y destino (casa naranja) llevan un marcador.
+  Animaciones del viaje (`.map-*` en `src/styles/index.css`): la casa del
+  destino cae con un rebote y sale el aviso "Próximo destino"; al llegar salta,
+  se abre una onda y sale "¡Llegamos a …!"; luego la estela se desvanece, la
+  casa del origen se encoge y la del destino pasa a azul (nuevo origen). Textos
+  de los avisos en `serviceDetailText` (`src/data/pages.ts`). Arranca y frena
+  suave, y el giro está suavizado y con velocidad máxima
+  (`src/lib/colombiaRoutes.ts`, `src/hooks/useTruckTrip.ts`); pausa fuera de
+  pantalla y, con movimiento reducido, muestra el viaje ya hecho sin avisos.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat: **sin degradados**, mismo estilo de los menús (cabecera azul sólida con
   el cuadrado naranja translúcido girado 45°, rótulo naranja en mayúsculas,
