@@ -18,6 +18,8 @@ export function Globe({ className = "" }: { className?: string }) {
   const { canvasRef, photoRef, picked, close } = useGlobe({
     origin: t.origin,
     country: "Colombia",
+    city: "Bogotá",
+    cityCredit: t.cityCredit,
     place: (p) => placeName(p.name),
   });
   return (

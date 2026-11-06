@@ -1,7 +1,8 @@
 // Genera src/data/countryPhotos.ts con una foto de cada destino del mapa de la
 // portada (pnpm fotos): la foto principal de su capital en Wikidata (P18),
 // servida desde Wikimedia Commons; y de cada ciudad del recorrido por Colombia
-// (CITIES), la del municipio más poblado junto a su punto en el mapa. NO descarga imágenes: guarda solo el enlace a
+// (CITIES), la del municipio más poblado junto a su punto en el mapa; y de cada
+// localidad de Bogotá (src/data/bogotaMap.ts), la de su elemento en Wikidata. NO descarga imágenes: guarda solo el enlace a
 // la miniatura, el autor y la licencia (se muestran al tocar el país en el mapa).
 // También genera RecursosTranspack/fotos-paises.html, una hoja con todas las
 // fotos para que el cliente las apruebe. Necesita internet.
@@ -33,6 +34,13 @@ const CITIES = [
   ...source.matchAll(/\{ name: "([^"]+)", lonlat: \[(-?[\d.]+), (-?[\d.]+)\], side/g),
 ].map(([, name, lon, lat]) => ({ name, lon: +lon, lat: +lat }));
 if (CITIES.length < 10) throw new Error(`Solo se leyeron ${CITIES.length} ciudades`);
+// Localidades de Bogotá (generadas con pnpm map:bogota)
+const LOCALITIES = [
+  ...(await readFile(new URL("../src/data/bogotaMap.ts", import.meta.url), "utf8")).matchAll(
+    /"name":"([^"]+)"/g,
+  ),
+].map(([, name]) => name);
+if (LOCALITIES.length !== 20) throw new Error(`Se esperaban 20 localidades: ${LOCALITIES.length}`);
 
 async function json(url, init) {
   const res = await fetch(url, { ...init, headers: { ...HEADERS, ...init?.headers } });
@@ -122,10 +130,65 @@ SELECT ?image WHERE {
   if (image) cityFile.set(c.name, fileOf(image));
 }
 
+// Localidades: el elemento de Wikidata con su nombre dentro de Bogotá (Q2841),
+// preferido el que es una localidad (Q3257686). Si dos comparten foto, la
+// segunda usa la de su artículo en Wikipedia (en español).
+const loc = await sparql(`
+SELECT ?name ?image ?wiki ?isLoc WHERE {
+  VALUES ?name { ${LOCALITIES.map((n) => `"${n}"@es`).join(" ")} }
+  ?item rdfs:label ?name; wdt:P131 wd:Q2841.
+  OPTIONAL { ?item wdt:P18 ?image }
+  OPTIONAL { ?wiki schema:about ?item; schema:isPartOf <https://es.wikipedia.org/> }
+  BIND(EXISTS { ?item wdt:P31 wd:Q3257686 } AS ?isLoc)
+}`);
+const locRow = new Map();
+for (const r of loc.results.bindings) {
+  const name = r.name.value;
+  const row = {
+    loc: r.isLoc.value === "true",
+    file: r.image && fileOf(r.image),
+    wiki: r.wiki && decodeURIComponent(r.wiki.value.split("/wiki/")[1]),
+  };
+  const prev = locRow.get(name);
+  if (!prev || (row.loc && !prev.loc) || (row.loc === prev.loc && !prev.file && row.file))
+    locRow.set(name, row);
+}
+const used = new Set();
+const needWiki = [];
+for (const name of LOCALITIES) {
+  const r = locRow.get(name);
+  if (!r) continue;
+  if (!r.file || used.has(r.file)) {
+    r.file = undefined;
+    if (r.wiki) needWiki.push(r);
+  } else used.add(r.file);
+}
+if (needWiki.length) {
+  const params = new URLSearchParams({
+    action: "query",
+    format: "json",
+    formatversion: "2",
+    prop: "pageimages",
+    piprop: "name",
+    pilicense: "free",
+    titles: needWiki.map((r) => r.wiki).join("|"),
+  });
+  const data = await json(`https://es.wikipedia.org/w/api.php?${params}`);
+  const norm = new Map((data.query.normalized ?? []).map((n) => [n.to, n.from]));
+  for (const p of data.query.pages) {
+    const r = needWiki.find((x) => x.wiki === (norm.get(p.title) ?? p.title));
+    const file = p.pageimage?.replace(/_/g, " ");
+    if (!r || !file || used.has(file)) continue;
+    r.file = file;
+    used.add(file);
+  }
+}
+
 // 2. Commons: miniatura de 500 px, autor y licencia (de 50 en 50)
 const files = [
   ...DEST.map((d) => OVERRIDES[d.name] ?? best.get(d.name)?.file),
   ...CITIES.map((c) => OVERRIDES[c.name] ?? cityFile.get(c.name)),
+  ...LOCALITIES.map((n) => OVERRIDES[n] ?? locRow.get(n)?.file),
 ].filter(Boolean);
 const info = new Map();
 for (let i = 0; i < files.length; i += 50) {
@@ -185,6 +248,12 @@ for (const c of CITIES) {
   if (img && /^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(img.src)) cityPhotos[c.name] = img;
   else missing.push(c.name);
 }
+const localityPhotos = {};
+for (const n of LOCALITIES) {
+  const img = info.get(OVERRIDES[n] ?? locRow.get(n)?.file);
+  if (img && /^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(img.src)) localityPhotos[n] = img;
+  else missing.push(n);
+}
 if (missing.length) console.warn(`Sin foto: ${missing.join(", ")}`);
 
 await writeFile(
@@ -211,6 +280,9 @@ export const COUNTRY_PHOTOS: Record<string, CountryPhoto> = ${JSON.stringify(pho
 
 /** Ciudades del recorrido por Colombia, por nombre (el de CITIES en worldMap.ts) */
 export const CITY_PHOTOS: Record<string, PlacePhoto> = ${JSON.stringify(cityPhotos, null, 2)};
+
+/** Localidades de Bogotá, por nombre (el de LOCALITIES en bogotaMap.ts) */
+export const LOCALITY_PHOTOS: Record<string, PlacePhoto> = ${JSON.stringify(localityPhotos, null, 2)};
 `,
 );
 
@@ -225,14 +297,16 @@ const grid = (rows) =>
 await writeFile(
   sheet,
   `<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><title>Fotos de los países del mapa</title>
+<html lang="es"><head><meta charset="utf-8"><title>Fotos del mapa de la portada</title>
 <style>body{font-family:system-ui,sans-serif;margin:24px;color:#3e4160}
 main{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 figure{margin:0}img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px}
 figcaption{font-size:13px;margin-top:6px}small{color:#6b6e8a}</style></head>
-<body><h1>Fotos de los países y ciudades del mapa de la portada</h1>
-<p>Se muestran al tocar cada país o ciudad en el mapa. Para cambiar una, indique el país o la
-ciudad y el archivo de Wikimedia Commons que prefiere (OVERRIDES en scripts/fetch-country-photos.mjs).</p>
+<body><h1>Fotos del mapa de la portada</h1>
+<p>Se muestran al tocar cada localidad, ciudad o país en el mapa. Para cambiar una, indique el lugar y
+el archivo de Wikimedia Commons que prefiere (OVERRIDES en scripts/fetch-country-photos.mjs).</p>
+<h2>Localidades de Bogotá</h2>
+<main>${grid(Object.entries(localityPhotos).map(([name, p]) => [name, "", p]))}</main>
 <h2>Colombia</h2>
 <main>${grid(Object.entries(cityPhotos).map(([name, p]) => [name, "", p]))}</main>
 <h2>Países</h2>
@@ -240,5 +314,5 @@ ciudad y el archivo de Wikimedia Commons que prefiere (OVERRIDES en scripts/fetc
 `,
 );
 console.log(
-  `${Object.keys(photos).length} países y ${Object.keys(cityPhotos).length} ciudades → ${out} y ${sheet}`,
+  `${Object.keys(photos).length} países, ${Object.keys(cityPhotos).length} ciudades y ${Object.keys(localityPhotos).length} localidades → ${out} y ${sheet}`,
 );

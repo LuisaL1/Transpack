@@ -9,6 +9,7 @@ declare module "d3-geo" {
     rotate(r: [number, number, number?]): GeoProjection;
     clipAngle(a: number): GeoProjection;
     precision(p: number): GeoProjection;
+    invert(point: [number, number]): [number, number] | null;
   }
   export interface GeoPath {
     (object: Geo): void;
@@ -16,6 +17,7 @@ declare module "d3-geo" {
   export function geoOrthographic(): GeoProjection;
   export function geoPath(projection: GeoProjection, context: CanvasRenderingContext2D): GeoPath;
   export function geoGraticule10(): Geo;
+  export function geoContains(object: Geo, point: [number, number]): boolean;
 }
 
 declare module "topojson-client" {

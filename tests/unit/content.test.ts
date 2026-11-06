@@ -5,7 +5,8 @@ import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
 import { menusFor } from "@/data/navigation";
 import { serviceOptions } from "@/data/quote";
 import { CITIES, DESTINATIONS } from "@/data/worldMap";
-import { CITY_PHOTOS, COUNTRY_PHOTOS } from "@/data/countryPhotos";
+import { CITY_PHOTOS, COUNTRY_PHOTOS, LOCALITY_PHOTOS } from "@/data/countryPhotos";
+import { LOCALITIES } from "@/data/bogotaMap";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
 
 // Integridad del contenido (src/data), traducciones y reglas de negocio y de
@@ -170,16 +171,29 @@ describe("Mapa y embajadas", () => {
   it("cada destino tiene la foto de su capital, enlazada a Wikimedia (no descargada)", () => {
     expect(Object.keys(COUNTRY_PHOTOS).sort()).toEqual(DESTINATIONS.map((d) => d.name).sort());
     for (const [name, p] of Object.entries(COUNTRY_PHOTOS)) {
-      expect(p.src, name).toMatch(/^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//);
+      expect(p.src, name).toMatch(
+        /^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//,
+      );
       expect(p.page, name).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
       expect(p.capital.es && p.capital.en && p.author && p.license, name).toBeTruthy();
     }
   });
 
+  it("Bogotá tiene sus 20 localidades, cada una con su foto enlazada a Wikimedia", () => {
+    expect(LOCALITIES).toHaveLength(20);
+    expect(Object.keys(LOCALITY_PHOTOS).sort()).toEqual(LOCALITIES.map((l) => l.name).sort());
+    for (const [name, p] of Object.entries(LOCALITY_PHOTOS))
+      expect(p.src, name).toMatch(
+        /^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//,
+      );
+  });
+
   it("cada ciudad del recorrido por Colombia tiene su foto, enlazada a Wikimedia", () => {
     expect(Object.keys(CITY_PHOTOS).sort()).toEqual(CITIES.map((c) => c.name).sort());
     for (const [name, p] of Object.entries(CITY_PHOTOS))
-      expect(p.src, name).toMatch(/^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//);
+      expect(p.src, name).toMatch(
+        /^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//,
+      );
   });
 });
 

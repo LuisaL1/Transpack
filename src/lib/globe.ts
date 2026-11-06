@@ -3,21 +3,25 @@
 // import() desde src/hooks/useGlobe.ts (trae d3-geo y las siluetas de los
 // países), así no pesa en el JS principal.
 //
-// Historia (en bucle), pedida por el cliente (oct. 2026):
+// Historia (en bucle), pedida por el cliente (oct. y nov. 2026):
 // 1. La foto de la portada (imagen-transpack-inicio2.jpg), completa.
-// 2. La foto se cierra en un círculo y en él aparece Colombia de cerca: desde
-//    Bogotá salen, casi a la vez, las rutas a las principales capitales de
-//    departamento (CITIES).
-// 3. Por continente (América, Europa, África y Asia): la cámara encuadra el
+// 2. La foto se cierra en un círculo y en él aparece Bogotá con sus localidades
+//    (LOCALITIES, sin rutas); luego la cámara se aleja hasta Colombia.
+// 3. Colombia de cerca: desde Bogotá salen, casi a la vez, las rutas a las
+//    principales capitales de departamento (CITIES).
+// 4. Por continente (América, Europa, África y Asia): la cámara encuadra el
 //    continente y desde Bogotá salen, casi a la vez, las rutas a sus países.
-// 4. Panorama: el globo gira con las rutas a todos los destinos.
-// 5. Vuelve la foto.
+// 5. Panorama: el globo gira con las rutas a todos los destinos.
+// 6. Vuelve la foto.
+// Las localidades, las ciudades de Colombia y los países se pueden tocar para ver
+// su foto (CountryCard).
 // Todas las rutas internacionales tienen el mismo estilo.
-import { geoGraticule10, geoOrthographic, geoPath, type GeoProjection } from "d3-geo";
+import { geoContains, geoGraticule10, geoOrthographic, geoPath, type GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import { COLOMBIA, WORLD } from "@/data/worldGlobe";
 import { CITIES, DESTINATIONS, ORIGIN } from "@/data/worldMap";
-import { CITY_PHOTOS, COUNTRY_PHOTOS } from "@/data/countryPhotos";
+import { CITY_PHOTOS, COUNTRY_PHOTOS, LOCALITY_PHOTOS } from "@/data/countryPhotos";
+import { LOCALITIES } from "@/data/bogotaMap";
 
 export type Place = { name: string; lon: number; lat: number; embassy?: boolean; region?: string };
 export type View = { lon: number; lat: number; zoom: number };
@@ -25,6 +29,10 @@ export type View = { lon: number; lat: number; zoom: number };
 export type GlobeLabels = {
   origin: string;
   country: string;
+  /** Rótulo sobre el mapa de las localidades */
+  city: string;
+  /** Crédito del mapa de las localidades (lo exige su licencia) */
+  cityCredit: string;
   /** Nombre del país (Suramérica y África) */
   place: (p: Place) => string;
   /** País que el visitante tocó (se marca con un anillo) */
@@ -32,12 +40,19 @@ export type GlobeLabels = {
 };
 /** Punto de un destino o de una ciudad de Colombia en pantalla (px de CSS), para
  * saber qué se toca */
-export type Hit = { kind: "country" | "city"; place: Place; x: number; y: number };
+export type Hit = {
+  kind: "country" | "city" | "locality";
+  place: Place;
+  x: number;
+  y: number;
+};
 
-/** Foto del país (de su capital) o de la ciudad de Colombia
- * (src/data/countryPhotos.ts, enlaces a Wikimedia) */
+/** Foto del país (de su capital), de la ciudad de Colombia o de la localidad de
+ * Bogotá (src/data/countryPhotos.ts, enlaces a Wikimedia) */
 export const photoFor = (h: Hit) =>
-  h.kind === "city" ? CITY_PHOTOS[h.place.name] : COUNTRY_PHOTOS[h.place.name];
+  (h.kind === "city" ? CITY_PHOTOS : h.kind === "locality" ? LOCALITY_PHOTOS : COUNTRY_PHOTOS)[
+    h.place.name
+  ];
 
 const RAD = Math.PI / 180;
 type Vec = [number, number, number];
@@ -123,8 +138,13 @@ const CONTINENTS = [
 // ─── Tiempos (ms de historia; la animación corre más rápido, ver useGlobe) ───
 
 const PHOTO = 3500; // la foto
-const MORPH = 1000; // la foto se cierra en el círculo y aparece Colombia
-const ENTER = PHOTO + MORPH;
+const MORPH = 1000; // la foto se cierra en el círculo y aparece Bogotá
+// Bogotá con sus localidades (unos 7 s en pantalla) y la cámara que se aleja
+// hasta Colombia (pedido del cliente, nov. 2026)
+const BOGOTA_HOLD = 6200;
+const BOGOTA_MOVE = 2200;
+const BOGOTA_END = PHOTO + MORPH + BOGOTA_HOLD;
+const ENTER = BOGOTA_END + BOGOTA_MOVE;
 const LOOK = 200; // Colombia de cerca, antes de las rutas
 const GAP = 85; // las rutas por Colombia salen casi a la vez, en abanico
 const LEG = 750; // cada ruta por Colombia
@@ -171,6 +191,8 @@ export const LOOP = LEAVE + OUT;
 const LENS = 0.46;
 const BASE = 0.38;
 
+// Bogotá: la ciudad completa (sin el sur rural de Usme, Ciudad Bolívar y Sumapaz)
+const BOGOTA_VIEW: View = { lon: -74.1, lat: 4.63, zoom: 270 };
 // Colombia de cerca y luego un encuadre con todas las capitales de CITIES
 const LOCAL_VIEWS: View[] = [
   { lon: -74.2, lat: 4.6, zoom: 4.2 },
@@ -193,6 +215,7 @@ function mix(a: View, b: View, p: number): View {
 }
 
 function camera(t: number): View {
+  if (t < ENTER) return mix(BOGOTA_VIEW, LOCAL_VIEWS[0], progress(t, BOGOTA_END, BOGOTA_MOVE));
   const local = mix(LOCAL_VIEWS[0], LOCAL_VIEWS[1], progress(t, legAt(0), LOCAL - legAt(0)));
   if (t < LOCAL) return local;
   const last = CONTINENTS[CONTINENTS.length - 1].view;
@@ -217,6 +240,9 @@ export function scene(time: number) {
   const morph = t >= LEAVE ? 1 - back : ease(progress(t, PHOTO, MORPH));
   const photo = t >= LEAVE ? back : 1 - ease(progress(t, PHOTO + MORPH * 0.4, MORPH * 0.6));
   const map = t >= LEAVE ? 1 - back : ease(progress(t, PHOTO + MORPH * 0.3, MORPH * 0.7));
+
+  // Localidades de Bogotá: se apagan cuando la cámara empieza a alejarse
+  const bogota = 1 - progress(t, BOGOTA_END, BOGOTA_MOVE * 0.45);
 
   // Recorrido por Colombia: cuánto de cada ruta se ve; se apaga al salir
   const legs = CITIES.slice(1).map((_, i) => progress(t, legAt(i), LEG));
@@ -243,6 +269,7 @@ export function scene(time: number) {
     pano,
     drawn,
     regionLabels,
+    bogota,
     legs,
     localFade,
     spinning: t >= SPIN,
@@ -259,6 +286,7 @@ export const stillScene = (): Scene => ({
   pano: 1,
   drawn: () => 1,
   regionLabels: [],
+  bogota: 0,
   legs: CITIES.slice(1).map(() => 0),
   localFade: 0,
   spinning: false,
@@ -489,6 +517,107 @@ function drawLocal(
   ctx.restore();
 }
 
+// Proyección del último cuadro con las localidades a la vista (para saber cuál
+// se toca); null si no se ven
+let localityView: {
+  proj: GeoProjection;
+  dpr: number;
+  cx: number;
+  cy: number;
+  lens: number;
+} | null = null;
+
+// Nombres de las localidades: primero las grandes (por el tamaño de su recuadro);
+// las más pequeñas del centro, si no caben, muestran su nombre al tocarlas
+const span = (l: (typeof LOCALITIES)[number]) => {
+  const pts = l.geometry.coordinates.flat(2);
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys));
+};
+const LOCALITY_LABELS = [...LOCALITIES].sort((a, b) => span(b) - span(a));
+
+// Bogotá con sus localidades, en tonos de naranja con bordes blancos y sus
+// nombres (uno que se montaría sobre otro ya puesto se omite)
+function drawBogota(
+  ctx: CanvasRenderingContext2D,
+  path: ReturnType<typeof geoPath>,
+  proj: GeoProjection,
+  s: Scene,
+  dpr: number,
+  labels: GlobeLabels,
+) {
+  const { width: W, height: H } = ctx.canvas;
+  localityView =
+    s.bogota > 0.5 && s.map > 0.5
+      ? { proj, dpr, cx: W / 2, cy: H / 2, lens: lensRadius(W, H) }
+      : null;
+  if (s.bogota <= 0) return;
+  ctx.save();
+  ctx.globalAlpha *= s.bogota;
+  const tones = [0.22, 0.32, 0.42];
+  LOCALITIES.forEach((l, i) => {
+    const on = labels.selected === l.name;
+    ctx.fillStyle = on ? "rgba(255,118,25,.85)" : `rgba(255,118,25,${tones[i % 3]})`;
+    ctx.beginPath();
+    path(l.geometry);
+    ctx.fill();
+  });
+  ctx.strokeStyle = "#ffffff";
+  ctx.lineWidth = 1.6 * dpr;
+  ctx.lineJoin = "round";
+  for (const l of LOCALITIES) {
+    ctx.beginPath();
+    path(l.geometry);
+    ctx.stroke();
+  }
+  const n = proj([-74.2, 4.78]);
+  if (n) {
+    ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
+    ctx.letterSpacing = `${4 * dpr}px`;
+    ctx.fillStyle = `rgba(${INK},.55)`;
+    ctx.textAlign = "center";
+    ctx.fillText(labels.city.toUpperCase(), n[0], n[1]);
+    ctx.letterSpacing = "0px";
+  }
+  ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
+  ctx.fillStyle = `rgba(${INK},.6)`;
+  ctx.textAlign = "center";
+  // Abajo a la derecha, donde no hay localidades
+  const lens = lensRadius(W, H);
+  ctx.fillText(labels.cityCredit, W / 2 + lens * 0.42, H / 2 + lens * 0.64);
+  const placed: [number, number, number, number][] = [];
+  ctx.font = `600 ${10 * dpr}px Montserrat, system-ui, sans-serif`;
+  for (const l of LOCALITY_LABELS) {
+    const p = proj([l.lon, l.lat]);
+    if (!p) continue;
+    const w = ctx.measureText(l.name).width + 4 * dpr;
+    const h = 6.5 * dpr;
+    const box: [number, number, number, number] = [p[0] - w / 2, p[1] - h, p[0] + w / 2, p[1] + h];
+    if (placed.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]))
+      continue;
+    placed.push(box);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineWidth = 3 * dpr;
+    ctx.strokeStyle = "rgba(255,255,255,.85)";
+    ctx.strokeText(l.name, p[0], p[1]);
+    ctx.fillStyle = `rgb(${INK})`;
+    ctx.fillText(l.name, p[0], p[1]);
+  }
+  ctx.textAlign = "start";
+  ctx.restore();
+}
+
+/** Localidad de Bogotá bajo el punto (px de CSS del canvas), si se ven */
+export function localityAt(x: number, y: number): Hit | null {
+  const v = localityView;
+  if (!v || Math.hypot(x * v.dpr - v.cx, y * v.dpr - v.cy) > v.lens) return null;
+  const at = v.proj.invert([x * v.dpr, y * v.dpr]);
+  const l = at && LOCALITIES.find((l) => geoContains(l.geometry, at));
+  return l ? { kind: "locality", place: l, x, y } : null;
+}
+
 // Lado del nombre de algunos países, para que no se monten con un vecino (el
 // resto va a la derecha del punto)
 const LABEL_SIDE: Record<string, Side> = {
@@ -571,7 +700,9 @@ export function drawGlobe(
   path(GRATICULE);
   ctx.stroke();
   drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)));
-  drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close, hits);
+  drawBogota(ctx, path, proj, s, dpr, labels);
+  ctx.textAlign = "start";
+  drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close * (1 - s.bogota), hits);
 
   // Rutas internacionales: todas con el mismo estilo. Un tramo solo queda oculto
   // si pasa por detrás del planeta (cara trasera y dentro de su silueta): ahí se

@@ -126,6 +126,36 @@ const mapPins = (c: HTMLCanvasElement) => {
   return found.map(([x, y]) => [x / dpr, y / dpr]);
 };
 
+test("mapa de la portada: empieza en Bogotá y al tocar una localidad muestra su foto", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await closeCookies(page);
+  const map = page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" });
+  await map.scrollIntoViewIfNeeded();
+  const box = (await map.boundingBox())!;
+  const card = page.getByRole("dialog");
+  // Tras la foto aparece Bogotá: el centro del mapa cae sobre una localidad
+  await expect
+    .poll(
+      async () => {
+        await map.click({ position: { x: box.width / 2, y: box.height / 2 } });
+        const shown = await card.waitFor({ timeout: 300 }).then(
+          () => true,
+          () => false,
+        );
+        if (shown && (await card.getByText("Localidad de Bogotá").isVisible())) return true;
+        if (shown) await page.keyboard.press("Escape");
+        return false;
+      },
+      { timeout: 20000, intervals: [500] },
+    )
+    .toBe(true);
+  await expect(card.getByRole("img", { name: /, Bogotá$/ })).toBeVisible();
+  await card.getByRole("button", { name: "Cerrar" }).click();
+  await expect(card).toHaveCount(0);
+});
+
 test("mapa de la portada: al tocar un país muestra la foto de su capital", async ({ page }) => {
   // Con movimiento reducido el mapa queda fijo, con todos los destinos
   await page.emulateMedia({ reducedMotion: "reduce" });

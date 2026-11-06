@@ -20,6 +20,9 @@ publica en Vercel.
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
   YouTube para "Experiencias Transpack"; necesita internet). Córralo cuando el canal publique
+- `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
+  inicio del mapa, de la capa oficial de Datos Abiertos Bogotá/IDECA, CC BY 4.0, con su
+  crédito en el mapa; necesita internet)
 - `pnpm fotos` — regenera `src/data/countryPhotos.ts` (foto de la capital de cada destino
   del mapa, desde Wikidata y Wikimedia Commons; necesita internet) y la hoja para que el
   cliente las apruebe (`RecursosTranspack/fotos-paises.html`). No descarga imágenes:
@@ -89,6 +92,7 @@ src/
 │   ├── clientLogos.ts      Logos de clientes
 │   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
 │   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
+│   ├── bogotaMap.ts        Localidades de Bogotá (GENERADO con `pnpm map:bogota`, no editar a mano)
 │   ├── worldMap.ts         Bogotá y destinos con longitud y latitud (GENERADO con `pnpm map`, no editar a mano)
 │   └── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
 ├── lib/                    Lógica pura, sin React
@@ -110,7 +114,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs (pnpm map), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -232,17 +236,19 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
   negro pedido en noviembre de 2026), con Colombia y las rutas en naranja
-  y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (velocidad
+  y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
   1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
-  en un círculo con Colombia de cerca y rutas desde Bogotá a las principales
-  capitales de departamento (`CITIES`, unos 3 s) → por continente
+  en un círculo con **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden
+  tocar) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
+  capitales de departamento (`CITIES`, unos 8 s) → por continente
   (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
   solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo
   girando con todos los destinos → vuelve la foto. Ciudades y destinos: `scripts/generate-world-map.mjs`
   (`pnpm map`); nombres de capitales en `mapText` de `src/data/home.ts`. Lógica y
   dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa fuera
   de pantalla; mapa fijo con movimiento reducido).
-- Al tocar un país del mapa (o, durante la parte de Colombia, una de sus ciudades)
+- Al tocar un país del mapa (o, al inicio, una localidad de Bogotá, o durante la
+  parte de Colombia, una de sus ciudades)
   la animación se detiene y `CountryCard` muestra la foto de su capital (o de la
   ciudad), con autor y licencia (lo exige la licencia). Las fotos **no están
   en el proyecto** (así lo pidió el equipo, noviembre de 2026): se cargan desde

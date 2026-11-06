@@ -746,3 +746,167 @@ export const CITY_PHOTOS: Record<string, PlacePhoto> = {
     "license": "Public domain"
   }
 };
+
+/** Localidades de Bogotá, por nombre (el de LOCALITIES en bogotaMap.ts) */
+export const LOCALITY_PHOTOS: Record<string, PlacePhoto> = {
+  "Usaquén": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Bogot%C3%A1_-_aerial_view_-_Country_Club.jpg/500px-Bogot%C3%A1_-_aerial_view_-_Country_Club.jpg",
+    "width": 500,
+    "height": 317,
+    "page": "https://commons.wikimedia.org/wiki/File:Bogot%C3%A1_-_aerial_view_-_Country_Club.jpg",
+    "author": "Tisquesusa",
+    "license": "CC BY 4.0"
+  },
+  "Chapinero": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Cerros_de_Bogot%C3%A1_desde_La_Castellana.JPG/500px-Cerros_de_Bogot%C3%A1_desde_La_Castellana.JPG",
+    "width": 500,
+    "height": 296,
+    "page": "https://commons.wikimedia.org/wiki/File:Cerros_de_Bogot%C3%A1_desde_La_Castellana.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Santa Fe": {
+    "src": "https://upload.wikimedia.org/wikipedia/commons/5/55/Santafe.jpg",
+    "width": 500,
+    "height": 667,
+    "page": "https://commons.wikimedia.org/wiki/File:Santafe.jpg",
+    "author": "Frank Ballesteros",
+    "license": "CC BY-SA 3.0"
+  },
+  "San Cristóbal": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Sn_Cris_jul_2018.jpeg/500px-Sn_Cris_jul_2018.jpeg",
+    "width": 500,
+    "height": 272,
+    "page": "https://commons.wikimedia.org/wiki/File:Sn_Cris_jul_2018.jpeg",
+    "author": "EEIM",
+    "license": "CC BY-SA 3.0"
+  },
+  "Usme": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Sur_de_la_Localidad_de_Usme%2C_Bogot%C3%A1.jpg/500px-Sur_de_la_Localidad_de_Usme%2C_Bogot%C3%A1.jpg",
+    "width": 500,
+    "height": 294,
+    "page": "https://commons.wikimedia.org/wiki/File:Sur_de_la_Localidad_de_Usme,_Bogot%C3%A1.jpg",
+    "author": "EEIM",
+    "license": "CC BY-SA 4.0"
+  },
+  "Tunjuelito": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Av_14_Barrio_San_Carlos_Bt%C3%A1_norte.jpeg/500px-Av_14_Barrio_San_Carlos_Bt%C3%A1_norte.jpeg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Av_14_Barrio_San_Carlos_Bt%C3%A1_norte.jpeg",
+    "author": "EEIM",
+    "license": "CC BY-SA 3.0"
+  },
+  "Bosa": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/2018_Bogot%C3%A1_Bosa._Jardines_de_Paz%2C_ri%C3%B3_Tunjuelo%2C_carrera_80_y_calle_59_sur.jpg/500px-2018_Bogot%C3%A1_Bosa._Jardines_de_Paz%2C_ri%C3%B3_Tunjuelo%2C_carrera_80_y_calle_59_sur.jpg",
+    "width": 500,
+    "height": 358,
+    "page": "https://commons.wikimedia.org/wiki/File:2018_Bogot%C3%A1_Bosa._Jardines_de_Paz,_ri%C3%B3_Tunjuelo,_carrera_80_y_calle_59_sur.jpg",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 4.0"
+  },
+  "Kennedy": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Avenida_de_Las_Am%C3%A9ricas_estaci%C3%B3n_Mundo_Aventura_de_Transmilenio.JPG/500px-Avenida_de_Las_Am%C3%A9ricas_estaci%C3%B3n_Mundo_Aventura_de_Transmilenio.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Avenida_de_Las_Am%C3%A9ricas_estaci%C3%B3n_Mundo_Aventura_de_Transmilenio.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Fontibón": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/2017_Bogot%C3%A1_-_Estaci%C3%B3n_del_Ferrocarril_Fontib%C3%B3n.jpg/500px-2017_Bogot%C3%A1_-_Estaci%C3%B3n_del_Ferrocarril_Fontib%C3%B3n.jpg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:2017_Bogot%C3%A1_-_Estaci%C3%B3n_del_Ferrocarril_Fontib%C3%B3n.jpg",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 4.0"
+  },
+  "Engativá": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Acceso_Biblioteca_Barco_clle_63.jpg/500px-Acceso_Biblioteca_Barco_clle_63.jpg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Acceso_Biblioteca_Barco_clle_63.jpg",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Suba": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Ciclorruta_calle_111_alameda_r%C3%ADo_Molinos.JPG/500px-Ciclorruta_calle_111_alameda_r%C3%ADo_Molinos.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Ciclorruta_calle_111_alameda_r%C3%ADo_Molinos.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 4.0"
+  },
+  "Barrios Unidos": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Parque_de_los_novios_Lemedu.jpg/500px-Parque_de_los_novios_Lemedu.jpg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Parque_de_los_novios_Lemedu.jpg",
+    "author": "Lemedu70",
+    "license": "CC BY-SA 4.0"
+  },
+  "Teusaquillo": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Bogot%C3%A1_carrera_23_calle_26.JPG/500px-Bogot%C3%A1_carrera_23_calle_26.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Bogot%C3%A1_carrera_23_calle_26.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Los Mártires": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Los_M%C3%A1rtires.JPG/500px-Los_M%C3%A1rtires.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Los_M%C3%A1rtires.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Antonio Nariño": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Bogot%C3%A1%2C_calle_4%2C_iglesia_de_San_Antonio_de_Padua.JPG/500px-Bogot%C3%A1%2C_calle_4%2C_iglesia_de_San_Antonio_de_Padua.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Bogot%C3%A1,_calle_4,_iglesia_de_San_Antonio_de_Padua.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 4.0"
+  },
+  "Puente Aranda": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Avenida_de_Las_Am%C3%A9ricas%2C_Bogot%C3%A1.JPG/500px-Avenida_de_Las_Am%C3%A9ricas%2C_Bogot%C3%A1.JPG",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Avenida_de_Las_Am%C3%A9ricas,_Bogot%C3%A1.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "La Candelaria": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Campus_urbano_de_la_Universidad_de_los_Andes.jpg/500px-Campus_urbano_de_la_Universidad_de_los_Andes.jpg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Campus_urbano_de_la_Universidad_de_los_Andes.jpg",
+    "author": "Felipe Ortega Grijalba",
+    "license": "CC BY-SA 4.0"
+  },
+  "Rafael Uribe Uribe": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Localidad_Rafael_Uribe_Uribe.jpg/500px-Localidad_Rafael_Uribe_Uribe.jpg",
+    "width": 500,
+    "height": 375,
+    "page": "https://commons.wikimedia.org/wiki/File:Localidad_Rafael_Uribe_Uribe.jpg",
+    "author": "Omar Alfedo Moya",
+    "license": "CC BY-SA 4.0"
+  },
+  "Ciudad Bolívar": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/R%C3%ADo_Tunjuelo%2C_vista_hacia_Ciudad_Bol%C3%ADvar.JPG/500px-R%C3%ADo_Tunjuelo%2C_vista_hacia_Ciudad_Bol%C3%ADvar.JPG",
+    "width": 500,
+    "height": 333,
+    "page": "https://commons.wikimedia.org/wiki/File:R%C3%ADo_Tunjuelo,_vista_hacia_Ciudad_Bol%C3%ADvar.JPG",
+    "author": "Felipe Restrepo Acosta",
+    "license": "CC BY-SA 3.0"
+  },
+  "Sumapaz": {
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/P%C3%A1ramo_de_Sumapaz.jpg/500px-P%C3%A1ramo_de_Sumapaz.jpg",
+    "width": 500,
+    "height": 335,
+    "page": "https://commons.wikimedia.org/wiki/File:P%C3%A1ramo_de_Sumapaz.jpg",
+    "author": "Luis Alejandro Bernal Romero",
+    "license": "CC BY-SA 2.0"
+  }
+};

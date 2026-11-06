@@ -3,7 +3,7 @@ import type { GlobeLabels, Hit } from "@/lib/globe";
 import type { CountryPhoto, PlacePhoto } from "@/data/countryPhotos";
 import { trackEvent } from "@/lib/analytics";
 
-/** País o ciudad de Colombia que el visitante tocó en el mapa, con su foto, dónde
+/** País, ciudad de Colombia o localidad de Bogotá que el visitante tocó en el mapa, con su foto, dónde
  * quedó y el tamaño del mapa (px de CSS) */
 export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number; h: number };
 
@@ -14,7 +14,8 @@ export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number
  * en el HTML pre-generado, se ve la foto. Se pausa fuera de pantalla y con la
  * pestaña oculta. Con movimiento reducido queda el mapa fijo.
  *
- * Al tocar un país (o una ciudad de Colombia), la animación se detiene y `picked`
+ * Al tocar un país, una ciudad de Colombia o una localidad de Bogotá, la
+ * animación se detiene y `picked`
  * trae el lugar y su foto (CountryCard); `close` la cierra y la animación sigue.
  */
 export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
@@ -92,7 +93,8 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       play();
     };
 
-    // Destino más cercano al puntero (con más margen en pantallas táctiles)
+    // Destino más cercano al puntero (con más margen en pantallas táctiles) o, al
+    // inicio, la localidad de Bogotá que está debajo
     const hitAt = (e: MouseEvent) => {
       const box = canvas.getBoundingClientRect();
       const x = e.clientX - box.left;
@@ -104,7 +106,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
         const d = Math.hypot(h.x - x, h.y - y);
         if (d < bestD) [best, bestD] = [h, d];
       }
-      return best;
+      return best ?? globe?.localityAt(x, y) ?? null;
     };
     const onMove = (e: PointerEvent) => {
       canvas.style.cursor = hitAt(e) ? "pointer" : "";
@@ -128,7 +130,11 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       requestAnimationFrame(draw); // con el anillo del país elegido
       trackEvent(
         "map_country_click",
-        hit.kind === "city" ? { country: "Colombia", city: hit.place.name } : { country: hit.place.name },
+        hit.kind === "country"
+          ? { country: hit.place.name }
+          : hit.kind === "city"
+            ? { country: "Colombia", city: hit.place.name }
+            : { country: "Colombia", city: "Bogotá", locality: hit.place.name },
       );
     };
 

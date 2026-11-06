@@ -221,6 +221,8 @@ export const mapText = (tr: Tr) => ({
   close: tr("Cerrar", "Close"),
   capital: tr("Capital", "Capital"),
   countryName: "Colombia",
+  locality: tr("Localidad de Bogotá", "Bogotá locality"),
+  cityCredit: tr("Mapa: IDECA · CC BY 4.0", "Map: IDECA · CC BY 4.0"),
   cityPhoto: (city: string, country: string) =>
     tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
   credit: tr("Foto", "Photo"),

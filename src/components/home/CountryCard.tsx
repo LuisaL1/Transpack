@@ -5,9 +5,9 @@ import { mapText } from "@/data/home";
 import { useDestinationName } from "@/hooks/useContent";
 import type { PickedCountry } from "@/hooks/useGlobe";
 
-// Tarjeta junto al país (o la ciudad de Colombia) que se tocó en el mapa de la
-// portada: su foto (de la capital, en los países; desde Wikimedia Commons, con su
-// autor y licencia), el nombre y la capital o el país. Va a la
+// Tarjeta junto al país, la ciudad de Colombia o la localidad de Bogotá que se
+// tocó en el mapa de la portada: su foto (de la capital, en los países; desde
+// Wikimedia Commons, con su autor y licencia), el nombre y la capital o el lugar. Va a la
 // derecha del punto o, en la mitad derecha del mapa, a la izquierda.
 export function CountryCard({ picked, onClose }: { picked: PickedCountry; onClose: () => void }) {
   const { tr, lang } = useLang();
@@ -15,11 +15,16 @@ export function CountryCard({ picked, onClose }: { picked: PickedCountry; onClos
   const placeName = useDestinationName();
   const [broken, setBroken] = useState(false);
   const { photo, x, y, w: width, h: height } = picked;
-  const city = picked.kind === "city";
-  // Las ciudades de Colombia van con su nombre en español
-  const name = city ? picked.place.name : placeName(picked.place.name);
+  const country = picked.kind === "country";
+  // Las ciudades de Colombia y las localidades van con su nombre en español
+  const name = country ? placeName(picked.place.name) : picked.place.name;
   const capital = photo && "capital" in photo ? photo.capital[lang] : "";
-  const subtitle = city ? t.countryName : capital && `${t.capital}: ${capital}`;
+  const subtitle =
+    picked.kind === "city"
+      ? t.countryName
+      : picked.kind === "locality"
+        ? t.locality
+        : capital && `${t.capital}: ${capital}`;
   const W = Math.min(240, width - 24);
   const left = x < width / 2 ? Math.min(x + 18, width - W - 12) : Math.max(x - W - 18, 12);
   const top = Math.min(Math.max(y - 120, 12), Math.max(12, height - 260));
@@ -35,7 +40,11 @@ export function CountryCard({ picked, onClose }: { picked: PickedCountry; onClos
         <img
           key={photo.src}
           src={photo.src}
-          alt={city ? t.cityPhoto(name, t.countryName) : t.cityPhoto(capital, name)}
+          alt={
+            country
+              ? t.cityPhoto(capital, name)
+              : t.cityPhoto(name, picked.kind === "city" ? t.countryName : "Bogotá")
+          }
           width={photo.width}
           height={photo.height}
           referrerPolicy="no-referrer"
