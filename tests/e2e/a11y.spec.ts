@@ -14,6 +14,8 @@ for (const route of [
   "/privacidad",
   "/videos",
   "/servicios/mudanzas-internacionales",
+  // Mapa animado de rutas (ColombiaRoutesMap)
+  "/servicios/mudanzas-nacionales",
   "/blog/por-que-una-mudanza-maritima-internacional-puede-tardar",
   "/en",
   "/en/about",

@@ -4,6 +4,7 @@ import { slugEs, useLang } from "@/i18n";
 import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";
@@ -26,7 +27,7 @@ export function ServiceDetailPage() {
 
   return (
     <>
-      <PageHero image={service.image}>
+      <PageHero image={service.image} media={service.heroMap ? <ColombiaRoutesMap /> : undefined}>
         <nav aria-label={t.ruta} className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave">
           <Link to={lp("/")} className="hover:text-azul">
             {t.inicio}

@@ -118,6 +118,7 @@ export const SERVICES: Service[] = [
     quote: "nacional",
     cta: "Get a quote",
     image: imgCargue,
+    heroMap: true,
     kicker: "Between Colombian cities",
     headline: "Your belongings, door to door",
     intro:
