@@ -14,8 +14,7 @@ import { ChatTeaser } from "@/components/chat/ChatTeaser";
 export function AdvisorChat() {
   const { tr } = useLang();
   const t = chatText(tr);
-  const { open, setOpen, advisor, closeAdvisorWindow, teaser, setTeaser, msgs } =
-    useAdvisorChat();
+  const { open, setOpen, advisor, closeAdvisorWindow, teaser, setTeaser, msgs } = useAdvisorChat();
 
   return (
     <>

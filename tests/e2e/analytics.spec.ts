@@ -78,7 +78,6 @@ test("la política de datos permite cambiar la decisión sobre cookies", async (
   expect(await page.evaluate(() => localStorage.getItem("tp-analytics-consent"))).toBeNull();
 });
 
-
 // Chat (Zoho SalesIQ): se precarga al entrar solo si el visitante acepta las
 // cookies; si no responde o las rechaza, Zoho se carga al abrir el chat.
 // fixtures.ts bloquea el script real: aquí solo se cuentan los pedidos.

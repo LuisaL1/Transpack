@@ -20,6 +20,10 @@ publica en Vercel.
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
   YouTube para "Experiencias Transpack"; necesita internet). Córralo cuando el canal publique
+- `pnpm fotos` — regenera `src/data/countryPhotos.ts` (foto de la capital de cada destino
+  del mapa, desde Wikidata y Wikimedia Commons; necesita internet) y la hoja para que el
+  cliente las apruebe (`RecursosTranspack/fotos-paises.html`). No descarga imágenes:
+  guarda solo enlaces, autor y licencia. Córralo si cambian los destinos del mapa
 - `pnpm format` — formatea con oxfmt
 - `pnpm brevo:events` — motivo de cada error de envío en Brevo (`docs/formularios.md`)
 
@@ -59,7 +63,8 @@ src/
 │   │                       Services, Segments, Levels, Coverage, Process,
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
-│   │                       (Globe), el cotizador (QuoteWizard + QuoteFields)
+│   │                       (Globe, con CountryCard al tocar un país), el
+│   │                       cotizador (QuoteWizard + QuoteFields)
 │   ├── videos/             VideoCard (tarjeta de video de Experiencias Transpack)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
@@ -83,6 +88,7 @@ src/
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes
 │   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
+│   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
 │   ├── worldMap.ts         Bogotá y destinos con longitud y latitud (GENERADO con `pnpm map`, no editar a mano)
 │   └── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
 ├── lib/                    Lógica pura, sin React
@@ -104,7 +110,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs (pnpm map), fetch-youtube-videos.mjs (pnpm videos), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs (pnpm map), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -236,6 +242,14 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   (`pnpm map`); nombres de capitales en `mapText` de `src/data/home.ts`. Lógica y
   dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa fuera
   de pantalla; mapa fijo con movimiento reducido).
+- Al tocar un país del mapa (o, durante la parte de Colombia, una de sus ciudades)
+  la animación se detiene y `CountryCard` muestra la foto de su capital (o de la
+  ciudad), con autor y licencia (lo exige la licencia). Las fotos **no están
+  en el proyecto** (así lo pidió el equipo, noviembre de 2026): se cargan desde
+  `thumb.wikimedia.org` y `upload.wikimedia.org` (las ya pequeñas), los únicos
+  dominios de Wikimedia que autoriza la CSP. Para
+  cambiar la foto de un país, use `OVERRIDES` en `scripts/fetch-country-photos.mjs`
+  y corra `pnpm fotos`. Están pendientes de que el cliente las apruebe.
 - Íconos: Bootstrap Icons (`<Bi n="..." />`).
 - Chat: **sin degradados**, mismo estilo de los menús (cabecera azul sólida con
   el cuadrado naranja translúcido girado 45°, rótulo naranja en mayúsculas,

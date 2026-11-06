@@ -130,8 +130,8 @@ function watchChatWindow(w: Window) {
 
 /** Documento de la ventana de Zoho (iframe del mismo origen) */
 const chatDoc = () =>
-  (hostWin?.document.getElementById("siq_chatwindow") as HTMLIFrameElement | null)?.contentDocument ??
-  null;
+  (hostWin?.document.getElementById("siq_chatwindow") as HTMLIFrameElement | null)
+    ?.contentDocument ?? null;
 
 // ─── Visible o escondida ────────────────────────────────────────────────────
 // Abriendo: la ventana no se muestra hasta estar dentro de una conversación

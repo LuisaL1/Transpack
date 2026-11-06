@@ -217,4 +217,11 @@ export const mapText = (tr: Tr) => ({
     "Asesor de Transpack con un contenedor, una caja de mudanza, un avión y un camión",
     "Transpack advisor with a container, a moving box, a plane and a truck",
   ),
+  // Tarjeta al tocar un país (CountryCard)
+  close: tr("Cerrar", "Close"),
+  capital: tr("Capital", "Capital"),
+  countryName: "Colombia",
+  cityPhoto: (city: string, country: string) =>
+    tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
+  credit: tr("Foto", "Photo"),
 });

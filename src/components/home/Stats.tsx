@@ -118,12 +118,7 @@ export function Stats() {
   };
 
   return (
-    <section
-      ref={ref}
-      className="pb-4 pt-6"
-      aria-label={t.label}
-      aria-roledescription={t.carousel}
-    >
+    <section ref={ref} className="pb-4 pt-6" aria-label={t.label} aria-roledescription={t.carousel}>
       <div
         className={`${container} relative overflow-hidden rounded-[22px] bg-white shadow-[var(--shadow-float)] ring-1 ring-linea`}
       >
@@ -154,7 +149,12 @@ export function Stats() {
                 <Bi n={ICONS[k % n]} className="relative" />
               </span>
               <span className="font-title text-[clamp(3.2rem,2.3rem+3.6vw,5.6rem)] font-bold leading-none text-azul">
-                <StatCounter value={s.value} suffix={s.suffix} active={visible && k === i} instant={!animate} />
+                <StatCounter
+                  value={s.value}
+                  suffix={s.suffix}
+                  active={visible && k === i}
+                  instant={!animate}
+                />
               </span>
               <span aria-hidden="true" className="hidden h-20 w-px bg-linea md:block" />
               <span className="max-w-[440px] text-balance font-title text-[clamp(1.2rem,1.02rem+.8vw,1.8rem)] font-semibold leading-snug text-tinta">

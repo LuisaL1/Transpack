@@ -17,7 +17,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
-import imgResidencial from "@/assets/images/residencial.jpeg"
+import imgResidencial from "@/assets/images/residencial.jpeg";
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -628,6 +628,7 @@ export const PRIVACY = {
         "WhatsApp: si eliges enviar tu solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
         "En tu navegador: tu decisión sobre cookies se guarda solo en tu navegador (almacenamiento local) y nunca se envía a Transpack. Puedes borrarla cuando quieras borrando los datos de este sitio en tu navegador.",
         "Chat con un asesor: el chat del sitio funciona con Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. Si aceptas las cookies en el aviso, Zoho se carga en segundo plano al entrar al sitio para que el chat abra al instante; si no las aceptas, se carga solo cuando abres el chat. Desde que se carga, recibe datos técnicos de la visita (páginas vistas, ubicación aproximada, navegador y dispositivo). Lo que escribas en el chat se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM.",
+        "Fotos del mapa: al tocar un país en el mapa de la portada, tu navegador carga la foto de su capital directamente desde Wikimedia Commons, que recibe los datos técnicos de esa petición (dirección IP y navegador). No le enviamos ningún otro dato tuyo.",
         "Conservación: guardamos las solicitudes que recibimos durante el tiempo necesario para atenderlas y prestar el servicio, y después el que exijan las normas contables, tributarias y legales.",
       ],
     },

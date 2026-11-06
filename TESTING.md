@@ -47,6 +47,7 @@ El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report
   `README.md`).
 
 ### 2. Lógica y contenido (`tests/unit/`)
+
 - `crmChat.test.ts` — el chat de Zoho SalesIQ con su API simulada (nunca el
   script real): no carga nada al entrar; carga una sola vez, en español y sin
   el botón de Zoho; abre ya dentro de una conversación y avisa al sitio solo

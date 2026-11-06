@@ -106,6 +106,50 @@ test("portada: globo animado al lado del titular y botón para cotizar", async (
   await expect(page).toHaveURL(/#cotizar/);
 });
 
+// Puntos de los destinos en el mapa (px de CSS): discos naranjas; las rutas,
+// también naranjas, son líneas más finas
+const mapPins = (c: HTMLCanvasElement) => {
+  const { data, width, height } = c.getContext("2d")!.getImageData(0, 0, c.width, c.height);
+  const dpr = c.width / c.clientWidth;
+  const orange = (x: number, y: number) => {
+    const i = (y * width + x) * 4;
+    return data[i] > 230 && data[i + 1] > 90 && data[i + 1] < 150 && data[i + 2] < 70;
+  };
+  const r = Math.round(2 * dpr);
+  const found: [number, number][] = [];
+  for (let y = r; y < height - r; y += 2)
+    for (let x = r; x < width - r; x += 2) {
+      if (![-r, 0, r].every((dy) => [-r, 0, r].every((dx) => orange(x + dx, y + dy)))) continue;
+      if (found.some(([fx, fy]) => Math.hypot(fx - x, fy - y) < 12 * dpr)) continue;
+      found.push([x, y]);
+    }
+  return found.map(([x, y]) => [x / dpr, y / dpr]);
+};
+
+test("mapa de la portada: al tocar un país muestra la foto de su capital", async ({ page }) => {
+  // Con movimiento reducido el mapa queda fijo, con todos los destinos
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await closeCookies(page);
+  const map = page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" });
+  await map.scrollIntoViewIfNeeded();
+  await expect.poll(async () => (await map.evaluate(mapPins)).length).toBeGreaterThan(3);
+  const card = page.getByRole("dialog");
+  for (const [x, y] of await map.evaluate(mapPins)) {
+    await map.click({ position: { x, y } });
+    const shown = await card.waitFor({ timeout: 500 }).then(
+      () => true,
+      () => false,
+    );
+    if (shown) break;
+  }
+  await expect(card).toBeVisible();
+  await expect(card.getByText(/^Capital: /)).toBeVisible();
+  await expect(card.getByRole("img", { name: /^Vista de / })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(card).toHaveCount(0);
+});
+
 test("cotizador: preselección por URL y validación", async ({ page }) => {
   await page.goto("/?servicio=internacional#cotizar");
   const form = page.locator("#cotizar form");

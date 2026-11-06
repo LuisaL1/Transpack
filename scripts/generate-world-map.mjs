@@ -273,8 +273,7 @@ const keyOf = (f) => f.id ?? f.properties.name;
 const USA_ID = "840";
 // Zona de cada país: 0 resto del mundo, 1 donde opera, 2 Estados Unidos
 // (principal mercado, se ilumina aparte: pedido del cliente), 3 Colombia
-const zoneOf = (f) =>
-  f.id === ORIGIN.id ? 3 : f.id === USA_ID ? 2 : hotIds.has(keyOf(f)) ? 1 : 0;
+const zoneOf = (f) => (f.id === ORIGIN.id ? 3 : f.id === USA_ID ? 2 : hotIds.has(keyOf(f)) ? 1 : 0);
 
 // Países con su zona (topojson de 1:110m, que comparte las fronteras y pesa
 // poco) y Colombia en más detalle (1:50m) para verla de cerca al empezar

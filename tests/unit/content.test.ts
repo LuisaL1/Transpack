@@ -4,7 +4,8 @@ import { join } from "node:path";
 import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
 import { menusFor } from "@/data/navigation";
 import { serviceOptions } from "@/data/quote";
-import { DESTINATIONS } from "@/data/worldMap";
+import { CITIES, DESTINATIONS } from "@/data/worldMap";
+import { CITY_PHOTOS, COUNTRY_PHOTOS } from "@/data/countryPhotos";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
 
 // Integridad del contenido (src/data), traducciones y reglas de negocio y de
@@ -164,6 +165,21 @@ describe("Mapa y embajadas", () => {
         .map((d) => d.name)
         .sort(),
     ).toEqual([...es.EMBASSIES].sort());
+  });
+
+  it("cada destino tiene la foto de su capital, enlazada a Wikimedia (no descargada)", () => {
+    expect(Object.keys(COUNTRY_PHOTOS).sort()).toEqual(DESTINATIONS.map((d) => d.name).sort());
+    for (const [name, p] of Object.entries(COUNTRY_PHOTOS)) {
+      expect(p.src, name).toMatch(/^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//);
+      expect(p.page, name).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      expect(p.capital.es && p.capital.en && p.author && p.license, name).toBeTruthy();
+    }
+  });
+
+  it("cada ciudad del recorrido por Colombia tiene su foto, enlazada a Wikimedia", () => {
+    expect(Object.keys(CITY_PHOTOS).sort()).toEqual(CITIES.map((c) => c.name).sort());
+    for (const [name, p] of Object.entries(CITY_PHOTOS))
+      expect(p.src, name).toMatch(/^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//);
   });
 });
 

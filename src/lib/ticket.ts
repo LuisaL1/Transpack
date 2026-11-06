@@ -9,9 +9,7 @@ export type TicketInput = {
   subject: string;
   message: string;
 };
-export type TicketResult =
-  | { ok: true; ticketNumber: string | null }
-  | { ok: false; error: string };
+export type TicketResult = { ok: true; ticketNumber: string | null } | { ok: false; error: string };
 
 export async function sendTicket(input: TicketInput): Promise<TicketResult> {
   try {

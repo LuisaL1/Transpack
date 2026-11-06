@@ -35,7 +35,12 @@ function deskMock(contactHit: { id: string } | null = null) {
   });
 }
 
-const okBody = { name: "Juan Pérez", email: "juan@example.com", subject: "Prueba", message: "Hola" };
+const okBody = {
+  name: "Juan Pérez",
+  email: "juan@example.com",
+  subject: "Prueba",
+  message: "Hola",
+};
 
 beforeEach(() => resetTokenCache());
 afterEach(() => {
@@ -73,7 +78,9 @@ describe("/api/ticket", () => {
   it("crea el ticket solo con teléfono (correo opcional, como el cotizador)", async () => {
     configure();
     vi.stubGlobal("fetch", deskMock());
-    const r = await POST(req({ name: "Ana", phone: "3001234567", subject: "Cotización", message: "Hola" }));
+    const r = await POST(
+      req({ name: "Ana", phone: "3001234567", subject: "Cotización", message: "Hola" }),
+    );
     expect(r.status).toBe(200);
     expect(((await r.json()) as { ok: boolean }).ok).toBe(true);
   });

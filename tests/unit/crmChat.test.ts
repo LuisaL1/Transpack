@@ -100,7 +100,9 @@ describe("chat de Zoho SalesIQ", () => {
     const newChat = vi.fn(() => {
       frame.contentDocument!.body.innerHTML = `<textarea class="siqcw-textarea"></textarea>`;
     });
-    frame.contentDocument!.querySelector("[data-zsqa=new_conversation]")!.addEventListener("click", newChat);
+    frame
+      .contentDocument!.querySelector("[data-zsqa=new_conversation]")!
+      .addEventListener("click", newChat);
     const p = openCrmChat();
     await Promise.resolve();
     await Promise.resolve();

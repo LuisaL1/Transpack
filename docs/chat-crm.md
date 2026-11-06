@@ -4,17 +4,17 @@ El chat del sitio **es el widget de Zoho SalesIQ**, con el diseño del sitio. Lo
 atiende el bot de Zoho ("Joelito") y, cuando hace falta, un asesor desde su
 panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
 
-| Pieza | Archivo |
-| --- | --- |
-| Carga, precarga, apertura, diseño y avisos de la ventana de Zoho | `src/lib/crmChat.ts` |
-| Lógica del chat (abrir/cerrar, respaldo, precarga, conversión, invitación) | `src/hooks/useAdvisorChat.ts` |
-| Botón flotante, invitación y ventana de respaldo | `src/components/chat/` (`AdvisorChat`, `ChatLauncher`, `ChatTeaser`, `ChatBubble`, `ChatOptions`, `ChatAvatar`) |
-| Textos del botón, la invitación y el respaldo | `src/data/chat.ts` |
-| Eventos (`CRM_CHAT_EVENT`, `CHAT_LEAD_EVENT`) | `src/lib/advisorEvents.ts` |
-| Diseño dentro de la ventana / copia para subir a Zoho | `src/styles/zoho-chat.css` / `public/zoho-salesiq.css` |
-| La ventana de Zoho llena el iframe | `src/styles/zoho-host.css` |
-| Tamaño y lugar de la ventana (iframe `#tp-zoho-frame`) | `src/styles/index.css` |
-| Página aislada donde vive Zoho | `public/chat-asesor.html` (CSP propia en `vercel.json`) |
+| Pieza                                                                      | Archivo                                                                                                         |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Carga, precarga, apertura, diseño y avisos de la ventana de Zoho           | `src/lib/crmChat.ts`                                                                                            |
+| Lógica del chat (abrir/cerrar, respaldo, precarga, conversión, invitación) | `src/hooks/useAdvisorChat.ts`                                                                                   |
+| Botón flotante, invitación y ventana de respaldo                           | `src/components/chat/` (`AdvisorChat`, `ChatLauncher`, `ChatTeaser`, `ChatBubble`, `ChatOptions`, `ChatAvatar`) |
+| Textos del botón, la invitación y el respaldo                              | `src/data/chat.ts`                                                                                              |
+| Eventos (`CRM_CHAT_EVENT`, `CHAT_LEAD_EVENT`)                              | `src/lib/advisorEvents.ts`                                                                                      |
+| Diseño dentro de la ventana / copia para subir a Zoho                      | `src/styles/zoho-chat.css` / `public/zoho-salesiq.css`                                                          |
+| La ventana de Zoho llena el iframe                                         | `src/styles/zoho-host.css`                                                                                      |
+| Tamaño y lugar de la ventana (iframe `#tp-zoho-frame`)                     | `src/styles/index.css`                                                                                          |
+| Página aislada donde vive Zoho                                             | `public/chat-asesor.html` (CSP propia en `vercel.json`)                                                         |
 
 ## Cómo funciona
 
@@ -112,6 +112,7 @@ aislada, la CSP estricta del sitio no se relaja:
 | `/chat-asesor` y `/chat-asesor.html` | La página aislada | `'unsafe-inline'` más `salesiq.zohopublic.com`, `salesiq.zoho.com` y `static.zohocdn.com`. Solo el sitio la puede mostrar (`frame-ancestors 'self'`, `X-Frame-Options: SAMEORIGIN`) y no se indexa. |
 
 Otros dominios de Zoho permitidos en la página aislada:
+
 - `style-src`: `static.zohocdn.com`, `*.nimbuspop.com` (de ahí sirve Zoho el CSS
   subido) y Google Fonts; `font-src`: `static.zohocdn.com` y Google Fonts;
   `media-src`: `static.zohocdn.com`;

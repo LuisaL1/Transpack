@@ -512,6 +512,7 @@ export const PRIVACY = {
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: your cookie choice is stored only in your browser (local storage) and is never sent to Transpack. You can delete it at any time by clearing this site's data in your browser.",
         "Advisor chat: the site's chat runs on Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. If you accept cookies in the notice, Zoho loads in the background when you arrive on the site so the chat opens instantly; if you do not accept them, it only loads when you open the chat. Once loaded, it receives technical data about the visit (pages viewed, approximate location, browser and device). What you write in the chat is stored on Zoho's servers, which may be outside Colombia, and in our CRM.",
+        "Map photos: when you tap a country on the home page map, your browser loads the photo of its capital directly from Wikimedia Commons, which receives the technical data of that request (IP address and browser). We do not send it any other data about you.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },

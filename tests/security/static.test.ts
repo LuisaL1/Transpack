@@ -72,7 +72,9 @@ describe("Código", () => {
 
   it("el chat no usa credenciales de Zoho: es el widget público (código de sitio web)", () => {
     for (const [f, s] of code)
-      expect(s, f).not.toMatch(/ZOHO_(CLIENT_SECRET|REFRESH_TOKEN|CLIENT_ID)|ADVISOR_SECRET|oauth\/v2\/token/);
+      expect(s, f).not.toMatch(
+        /ZOHO_(CLIENT_SECRET|REFRESH_TOKEN|CLIENT_ID)|ADVISOR_SECRET|oauth\/v2\/token/,
+      );
   });
 
   it("el chat no ejecuta ni interpreta HTML del visitante", () => {
@@ -151,6 +153,8 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
       "https://fonts.googleapis.com", // tipografías (src/styles/index.css)
       "https://fonts.gstatic.com",
       "https://i.ytimg.com", // portadas de los videos
+      "https://thumb.wikimedia.org", // fotos de los países del mapa (src/data/countryPhotos.ts)
+      "https://upload.wikimedia.org", // (las que ya son pequeñas, en su tamaño original)
       "https://www.google.com", // mapa de contacto
       "https://www.youtube-nocookie.com", // videos (sin cookies)
     ]);

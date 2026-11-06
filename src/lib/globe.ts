@@ -17,6 +17,7 @@ import { geoGraticule10, geoOrthographic, geoPath, type GeoProjection } from "d3
 import { feature, mesh } from "topojson-client";
 import { COLOMBIA, WORLD } from "@/data/worldGlobe";
 import { CITIES, DESTINATIONS, ORIGIN } from "@/data/worldMap";
+import { CITY_PHOTOS, COUNTRY_PHOTOS } from "@/data/countryPhotos";
 
 export type Place = { name: string; lon: number; lat: number; embassy?: boolean; region?: string };
 export type View = { lon: number; lat: number; zoom: number };
@@ -26,7 +27,17 @@ export type GlobeLabels = {
   country: string;
   /** Nombre del país (Suramérica y África) */
   place: (p: Place) => string;
+  /** País que el visitante tocó (se marca con un anillo) */
+  selected?: string;
 };
+/** Punto de un destino o de una ciudad de Colombia en pantalla (px de CSS), para
+ * saber qué se toca */
+export type Hit = { kind: "country" | "city"; place: Place; x: number; y: number };
+
+/** Foto del país (de su capital) o de la ciudad de Colombia
+ * (src/data/countryPhotos.ts, enlaces a Wikimedia) */
+export const photoFor = (h: Hit) =>
+  h.kind === "city" ? CITY_PHOTOS[h.place.name] : COUNTRY_PHOTOS[h.place.name];
 
 const RAD = Math.PI / 180;
 type Vec = [number, number, number];
@@ -117,9 +128,11 @@ const ENTER = PHOTO + MORPH;
 const LOOK = 200; // Colombia de cerca, antes de las rutas
 const GAP = 85; // las rutas por Colombia salen casi a la vez, en abanico
 const LEG = 750; // cada ruta por Colombia
-// Colombia se ve unos 2,7 s de historia, con la entrada y la salida (unos 2 s
-// en pantalla)
-const LOCAL = ENTER + LOOK + (CITIES.length - 2) * GAP + LEG + 150;
+// Colombia se ve unos 7 s de historia, con la entrada y la salida (unos 8 s en
+// pantalla). Pausa con todas las ciudades a la vista: 5 s más en pantalla (pedido del
+// cliente, nov. 2026; se pueden tocar para ver su foto)
+const LOCAL_HOLD = 4450;
+const LOCAL = ENTER + LOOK + (CITIES.length - 2) * GAP + LEG + 150 + LOCAL_HOLD;
 const legAt = (i: number) => ENTER + LOOK + i * GAP;
 
 const REGION_MOVE = 2000; // la cámara viaja al continente (más pausado: pedido del cliente, nov. 2026)
@@ -127,7 +140,9 @@ const REGION_MOVE = 2000; // la cámara viaja al continente (más pausado: pedid
 // (todas salen en unos 3,6 s)
 const regionGap = (n: number) => Math.min(220, 3600 / Math.max(1, n - 1));
 const REGION_DRAW = 1700; // cada ruta de un continente (más lenta: pedido del cliente, nov. 2026)
-const REGION_HOLD = 1900; // pausa con el continente completo (se leen los nombres)
+// Pausa con el continente completo (se leen los nombres): 5 s más en pantalla
+// (pedido del cliente, nov. 2026; la historia corre a ~0,89×, ver useGlobe)
+const REGION_HOLD = 6350;
 const regionLength = (n: number) =>
   REGION_MOVE + (n - 1) * regionGap(n) + REGION_DRAW + REGION_HOLD;
 const REGION_AT: number[] = [];
@@ -407,8 +422,10 @@ function drawLocal(
   time: number,
   labels: GlobeLabels,
   alpha: number,
+  hits: Hit[],
 ) {
   if (alpha <= 0) return;
+  const { width: W, height: H } = ctx.canvas;
   ctx.save();
   ctx.globalAlpha *= alpha;
   ctx.lineCap = "round";
@@ -445,9 +462,21 @@ function drawLocal(
     ctx.letterSpacing = "0px";
   }
   // Bogotá con pastilla; las demás capitales con punto y nombre al llegar su ruta
+  // Con Colombia bien a la vista, las ciudades se pueden tocar (su foto)
+  const touchable = alpha > 0.5;
+  const lens = lensRadius(W, H);
   CITIES.forEach((c, i) => {
     const p = proj([c.lon, c.lat]);
     if (!p || (i > 0 && s.legs[i - 1] < 1)) return;
+    if (touchable && Math.hypot(p[0] - W / 2, p[1] - H / 2) < lens)
+      hits.push({ kind: "city", place: c, x: p[0] / dpr, y: p[1] / dpr });
+    if (labels.selected === c.name) {
+      ctx.strokeStyle = ORANGE;
+      ctx.lineWidth = 2 * dpr;
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 11 * dpr, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     if (i === 0) {
       pulse(ctx, p[0], p[1], dpr, time, "255,118,25");
       pin(ctx, p[0], p[1], dpr, 6, "#ffffff", `rgb(${INK})`);
@@ -473,17 +502,19 @@ const LABEL_SIDE: Record<string, Side> = {
   Italia: "below",
 };
 
-/** Dibuja el mapa en el estado `s` (de scene o stillScene) */
+/** Dibuja el mapa en el estado `s` (de scene o stillScene) y devuelve dónde
+ * quedaron los destinos a la vista */
 export function drawGlobe(
   ctx: CanvasRenderingContext2D,
   s: Scene,
   time: number,
   labels: GlobeLabels,
   dpr: number,
-) {
+): Hit[] {
   const { width: W, height: H } = ctx.canvas;
   ctx.clearRect(0, 0, W, H);
-  if (s.map <= 0) return;
+  const hits: Hit[] = [];
+  if (s.map <= 0) return hits;
   const v = s.view;
   const cx = W / 2;
   const cy = H / 2;
@@ -540,7 +571,7 @@ export function drawGlobe(
   path(GRATICULE);
   ctx.stroke();
   drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)));
-  drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close);
+  drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close, hits);
 
   // Rutas internacionales: todas con el mismo estilo. Un tramo solo queda oculto
   // si pasa por detrás del planeta (cara trasera y dentro de su silueta): ahí se
@@ -594,6 +625,15 @@ export function drawGlobe(
     const q = project(d.lon, d.lat, v);
     if (q.z <= 0) continue;
     const [x, y] = px(q);
+    if (Math.hypot(x - cx, y - cy) > lens) continue;
+    hits.push({ kind: "country", place: d, x: x / dpr, y: y / dpr });
+    if (labels.selected === d.name) {
+      ctx.strokeStyle = ORANGE;
+      ctx.lineWidth = 2 * dpr;
+      ctx.beginPath();
+      ctx.arc(x, y, 9 * dpr, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     pin(ctx, x, y, dpr, 3.5, ORANGE, "#ffffff");
     if (!s.regionLabels.includes(d)) continue;
     const text = labels.place(d);
@@ -637,4 +677,5 @@ export function drawGlobe(
     ctx.stroke();
   }
   ctx.restore();
+  return hits;
 }

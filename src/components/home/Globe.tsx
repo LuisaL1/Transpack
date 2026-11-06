@@ -3,17 +3,19 @@ import { useLang } from "@/i18n";
 import { mapText } from "@/data/home";
 import { useDestinationName } from "@/hooks/useContent";
 import { useGlobe } from "@/hooks/useGlobe";
+import { CountryCard } from "@/components/home/CountryCard";
 
 // Lado derecho de la portada (pedido del cliente, oct. 2026): empieza con la
 // foto de la portada, que se cierra en un círculo donde aparece el mapa de
 // Colombia; desde Bogotá salen las rutas a las capitales principales y luego al
 // resto del mundo, en grises (src/lib/globe.ts). La foto también es lo que se
-// ve en el HTML pre-generado y mientras carga el mapa.
+// ve en el HTML pre-generado y mientras carga el mapa. Al tocar un país se
+// detiene y muestra la foto de su capital (CountryCard).
 export function Globe({ className = "" }: { className?: string }) {
   const { tr } = useLang();
   const t = mapText(tr);
   const placeName = useDestinationName();
-  const { canvasRef, photoRef } = useGlobe({
+  const { canvasRef, photoRef, picked, close } = useGlobe({
     origin: t.origin,
     country: "Colombia",
     place: (p) => placeName(p.name),
@@ -38,6 +40,7 @@ export function Globe({ className = "" }: { className?: string }) {
           className="max-h-full w-full max-w-[760px] object-contain"
         />
       </div>
+      {picked && <CountryCard key={picked.place.name} picked={picked} onClose={close} />}
     </div>
   );
 }

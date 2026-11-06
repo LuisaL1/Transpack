@@ -33,7 +33,7 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 | `/`                | Inicio (incluye el cotizador en `#cotizar`)                                          |
 | `/nosotros`        | Quiénes somos                                                                        |
 | `/privacidad`      | Política de tratamiento de datos personales (texto en `PRIVACY`, `src/data/site.ts`) |
-| `/videos`          | Experiencias Transpack: todos los videos del canal de YouTube (`pnpm videos`)             |
+| `/videos`          | Experiencias Transpack: todos los videos del canal de YouTube (`pnpm videos`)        |
 | `/servicios/:slug` | Detalle de servicio (slugs en `src/data/site.ts`)                                    |
 | `/blog/:slug`      | Artículo (contenido en `src/data/blogData.ts`)                                       |
 
@@ -62,13 +62,13 @@ push y pull request corre además la integración continua de GitHub Actions
 
 ### Variables de entorno (Vercel → Settings → Environment Variables)
 
-| Variable | Valor | Entorno |
-| --- | --- | --- |
-| `VITE_GA_MEASUREMENT_ID` | `G-BTXBFXKFEN` (Google Analytics 4 de Transpack) | **Solo Production** |
-| `VITE_SITE_INDEXABLE` | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`) | Solo Production |
-| `VITE_GOOGLE_SITE_VERIFICATION` | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS) | Solo Production |
-| `BREVO_API_KEY` | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`) | Production |
-| `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production |
+| Variable                                                          | Valor                                                                                                                         | Entorno             |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `VITE_GA_MEASUREMENT_ID`                                          | `G-BTXBFXKFEN` (Google Analytics 4 de Transpack)                                                                              | **Solo Production** |
+| `VITE_SITE_INDEXABLE`                                             | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`)                                              | Solo Production     |
+| `VITE_GOOGLE_SITE_VERIFICATION`                                   | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS)                                                       | Solo Production     |
+| `BREVO_API_KEY`                                                   | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`)                                                         | Production          |
+| `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production          |
 
 - **Después de crear o cambiar una variable:** Deployments → último despliegue
   → **Redeploy**. Las variables se leen al compilar.

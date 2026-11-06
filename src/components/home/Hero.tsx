@@ -99,7 +99,10 @@ export function Hero() {
                   src={c.src}
                   alt={k === 0 ? c.name : ""}
                   title={c.name}
-                  style={{ height: logoHeight(c.ratio) * 2, width: logoHeight(c.ratio) * c.ratio * 2}}
+                  style={{
+                    height: logoHeight(c.ratio) * 2,
+                    width: logoHeight(c.ratio) * c.ratio * 2,
+                  }}
                   className="shrink-0 object-contain opacity-55 brightness-0 transition-opacity duration-300 hover:opacity-90"
                 />
               ))}

@@ -36,7 +36,9 @@ export function Coverage() {
         aria-hidden="true"
         className="absolute inset-0 hidden bg-[linear-gradient(90deg,#0d0f33_0%,#0d0f33_26%,rgba(27,30,92,.9)_34%,rgba(27,30,92,.5)_44%,rgba(27,30,92,.12)_56%,transparent_66%)] lg:block"
       />
-      <div className={`${container} relative grid items-end gap-12 lg:grid-cols-[minmax(0,500px)_1fr] lg:gap-16`}>
+      <div
+        className={`${container} relative grid items-end gap-12 lg:grid-cols-[minmax(0,500px)_1fr] lg:gap-16`}
+      >
         {/* Celular y tableta: la foto completa, arriba */}
         <Reveal className="lg:hidden">
           <img

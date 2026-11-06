@@ -65,11 +65,11 @@ servicio existente y cambiar sus datos:
 
 ## 3. Ajustes recomendados
 
-| Qué                                   | Archivo                                                                                                                      | Para qué                                                                                      |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Dirección en inglés                   | `SLUGS` en [`src/i18n/index.ts`](../src/i18n/index.ts): `"mudanzas-de-oficina": { en: "office-moving", … }`                  | Que la página en inglés sea `/en/services/office-moving` (si no, usa la dirección en español) |
-| Palabras con las que Joel lo reconoce | Lista de palabras clave por servicio en [`src/lib/joel.ts`](../src/lib/joel.ts) (busque `bodegaje: [` como ejemplo)          | Que entienda "quiero mover mi oficina" y no solo el nombre exacto                             |
-| Conteo de servicios en las pruebas    | [`tests/unit/seo.test.ts`](../tests/unit/seo.test.ts): `toHaveLength(6)` → `7`                                               | La prueba de rutas cuenta los servicios publicados                                            |
+| Qué                                   | Archivo                                                                                                             | Para qué                                                                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Dirección en inglés                   | `SLUGS` en [`src/i18n/index.ts`](../src/i18n/index.ts): `"mudanzas-de-oficina": { en: "office-moving", … }`         | Que la página en inglés sea `/en/services/office-moving` (si no, usa la dirección en español) |
+| Palabras con las que Joel lo reconoce | Lista de palabras clave por servicio en [`src/lib/joel.ts`](../src/lib/joel.ts) (busque `bodegaje: [` como ejemplo) | Que entienda "quiero mover mi oficina" y no solo el nombre exacto                             |
+| Conteo de servicios en las pruebas    | [`tests/unit/seo.test.ts`](../tests/unit/seo.test.ts): `toHaveLength(6)` → `7`                                      | La prueba de rutas cuenta los servicios publicados                                            |
 
 ## 4. La cotización
 

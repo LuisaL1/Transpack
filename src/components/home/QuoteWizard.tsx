@@ -204,7 +204,8 @@ export function QuoteWizard({
       message: description,
     });
     setSendState(r.ok ? "sent" : "error");
-    if (r.ok) trackEvent("generate_lead", { method: "zoho_ticket", service, level: form.nivel, lang });
+    if (r.ok)
+      trackEvent("generate_lead", { method: "zoho_ticket", service, level: form.nivel, lang });
   };
 
   // Envía la solicitud una sola vez al llegar a la pantalla final

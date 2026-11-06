@@ -91,7 +91,11 @@ export function useAdvisorChat() {
     const ids: number[] = [];
     const preload = () => {
       const run = () => void import("@/lib/crmChat").then((m) => m.preloadCrmChat());
-      ids.push(w.requestIdleCallback ? w.requestIdleCallback(run, { timeout: 3000 }) : window.setTimeout(run, 2000));
+      ids.push(
+        w.requestIdleCallback
+          ? w.requestIdleCallback(run, { timeout: 3000 })
+          : window.setTimeout(run, 2000),
+      );
     };
     if (!analyticsEnabled || getConsent() === "granted") preload();
     const onConsent = (e: Event) => {

@@ -4,10 +4,10 @@ Todo contacto por correo del sitio pasa por formularios propios. Ningún enlace
 abre el programa de correo del visitante, y ningún dato se envía a servicios de
 formularios de terceros (FormSubmit, Formspree, etc.).
 
-| Formulario | Dónde se abre | Qué envía |
-| --- | --- | --- |
+| Formulario                                                            | Dónde se abre                                                                                                                                                                                  | Qué envía                                                                                             |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | **Formulario de contacto** (`src/components/layout/ContactModal.tsx`) | Panel de soporte, menú Contacto (escritorio y celular), sección de contacto del inicio, pie de página, ventana de respaldo del chat ("Dejar un mensaje", si Zoho no carga) y política de datos | Nombre, empresa, correo, teléfono, motivo, mensaje, idioma (si no es español) y autorización de datos |
-| **Cotizador** (`src/components/home/QuoteWizard.tsx`) | Sección `#cotizar` del inicio | Servicio y respuestas de cada paso, nombre, celular, correo, idioma y autorización de datos |
+| **Cotizador** (`src/components/home/QuoteWizard.tsx`)                 | Sección `#cotizar` del inicio                                                                                                                                                                  | Servicio y respuestas de cada paso, nombre, celular, correo, idioma y autorización de datos           |
 
 - **Enlaces:** cualquier enlace a `#contacto` abre el formulario. Con
   `contactHref({ motivo, mensaje, nombre, empresa })` (`src/data/contact.ts`)
@@ -36,11 +36,11 @@ Navegador ──POST /api/contact──► Función de Vercel (api/contact.mjs) 
                                                                                      └─► confirmación al visitante
 ```
 
-| Solicitud | Llega a | Variable para cambiarlo |
-| --- | --- | --- |
-| Cotizador (`kind: "cotizacion"`) | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
-| Formulario de contacto con motivo "Cotización" | mercadeo@transpacksas.com | `LEADS_TO_QUOTES` |
-| Formulario de contacto con cualquier otro motivo | servicioalcliente@transpacksas.com | `LEADS_TO` |
+| Solicitud                                        | Llega a                            | Variable para cambiarlo |
+| ------------------------------------------------ | ---------------------------------- | ----------------------- |
+| Cotizador (`kind: "cotizacion"`)                 | mercadeo@transpacksas.com          | `LEADS_TO_QUOTES`       |
+| Formulario de contacto con motivo "Cotización"   | mercadeo@transpacksas.com          | `LEADS_TO_QUOTES`       |
+| Formulario de contacto con cualquier otro motivo | servicioalcliente@transpacksas.com | `LEADS_TO`              |
 
 - **Protección:**
   - rechaza envíos desde otros dominios (403);

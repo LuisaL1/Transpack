@@ -47,9 +47,7 @@ const cfg = () => ({
 
 export const isConfigured = () => {
   const c = cfg();
-  return Boolean(
-    c.clientId && c.clientSecret && c.refreshToken && c.orgId && c.departmentId,
-  );
+  return Boolean(c.clientId && c.clientSecret && c.refreshToken && c.orgId && c.departmentId);
 };
 
 // ─── OAuth: refresh token → access token ────────────────────────────────────
@@ -157,14 +155,25 @@ export async function POST(req) {
     return json({ ok: false, error: "json" }, 400);
   }
 
-  const name = String(body.name ?? "").trim().slice(0, 120);
-  const email = String(body.email ?? "").trim().slice(0, 160);
-  const subject = String(body.subject ?? "").trim().slice(0, 255);
-  const description = String(body.message ?? body.description ?? "").trim().slice(0, 5000);
-  const phone = String(body.phone ?? "").trim().slice(0, 40);
+  const name = String(body.name ?? "")
+    .trim()
+    .slice(0, 120);
+  const email = String(body.email ?? "")
+    .trim()
+    .slice(0, 160);
+  const subject = String(body.subject ?? "")
+    .trim()
+    .slice(0, 255);
+  const description = String(body.message ?? body.description ?? "")
+    .trim()
+    .slice(0, 5000);
+  const phone = String(body.phone ?? "")
+    .trim()
+    .slice(0, 40);
 
   if (!subject) return json({ ok: false, error: "subject" }, 422);
-  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ ok: false, error: "email" }, 422);
+  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
+    return json({ ok: false, error: "email" }, 422);
   // Necesita al menos un medio de contacto (el cotizador siempre trae teléfono;
   // el correo es opcional). Zoho Desk crea el contacto con lo que haya.
   if (!email && !phone) return json({ ok: false, error: "contact" }, 422);
