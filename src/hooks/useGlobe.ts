@@ -17,6 +17,7 @@ export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number
  * Al tocar un país, una ciudad de Colombia o una localidad de Bogotá, la
  * animación se detiene y `picked`
  * trae el lugar y su foto (CountryCard); `close` la cierra y la animación sigue.
+ * Con el mouse encima del mapa también se detiene.
  */
 export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,6 +48,9 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     let time = 0;
     let onScreen = true;
     let paused = false;
+    // Con el mouse encima del mapa la animación se detiene (pedido del cliente,
+    // nov. 2026); en pantallas táctiles no, porque no hay "encima"
+    let hovering = false;
     let dpr = 1;
     let cancelled = false;
     let hits: Hit[] = [];
@@ -84,7 +88,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     const play = () => {
       cancelAnimationFrame(raf);
       last = 0;
-      if (!still && !paused && globe && onScreen && !document.hidden)
+      if (!still && !paused && !hovering && globe && onScreen && !document.hidden)
         raf = requestAnimationFrame(tick);
     };
     resumeRef.current = () => {
@@ -161,6 +165,20 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       if (paused || still) requestAnimationFrame(draw);
     };
     canvas.addEventListener("pointerleave", onLeave);
+    // Sobre todo el mapa, incluida la tarjeta de un lugar
+    const root = canvas.parentElement ?? canvas;
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      hovering = true;
+      play();
+    };
+    const onExit = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      hovering = false;
+      play();
+    };
+    root.addEventListener("pointerenter", onEnter);
+    root.addEventListener("pointerleave", onExit);
     canvas.addEventListener("click", onClick);
 
     import("@/lib/globe").then((m) => {
@@ -178,6 +196,8 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       document.removeEventListener("visibilitychange", play);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("pointerenter", onEnter);
+      root.removeEventListener("pointerleave", onExit);
       canvas.removeEventListener("click", onClick);
     };
   }, []);
