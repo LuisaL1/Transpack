@@ -256,6 +256,14 @@ function redirect(res, status, location, base) {
 
 /** Arranca el servidor en el puerto que asigna el hosting (PORT) */
 export function start(port = Number(process.env.PORT) || 3000) {
+  // Si el hosting no entrega las variables a la app, se leen de un archivo .env
+  // en la carpeta de la app (nunca en el repositorio: .gitignore lo excluye).
+  // Las que ya vienen del entorno tienen prioridad.
+  const envFile = join(HERE, "..", ".env");
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+    console.log("[server] Variables leídas de .env");
+  }
   const server = createServer(createHandler());
   // 0.0.0.0: el hosting llega a la app desde fuera del contenedor
   server.listen(port, process.env.HOST || "0.0.0.0", () => {
