@@ -214,7 +214,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   (`EMBASSY_FLAGS`). Al agregar una embajada, agregue su logo y su bandera en
   `src/data/clientLogos.ts`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
-  (Suramérica, África y Asia excepto Irán y Rusia), definidos en
+  (Suramérica, África, Asia excepto Irán y Rusia, y Oceanía), definidos en
   `scripts/generate-world-map.mjs`.
 - Política de datos (`PRIVACY` en `src/data/site.ts` y sus traducciones, página
   `/privacidad`): es un borrador pendiente de aprobación legal. El NIT
@@ -254,8 +254,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   alrededor (elegido por el cliente en noviembre de 2026; la que se
   toca o está bajo el puntero, en naranja), y
   las rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
-  1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): un **carrusel de fotos de los sectores exclusivos de Bogotá** (El Nogal, Hacienda Santa Bárbara en Usaquén, la Séptima con 94, El Refugio y el Parque de la 93; unos 3 s cada una, con su nombre y crédito; reemplazó la foto de la casa a pedido del cliente, noviembre de 2026, para mostrar los sectores de estratos 5 y 6 de sus clientes; `SECTORS` en `scripts/fetch-country-photos.mjs` → `src/data/sectorPhotos.ts`, cargadas desde Wikimedia como las demás) → la última se cierra
-  en **Bogotá y sus 20 localidades** (unos 24 s; se pueden tocar; tres camiones iguales al de Mudanzas
+  1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): un **carrusel de fotos de los sectores exclusivos de Bogotá** (El Nogal, Hacienda Santa Bárbara en Usaquén, la Séptima con 94, El Refugio y el Parque de la 93; 2 s cada una, con su nombre y crédito; reemplazó la foto de la casa a pedido del cliente, noviembre de 2026, para mostrar los sectores de estratos 5 y 6 de sus clientes; `SECTORS` en `scripts/fetch-country-photos.mjs` → `src/data/sectorPhotos.ts`, cargadas desde Wikimedia como las demás) → la última se cierra
+  en **Bogotá y sus 20 localidades** (unos 15 s, pedido del cliente en noviembre de 2026; se pueden tocar; tres camiones iguales al de Mudanzas
   nacionales salen de Puente Aranda, la sede, uno tras otro, y entre los tres pasan, despacio, por todas
   menos Sumapaz, que queda fuera del mapa, con una estela naranja que se desvanece; frenan un momento en
   cada una, que se oscurece poco a poco con una onda azul. Cada camión termina, en un momento distinto,
@@ -265,9 +265,11 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   en noviembre de 2026; solo las
   localidades sobre el fondo de la página, sin el globo, y el sur rural se desvanece
   hacia abajo: pedido del cliente, noviembre de 2026) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
-  capitales de departamento (`CITIES`, unos 8 s) → por continente
+  capitales de departamento (`CITIES`, unos 4 s) → por continente
   (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
-  solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo
+  solo sombreado; África, Asia y Oceanía con Australia y Nueva Zelanda, pedido del cliente
+  en noviembre de 2026, el resto de Oceanía solo sombreado), todas las rutas con el mismo estilo; en Colombia y en cada
+  continente, 2 s de pausa antes de pasar al siguiente (pedido del cliente, noviembre de 2026) → globo
   girando con todos los destinos → vuelve la primera foto del carrusel. Ciudades y destinos: `scripts/generate-world-map.mjs`
   (`pnpm map`); nombres de capitales en `mapText` de `src/data/home.ts`. Lógica y
   dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa fuera

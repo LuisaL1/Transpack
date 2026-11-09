@@ -23,7 +23,7 @@ export const CITIES = [
 ];
 
 /** Destinos con ruta en el globo (capitales). "embassy": país donde Transpack ha
- * atendido embajadas; "region": continente (america, europa, africa o asia) */
+ * atendido embajadas; "region": continente (america, europa, africa, asia u oceania) */
 export const DESTINATIONS = [
   { name: "Estados Unidos", lon: -77.04, lat: 38.9, embassy: true, region: "america" },
   { name: "Brasil", lon: -47.88, lat: -15.79, embassy: false, region: "america" },
@@ -76,4 +76,6 @@ export const DESTINATIONS = [
   { name: "Suiza", lon: 7.45, lat: 46.95, embassy: false, region: "europa" },
   { name: "Suecia", lon: 18.07, lat: 59.33, embassy: false, region: "europa" },
   { name: "Polonia", lon: 21.01, lat: 52.23, embassy: false, region: "europa" },
+  { name: "Australia", lon: 149.13, lat: -35.28, embassy: false, region: "oceania" },
+  { name: "Nueva Zelanda", lon: 174.78, lat: -41.29, embassy: false, region: "oceania" },
 ];

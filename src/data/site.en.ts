@@ -17,7 +17,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
-import type { QuoteService, Service } from "@/data/site";
+import type { QuoteService, Service, ServiceGuide } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
 export type { QuoteService, Service } from "@/data/site";
@@ -70,6 +70,82 @@ export const EMBASSIES = [
 
 // ─── Services ─────────────────────────────────────────────────────────────────
 
+// Local and national moving guide (client text, November 2026)
+const HOME_MOVE_GUIDE: ServiceGuide = {
+  eyebrow: "Quick guide",
+  title: "Your move, step by step",
+  sections: [
+    {
+      icon: "clipboard-check",
+      title: "The first step: planning your move",
+      text: [
+        "Before packing the first box, we need to work out the size of your move. We call this the Pre-Move Survey. For your convenience, we can do an In-Home Estimate (we visit your home), a Virtual one (by video call) or a Phone estimate.",
+        "With it we create your Inventory List, the official document where we record all your Household Goods (furniture, appliances) and Personal Effects (clothes, books, personal items). That way we know exactly what is travelling and we make sure everything arrives complete.",
+      ],
+    },
+    {
+      icon: "box-seam",
+      title: "Moving day: packing and caring for your things",
+      text: [
+        "On the scheduled day, our team will arrive at your current home. They have the best Staff Training to look after your belongings as if they were their own:",
+      ],
+      items: [
+        {
+          b: "Packing Materials:",
+          t: "we use heavy-duty boxes, bubble wrap and kraft paper. We also have Eco-Friendly Materials if you prefer to look after the environment.",
+        },
+        {
+          b: "Loading and Stowage:",
+          t: "the art of fitting everything perfectly inside the truck. We make sure there is a Balanced Load so the weight is well distributed and nothing is damaged by the movement of the journey.",
+        },
+        {
+          b: "Sealed Container / Enclosed Truck:",
+          t: "your belongings travel protected from the weather and road dust, with security seals if needed.",
+        },
+      ],
+    },
+    {
+      icon: "signpost-split",
+      title: "The journey: on the road to your new home",
+      text: [
+        "To keep your move free of unnecessary delays, we use Route Optimization technology. It lets us choose the safest and most efficient way, avoiding difficult areas and heavy traffic.",
+        "If your destination city has a vehicle restriction or a Special Permit is required (for example, to enter a gated residential complex or to drive at certain hours), our team will advise you so everything is ready.",
+      ],
+    },
+    {
+      icon: "key",
+      title: "Your arrival: unpacking and delivery",
+      text: [
+        "We have arrived! Our team will unload everything with the utmost care. Once inside your new home, we do the Unpacking of the main items and help you with the Assembly and Installation of your beds, wardrobes or tables so you can live in your home from day one. When we finish, we take care of Waste Removal, taking away all the used packing material to leave your space clean.",
+      ],
+    },
+    {
+      icon: "shield-check",
+      title: "Your peace of mind comes first: risks and insurance",
+      text: [
+        "Although we work to the highest standard to prevent Transport, Loading or Unloading Risks, the unexpected can happen on the road. For your complete peace of mind, we offer Insurance Coverage options:",
+      ],
+      items: [
+        {
+          b: "Full Coverage (All-Risk):",
+          t: "your best ally. It protects your whole move against any mishap or accident on the way.",
+        },
+        {
+          b: "Partial Coverage:",
+          t: "ideal if you only want to insure certain specific items of value.",
+        },
+      ],
+    },
+  ],
+  closing: {
+    title: "Our commitment to you",
+    text: [
+      "We understand the Logistical Challenges of moving an entire home and we adapt to your needs. We measure the quality of our service with Quality Indicators (KPIs) to make sure you receive five-star care. And if something does not go as you expected, our Complaints and Claims Management team will resolve any issue right away.",
+      "Relax and start planning your new space, we will take care of the truck!",
+    ],
+  },
+};
+
 export const SERVICES: Service[] = [
   {
     slug: "mudanzas-locales",
@@ -108,6 +184,7 @@ export const SERVICES: Service[] = [
       { title: "We deliver", text: "We unload and place everything in your new space." },
     ],
     note: "Local moves are usually booked 1 to 2 weeks in advance, but we also handle urgent requests subject to availability.",
+    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-nacionales",
@@ -143,6 +220,7 @@ export const SERVICES: Service[] = [
       },
       { title: "Delivery", text: "We unload and place everything in your new city." },
     ],
+    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-internacionales",
@@ -378,7 +456,7 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residential",
     kicker: "Transpack Residential",
-    title: "We move your home, not just your belongings",
+    title: "Your local move: Fast, safe and hassle-free",
     text: "",
     points: [
       "Packing, furniture disassembly and reassembly",

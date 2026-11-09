@@ -12,7 +12,7 @@
 //    (Usaquén, Chapinero o Suba), que se resalta en naranja. Luego la cámara se aleja hasta Colombia.
 // 3. Colombia de cerca: desde Bogotá salen, casi a la vez, las rutas a las
 //    principales capitales de departamento (CITIES).
-// 4. Por continente (América, Europa, África y Asia): la cámara encuadra el
+// 4. Por continente (América, Europa, África, Asia y Oceanía): la cámara encuadra el
 //    continente y desde Bogotá salen, casi a la vez, las rutas a sus países.
 // 5. Panorama: el globo gira con las rutas a todos los destinos.
 // 6. Vuelve la primera foto del carrusel.
@@ -147,6 +147,8 @@ const CONTINENTS = [
   { key: "europa", view: { lon: -2, lat: 44, zoom: 1.75 } },
   { key: "africa", view: { lon: -18, lat: 2, zoom: 1 } },
   { key: "asia", view: { lon: 62, lat: 24, zoom: 1 } },
+  // Oceanía (pedido del cliente, nov. 2026): Australia y Nueva Zelanda
+  { key: "oceania", view: { lon: 155, lat: -30, zoom: 1.5 } },
 ].map((c) => ({
   ...c,
   places: DESTINATIONS.filter((d) => d.region === c.key) as Place[],
@@ -154,8 +156,11 @@ const CONTINENTS = [
 
 // ─── Tiempos (ms de historia; la animación corre más rápido, ver useGlobe) ───
 
-// Carrusel de fotos: unos 3 s en pantalla cada una
-const SLIDE = 2700;
+// Los tiempos en pantalla son los de la historia × 1,125 (corre a ~0,89×):
+// 1780 ms de historia ≈ 2 s en pantalla.
+
+// Carrusel de fotos: 2 s en pantalla cada una (pedido del cliente, nov. 2026)
+const SLIDE = 1780;
 const PHOTO = SLIDE * SECTOR_PHOTOS.length;
 const MORPH = 1000; // la foto se cierra en el círculo y aparece Bogotá
 // Camiones por Bogotá (pedido del cliente, nov. 2026): tres como el de Mudanzas
@@ -165,7 +170,8 @@ const MORPH = 1000; // la foto se cierra en el círculo y aparece Bogotá
 // localidad se oscurece. Cada camión termina en una de las de clientes exclusivos
 // (estratos 5 y 6, FINE), en momentos distintos: ahí se detiene más, la localidad
 // se pone naranja con el aviso "Zona exclusiva" y queda marcada con una estrella.
-// `drive`: ms de viaje de cada camión (lento, pedido del cliente)
+// `drive`: ms de viaje de cada camión. Las localidades se ven unos 15 s en
+// pantalla (pedido del cliente, nov. 2026; antes ~24 s)
 const STOP_AT: Record<string, [number, number]> = {
   "Puente Aranda": [-74.1116, 4.6163],
   "Los Mártires": [-74.088, 4.6071],
@@ -191,13 +197,13 @@ const TRUCK_ROUTES = [
   // Centro y norte → Usaquén
   {
     delay: 1600,
-    drive: 9000,
+    drive: 4700,
     stops: ["Puente Aranda", "Los Mártires", "Teusaquillo", "Barrios Unidos", "Usaquén"],
   },
   // Sur y oriente → Chapinero
   {
     delay: 700,
-    drive: 12000,
+    drive: 6200,
     stops: [
       "Puente Aranda",
       "Antonio Nariño",
@@ -213,7 +219,7 @@ const TRUCK_ROUTES = [
   // Occidente → Suba
   {
     delay: 0,
-    drive: 17000,
+    drive: 8800,
     stops: ["Puente Aranda", "Kennedy", "Ciudad Bolívar", "Bosa", "Fontibón", "Engativá", "Suba"],
   },
 ];
@@ -229,7 +235,7 @@ const TRUCK_TIME = Math.max(
     (r) => r.delay + r.drive + r.stops.slice(1).reduce((t, x) => t + stopTime(x), 0),
   ),
 );
-// Bogotá con sus localidades, mientras los camiones las recorren (unos 24 s en
+// Bogotá con sus localidades, mientras los camiones las recorren (unos 15 s en
 // pantalla), y la cámara que se aleja hasta Colombia (pedido del cliente, nov. 2026)
 const BOGOTA_HOLD = TRUCK_AT - PHOTO - MORPH + TRUCK_TIME + 400;
 const BOGOTA_MOVE = 2200;
@@ -238,10 +244,9 @@ const ENTER = BOGOTA_END + BOGOTA_MOVE;
 const LOOK = 200; // Colombia de cerca, antes de las rutas
 const GAP = 85; // las rutas por Colombia salen casi a la vez, en abanico
 const LEG = 750; // cada ruta por Colombia
-// Colombia se ve unos 7 s de historia, con la entrada y la salida (unos 8 s en
-// pantalla). Pausa con todas las ciudades a la vista: 5 s más en pantalla (pedido del
-// cliente, nov. 2026; se pueden tocar para ver su foto)
-const LOCAL_HOLD = 4450;
+// Colombia: pausa de 2 s en pantalla con todas las ciudades a la vista antes de
+// pasar a América (pedido del cliente, nov. 2026; se pueden tocar para ver su foto)
+const LOCAL_HOLD = 1780;
 const LOCAL = ENTER + LOOK + (CITIES.length - 2) * GAP + LEG + 150 + LOCAL_HOLD;
 const legAt = (i: number) => ENTER + LOOK + i * GAP;
 
@@ -250,9 +255,9 @@ const REGION_MOVE = 2000; // la cámara viaja al continente (más pausado: pedid
 // (todas salen en unos 3,6 s)
 const regionGap = (n: number) => Math.min(220, 3600 / Math.max(1, n - 1));
 const REGION_DRAW = 1700; // cada ruta de un continente (más lenta: pedido del cliente, nov. 2026)
-// Pausa con el continente completo (se leen los nombres): 5 s más en pantalla
-// (pedido del cliente, nov. 2026; la historia corre a ~0,89×, ver useGlobe)
-const REGION_HOLD = 6350;
+// Pausa con el continente completo (se leen los nombres): 2 s en pantalla antes
+// de pasar al siguiente (pedido del cliente, nov. 2026)
+const REGION_HOLD = 1780;
 const regionLength = (n: number) =>
   REGION_MOVE + (n - 1) * regionGap(n) + REGION_DRAW + REGION_HOLD;
 const REGION_AT: number[] = [];

@@ -197,6 +197,29 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
     expect(styles).toHaveLength(1);
   });
 
+  it("cambia el responsable genérico de Zoho («Operador») por Joelito y su foto", async () => {
+    const frame = document.createElement("iframe");
+    frame.id = "siq_chatwindow";
+    document.body.appendChild(frame);
+    const doc = frame.contentDocument!;
+    // Antes de asignar quién responde, Zoho muestra "Operador" con su ícono genérico
+    doc.body.innerHTML = `<div class="msg"><div class="embed-prof-cont"><em class="siqico-user-logo"></em></div><span class="siqcw-name-div">Operador</span></div>
+      <div class="msg"><div class="embed-prof-cont"><em class="siqico-user-logo"></em></div><span class="siqcw-name-div">Laura Gómez</span></div>`;
+    styleChatWindow();
+    const [bot, person] = doc.querySelectorAll(".msg");
+    expect(bot.textContent).toContain("Joelito");
+    expect(bot.textContent).not.toContain("Operador");
+    expect(bot.querySelector(".tp-joel")).not.toBeNull();
+    // Un asesor real conserva su nombre y su ícono
+    expect(person.textContent).toContain("Laura Gómez");
+    expect(person.querySelector(".tp-joel")).toBeNull();
+    // También cuando Zoho lo agrega después
+    doc.body.insertAdjacentHTML("beforeend", `<p class="late">Operador</p>`);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(doc.querySelector(".late")!.textContent).toBe("Joelito");
+    frame.remove();
+  });
+
   it("la hoja de estilos usa la marca: azul, cuadrado naranja girado y la foto de Joel", () => {
     // Vitest no procesa CSS (css: false): se revisa el archivo directamente
     const css = readFileSync("src/styles/zoho-chat.css", "utf8");

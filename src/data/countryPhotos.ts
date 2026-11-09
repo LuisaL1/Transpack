@@ -628,6 +628,30 @@ export const COUNTRY_PHOTOS: Record<string, CountryPhoto> = {
     "page": "https://commons.wikimedia.org/wiki/File:Royal_Castle_in_Warsaw,_Poland,_2022,_03.jpg",
     "author": "Chris Olszewski",
     "license": "CC BY-SA 4.0"
+  },
+  "Australia": {
+    "capital": {
+      "es": "Canberra",
+      "en": "Canberra"
+    },
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Canberra_from_Mt_Ainslie_%285642431515%29.jpg/500px-Canberra_from_Mt_Ainslie_%285642431515%29.jpg",
+    "width": 500,
+    "height": 333,
+    "page": "https://commons.wikimedia.org/wiki/File:Canberra_from_Mt_Ainslie_(5642431515).jpg",
+    "author": "Tim J Keegan from Lake Macquarie, Australia",
+    "license": "CC BY-SA 2.0"
+  },
+  "Nueva Zelanda": {
+    "capital": {
+      "es": "Wellington",
+      "en": "Wellington"
+    },
+    "src": "https://upload.wikimedia.org/wikipedia/commons/5/5d/WellingtonPanorama.jpg",
+    "width": 500,
+    "height": 332,
+    "page": "https://commons.wikimedia.org/wiki/File:WellingtonPanorama.jpg",
+    "author": "en:User:Dhum Dhum",
+    "license": "Copyrighted free use"
   }
 };
 

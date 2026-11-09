@@ -3,7 +3,7 @@ import { Bi, Eyebrow, Reveal } from "@/components/ui";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 
-// Guía de términos de un servicio (por ahora, Mudanzas internacionales). El
+// Guía de términos de un servicio (Mudanzas locales, nacionales e internacionales). El
 // texto sale de "guide" en SERVICES (src/data/site.ts y site.en.ts).
 export function ServiceGuide({ guide }: { guide: Guide }) {
   return (
@@ -14,7 +14,7 @@ export function ServiceGuide({ guide }: { guide: Guide }) {
           <h2 className="mb-5 text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15]">
             {guide.title}
           </h2>
-          <p className="text-[1.05rem]">{guide.lead}</p>
+          {guide.lead && <p className="text-[1.05rem]">{guide.lead}</p>}
         </Reveal>
         <div className="grid gap-5 md:grid-cols-2">
           {guide.sections.map((s, i) => (

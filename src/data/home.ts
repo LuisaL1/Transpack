@@ -51,8 +51,8 @@ export const servicesText = (tr: Tr) => ({
 export const segmentsText = (tr: Tr) => ({
   eyebrow: tr("Soluciones", "Solutions"),
   title: tr(
-    "Transportamos el hogar, no solo los bienes",
-    "We transport the home, not just the goods",
+    "Cuidamos tu patrimonio, aseguramos tu destino",
+    "We protect your assets, we secure your destination",
   ),
   sub: tr(
     "Personas, empresas e instituciones tienen necesidades distintas. Por eso trabajamos con tres unidades especializadas y un acompañamiento dedicado para quienes empiezan una vida en otro país.",
