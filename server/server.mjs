@@ -258,9 +258,23 @@ function redirect(res, status, location, base) {
 export function start(port = Number(process.env.PORT) || 3000) {
   const server = createServer(createHandler());
   // 0.0.0.0: el hosting llega a la app desde fuera del contenedor
-  server.listen(port, process.env.HOST || "0.0.0.0", () =>
-    console.log(`[server] Sitio en http://localhost:${port}`),
-  );
+  server.listen(port, process.env.HOST || "0.0.0.0", () => {
+    console.log(`[server] Sitio en http://localhost:${port}`);
+    // Qué variables de los formularios ve la app (solo el nombre, nunca el valor)
+    const vars = [
+      "BREVO_API_KEY",
+      "ZOHO_CLIENT_ID",
+      "ZOHO_CLIENT_SECRET",
+      "ZOHO_REFRESH_TOKEN",
+      "ZOHO_DESK_CLIENT_ID",
+      "ZOHO_DESK_CLIENT_SECRET",
+      "ZOHO_DESK_REFRESH_TOKEN",
+      "ZOHO_ORG_ID",
+      "ZOHO_DEPARTMENT_ID",
+    ];
+    const has = (k) => Boolean((process.env[k] ?? "").trim());
+    console.log(`[server] Variables: ${vars.map((k) => `${k} ${has(k) ? "✓" : "✗"}`).join(" · ")}`);
+  });
   return server;
 }
 
