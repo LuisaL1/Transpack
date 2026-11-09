@@ -28,6 +28,8 @@ export const chatText = (tr: Tr) => ({
   window: tr(`Chat con ${NAME}`, `Chat with ${NAME}`),
   role: tr("Asesor virtual", "Virtual advisor"),
   status: tr("Transpack · Responde al instante", "Transpack · Answers instantly"),
+  // Ventana de carga: se ve al instante mientras Zoho SalesIQ abre su chat
+  loading: tr(`${NAME} está abriendo el chat…`, `${NAME} is opening the chat…`),
   // Ventana de respaldo: Zoho SalesIQ no cargó
   crmError: tr(
     "No pudimos abrir el chat con un asesor en este momento. Escríbenos por otro canal:",

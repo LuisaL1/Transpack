@@ -10,9 +10,10 @@
 //   scripts en línea que Zoho necesita; el resto del sitio conserva su CSP
 //   estricta. El iframe se muestra en la esquina solo con la clase tp-zoho-open
 //   (src/styles/index.css).
-// · La ventana abre en la conversación (no en el inicio de Zoho) y no se muestra
-//   hasta estar dentro de una. El bot saluda por la acción personalizada
-//   ADVISOR_START_ACTION (se configura en Zoho), solo con la conversación vacía.
+// · La ventana se muestra apenas Zoho la crea (con su pantalla de carga) y abre
+//   en la conversación (no en el inicio de Zoho). El bot saluda por la acción
+//   personalizada ADVISOR_START_ACTION (se configura en Zoho), solo con la
+//   conversación vacía.
 // · Diseño: src/styles/zoho-chat.css (adentro de la ventana; su copia para subir
 //   a Zoho es public/zoho-salesiq.css) y src/styles/zoho-host.css.
 // · Solo en español. El código del widget no es secreto.
@@ -211,24 +212,33 @@ export function loadCrmChat(): Promise<SalesIQ> {
 
 let warm: Promise<void> | null = null;
 
-/** Abre la ventana del chat de Zoho a la vista, ya dentro de una conversación.
- *  Devuelve si la conversación está vacía (para que el bot salude solo entonces). */
+/** Abre la ventana del chat de Zoho a la vista apenas Zoho la crea (no espera a
+ *  que termine de armar la conversación: eso tomaba varios segundos) y entra a
+ *  la conversación ya con la ventana a la vista. Devuelve si la conversación
+ *  está vacía (para que el bot salude solo entonces). */
 export async function openCrmChat(): Promise<boolean> {
-  // Si la precarga sigue en curso, se termina con ella (ya entra a la conversación)
-  await warm;
   // Antes de cargar: si Zoho avisa que abrió, no se muestra todavía
   opening = true;
   try {
     const z = await loadCrmChat();
     z.floatwindow?.visible("show");
+    await chatWindowReady();
     styleChatWindow();
-    await enterConversation();
   } finally {
     opening = false;
   }
   hidden = false;
   announce(true);
+  await enterConversation();
+  chatDoc()?.querySelector<HTMLElement>("textarea")?.focus();
   return !chatDoc()?.querySelector('[data-zsqa$="message_bubble"]');
+}
+
+/** Espera (poco) a que exista la ventana de Zoho, para no mostrar un recuadro vacío */
+async function chatWindowReady(ms = 3000) {
+  const end = Date.now() + ms;
+  while (Date.now() < end && !chatDoc()?.body?.childElementCount)
+    await new Promise((r) => setTimeout(r, 50));
 }
 
 /** Precarga (al entrar al sitio, src/hooks/useAdvisorChat.ts): carga Zoho y deja
@@ -254,7 +264,13 @@ export function preloadCrmChat(): Promise<void> {
 /** Si Zoho muestra su lista de conversaciones ("No hay ninguna conversación en
  *  curso") o su inicio en vez de una conversación, entra a una conversación
  *  nueva: el visitante ve directo el chat. No envía ningún mensaje. */
-async function enterConversation(ms = 8000) {
+let entering: Promise<void> | null = null;
+/** Una sola a la vez: la precarga y la apertura pueden coincidir */
+function enterConversation(): Promise<void> {
+  entering ??= enterConversationOnce().finally(() => (entering = null));
+  return entering;
+}
+async function enterConversationOnce(ms = 8000) {
   const end = Date.now() + ms;
   let clicked = false;
   while (Date.now() < end) {
@@ -297,6 +313,7 @@ export function setZohoHostForTests(w: Window) {
 export function resetCrmChatForTests() {
   loading = null;
   warm = null;
+  entering = null;
   hidden = false;
   opening = false;
   host = null;

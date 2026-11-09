@@ -27,12 +27,14 @@ panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
    el aviso, no hay precarga.
 2. **Abrir.** Al tocar el botón flotante (o cualquier elemento que dispare
    `tp:open-chat`, como "Habla con Joelito" del menú o el buscador), `openCrmChat`
-   muestra la ventana: con precarga tarda ~0,2 s; sin ella, ~3,5 s (el botón
-   muestra que está cargando).
-   - Abre en la pestaña de conversación (`defaultview: "chat"`) y, si no hay una
-     en curso, entra sola a una conversación nueva (`enterConversation`). La
-     ventana **no se muestra hasta estar dentro de la conversación**: no se ve el
-     inicio ni la lista de Zoho.
+   muestra la ventana: con precarga tarda ~0,2 s; sin ella, Zoho tarda ~3–4 s
+   (medido en noviembre de 2026: ~1,1 s su script y ~2–3 s su ventana). Mientras
+   tanto, al instante, el sitio muestra su propia ventana con el mismo diseño y
+   Joelito "escribiendo" (`ChatTyping` en `AdvisorChat`).
+   - La ventana de Zoho se muestra **apenas existe** (no espera a que arme la
+     conversación, que tomaba ~1 s más). Abre en la pestaña de conversación
+     (`defaultview: "chat"`) y, si no hay una en curso, entra sola a una
+     conversación nueva (`enterConversation`) ya a la vista.
    - Si la conversación está **vacía**, el sitio avisa a Zoho la acción
      personalizada `abrir_chat_asesor` (`triggerAdvisorStart`) para que el bot
      salude solo. Al reabrir una conversación con mensajes, no vuelve a avisar.
@@ -72,8 +74,18 @@ La ventana de Zoho tiene el diseño del chat del sitio:
 
 - cabecera azul con el cuadrado naranja translúcido girado 45°, foto de Joel de
   42 px sobre beige con el punto verde, rótulo naranja "ASESOR VIRTUAL", nombre
-  y "Transpack · Responde al instante"; sin la flecha al inicio de Zoho ni su
-  menú "⋮" (la ventana solo muestra la conversación);
+  y "Transpack · Responde al instante"; con los controles propios de Zoho a la
+  vista (la flecha que vuelve a su inicio y a la lista de conversaciones, y el
+  menú "⋮" con "Finalizar chat", si Zoho lo muestra) en cuadros translúcidos como
+  la X. El chat abre directo en una conversación; con la flecha el visitante va
+  al inicio de Zoho (saludo y conversaciones) y puede empezar otra. El rótulo
+  "Asesor virtual" y "Transpack · Responde al instante" van solo en la cabecera
+  de la conversación (la que tiene la foto), no en el inicio ni en la lista;
+- el desplegable del menú "⋮" como los menús del sitio (tarjeta blanca, texto
+  tinta, fila gris al pasar); la cabecera no lo recorta;
+- sin la pestaña "Base de conocimientos" (no hay artículos publicados y Zoho
+  mostraba un ejemplo genérico); el ícono de la lista de conversaciones en gris,
+  no en el verde de Zoho;
 - fondo gris; burbujas del asistente blancas y del visitante azules; opciones
   en una tarjeta con filas (ícono, texto y flecha); sin la hora en las burbujas;
 - barra de escribir blanca con el campo gris de una línea ("Escribe tu mensaje

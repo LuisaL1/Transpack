@@ -111,7 +111,8 @@ describe("chat de Zoho SalesIQ", () => {
     expect(calls).toContain("window:show");
     expect(events).toEqual([true]);
     expect(newChat).toHaveBeenCalledTimes(1);
-    // Se avisa al sitio (se muestra la ventana) solo ya dentro de la conversación
+    // Se avisa al sitio (se muestra la ventana) una sola vez, sin esperar a que
+    // Zoho termine de armar la conversación
     expect(events).toEqual([true]);
     window.removeEventListener(CRM_CHAT_EVENT, on);
     frame.remove();

@@ -13,6 +13,10 @@ export const CHANNEL_VIDEOS: ChannelVideo[] = [
 
 export const CHANNEL_SHORTS: ChannelVideo[] = [
   {
+    id: "DEAs21he8aQ",
+    title: "¿Estas planeado el traslado de tu sede? Transpack tu mejor opción",
+  },
+  {
     id: "vHyz6P-loEU",
     title: "Your time belongs to what matter most full",
   },

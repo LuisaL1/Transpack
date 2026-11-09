@@ -1,7 +1,7 @@
 // Servidor del sitio en GoDaddy (hosting Node.js; arranca con `pnpm start`).
 // Hace lo que antes hacía Vercel, solo con módulos de Node (sin dependencias, sin
 // `npm install` en el hosting):
-//  · /api/contact y /api/ticket → las funciones de api/ (Request → Response).
+//  · /api/contact, /api/ticket y /api/videos → las funciones de api/ (Request → Response).
 //  · Lo demás → los archivos de dist/ con URLs limpias: /nosotros sirve
 //    nosotros.html, /x/ y /x.html redirigen a /x, y lo que no existe responde
 //    404.html con estado 404 (equivale a cleanUrls + trailingSlash: false).
@@ -24,9 +24,10 @@ import { dirname, extname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as contact from "../api/contact.mjs";
 import * as ticket from "../api/ticket.mjs";
+import * as videos from "../api/videos.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const API = { "/api/contact": contact, "/api/ticket": ticket };
+const API = { "/api/contact": contact, "/api/ticket": ticket, "/api/videos": videos };
 /** Cabeceras de la conexión con Node que no pasan a la función */
 const HOP = new Set(["connection", "keep-alive", "transfer-encoding", "upgrade", "content-length"]);
 /** Tamaño máximo del cuerpo de un formulario */

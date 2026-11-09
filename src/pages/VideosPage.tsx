@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
-import techo from "@/assets/images/techo.jpeg"
+import techo from "@/assets/images/techo.jpeg";
 import { useSite } from "@/hooks/useContent";
 import { useLang } from "@/i18n";
 import { videosPageText } from "@/data/pages";
-import { CHANNEL_SHORTS, CHANNEL_VIDEOS } from "@/data/youtubeVideos";
+import { useChannelVideos } from "@/hooks/useChannelVideos";
 import { container, section } from "@/components/ui/layout";
 import { Bi, btn, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { VideoCard } from "@/components/videos/VideoCard";
 import { ShortsGrid } from "@/components/videos/ShortsGrid";
 
-// Maestría Transpack (/videos): todos los videos y Shorts del canal de YouTube
-// (src/data/youtubeVideos.ts, generado con `pnpm videos`).
+// Maestría Transpack (/videos): todos los videos y Shorts del canal de YouTube,
+// al día con /api/videos (useChannelVideos; la lista guardada va en el HTML).
 export function VideosPage() {
   const { lp, tr } = useLang();
   const t = videosPageText(tr);
   const { YOUTUBE_CHANNEL } = useSite();
-  const total = CHANNEL_VIDEOS.length + CHANNEL_SHORTS.length;
+  const { videos, shorts } = useChannelVideos();
+  const total = videos.length + shorts.length;
   const cardText = { playLabel: t.play, watchLabel: t.watch, shortLabel: t.short };
   return (
     <>
@@ -52,11 +53,11 @@ export function VideosPage() {
 
       <section className={section}>
         <div className={container}>
-          {CHANNEL_VIDEOS.length > 0 && (
+          {videos.length > 0 && (
             <Reveal className="mb-16 md:mb-20">
               <Eyebrow>{t.featured}</Eyebrow>
-              <div className={`grid gap-6 ${CHANNEL_VIDEOS.length > 1 ? "lg:grid-cols-2" : ""}`}>
-                {CHANNEL_VIDEOS.map((v) => (
+              <div className={`grid gap-6 ${videos.length > 1 ? "lg:grid-cols-2" : ""}`}>
+                {videos.map((v) => (
                   <VideoCard key={v.id} wide {...v} {...cardText} />
                 ))}
               </div>
@@ -68,11 +69,9 @@ export function VideosPage() {
               <Eyebrow>{t.shorts}</Eyebrow>
               <h2 className="text-[clamp(1.6rem,1.2rem+1.4vw,2.2rem)]">{t.shortsSub}</h2>
             </div>
-            <span className="text-[0.9rem] font-medium text-suave">
-              {t.count(CHANNEL_SHORTS.length)}
-            </span>
+            <span className="text-[0.9rem] font-medium text-suave">{t.count(shorts.length)}</span>
           </Reveal>
-          <ShortsGrid shorts={CHANNEL_SHORTS} {...cardText} />
+          <ShortsGrid shorts={shorts} {...cardText} />
         </div>
       </section>
 

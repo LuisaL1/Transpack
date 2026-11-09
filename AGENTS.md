@@ -22,7 +22,9 @@ publica en GoDaddy (hosting Node.js conectado a GitHub, sin PHP; `docs/godaddy.m
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada) y
   `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas nacionales)
 - `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
-  YouTube para "Maestría Transpack"; necesita internet). Córralo cuando el canal publique
+  YouTube para "Maestría Transpack"; necesita internet). La página ya se actualiza sola
+  con `/api/videos` (`api/videos.mjs`, caché de 6 h); esta lista es la del HTML
+  pre-generado y el respaldo, conviene refrescarla de vez en cuando
 - `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
   inicio del mapa, de la capa oficial de Datos Abiertos Bogotá/IDECA, CC BY 4.0, con su
   crédito en el mapa; necesita internet)
@@ -120,6 +122,7 @@ src/
                             zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
 api/contact.mjs              Función del servidor: formularios → Brevo → correo (docs/formularios.md)
 api/ticket.mjs               Función del servidor: ticket del cotizador → Zoho Desk
+api/videos.mjs               Función del servidor: videos y Shorts del canal de YouTube al día (Maestría Transpack)
 server/server.mjs           Servidor de GoDaddy (`pnpm start`): páginas de dist/, cabeceras, redirecciones y /api;
                             sin dependencias. Ver docs/godaddy.md
 hosting/headers.json        Cabeceras (CSP, HSTS, caché) y redirecciones que aplica server.mjs
@@ -329,8 +332,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   precarga al entrar** (`preloadCrmChat`, ventana lista y escondida, ya en una
   conversación) **solo si el visitante aceptó las cookies** o si el sitio no
   muestra el aviso; si no, se carga al abrir el chat.
-- Al abrir: la ventana no se muestra hasta estar dentro de una conversación (no
-  se ve el inicio de Zoho); si está vacía, se avisa la acción personalizada
+- Al abrir: la ventana del sitio aparece al instante con Joelito "escribiendo"
+  (`ChatTyping`) mientras Zoho carga (~3–4 s sin precarga); la de Zoho la
+  reemplaza apenas existe y entra a la conversación ya a la vista; si está vacía, se avisa la acción personalizada
   `abrir_chat_asesor` para que el bot salude (se configura en Zoho). Si Zoho no
   carga, la ventana del sitio ofrece WhatsApp y el formulario (respaldo).
 - Lógica: `src/hooks/useAdvisorChat.ts`. Textos: `src/data/chat.ts`. Otros

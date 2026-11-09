@@ -117,9 +117,22 @@ textarea,
   min-height: 74px;
   padding: 16px 20px !important;
 }
-/* Solo la conversación: sin la flecha que vuelve al inicio de Zoho */
+/* Flecha que vuelve al inicio de Zoho (conversaciones, nueva conversación):
+   cuadro translúcido como los botones de la cabecera del sitio */
 .siqcw-header .siqico-larrow {
   display: none !important;
+}
+.siqcw-header .siqico-larrow.show-larrow {
+  display: grid !important;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px !important;
+  height: 32px !important;
+  margin-right: 12px !important;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1) !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 .siqcw-header .mobile-head-space {
   margin-left: 0 !important;
@@ -135,7 +148,10 @@ textarea,
 .siqcw-header [data-zsqa="header_desc"] {
   overflow: visible !important;
 }
-.siqcw-header .header-title::before {
+/* Solo en la conversación (la cabecera con la foto de Joel justo antes del
+   título). Con :has() Chrome no lo recalcula cuando Zoho reusa la cabecera al
+   pasar al inicio o a la lista de conversaciones. */
+.siqcw-header .embed-prof-cont + .header-title::before {
   content: "Asesor virtual";
   display: block;
   font:
@@ -154,21 +170,83 @@ textarea,
   font-size: 0 !important;
 }
 .siqcw-header [data-zsqa="header_desc"]::after,
-.siqcw-header .header-title:not(:has([data-zsqa="header_desc"]))::after {
+.siqcw-header .embed-prof-cont + .header-title:not(:has([data-zsqa="header_desc"]))::after {
   content: "Transpack · Responde al instante";
   font-family: "Montserrat", sans-serif;
   font-size: 12px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.7) !important;
 }
-/* Sin el menú de opciones de Zoho ("⋮") ni su lista: la ventana solo muestra
-   la conversación */
+/* Menú de opciones de Zoho ("⋮": finalizar chat, transcripción, sonido…):
+   mismo cuadro translúcido que la X */
 .header-optn-icn {
-  display: none !important;
+  display: grid !important;
+  place-items: center;
+  align-self: center;
+  flex-shrink: 0;
+  width: 32px !important;
+  height: 32px !important;
+  margin-left: 12px !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.siqcw-header .siqico-larrow.show-larrow:hover,
+.header-optn-icn:hover {
+  background: #ffffff !important;
+}
+.siqcw-header .siqico-larrow.show-larrow:hover::before,
+.header-optn-icn:hover,
+.header-optn-icn:hover * {
+  color: #272b7c !important;
+}
+/* Desplegable del menú "⋮" (Finalizar chat…): vive dentro de la cabecera, así
+   que la cabecera no lo recorta (el cuadrado naranja lo recorta la ventana) y
+   va como los menús del sitio: tarjeta blanca, texto tinta, fila gris al pasar */
+.siqcw-header {
+  overflow: visible !important;
+}
+.siqcw-header .siqcw-dropdown-cont,
+.siqcw-header .siqcw-dropdown-elem {
+  background: #ffffff !important;
+  border: 1px solid #e1e5ee !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 48px -24px rgba(39, 43, 124, 0.45) !important;
+  padding: 6px !important;
+}
+.siqcw-header .siqcw-dropdown-elem {
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.siqcw-header .siqcw-dropdown-cont *,
+.siqcw-header .siqcw-dropdown-list-div {
+  color: #1d2050 !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 500;
+}
+.siqcw-header .siqcw-dropdown-list-div {
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+}
+.siqcw-header .siqcw-dropdown-list-div:hover,
+.siqcw-header .siqcw-dropdown-list-div.sel {
+  background: #f0f6f6 !important;
+}
+.siqcw-header .siqcw-dropdown-list-div:hover,
+.siqcw-header .siqcw-dropdown-list-div:hover * {
+  color: #272b7c !important;
 }
 /* Botón de cerrar: cuadro translúcido como los de la cabecera del sitio */
 .siqcw-header .chat-win-close {
   position: relative;
+  /* Zoho la ubica con top: 10px (absoluta); aquí va en la fila, centrada como ⋮ */
+  inset: auto !important;
+  align-self: center;
   z-index: 1;
   flex-shrink: 0;
   width: 32px !important;
@@ -199,6 +277,44 @@ textarea,
     center / 16px no-repeat;
 }
 
+/* Inicio: la cabecera de Zoho (solo la X) va dentro del bloque azul, sin un
+   segundo cuadrado naranja encima del del bloque; el bloque se ajusta al saludo
+   en vez de ocupar media ventana */
+.home-header-wrap .siqcw-header {
+  z-index: 2 !important;
+  overflow: visible !important;
+  min-height: 0 !important;
+  padding: 16px 20px 0 !important;
+  background: transparent !important;
+}
+.home-header-wrap .siqcw-header::after {
+  content: none !important;
+}
+/* En el inicio la X va arriba a la derecha (en la conversación va en la fila,
+   junto al ⋮) */
+.home-header-wrap .siqcw-header .chat-win-close {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+}
+.home-header-wrap {
+  flex-grow: 0 !important;
+}
+.home-header-wrap .brand-detl-wrap {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 0 !important;
+  width: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+.home-header-wrap .call-prof-cont:empty {
+  display: none !important;
+}
+
 /* Rótulo naranja en mayúsculas sobre el saludo */
 .home-title::before {
   content: "Transpack";
@@ -214,6 +330,16 @@ textarea,
 .home-desc {
   color: rgba(255, 255, 255, 0.75) !important;
   font-weight: 500 !important;
+}
+
+/* Lista de conversaciones: el ícono de chat en gris, no en el verde de Zoho */
+.siqcw-convlist-item .siqico-chat2 {
+  color: #6b6e8a !important;
+}
+/* Sin la pestaña "Base de conocimientos": no hay artículos publicados y Zoho
+   muestra un ejemplo genérico ("¿Cómo eliminar un operador?") */
+.footer-tab[data-zsqa="self_service"] {
+  display: none !important;
 }
 
 /* ── Opciones del inicio (chatear, llamar): tarjeta con ícono en cuadro gris ── */

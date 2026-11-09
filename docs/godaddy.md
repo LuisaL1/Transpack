@@ -13,6 +13,7 @@ Node.js**, sin PHP. GoDaddy compila la rama elegida y arranca
 | Cabeceras (CSP, HSTS…)   | `hosting/headers.json` (la del chat, aparte para `/chat-asesor`)                         |
 | Redirecciones            | `hosting/headers.json` (`/fr`, `/de`, `/it`, `/ar` → `/en`)                              |
 | Formularios              | `/api/contact` → `api/contact.mjs` (Brevo), `/api/ticket` → `api/ticket.mjs` (Zoho Desk) |
+| Videos del canal         | `/api/videos` → `api/videos.mjs` (YouTube, caché de 6 h)                                 |
 | Compresión               | `.br`/`.gz` que deja `pnpm build` (`scripts/precompress.mjs`)                            |
 | `www` y https            | `SITE_CANONICAL_HOST` (abajo)                                                            |
 
@@ -63,23 +64,25 @@ integración continua de GitHub (`.github/workflows/ci.yml`) corre aparte.
   línea empieza por su área y lleva **✓** si se cumplió o **✗** si falló; busque
   "✗" para ver solo los problemas. Nunca incluyen datos del visitante ni claves.
 
-  | Línea                                                        | Qué significa                                                 |
-  | ------------------------------------------------------------ | ------------------------------------------------------------- |
-  | `[server] ✓ Sitio en http://localhost:… (Node …)`            | La app arrancó                                                |
-  | `[server] Variables: BREVO_API_KEY ✓ · …`                    | Qué variables ve la app (solo el nombre)                      |
-  | `[server] ✗ No arrancó en el puerto …`                       | El puerto está ocupado o no permitido                         |
-  | `[server] ✗ Error no controlado / Promesa rechazada`         | Error de código; la línea trae el detalle                     |
-  | `[server] Deteniendo (SIGTERM)`                              | El hosting reinició o detuvo la app (normal al desplegar)     |
-  | `[api] ✓ POST /api/contact → 200 (523 ms)`                   | Una llamada a /api: estado y tiempo                           |
-  | `[contact] ✓ Solicitud de cotizacion enviada a …`            | El correo al equipo salió por Brevo                           |
-  | `[contact] ✓ Confirmación enviada al visitante`              | El correo de confirmación salió                               |
-  | `[contact] ✗ Rechazada (email/consent/origin…)`              | El formulario llegó incompleto o desde otro sitio             |
-  | `[contact] ✗ No se envió: falta la variable …`               | Falta `BREVO_API_KEY`                                         |
-  | `[contact] ✗ Brevo rechazó …` / `Brevo no respondió`         | Problema con Brevo (clave, IP autorizada, remitente)          |
-  | `[contact] ✗ Bot detectado`                                  | Un bot llenó el campo trampa; no se envió nada                |
-  | `[ticket] ✓ Ticket #123 creado en Zoho Desk`                 | El ticket del cotizador se creó                               |
-  | `[ticket] ✗ No se creó: faltan las variables …`              | Faltan credenciales de Zoho (dice cuáles)                     |
-  | `[ticket] ✗ Zoho rechazó la solicitud (oauth-400/desk-401…)` | `oauth-…`: token o centro de datos; `desk-…`: permisos o plan |
+  | Línea                                                        | Qué significa                                                  |
+  | ------------------------------------------------------------ | -------------------------------------------------------------- |
+  | `[server] ✓ Sitio en http://localhost:… (Node …)`            | La app arrancó                                                 |
+  | `[server] Variables: BREVO_API_KEY ✓ · …`                    | Qué variables ve la app (solo el nombre)                       |
+  | `[server] ✗ No arrancó en el puerto …`                       | El puerto está ocupado o no permitido                          |
+  | `[server] ✗ Error no controlado / Promesa rechazada`         | Error de código; la línea trae el detalle                      |
+  | `[server] Deteniendo (SIGTERM)`                              | El hosting reinició o detuvo la app (normal al desplegar)      |
+  | `[api] ✓ POST /api/contact → 200 (523 ms)`                   | Una llamada a /api: estado y tiempo                            |
+  | `[contact] ✓ Solicitud de cotizacion enviada a …`            | El correo al equipo salió por Brevo                            |
+  | `[contact] ✓ Confirmación enviada al visitante`              | El correo de confirmación salió                                |
+  | `[contact] ✗ Rechazada (email/consent/origin…)`              | El formulario llegó incompleto o desde otro sitio              |
+  | `[contact] ✗ No se envió: falta la variable …`               | Falta `BREVO_API_KEY`                                          |
+  | `[contact] ✗ Brevo rechazó …` / `Brevo no respondió`         | Problema con Brevo (clave, IP autorizada, remitente)           |
+  | `[contact] ✗ Bot detectado`                                  | Un bot llenó el campo trampa; no se envió nada                 |
+  | `[videos] ✓ Canal leído: 1 videos y 43 Shorts`               | `/api/videos` leyó el canal de YouTube (cada 6 h como máximo)  |
+  | `[videos] ✗ YouTube no respondió …`                          | Se entrega la última lista; Maestría Transpack usa la guardada |
+  | `[ticket] ✓ Ticket #123 creado en Zoho Desk`                 | El ticket del cotizador se creó                                |
+  | `[ticket] ✗ No se creó: faltan las variables …`              | Faltan credenciales de Zoho (dice cuáles)                      |
+  | `[ticket] ✗ Zoho rechazó la solicitud (oauth-400/desk-401…)` | `oauth-…`: token o centro de datos; `desk-…`: permisos o plan  |
 
 - **Reiniciar:** _Reiniciar la aplicación_ en el panel.
 - **¿Formularios configurados?** `https://<dominio>/api/contact` responde
