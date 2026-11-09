@@ -46,6 +46,18 @@ const VIEWBOX = [
 ].join(" ");
 const INK = "62,65,96"; // gris oscuro del texto (como en src/lib/globe.ts)
 const CHARCOAL = "34,34,40"; // negro carbón de los continentes de la portada
+// Grosor del bloque de Colombia (unidades del SVG) y sus paredes, de más
+// oscuras (abajo) a más claras (arriba), en tonos del color resaltado como en
+// src/lib/globe.ts
+const SLAB = 16;
+const SLAB_STEPS = Array.from({ length: SLAB / 2 }, (_, i) => SLAB - 2 * i);
+const wallColor = (k: number) => {
+  const [dark, light] = [
+    [82, 64, 194],
+    [163, 153, 222],
+  ];
+  return `rgb(${dark.map((c, i) => Math.round(c * k + light[i] * (1 - k)))})`;
+};
 
 // Lugar del nombre junto al punto (en em, para que crezca con la letra)
 const LABEL: Record<Side, { dx: string; dy: string; anchor: "start" | "middle" | "end" }> = {
@@ -97,6 +109,11 @@ export function ColombiaRoutesMap() {
             <stop offset="0.6" stopColor="#F0F6F6" />
             <stop offset="1" stopColor="#E1E5EE" />
           </radialGradient>
+          {/* Silueta de Colombia, una sola vez: el bloque la repite con <use> */}
+          <path id="tp-co-shape" d={COLOMBIA_PATH} />
+          <filter id="tp-co-blur" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
           <radialGradient id="tp-co-shade">
             <stop
               offset={LENS.r / (LENS.r + PAD) - 0.08}
@@ -120,9 +137,26 @@ export function ColombiaRoutesMap() {
             strokeWidth={1.4}
             strokeLinejoin="round"
           />
+          {/* Relieve 3D (prototipo, nov. 2026): Colombia sobresale como un bloque
+              con sombra; la cara de arriba queda donde estaba, así carreteras,
+              ciudades y camión no se mueven */}
+          <use
+            href="#tp-co-shape"
+            transform={`translate(0 ${SLAB + 8})`}
+            fill={`rgba(${INK},.4)`}
+            filter="url(#tp-co-blur)"
+          />
+          {SLAB_STEPS.map((d) => (
+            <use
+              key={d}
+              href="#tp-co-shape"
+              transform={`translate(0 ${d})`}
+              fill={wallColor(d / SLAB)}
+            />
+          ))}
           <path
             d={COLOMBIA_PATH}
-            fill="rgba(24,0,173,.14)"
+            fill="rgb(223,219,244)"
             stroke="#1800AD"
             strokeWidth={3}
             strokeLinejoin="round"

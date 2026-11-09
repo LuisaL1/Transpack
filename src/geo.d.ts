@@ -17,8 +17,26 @@ declare module "d3-geo" {
   export interface GeoPath {
     (object: Geo): void;
   }
+  /** Sin contexto: devuelve el camino como texto SVG (para Path2D) */
+  export interface GeoPathString {
+    (object: Geo): string | null;
+  }
+  export interface GeoStream {
+    point(x: number, y: number): void;
+  }
+  /** Proyección propia (o envoltura de otra) que geoPath acepta */
+  export interface GeoStreamWrapper {
+    stream(output: unknown): unknown;
+  }
   export function geoOrthographic(): GeoProjection;
-  export function geoPath(projection: GeoProjection, context: CanvasRenderingContext2D): GeoPath;
+  export function geoPath(
+    projection: GeoProjection | GeoStreamWrapper,
+    context: CanvasRenderingContext2D,
+  ): GeoPath;
+  export function geoPath(projection: GeoProjection | GeoStreamWrapper): GeoPathString;
+  export function geoTransform(methods: {
+    point(this: { stream: GeoStream }, x: number, y: number): void;
+  }): GeoStreamWrapper;
   export function geoGraticule10(): Geo;
   export function geoContains(object: Geo, point: [number, number]): boolean;
 }

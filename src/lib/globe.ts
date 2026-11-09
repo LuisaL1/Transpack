@@ -19,7 +19,16 @@
 // Las localidades, las ciudades de Colombia y los países se pueden tocar para ver
 // su foto (CountryCard).
 // Todas las rutas internacionales tienen el mismo estilo.
-import { geoContains, geoGraticule10, geoOrthographic, geoPath, type GeoProjection } from "d3-geo";
+import {
+  geoContains,
+  geoGraticule10,
+  geoOrthographic,
+  geoPath,
+  geoTransform,
+  type GeoPath,
+  type GeoProjection,
+  type GeoStreamWrapper,
+} from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import { COLOMBIA, WORLD } from "@/data/worldGlobe";
 import { CITIES, DESTINATIONS, ORIGIN } from "@/data/worldMap";
@@ -398,6 +407,16 @@ const INK = "62,65,96"; // gris oscuro (texto del sitio)
 const GRAY = "107,110,138"; // gris medio
 const CHARCOAL = "34,34,40"; // negro carbón (continentes)
 
+// Relieve 3D (prototipo pedido por el cliente, nov. 2026): Colombia de cerca y
+// Bogotá son bloques con grosor; Bogotá además se ve inclinada (en perspectiva)
+// y las localidades exclusivas suben cuando llega su camión
+const WALL_DARK: [number, number, number] = [82, 64, 194]; // color resaltado sobre blanco, 75 %
+const WALL_LIGHT: [number, number, number] = [163, 153, 222]; // ídem, 40 %
+const SLAB_COLOMBIA = 9; // grosor de Colombia de cerca (px de CSS)
+const SLAB_BOGOTA = 16; // grosor del bloque de Bogotá (px de CSS)
+const RISE = 14; // cuánto suben las localidades exclusivas (px de CSS)
+const TILT = 0.62; // achatamiento vertical de Bogotá (coseno de la inclinación, ~52°)
+
 type Side = "above" | "below" | "right" | "left";
 
 // Pastilla con texto (Bogotá y la capital en turno)
@@ -496,12 +515,50 @@ function pulse(
   ctx.fill();
 }
 
+// Bloque con grosor (relieve 3D, nov. 2026): copias de `shape` corridas hacia
+// abajo hasta `depth` px, de más oscuras (abajo) a más claras (arriba), con una
+// sombra debajo. La cara de arriba (el mapa) queda donde estaba, así todo lo que
+// va encima (rutas, nombres, camiones) no se mueve.
+function drawSlab(
+  ctx: CanvasRenderingContext2D,
+  shape: Path2D,
+  depth: number,
+  dpr: number,
+  dark: [number, number, number],
+  light: [number, number, number],
+  shadow = true,
+) {
+  if (depth <= 0) return;
+  ctx.save();
+  if (shadow) {
+    ctx.save();
+    ctx.translate(0, depth);
+    ctx.shadowColor = `rgba(${INK},.45)`;
+    ctx.shadowBlur = 22 * dpr;
+    ctx.shadowOffsetY = 8 * dpr;
+    ctx.fillStyle = `rgb(${dark})`;
+    ctx.fill(shape);
+    ctx.restore();
+  }
+  for (let d = depth; d > 0; d -= dpr) {
+    const k = d / depth;
+    ctx.fillStyle = `rgb(${dark.map((c, i) => Math.round(c * k + light[i] * (1 - k)))})`;
+    ctx.save();
+    ctx.translate(0, d);
+    ctx.fill(shape);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
 // Países, fronteras y Colombia. `close` (0 a 1): de cerca Colombia va en un
 // tono claro del color resaltado, con borde pleno, para que las rutas se lean
-// encima. `bogota` (0 a 1): mientras se ven las localidades, Colombia se apaga.
+// encima, y sobresale como un bloque. `bogota` (0 a 1): mientras se ven las
+// localidades, Colombia se apaga.
 function drawLand(
   ctx: CanvasRenderingContext2D,
-  path: ReturnType<typeof geoPath>,
+  path: GeoPath,
+  proj: GeoProjection,
   dpr: number,
   pano: number,
   close: number,
@@ -528,6 +585,17 @@ function drawLand(
   ctx.beginPath();
   path(BORDERS);
   ctx.stroke();
+  // De cerca, Colombia sobresale: el bloque y, encima, una base blanca para que
+  // el tono claro no deje ver el bloque
+  if (close > 0) {
+    const shape = new Path2D(geoPath(proj)(COLOMBIA) ?? "");
+    ctx.save();
+    ctx.globalAlpha *= close * (1 - bogota);
+    drawSlab(ctx, shape, SLAB_COLOMBIA * dpr * close, dpr, WALL_DARK, WALL_LIGHT);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill(shape);
+    ctx.restore();
+  }
   ctx.beginPath();
   path(COLOMBIA);
   ctx.fillStyle = `rgba(${HIGHLIGHT},${(0.95 - 0.8 * close) * (1 - bogota)})`;
@@ -613,9 +681,33 @@ function drawLocal(
   ctx.restore();
 }
 
+// Proyección de Bogotá inclinada: la normal, achatada en vertical alrededor del
+// centro del canvas. Sirve como función ([lon, lat] → px), con `invert` (qué se
+// toca) y con geoPath (sin recorte: Bogotá es pequeña y siempre está de frente)
+type Flat = ((p: [number, number]) => [number, number] | null) & {
+  invert: (p: [number, number]) => [number, number] | null;
+  stream: GeoStreamWrapper["stream"];
+};
+function tilted(proj: GeoProjection, cy: number): Flat {
+  const f = (p: [number, number]) => {
+    const q = proj(p);
+    return q ? ([q[0], cy + (q[1] - cy) * TILT] as [number, number]) : null;
+  };
+  const { stream } = geoTransform({
+    point(x, y) {
+      const q = f([x, y]);
+      if (q) this.stream.point(q[0], q[1]);
+    },
+  });
+  return Object.assign(f, {
+    stream,
+    invert: ([x, y]: [number, number]) => proj.invert?.([x, cy + (y - cy) / TILT]) ?? null,
+  });
+}
+
 // Proyección del último cuadro con las localidades a la vista (para saber cuál
 // se toca); null si no se ven
-let localityView: { proj: GeoProjection; dpr: number } | null = null;
+let localityView: { flat: Flat; dpr: number } | null = null;
 
 // Nombres de las localidades: primero las grandes (por el tamaño de su recuadro);
 // las más pequeñas del centro, si no caben, muestran su nombre al tocarlas
@@ -724,13 +816,21 @@ const STRIPES = [
   new Path2D("M-12.2,6.2L1.8,-3.8L2.3,-3.1L-11.7,6.9Z"),
 ];
 // Camión visto desde arriba (como Truck en ColombiaRoutesMap), mirando a `angle`
-function drawTruck(ctx: CanvasRenderingContext2D, x: number, y: number, angle: number, k: number) {
+function drawTruck(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  angle: number,
+  k: number,
+  tilt = 1,
+) {
   const box = (x: number, y: number, w: number, h: number, r: number) => {
     ctx.beginPath();
     ctx.roundRect(x, y, w, h, r);
   };
   ctx.save();
   ctx.translate(x, y);
+  ctx.scale(1, tilt);
   ctx.rotate(angle);
   ctx.scale(k, k);
   ctx.fillStyle = "rgba(29,32,80,.2)";
@@ -760,100 +860,148 @@ function drawTruck(ctx: CanvasRenderingContext2D, x: number, y: number, angle: n
   ctx.restore();
 }
 
+// Siluetas de las localidades en pantalla (cambian solo al mover la cámara)
+type Shapes = { key: string; all: Path2D; each: Map<string, Path2D> };
+let shapes: Shapes | null = null;
+function bogotaShapes(flat: Flat, key: string) {
+  if (shapes?.key !== key) {
+    const path = geoPath(flat);
+    const each = new Map(LOCALITIES.map((l) => [l.name, new Path2D(path(l.geometry) ?? "")]));
+    const all = new Path2D();
+    for (const p of each.values()) all.addPath(p);
+    shapes = { key, all, each };
+  }
+  return shapes;
+}
+
 // Con los colores de Colombia en la vista nacional (elegido por el cliente, nov.
 // 2026): las localidades en un tono claro del color resaltado con bordes en el
-// color pleno y una sombra debajo, sobre el fondo de la página; la que se toca o
-// está bajo el puntero, en naranja
-function paintLocalities(ctx: CanvasRenderingContext2D, path: GeoPathFn, dpr: number) {
-  ctx.save();
-  ctx.shadowColor = `rgba(${INK},.45)`;
-  ctx.shadowBlur = 22 * dpr;
-  ctx.shadowOffsetY = 6 * dpr;
+// color pleno, sobre un bloque con grosor y sombra, sobre el fondo de la página;
+// la que se toca o está bajo el puntero, en naranja
+function paintLocalities(ctx: CanvasRenderingContext2D, sh: Shapes, dpr: number) {
+  drawSlab(ctx, sh.all, SLAB_BOGOTA * dpr, dpr, WALL_DARK, WALL_LIGHT);
   ctx.fillStyle = "#ffffff";
-  ctx.beginPath();
-  for (const l of LOCALITIES) path(l.geometry);
-  ctx.fill();
-  ctx.restore();
+  ctx.fill(sh.all);
   ctx.fillStyle = `rgba(${HIGHLIGHT},.15)`;
-  ctx.fill();
+  ctx.fill(sh.all);
 }
-function paintBorders(ctx: CanvasRenderingContext2D, path: GeoPathFn, dpr: number) {
+function paintBorders(ctx: CanvasRenderingContext2D, sh: Shapes, dpr: number) {
   ctx.strokeStyle = `rgb(${HIGHLIGHT})`;
   ctx.lineWidth = 2 * dpr;
   ctx.lineJoin = "round";
-  ctx.beginPath();
-  for (const l of LOCALITIES) path(l.geometry);
-  ctx.stroke();
+  ctx.stroke(sh.all);
 }
-type GeoPathFn = ReturnType<typeof geoPath>;
+const ORANGE_DARK: [number, number, number] = [232, 98, 10]; // #E8620A
+const ORANGE_LIGHT: [number, number, number] = [255, 178, 122]; // #FFB27A
+// Localidad que sube `lift` px: paredes, cara de arriba (naranja si `orange`) y borde
+function paintRaised(
+  ctx: CanvasRenderingContext2D,
+  shape: Path2D,
+  lift: number,
+  orange: number,
+  dpr: number,
+) {
+  ctx.save();
+  ctx.translate(0, -lift);
+  if (orange) drawSlab(ctx, shape, lift, dpr, ORANGE_DARK, ORANGE_LIGHT);
+  else drawSlab(ctx, shape, lift, dpr, WALL_DARK, WALL_LIGHT);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill(shape);
+  ctx.fillStyle = orange ? `rgba(255,118,25,${orange})` : `rgba(${HIGHLIGHT},.15)`;
+  ctx.fill(shape);
+  ctx.strokeStyle = orange ? "#ffffff" : `rgb(${HIGHLIGHT})`;
+  ctx.lineWidth = 2 * dpr;
+  ctx.lineJoin = "round";
+  ctx.stroke(shape);
+  ctx.restore();
+}
 let bogotaKey = "";
 let bogotaCache: { key: string; under: HTMLCanvasElement; over: HTMLCanvasElement } | null = null;
 
-// Bogotá con sus localidades, en tonos del color resaltado con bordes blancos y sus
-// nombres (uno que se montaría sobre otro ya puesto se omite)
+// Bogotá con sus localidades, inclinada y en bloque, en tonos del color resaltado
+// con sus nombres (uno que se montaría sobre otro ya puesto se omite)
 function drawBogota(
   ctx: CanvasRenderingContext2D,
-  path: ReturnType<typeof geoPath>,
   proj: GeoProjection,
   s: Scene,
   dpr: number,
   labels: GlobeLabels,
 ) {
   const { width: W, height: H } = ctx.canvas;
-  localityView = s.bogota > 0.5 && s.map > 0.5 ? { proj, dpr } : null;
+  const flat = tilted(proj, H / 2);
+  localityView = s.bogota > 0.5 && s.map > 0.5 ? { flat, dpr } : null;
   if (s.bogota <= 0) return;
   ctx.save();
   ctx.globalAlpha *= s.bogota;
-  // Dónde va cada camión y qué localidades exclusivas ya visitaron
+  // Dónde va cada camión y cuánto hace que llegó a cada localidad exclusiva
   const where = TRUCKS.map((t) => truckAt(t, s.truck));
   const heat = truckHeat(s.truck);
-  const visited = new Set(
-    ALL_LEGS.filter((g) => g.fine && s.truck >= g.start + g.move).map((g) => g.name),
-  );
-  // La base (sombra, relleno claro) y los bordes no cambian mientras la cámara
+  const arrived = new Map<string, number>();
+  for (const g of ALL_LEGS)
+    if (g.fine && s.truck >= g.start + g.move) arrived.set(g.name, s.truck - g.start - g.move);
+  const visited = new Set(arrived.keys());
+  // Cuánto sube cada localidad (0 a 1): las exclusivas al llegar su camión y la
+  // que se toca o está bajo el puntero
+  const rise = (name: string) => {
+    const since = arrived.get(name);
+    const up = since === undefined ? 0 : ease(clamp01(since / 700));
+    return Math.max(up, labels.selected === name || labels.hovered === name ? 0.6 : 0);
+  };
+  const liftOf = (name: string) => rise(name) * RISE * dpr;
+  // La base (bloque, relleno claro) y los bordes no cambian mientras la cámara
   // está quieta: se dibujan una vez aparte y se copian (dibujarlos en cada cuadro
   // hacía ir a saltos la animación). Encima, cada cuadro, solo las localidades
   // resaltadas
-  const { width: CW, height: CH } = ctx.canvas;
-  const key = `${CW}x${CH}:${proj.scale()}:${proj.rotate()}:${proj.translate()}:${dpr}`;
+  const key = `${W}x${H}:${proj.scale()}:${proj.rotate()}:${proj.translate()}:${dpr}`;
+  const sh = bogotaShapes(flat, key);
   const still = key === bogotaKey;
   bogotaKey = key;
   if (still && bogotaCache?.key !== key) {
     const layers = [0, 1].map(() => {
       const c = document.createElement("canvas");
-      [c.width, c.height] = [CW, CH];
+      [c.width, c.height] = [W, H];
       return c;
     });
     const [under, over] = layers.map((c) => c.getContext("2d")!);
-    paintLocalities(under, geoPath(proj, under), dpr);
-    paintBorders(over, geoPath(proj, over), dpr);
+    paintLocalities(under, sh, dpr);
+    paintBorders(over, sh, dpr);
     bogotaCache = { key, under: layers[0], over: layers[1] };
   }
   const cache = still && bogotaCache?.key === key ? bogotaCache : null;
   if (cache) ctx.drawImage(cache.under, 0, 0);
-  else paintLocalities(ctx, path, dpr);
+  else paintLocalities(ctx, sh, dpr);
+  // Las exclusivas: en naranja mientras está el camión y más suave después; las
+  // demás, más oscuras solo mientras pasa
+  const orangeOf = (name: string) => {
+    const on = labels.selected === name || labels.hovered === name;
+    const h = heat.get(name) ?? 0;
+    return on ? 1 : FINE.has(name) && visited.has(name) ? 0.55 + 0.45 * h : 0;
+  };
   for (const l of LOCALITIES) {
-    const on = labels.selected === l.name || labels.hovered === l.name;
-    // Las exclusivas: en naranja mientras está el camión y más suave después; las
-    // demás, más oscuras solo mientras pasa
     const h = heat.get(l.name) ?? 0;
-    const orange = on ? 1 : FINE.has(l.name) && visited.has(l.name) ? 0.55 + 0.45 * h : 0;
-    if (!orange && h < 0.01) continue;
-    ctx.beginPath();
-    path(l.geometry);
-    if (orange) {
-      ctx.fillStyle = "#ffffff";
-      ctx.fill();
-      ctx.fillStyle = `rgba(255,118,25,${orange})`;
-    } else ctx.fillStyle = `rgba(${HIGHLIGHT},${0.3 * h})`;
-    ctx.fill();
+    if (rise(l.name) > 0 || h < 0.01) continue;
+    ctx.fillStyle = `rgba(${HIGHLIGHT},${0.3 * h})`;
+    ctx.fill(sh.each.get(l.name)!);
   }
   if (cache) ctx.drawImage(cache.over, 0, 0);
-  else paintBorders(ctx, path, dpr);
+  else paintBorders(ctx, sh, dpr);
+  // Las que suben, de la más lejana (al norte) a la más cercana
+  const raised = LOCALITIES.filter((l) => rise(l.name) > 0).sort((a, b) => b.lat - a.lat);
+  for (const l of raised)
+    paintRaised(ctx, sh.each.get(l.name)!, liftOf(l.name), orangeOf(l.name), dpr);
+  // Cada camión sube con la localidad exclusiva donde termina
+  const truckLift = TRUCKS.map((t) => {
+    const last = t.legs.at(-1)!;
+    return arrived.has(last.name) ? liftOf(last.name) : 0;
+  });
   // Estela naranja detrás de cada camión, que se desvanece (con todo el recorrido
-  // se enredaría), casa de salida (Puente Aranda) y onda al llegar a cada parada
-  const screens = TRUCKS.map((t) => t.pts.map((p) => proj(p)));
-  const heres = where.map((w) => proj(w.at));
+  // se enredaría; al subir el camión, se apaga), casa de salida (Puente Aranda) y
+  // onda al llegar a cada parada
+  const screens = TRUCKS.map((t) => t.pts.map((p) => flat(p)));
+  const heres = where.map((w, n) => {
+    const p = flat(w.at);
+    return p && ([p[0], p[1] - truckLift[n]] as [number, number]);
+  });
   // En pedazos de 5 puntos, cada uno más transparente, con un trazo ancho y
   // suave debajo como resplandor (sin desenfoque, que es lento)
   const TAIL = 50;
@@ -863,8 +1011,10 @@ function drawBogota(
   ctx.lineJoin = "round";
   where.forEach(({ i }, n) => {
     const screen = screens[n];
+    const fade = 1 - truckLift[n] / (RISE * dpr);
+    if (fade <= 0) return;
     for (let k0 = i; k0 > i - TAIL && k0 >= 0; k0 -= PIECE) {
-      const a = clamp01(1 - (i - k0) / TAIL);
+      const a = fade * clamp01(1 - (i - k0) / TAIL);
       ctx.beginPath();
       const end = k0 === i ? heres[n] : screen[k0 + 1];
       if (end) ctx.moveTo(end[0], end[1]);
@@ -881,10 +1031,11 @@ function drawBogota(
     }
   });
   ctx.restore();
-  // Onda al llegar: naranja y grande en las exclusivas, azul y pequeña en las demás
+  // Onda al llegar (acostada sobre el plano inclinado): naranja y grande en las
+  // exclusivas, azul y pequeña en las demás
   for (const leg of ALL_LEGS) {
     const since = s.truck - leg.start - leg.move;
-    const p = proj(leg.stop);
+    const p = flat(leg.stop);
     const life = leg.fine ? 1100 : 700;
     if (!p || since < 0 || since > life) continue;
     const q = since / life;
@@ -892,11 +1043,12 @@ function drawBogota(
       ? `rgba(255,118,25,${0.9 * (1 - q)})`
       : `rgba(${HIGHLIGHT},${0.6 * (1 - q)})`;
     ctx.lineWidth = (leg.fine ? 3 : 2) * dpr;
+    const r = (6 + (leg.fine ? 34 : 14) * ease(q)) * dpr;
     ctx.beginPath();
-    ctx.arc(p[0], p[1], (6 + (leg.fine ? 34 : 14) * ease(q)) * dpr, 0, Math.PI * 2);
+    ctx.ellipse(p[0], p[1] - (leg.fine ? liftOf(leg.name) : 0), r, r * TILT, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  const home = proj(STOP_AT["Puente Aranda"]);
+  const home = flat(STOP_AT["Puente Aranda"]);
   if (home) {
     ctx.save();
     ctx.translate(home[0], home[1]);
@@ -913,7 +1065,7 @@ function drawBogota(
     ctx.fill(HOUSE);
     ctx.restore();
   }
-  const n = proj([-74.2, 4.78]);
+  const n = flat([-74.2, 4.78]);
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
@@ -930,8 +1082,9 @@ function drawBogota(
   ctx.fillText(labels.cityCredit, W / 2 + lens * 0.42, H / 2 + lens * 0.64);
   const placed: [number, number, number, number][] = [];
   for (const l of LOCALITY_LABELS) {
-    const p = proj([l.lon, l.lat]);
-    if (!p) continue;
+    const at = flat([l.lon, l.lat]);
+    if (!at) continue;
+    const p = [at[0], at[1] - liftOf(l.name)];
     // Las exclusivas, en negrita y, ya visitadas, con estrella
     const text = visited.has(l.name) ? `★ ${l.name}` : l.name;
     ctx.font = `${FINE.has(l.name) ? 700 : 600} ${10 * dpr}px Montserrat, system-ui, sans-serif`;
@@ -955,23 +1108,25 @@ function drawBogota(
   // casa al salir
   where.forEach(({ i }, n) => {
     const here = heres[n];
-    const a = screens[n][i];
-    const b = screens[n][i + 1];
+    // Mirando hacia donde va, sobre el plano inclinado (el giro se calcula sin
+    // inclinar y luego se achata)
+    const a = proj(TRUCKS[n].pts[i]);
+    const b = proj(TRUCKS[n].pts[i + 1]);
     const show = clamp01((s.truck - TRUCKS[n].delay + 300) / 300);
     if (!here || !a || !b || show <= 0) return;
     ctx.save();
     ctx.globalAlpha *= show;
-    drawTruck(ctx, here[0], here[1], Math.atan2(b[1] - a[1], b[0] - a[0]), 1.3 * dpr);
+    drawTruck(ctx, here[0], here[1], Math.atan2(b[1] - a[1], b[0] - a[0]), 1.3 * dpr, TILT);
     ctx.restore();
   });
   // Aviso mientras está detenido en una localidad exclusiva
   for (const leg of ALL_LEGS) {
     const since = s.truck - leg.start - leg.move;
-    const p = proj(leg.stop);
+    const p = flat(leg.stop);
     if (!leg.fine || !p || since < 0 || since > TRUCK_PAUSE + 200) continue;
     ctx.save();
     ctx.globalAlpha *= Math.min(since / 150, (TRUCK_PAUSE + 200 - since) / 200, 1);
-    pill(ctx, p[0], p[1] - 8 * dpr, `★ ${labels.exclusive}`, dpr, true, "above");
+    pill(ctx, p[0], p[1] - 8 * dpr - liftOf(leg.name), `★ ${labels.exclusive}`, dpr, true, "above");
     ctx.restore();
   }
   ctx.restore();
@@ -981,7 +1136,7 @@ function drawBogota(
 export function localityAt(x: number, y: number): Hit | null {
   const v = localityView;
   if (!v) return null;
-  const at = v.proj.invert([x * v.dpr, y * v.dpr]);
+  const at = v.flat.invert([x * v.dpr, y * v.dpr]);
   const l = at && LOCALITIES.find((l) => geoContains(l.geometry, at));
   return l ? { kind: "locality", place: l, x, y } : null;
 }
@@ -1072,7 +1227,29 @@ export function drawGlobe(
     ctx.beginPath();
     path(GRATICULE);
     ctx.stroke();
-    drawLand(ctx, path, dpr, s.pano, close, Math.max(0.6, Math.min(1.6, v.zoom * 0.4)), s.bogota);
+    drawLand(
+      ctx,
+      path,
+      proj,
+      dpr,
+      s.pano,
+      close,
+      Math.max(0.6, Math.min(1.6, v.zoom * 0.4)),
+      s.bogota,
+    );
+    // Luz de esfera (relieve 3D, nov. 2026; solo de lejos): brillo arriba a la
+    // izquierda y el borde en sombra, sobre el mar y los continentes
+    if (near < 1) {
+      const light = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx, cy, R);
+      light.addColorStop(0, `rgba(255,255,255,${0.32 * (1 - near)})`);
+      light.addColorStop(0.45, "rgba(255,255,255,0)");
+      light.addColorStop(0.75, `rgba(${INK},0)`);
+      light.addColorStop(1, `rgba(${INK},${0.34 * (1 - near)})`);
+      ctx.fillStyle = light;
+      ctx.beginPath();
+      path(SPHERE);
+      ctx.fill();
+    }
     drawLocal(ctx, proj, s, dpr, time, labels, s.localFade * close * (1 - s.bogota), hits);
 
     // Rutas internacionales: todas con el mismo estilo. Un tramo solo queda oculto
@@ -1190,7 +1367,7 @@ export function drawGlobe(
     if (layer.width !== W || layer.height !== H) [layer.width, layer.height] = [W, H];
     const lc = layer.getContext("2d")!;
     lc.clearRect(0, 0, W, H);
-    drawBogota(lc, geoPath(proj, lc), proj, s, dpr, labels);
+    drawBogota(lc, proj, s, dpr, labels);
     lc.save();
     lc.globalCompositeOperation = "destination-in";
     const fade = lc.createLinearGradient(0, cy + lens * 0.55, 0, cy + lens * 0.98);
