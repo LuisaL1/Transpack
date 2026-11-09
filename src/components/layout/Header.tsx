@@ -146,7 +146,7 @@ export function Header() {
                       className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
                     />
                   </button>
-                  {/* Experiencias Transpack: enlace directo entre Blog y Contacto */}
+                  {/* Maestría Transpack: enlace directo entre Blog y Contacto */}
                   {m.key === "blog" && (
                     <Link
                       to={lp("/videos")}

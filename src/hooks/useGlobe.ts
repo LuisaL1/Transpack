@@ -8,10 +8,10 @@ import { trackEvent } from "@/lib/analytics";
 export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number; h: number };
 
 /**
- * Anima el mapa de la portada: la foto (photoRef) y el mapa en un <canvas>
+ * Anima el mapa de la portada: el carrusel de fotos (photoRef) y el mapa en un <canvas>
  * (canvasRef). El dibujo y la historia están en src/lib/globe.ts, que se carga
  * aparte (import()) con d3-geo y las siluetas de los países; mientras tanto, y
- * en el HTML pre-generado, se ve la foto. Se pausa fuera de pantalla y con la
+ * en el HTML pre-generado, se ve la primera foto. Se pausa fuera de pantalla y con la
  * pestaña oculta. Con movimiento reducido queda el mapa fijo.
  *
  * Al tocar un país, una ciudad de Colombia o una localidad de Bogotá, la
@@ -67,6 +67,14 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       const r = full + (globe.lensRadius(w, h) - full) * s.morph;
       photo.style.clipPath = `circle(${r}px at 50% 50%)`;
       photo.style.opacity = String(s.photo);
+      // Carrusel: la foto actual y, al final de su turno, la siguiente encima
+      const k = Math.floor(s.slide);
+      const next = Math.min(Math.max((s.slide - k - 0.8) / 0.2, 0), 1);
+      [...photo.children].forEach((el, i) => {
+        (el as HTMLElement).style.opacity = String(
+          i === k ? 1 : i === k + 1 ? next * next * (3 - 2 * next) : 0,
+        );
+      });
       // La foto se ve completa y quieta; al dar paso al mapa se acerca, como si
       // la cámara entrara en el círculo
       const entering = time % globe.LOOP < globe.LOOP / 2;

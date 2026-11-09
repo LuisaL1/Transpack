@@ -1,10 +1,10 @@
 // English version of the site content. Same structure as site.ts: when a text
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.png";
+import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.png";
+import imgCargador from "@/assets/images/cargador.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
 import imgExterior from "@/assets/images/exterior.jpg";
@@ -513,7 +513,7 @@ export const PRIVACY = {
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: your cookie choice is stored only in your browser (local storage) and is never sent to Transpack. You can delete it at any time by clearing this site's data in your browser.",
         "Advisor chat: the site's chat runs on Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. If you accept cookies in the notice, Zoho loads in the background when you arrive on the site so the chat opens instantly; if you do not accept them, it only loads when you open the chat. Once loaded, it receives technical data about the visit (pages viewed, approximate location, browser and device). What you write in the chat is stored on Zoho's servers, which may be outside Colombia, and in our CRM.",
-        "Map photos: when you tap a country on the home page map, your browser loads the photo of its capital directly from Wikimedia Commons, which receives the technical data of that request (IP address and browser). We do not send it any other data about you.",
+        "Map photos: your browser loads the photos on the home page map (the Bogotá photos it opens with and the one of each place you tap) directly from Wikimedia Commons, which receives the technical data of that request (IP address and browser). We do not send it any other data about you.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },

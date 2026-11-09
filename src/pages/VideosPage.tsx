@@ -10,7 +10,7 @@ import { CtaBand, PageHero } from "@/components/sections";
 import { VideoCard } from "@/components/videos/VideoCard";
 import { ShortsGrid } from "@/components/videos/ShortsGrid";
 
-// Experiencias Transpack (/videos): todos los videos y Shorts del canal de YouTube
+// Maestría Transpack (/videos): todos los videos y Shorts del canal de YouTube
 // (src/data/youtubeVideos.ts, generado con `pnpm videos`).
 export function VideosPage() {
   const { lp, tr } = useLang();

@@ -217,16 +217,13 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
-  photoAlt: tr(
-    "Asesor de Transpack con un contenedor, una caja de mudanza, un avión y un camión",
-    "Transpack advisor with a container, a moving box, a plane and a truck",
-  ),
   // Tarjeta al tocar un país (CountryCard)
   close: tr("Cerrar", "Close"),
   capital: tr("Capital", "Capital"),
   countryName: "Colombia",
   locality: tr("Localidad de Bogotá", "Bogotá locality"),
   cityCredit: tr("Mapa: IDECA · CC BY 4.0", "Map: IDECA · CC BY 4.0"),
+  exclusive: tr("Zona exclusiva", "Exclusive area"),
   cityPhoto: (city: string, country: string) =>
     tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
   credit: tr("Foto", "Photo"),

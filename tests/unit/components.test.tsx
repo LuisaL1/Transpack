@@ -60,7 +60,7 @@ describe("Soluciones por segmento", () => {
   });
 });
 
-describe("Experiencias Transpack", () => {
+describe("Maestría Transpack", () => {
   it("muestra una fila de Shorts y «Ver más» despliega el resto", async () => {
     render(
       <MemoryRouter>

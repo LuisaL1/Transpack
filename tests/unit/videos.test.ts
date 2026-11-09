@@ -3,8 +3,8 @@ import { CHANNEL_SHORTS, CHANNEL_VIDEOS } from "@/data/youtubeVideos";
 import { headerText, footerText } from "@/data/navigation";
 import { makeTr } from "@/i18n";
 
-// Experiencias Transpack (/videos): lista generada con `pnpm videos`
-describe("Experiencias Transpack · videos del canal", () => {
+// Maestría Transpack (/videos): lista generada con `pnpm videos`
+describe("Maestría Transpack · videos del canal", () => {
   const all = [...CHANNEL_VIDEOS, ...CHANNEL_SHORTS];
 
   it("tiene videos, sin repetidos y con ids de YouTube válidos", () => {
@@ -20,9 +20,9 @@ describe("Experiencias Transpack · videos del canal", () => {
     }
   });
 
-  it("el enlace se llama «Experiencias Transpack» en la cabecera y el pie", () => {
+  it("el enlace se llama «Maestría Transpack» en la cabecera y el pie", () => {
     const tr = makeTr("es");
-    expect(headerText(tr).videos).toBe("Experiencias Transpack");
-    expect(footerText(tr).videos).toBe("Experiencias Transpack");
+    expect(headerText(tr).videos).toBe("Maestría Transpack");
+    expect(footerText(tr).videos).toBe("Maestría Transpack");
   });
 });

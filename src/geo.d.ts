@@ -5,8 +5,11 @@ declare module "d3-geo" {
   export interface GeoProjection {
     (point: [number, number]): [number, number] | null;
     scale(k: number): GeoProjection;
+    scale(): number;
     translate(t: [number, number]): GeoProjection;
+    translate(): [number, number];
     rotate(r: [number, number, number?]): GeoProjection;
+    rotate(): [number, number, number];
     clipAngle(a: number): GeoProjection;
     precision(p: number): GeoProjection;
     invert(point: [number, number]): [number, number] | null;

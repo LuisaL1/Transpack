@@ -7,6 +7,7 @@ import { serviceOptions } from "@/data/quote";
 import { CITIES, DESTINATIONS } from "@/data/worldMap";
 import { EMBASSY_FLAGS, EMBASSY_LOGOS, embassyFlag } from "@/data/clientLogos";
 import { CITY_PHOTOS, COUNTRY_PHOTOS, LOCALITY_PHOTOS } from "@/data/countryPhotos";
+import { SECTOR_PHOTOS } from "@/data/sectorPhotos";
 import { LOCALITIES } from "@/data/bogotaMap";
 import { LANGS, localize, makeTr, toSpanish, type Lang } from "@/i18n";
 
@@ -194,6 +195,16 @@ describe("Mapa y embajadas", () => {
       expect(p.src, name).toMatch(
         /^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//,
       );
+  });
+
+  it("el carrusel del inicio del mapa tiene fotos de Wikimedia, con autor y licencia", () => {
+    expect(SECTOR_PHOTOS.length).toBeGreaterThanOrEqual(3);
+    for (const p of SECTOR_PHOTOS) {
+      expect(p.src, p.name).toMatch(
+        /^https:\/\/(thumb|upload)\.wikimedia\.org\/wikipedia\/commons\//,
+      );
+      expect(p.author && p.license, p.name).toBeTruthy();
+    }
   });
 
   it("cada ciudad del recorrido por Colombia tiene su foto, enlazada a Wikimedia", () => {
