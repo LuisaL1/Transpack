@@ -12,7 +12,7 @@ import type { ServiceGuide } from "@/data/site";
 const guideText = (g: ServiceGuide) =>
   [
     g.title,
-    g.lead,
+    g.lead ?? "",
     ...g.sections.flatMap((s) => [
       s.title,
       ...s.text,

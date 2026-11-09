@@ -129,7 +129,7 @@ export type Service = {
 export type ServiceGuide = {
   eyebrow: string;
   title: string;
-  lead: string;
+  lead?: string;
   sections: {
     icon: string;
     title: string;
@@ -139,6 +139,82 @@ export type ServiceGuide = {
     after?: string;
   }[];
   closing: { title: string; text: string[] };
+};
+
+// Guía de Mudanzas locales y nacionales (texto del cliente, noviembre de 2026)
+const HOME_MOVE_GUIDE: ServiceGuide = {
+  eyebrow: "Guía rápida",
+  title: "Así será tu mudanza, paso a paso",
+  sections: [
+    {
+      icon: "clipboard-check",
+      title: "El primer paso: planificando tu mudanza",
+      text: [
+        "Antes de armar la primera caja, necesitamos calcular el tamaño de tu mudanza. A esto lo llamamos Encuesta Previa. Para tu comodidad, podemos hacer una Estimación Presencial (vamos a tu casa), Virtual (por videollamada) o Telefónica.",
+        "Con esto creamos tu Lista de Inventario, el documento oficial donde anotamos todos tus Bienes del Hogar (muebles, electrodomésticos) y Efectos Personales (ropa, libros, artículos personales). Así sabemos exactamente qué viaja y garantizamos que todo llegue completo.",
+      ],
+    },
+    {
+      icon: "box-seam",
+      title: "Día de la mudanza: empaque y cuidado de tus cosas",
+      text: [
+        "El día programado, nuestro equipo llegará a tu domicilio actual. Ellos cuentan con la mejor Capacitación del Personal para cuidar tus pertenencias como si fueran suyas:",
+      ],
+      items: [
+        {
+          b: "Materiales de Embalaje:",
+          t: "utilizamos cajas de alta resistencia, plástico burbuja y papel kraft. También contamos con Materiales Ecológicos si prefieres cuidar el medio ambiente.",
+        },
+        {
+          b: "Carga y Estiba:",
+          t: "es el arte de acomodar todo perfectamente dentro del camión. Nos aseguramos de lograr una Carga Equilibrada para que el peso esté bien distribuido y nada sufra daños durante los movimientos del viaje.",
+        },
+        {
+          b: "Contenedor Sellado / Camión Cerrado:",
+          t: "tus bienes viajarán protegidos contra el clima y el polvo de la carretera, con sellos de seguridad si es necesario.",
+        },
+      ],
+    },
+    {
+      icon: "signpost-split",
+      title: "El viaje: en ruta hacia tu nuevo hogar",
+      text: [
+        "Para que tu mudanza no sufra retrasos innecesarios, utilizamos tecnología de Optimización de Rutas. Esto nos permite elegir el camino más seguro y eficiente, evitando zonas complicadas o tráfico pesado.",
+        "Si en tu ciudad de destino hay alguna restricción vehicular o se requiere un Permiso Especial (por ejemplo, para ingresar a un conjunto residencial cerrado o para transitar a ciertas horas), nuestro equipo te asesorará para tenerlo todo listo.",
+      ],
+    },
+    {
+      icon: "key",
+      title: "Tu llegada: desembalaje y entrega",
+      text: [
+        "¡Llegamos! Nuestro equipo bajará todo con el mayor cuidado. Una vez dentro de tu nueva casa, realizamos el Desembalaje (desempaque) de los artículos principales y te ayudamos con el Montaje e Instalación de tus camas, armarios o mesas para que puedas habitar tu hogar desde el primer día. Al terminar, nos encargamos de la Eliminación de Residuos, retirando todo el material de empaque usado para dejar tu espacio limpio.",
+      ],
+    },
+    {
+      icon: "shield-check",
+      title: "Tu tranquilidad ante todo: riesgos y seguros",
+      text: [
+        "Aunque trabajamos con el máximo estándar para evitar Riesgos de Transporte, Carga o Descarga, los imprevistos en carretera existen. Para tu total tranquilidad, te ofrecemos opciones de Cobertura de Seguro:",
+      ],
+      items: [
+        {
+          b: "Cobertura Completa (Todo Riesgo):",
+          t: "tu mejor aliada. Protege toda tu mudanza ante cualquier imprevisto o accidente en el camino.",
+        },
+        {
+          b: "Cobertura Parcial:",
+          t: "ideal si solo deseas asegurar ciertos objetos de valor específico.",
+        },
+      ],
+    },
+  ],
+  closing: {
+    title: "Nuestro compromiso contigo",
+    text: [
+      "Entendemos los Desafíos Logísticos de mover una casa entera y nos adaptamos a tus necesidades. Medimos la calidad de nuestro servicio a través de Indicadores de Calidad (KPIs) para asegurarnos de que recibas una atención cinco estrellas. Y si algo no sale como esperabas, nuestro equipo de Gestión de Quejas y Reclamaciones resolverá cualquier inconveniente de inmediato.",
+      "¡Relájate y empieza a planificar tu nuevo espacio, nosotros nos encargamos del camión!",
+    ],
+  },
 };
 
 export const SERVICES: Service[] = [
@@ -182,6 +258,7 @@ export const SERVICES: Service[] = [
       },
     ],
     note: "Las mudanzas locales suelen programarse con 1 a 2 semanas de anticipación, pero también atendemos solicitudes urgentes según disponibilidad.",
+    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-nacionales",
@@ -223,6 +300,7 @@ export const SERVICES: Service[] = [
         text: "Descargamos y ubicamos todo en su nueva ciudad.",
       },
     ],
+    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-internacionales",
@@ -492,7 +570,7 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residencial",
     kicker: "Transpack Residencial",
-    title: "Transportamos el hogar, no solo los bienes",
+    title: "Cuidamos tu patrimonio, aseguramos tu destino",
     text: "",
     points: [
       "Embalaje, desarme y armado de muebles",
