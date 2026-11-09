@@ -110,6 +110,8 @@ export function createHandler({
 
     // 3) Funciones de api/
     if (pathname === "/api" || pathname.startsWith("/api/")) {
+      const t0 = Date.now();
+      res.on("finish", () => logApi(req.method, pathname, res.statusCode, Date.now() - t0));
       const mod = API[pathname];
       const fn = mod && (req.method === "HEAD" ? mod.GET : mod[req.method ?? "GET"]);
       if (!mod) return sendJson(res, 404, { ok: false, error: "not-found" }, base);
@@ -191,7 +193,20 @@ function serveFile(req, res, file, status, base) {
   headers["Content-Length"] = String(st.size);
   res.writeHead(status, headers);
   if (req.method === "HEAD") return res.end();
-  createReadStream(served).pipe(res);
+  createReadStream(served)
+    .on("error", (e) => {
+      console.error(`[server] ✗ No se pudo leer ${served}:`, e.message);
+      res.destroy();
+    })
+    .pipe(res);
+}
+
+/** Una línea por llamada a /api: ✓ si respondió bien, ✗ si no (con el estado y el tiempo) */
+function logApi(method, path, status, ms) {
+  const line = `[api] ${status < 400 ? "✓" : "✗"} ${method} ${path} → ${status} (${ms} ms)`;
+  if (status >= 500) console.error(line);
+  else if (status >= 400) console.warn(line);
+  else console.log(line);
 }
 
 /** Petición de Node → Request web → función de api/ → respuesta de Node */
@@ -211,7 +226,7 @@ async function runApi(req, res, fn, url, base) {
   try {
     out = await fn(new Request(url, { method: req.method, headers, body }));
   } catch (e) {
-    console.error("[server] Error en", url, e);
+    console.error(`[server] ✗ Error en ${new URL(url).pathname}:`, e);
     return sendJson(res, 500, { ok: false, error: "server" }, base);
   }
   const buf = Buffer.from(await out.arrayBuffer());
@@ -265,9 +280,22 @@ export function start(port = Number(process.env.PORT) || 3000) {
     console.log("[server] Variables leídas de .env");
   }
   const server = createServer(createHandler());
+  // Errores que de otro modo tumbarían la app sin dejar rastro
+  process.on("uncaughtException", (e) => console.error("[server] ✗ Error no controlado:", e));
+  process.on("unhandledRejection", (e) => console.error("[server] ✗ Promesa rechazada:", e));
+  for (const sig of ["SIGTERM", "SIGINT"])
+    process.once(sig, () => {
+      console.log(`[server] Deteniendo (${sig})`);
+      server.close(() => process.exit(0));
+      setTimeout(() => process.exit(0), 5000).unref();
+    });
+  server.on("error", (e) => {
+    console.error(`[server] ✗ No arrancó en el puerto ${port}:`, e.message);
+    process.exit(1);
+  });
   // 0.0.0.0: el hosting llega a la app desde fuera del contenedor
   server.listen(port, process.env.HOST || "0.0.0.0", () => {
-    console.log(`[server] Sitio en http://localhost:${port}`);
+    console.log(`[server] ✓ Sitio en http://localhost:${port} (Node ${process.version})`);
     // Qué variables de los formularios ve la app (solo el nombre, nunca el valor)
     const vars = [
       "BREVO_API_KEY",

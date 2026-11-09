@@ -59,9 +59,28 @@ integración continua de GitHub (`.github/workflows/ci.yml`) corre aparte.
 
 ## 3. Diagnóstico
 
-- **Registros:** _Logs_ y _Registros de tiempo de ejecución_ en el panel. Al
-  arrancar aparece `[server] Sitio en http://localhost:<puerto>`; cada envío deja
-  `[contact] Solicitud enviada a …` o el motivo del error.
+- **Registros** (_Logs_ y _Registros de tiempo de ejecución_ en el panel). Cada
+  línea empieza por su área y lleva **✓** si se cumplió o **✗** si falló; busque
+  "✗" para ver solo los problemas. Nunca incluyen datos del visitante ni claves.
+
+  | Línea                                                        | Qué significa                                                 |
+  | ------------------------------------------------------------ | ------------------------------------------------------------- |
+  | `[server] ✓ Sitio en http://localhost:… (Node …)`            | La app arrancó                                                |
+  | `[server] Variables: BREVO_API_KEY ✓ · …`                    | Qué variables ve la app (solo el nombre)                      |
+  | `[server] ✗ No arrancó en el puerto …`                       | El puerto está ocupado o no permitido                         |
+  | `[server] ✗ Error no controlado / Promesa rechazada`         | Error de código; la línea trae el detalle                     |
+  | `[server] Deteniendo (SIGTERM)`                              | El hosting reinició o detuvo la app (normal al desplegar)     |
+  | `[api] ✓ POST /api/contact → 200 (523 ms)`                   | Una llamada a /api: estado y tiempo                           |
+  | `[contact] ✓ Solicitud de cotizacion enviada a …`            | El correo al equipo salió por Brevo                           |
+  | `[contact] ✓ Confirmación enviada al visitante`              | El correo de confirmación salió                               |
+  | `[contact] ✗ Rechazada (email/consent/origin…)`              | El formulario llegó incompleto o desde otro sitio             |
+  | `[contact] ✗ No se envió: falta la variable …`               | Falta `BREVO_API_KEY`                                         |
+  | `[contact] ✗ Brevo rechazó …` / `Brevo no respondió`         | Problema con Brevo (clave, IP autorizada, remitente)          |
+  | `[contact] ✗ Bot detectado`                                  | Un bot llenó el campo trampa; no se envió nada                |
+  | `[ticket] ✓ Ticket #123 creado en Zoho Desk`                 | El ticket del cotizador se creó                               |
+  | `[ticket] ✗ No se creó: faltan las variables …`              | Faltan credenciales de Zoho (dice cuáles)                     |
+  | `[ticket] ✗ Zoho rechazó la solicitud (oauth-400/desk-401…)` | `oauth-…`: token o centro de datos; `desk-…`: permisos o plan |
+
 - **Reiniciar:** _Reiniciar la aplicación_ en el panel.
 - **¿Formularios configurados?** `https://<dominio>/api/contact` responde
   `{"configured":true}` si existe `BREVO_API_KEY` (no la muestra).

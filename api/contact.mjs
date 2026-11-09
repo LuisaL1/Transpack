@@ -55,6 +55,15 @@ const json = (data, status = 200) =>
     status,
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
+// Registros para los logs del hosting (GoDaddy → Logs): "✓" cuando se cumplió,
+// "✗" cuando falló o se rechazó. Nunca datos del visitante ni la clave.
+const logOk = (msg) => console.log(`[contact] ✓ ${msg}`);
+const logFail = (msg, ...detail) => console.error(`[contact] ✗ ${msg}`, ...detail);
+/** Rechaza la solicitud y deja el motivo en los logs */
+const reject = (error, status, why) => {
+  console.warn(`[contact] ✗ Rechazada (${error}, HTTP ${status}): ${why}`);
+  return json({ ok: false, error }, status);
+};
 const esc = (s) =>
   s
     .replace(/&/g, "&amp;")
@@ -196,7 +205,7 @@ export async function POST(req) {
     // clave de Brevo) y el navegador recibe una respuesta clara, no un 500 vacío.
     const key = process.env.BREVO_API_KEY;
     const msg = e instanceof Error ? `${e.name}: ${e.message}\n${e.stack ?? ""}` : String(e);
-    console.error("[contact] Error inesperado:", key ? msg.split(key).join("***") : msg);
+    logFail("Error inesperado:", key ? msg.split(key).join("***") : msg);
     return json({ ok: false, error: "server", type: e instanceof Error ? e.name : "unknown" }, 500);
   }
 }
@@ -212,24 +221,29 @@ async function handle(req) {
     } catch {
       /* origen inválido */
     }
-    if (originHost !== host) return json({ ok: false, error: "origin" }, 403);
+    if (originHost !== host)
+      return reject("origin", 403, `origen ${originHost || "inválido"}, sitio ${host}`);
   }
 
   let body;
   try {
     body = await req.json();
   } catch {
-    return json({ ok: false, error: "json" }, 400);
+    return reject("json", 400, "el cuerpo no es JSON");
   }
-  if (!body || typeof body !== "object") return json({ ok: false, error: "json" }, 400);
+  if (!body || typeof body !== "object") return reject("json", 400, "el cuerpo no es un objeto");
 
   // Campo trampa para bots: si viene lleno, se responde OK sin enviar nada.
-  if (body.website) return json({ ok: true });
+  if (body.website) {
+    console.warn("[contact] ✗ Bot detectado (campo trampa lleno): no se envió nada");
+    return json({ ok: true });
+  }
 
   const kind = body.kind === "cotizacion" ? "cotizacion" : "contacto";
   const lang = LANGS.includes(body.lang) ? body.lang : "es";
   const entries = Object.entries(body.fields ?? {});
-  if (entries.length === 0 || entries.length > 40) return json({ ok: false, error: "fields" }, 422);
+  if (entries.length === 0 || entries.length > 40)
+    return reject("fields", 422, `${entries.length} campos (debe tener entre 1 y 40)`);
   const fields = Object.fromEntries(
     entries
       .filter(([k, v]) => typeof v === "string" && k.length > 0 && k.length <= 60)
@@ -237,11 +251,15 @@ async function handle(req) {
   );
   const replyEmail = String(body.replyTo?.email ?? "").trim();
   if (replyEmail.length > 160 || !EMAIL.test(replyEmail))
-    return json({ ok: false, error: "email" }, 422);
-  if (fields["Autorización de datos"] !== "Sí") return json({ ok: false, error: "consent" }, 422);
+    return reject("email", 422, "correo del visitante inválido");
+  if (fields["Autorización de datos"] !== "Sí")
+    return reject("consent", 422, "sin autorización de datos");
 
   const key = process.env.BREVO_API_KEY;
-  if (!key) return json({ ok: false, error: "not-configured" }, 503);
+  if (!key) {
+    logFail("No se envió: falta la variable BREVO_API_KEY");
+    return json({ ok: false, error: "not-configured" }, 503);
+  }
 
   const subject = String(
     body.subject ||
@@ -280,7 +298,7 @@ async function handle(req) {
       tags: [`sitio-${kind}`],
     });
   } catch (e) {
-    console.error("[contact] Brevo no respondió:", e instanceof Error ? e.message : e);
+    logFail("Brevo no respondió:", e instanceof Error ? e.message : e);
     return json({ ok: false, error: "provider" }, 502);
   }
   if (!res.ok) {
@@ -288,13 +306,13 @@ async function handle(req) {
     // inválida; remitente sin verificar) queda en los registros del servidor y en
     // la respuesta, para diagnosticar. Nunca incluye la clave.
     const why = await res.json().catch(() => ({}));
-    console.error(`[contact] Brevo rechazó el envío (HTTP ${res.status}):`, why.code, why.message);
+    logFail(`Brevo rechazó la solicitud de ${kind} (HTTP ${res.status}):`, why.code, why.message);
     return json({ ok: false, error: "provider", status: res.status, reason: why.code ?? "" }, 502);
   }
 
   // Registro para rastrear el envío en Brevo (número de mensaje, sin datos personales)
   const sent = await res.json().catch(() => ({}));
-  console.log(`[contact] Solicitud enviada a ${leadsTo} (Brevo ${sent.messageId ?? "sin id"})`);
+  logOk(`Solicitud de ${kind} enviada a ${leadsTo} (Brevo ${sent.messageId ?? "sin id"})`);
 
   // 2) Confirmación automática al visitante (si falla, la solicitud ya llegó: no se reporta error)
   try {
@@ -308,18 +326,10 @@ async function handle(req) {
       tags: [`sitio-${kind}-confirmacion`],
     });
     const why = await r.json().catch(() => ({}));
-    if (r.ok)
-      console.log(
-        `[contact] Confirmación enviada al visitante (Brevo ${why.messageId ?? "sin id"})`,
-      );
-    else
-      console.error(
-        `[contact] Brevo no envió la confirmación (HTTP ${r.status}):`,
-        why.code,
-        why.message,
-      );
+    if (r.ok) logOk(`Confirmación enviada al visitante (Brevo ${why.messageId ?? "sin id"})`);
+    else logFail(`Brevo no envió la confirmación (HTTP ${r.status}):`, why.code, why.message);
   } catch (e) {
-    console.error("[contact] Falló la confirmación:", e instanceof Error ? e.message : e);
+    logFail("Falló la confirmación:", e instanceof Error ? e.message : e);
   }
   return json({ ok: true });
 }

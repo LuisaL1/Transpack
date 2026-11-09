@@ -32,6 +32,15 @@ const json = (data, status = 200) =>
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
 
+// Registros para los logs del hosting (GoDaddy → Logs): "✓" cuando se cumplió,
+// "✗" cuando falló o se rechazó. Nunca datos del visitante ni credenciales.
+const logOk = (msg) => console.log(`[ticket] ✓ ${msg}`);
+/** Rechaza la solicitud y deja el motivo en los logs */
+const reject = (error, status, why) => {
+  console.warn(`[ticket] ✗ Rechazada (${error}, HTTP ${status}): ${why}`);
+  return json({ ok: false, error }, status);
+};
+
 const env = (k) => (process.env[k] ?? "").trim();
 const cfg = () => ({
   // Credenciales dedicadas de Desk (ZOHO_DESK_*) si existen, para no chocar con
@@ -105,7 +114,10 @@ export async function contactId({ name, email, phone }) {
     try {
       const found = await desk(`/contacts/search?email=${encodeURIComponent(email)}`);
       const hit = (found.data ?? [])[0];
-      if (hit?.id) return hit.id;
+      if (hit?.id) {
+        logOk("Contacto existente en Zoho Desk (por correo)");
+        return hit.id;
+      }
     } catch {
       /* sin permiso de búsqueda o sin resultados: se crea abajo */
     }
@@ -123,6 +135,7 @@ export async function contactId({ name, email, phone }) {
     }),
   });
   if (!created.id) throw new Error("no-contact");
+  logOk("Contacto nuevo creado en Zoho Desk");
   return created.id;
 }
 
@@ -144,15 +157,29 @@ export async function POST(req) {
     } catch {
       /* origen inválido */
     }
-    if (originHost !== host) return json({ ok: false, error: "origin" }, 403);
+    if (originHost !== host)
+      return reject("origin", 403, `origen ${originHost || "inválido"}, sitio ${host}`);
   }
-  if (!isConfigured()) return json({ ok: false, error: "not-configured" }, 503);
+  if (!isConfigured()) {
+    const c = cfg();
+    const missing = [
+      ["ZOHO_CLIENT_ID", c.clientId],
+      ["ZOHO_CLIENT_SECRET", c.clientSecret],
+      ["ZOHO_REFRESH_TOKEN", c.refreshToken],
+      ["ZOHO_ORG_ID", c.orgId],
+      ["ZOHO_DEPARTMENT_ID", c.departmentId],
+    ]
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    console.error(`[ticket] ✗ No se creó: faltan las variables ${missing.join(", ")}`);
+    return json({ ok: false, error: "not-configured" }, 503);
+  }
 
   let body;
   try {
     body = await req.json();
   } catch {
-    return json({ ok: false, error: "json" }, 400);
+    return reject("json", 400, "el cuerpo no es JSON");
   }
 
   const name = String(body.name ?? "")
@@ -171,12 +198,12 @@ export async function POST(req) {
     .trim()
     .slice(0, 40);
 
-  if (!subject) return json({ ok: false, error: "subject" }, 422);
+  if (!subject) return reject("subject", 422, "sin asunto");
   if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
-    return json({ ok: false, error: "email" }, 422);
+    return reject("email", 422, "correo del visitante inválido");
   // Necesita al menos un medio de contacto (el cotizador siempre trae teléfono;
   // el correo es opcional). Zoho Desk crea el contacto con lo que haya.
-  if (!email && !phone) return json({ ok: false, error: "contact" }, 422);
+  if (!email && !phone) return reject("contact", 422, "sin correo ni teléfono");
 
   const c = cfg();
   try {
@@ -194,13 +221,14 @@ export async function POST(req) {
         status: "Open",
       }),
     });
+    logOk(`Ticket #${ticket.ticketNumber ?? "sin número"} creado en Zoho Desk`);
     return json({ ok: true, id: ticket.id ?? null, ticketNumber: ticket.ticketNumber ?? null });
   } catch (e) {
     // El detalle completo queda en los logs del servidor; al navegador solo se
     // le devuelve una clasificación (etapa + código de Zoho) para diagnosticar.
     const stage = e instanceof Error ? e.message : String(e); // "oauth-400" | "desk-401" | …
     const code = e?.detail?.error || e?.detail?.errorCode || "";
-    console.error("[ticket]", stage, e?.detail ?? "");
+    console.error(`[ticket] ✗ Zoho rechazó la solicitud (${stage}):`, e?.detail ?? "");
     return json({ ok: false, error: "provider", stage, code }, 502);
   }
 }
