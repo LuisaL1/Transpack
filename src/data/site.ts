@@ -120,8 +120,25 @@ export type Service = {
   includes: string[];
   steps: { title: string; text: string }[];
   note?: string;
+  // Guía de términos que se muestra después de "¿Cómo lo hacemos?"
+  guide?: ServiceGuide;
   featured?: boolean;
   tags?: { icon: string; label: string }[];
+};
+
+export type ServiceGuide = {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  sections: {
+    icon: string;
+    title: string;
+    text: string[];
+    // Términos en negrita con su explicación
+    items?: { b: string; t: string }[];
+    after?: string;
+  }[];
+  closing: { title: string; text: string[] };
 };
 
 export const SERVICES: Service[] = [
@@ -247,6 +264,100 @@ export const SERVICES: Service[] = [
       },
     ],
     note: "Recomendamos iniciar el proceso entre 1 y 2 meses antes de la fecha de empaque.",
+    guide: {
+      eyebrow: "Guía rápida",
+      title: "¡Bienvenido a tu nueva aventura!",
+      lead: "Sabemos que una mudanza internacional es el inicio de una gran etapa, y queremos que disfrutes el proceso sin preocuparte por la terminología técnica. Para que hablemos el mismo idioma desde el primer día, hemos preparado esta guía rápida con los términos que escucharás durante tu traslado. ¡Verás que es más sencillo de lo que parece!",
+      sections: [
+        {
+          icon: "clipboard-check",
+          title: "El inicio de todo: conociendo tu mudanza",
+          text: [
+            "Antes de mover una sola caja, necesitamos saber qué vamos a trasladar. A esto lo llamamos la Encuesta Previa. Dependiendo de tu tiempo y comodidad, podemos hacer una Estimación Presencial (vamos a tu casa), Virtual (por videollamada) o Telefónica.",
+            "Al final, crearemos tu Lista de Inventario, que es el documento oficial donde anotamos cada uno de tus Bienes del Hogar (muebles, electrodomésticos) y Efectos Personales (ropa, libros).",
+          ],
+        },
+        {
+          icon: "box-seam",
+          title: "Manos a la obra: empaque y logística",
+          text: ["En este viaje no estás solo. Tendrás el apoyo de dos equipos clave:"],
+          items: [
+            {
+              b: "Agente de Origen:",
+              t: "el equipo en tu país actual que se encargará de empacar todo profesionalmente.",
+            },
+            {
+              b: "Agente de Destino:",
+              t: "la empresa que recibirá tus cosas en el nuevo país, las llevará a tu nuevo hogar, hará el Desembalaje (desempaque) y te ayudará con el Montaje e Instalación de tus muebles.",
+            },
+          ],
+          after:
+            "Para proteger tus pertenencias usamos Materiales de Embalaje de alta calidad (¡y también Materiales Ecológicos para cuidar el planeta!). Todo se acomoda de forma segura mediante un proceso llamado Carga y Estiba, asegurándonos de que haya una Carga Equilibrada dentro del contenedor para que nada se mueva en el camino. Tus cosas viajarán en un Contenedor Multimodal (que se adapta a barcos, trenes o camiones) y irá perfectamente protegido como un Contenedor Sellado.",
+        },
+        {
+          icon: "passport",
+          title: "El paso por la Aduana (¡sin estrés!)",
+          text: [
+            "Cruzar fronteras requiere papeleo, pero nuestro Agente de Aduanas se encargará de gestionar todo el despacho por ti. Escucharás hablar de:",
+          ],
+          items: [
+            {
+              b: "Declaración Aduanera y Formularios:",
+              t: "los documentos oficiales donde le contamos a las autoridades qué llevamos y cuánto vale.",
+            },
+            {
+              b: "Permiso de Importación o Especial:",
+              t: "autorizaciones necesarias si viajas con artículos especiales como obras de arte, antigüedades o tus mascotas.",
+            },
+            {
+              b: "Exención de Impuestos:",
+              t: "un beneficio espectacular al que puedes aplicar si demuestras tu Residencia Legal, el cual te permite ingresar tus cosas sin pagar impuestos, siempre y cuando lo hagamos dentro del Plazo de Importación que dicta la ley de tu nuevo país.",
+            },
+          ],
+        },
+        {
+          icon: "water",
+          title: "Los documentos de tu viaje marítimo",
+          text: [
+            "Si tus cosas viajan por mar, el documento más importante es el Bill of Lading (BOL), que es el contrato y título de propiedad de tu envío.",
+          ],
+          items: [
+            {
+              b: "Conocimiento de Embarque Original (OBL):",
+              t: "si te lo pedimos, significa que necesitaremos el papel en físico para liberar tus cosas en el puerto.",
+            },
+            {
+              b: "Express Release:",
+              t: "¡es mucho más rápido! Todo se libera digitalmente sin necesidad de papeles físicos.",
+            },
+          ],
+        },
+        {
+          icon: "shield-check",
+          title: "Tu tranquilidad es lo primero: riesgos y seguros",
+          text: [
+            "Aunque nuestro personal cuenta con la mejor Capacitación para evitar Riesgos de Transporte, Carga o Descarga, siempre es mejor viajar protegido. Por eso te ofreceremos una Cobertura de Seguro:",
+          ],
+          items: [
+            {
+              b: "Póliza Todo Riesgo (Cobertura Completa):",
+              t: "tu mejor opción. Te protege contra prácticamente cualquier imprevisto o daño.",
+            },
+            {
+              b: "Cobertura Parcial:",
+              t: "ideal si solo quieres proteger ciertos artículos específicos o riesgos limitados.",
+            },
+          ],
+        },
+      ],
+      closing: {
+        title: "Nuestro compromiso contigo",
+        text: [
+          "Queremos que sepas que entendemos los Desafíos Logísticos de este proceso y respetamos profundamente la Cultura de tu lugar de destino. Monitoreamos nuestro servicio constantemente con Indicadores de Calidad (KPIs). Y si algo no sale perfecto, contamos con un equipo dedicado a la Gestión de Quejas y Reclamaciones para darte una solución justa y rápida.",
+          "¡Relájate y empieza a empacar tus sueños, nosotros nos encargamos del resto!",
+        ],
+      },
+    },
     featured: true,
     tags: [
       { icon: "water", label: "Marítima" },

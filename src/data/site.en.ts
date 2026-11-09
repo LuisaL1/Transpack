@@ -184,6 +184,100 @@ export const SERVICES: Service[] = [
       },
     ],
     note: "We recommend starting the process 1 to 2 months before your packing date.",
+    guide: {
+      eyebrow: "Quick guide",
+      title: "Welcome to your new adventure!",
+      lead: "We know an international move is the start of a big new chapter, and we want you to enjoy the process without worrying about technical jargon. So that we speak the same language from day one, we have put together this quick guide to the terms you will hear during your move. You will see it is simpler than it looks!",
+      sections: [
+        {
+          icon: "clipboard-check",
+          title: "Where it all begins: getting to know your move",
+          text: [
+            "Before moving a single box, we need to know what we are moving. We call this the Pre-Move Survey. Depending on your time and convenience, we can do an In-Home Estimate (we visit your home), a Virtual one (by video call) or a Phone estimate.",
+            "At the end, we will create your Inventory List, the official document where we record each of your Household Goods (furniture, appliances) and Personal Effects (clothes, books).",
+          ],
+        },
+        {
+          icon: "box-seam",
+          title: "Getting to work: packing and logistics",
+          text: ["You are not alone on this journey. You will have the support of two key teams:"],
+          items: [
+            {
+              b: "Origin Agent:",
+              t: "the team in your current country that will pack everything professionally.",
+            },
+            {
+              b: "Destination Agent:",
+              t: "the company that will receive your belongings in the new country, take them to your new home, do the Unpacking and help you with the Assembly and Installation of your furniture.",
+            },
+          ],
+          after:
+            "To protect your belongings we use high-quality Packing Materials (and Eco-Friendly Materials too, to look after the planet!). Everything is placed securely through a process called Loading and Stowage, making sure there is a Balanced Load inside the container so nothing shifts on the way. Your things will travel in a Multimodal Container (suited to ships, trains or trucks), fully protected as a Sealed Container.",
+        },
+        {
+          icon: "passport",
+          title: "Going through Customs (stress-free!)",
+          text: [
+            "Crossing borders takes paperwork, but our Customs Agent will handle the entire clearance for you. You will hear about:",
+          ],
+          items: [
+            {
+              b: "Customs Declaration and Forms:",
+              t: "the official documents where we tell the authorities what we are bringing and what it is worth.",
+            },
+            {
+              b: "Import or Special Permit:",
+              t: "authorizations required if you travel with special items such as artwork, antiques or your pets.",
+            },
+            {
+              b: "Tax Exemption:",
+              t: "a great benefit you can apply for if you prove your Legal Residence, which lets you bring in your belongings without paying taxes, as long as we do it within the Import Deadline set by the law of your new country.",
+            },
+          ],
+        },
+        {
+          icon: "water",
+          title: "The documents for your sea shipment",
+          text: [
+            "If your belongings travel by sea, the most important document is the Bill of Lading (BOL), which is the contract and title of ownership of your shipment.",
+          ],
+          items: [
+            {
+              b: "Original Bill of Lading (OBL):",
+              t: "if we ask you for it, it means we will need the physical paper to release your belongings at the port.",
+            },
+            {
+              b: "Express Release:",
+              t: "much faster! Everything is released digitally with no need for physical paperwork.",
+            },
+          ],
+        },
+        {
+          icon: "shield-check",
+          title: "Your peace of mind comes first: risks and insurance",
+          text: [
+            "Although our staff have the best Training to prevent Transport, Loading or Unloading Risks, it is always better to travel protected. That is why we will offer you Insurance Coverage:",
+          ],
+          items: [
+            {
+              b: "All-Risk Policy (Full Coverage):",
+              t: "your best option. It protects you against practically any mishap or damage.",
+            },
+            {
+              b: "Partial Coverage:",
+              t: "ideal if you only want to protect certain specific items or limited risks.",
+            },
+          ],
+        },
+      ],
+      closing: {
+        title: "Our commitment to you",
+        text: [
+          "We want you to know that we understand the Logistical Challenges of this process and deeply respect the Culture of your destination. We constantly monitor our service with Quality Indicators (KPIs). And if something is not perfect, we have a team dedicated to Complaints and Claims Management to give you a fair and fast solution.",
+          "Relax and start packing your dreams, we will take care of the rest!",
+        ],
+      },
+    },
     featured: true,
     tags: [
       { icon: "water", label: "Sea" },

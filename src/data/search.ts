@@ -6,6 +6,22 @@ import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
 import { DESTINATIONS } from "@/data/worldMap";
 import { localize, makeTr, type Lang, type Tr } from "@/i18n";
 import { search, type SearchEntry } from "@/lib/search";
+import type { ServiceGuide } from "@/data/site";
+
+// Todo el texto de la guía de un servicio, para que el buscador encuentre sus términos
+const guideText = (g: ServiceGuide) =>
+  [
+    g.title,
+    g.lead,
+    ...g.sections.flatMap((s) => [
+      s.title,
+      ...s.text,
+      ...(s.items ?? []).map((i) => `${i.b} ${i.t}`),
+      s.after ?? "",
+    ]),
+    g.closing.title,
+    ...g.closing.text,
+  ].join(" ");
 
 // Índice de búsqueda en el idioma pedido (las rutas ya salen localizadas)
 export function searchIndex(lang: Lang): SearchEntry[] {
@@ -30,7 +46,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       title: s.title,
       desc: s.short,
       to: lp(`/servicios/${s.slug}`),
-      extra: `${s.kicker} ${s.intro} ${s.includes.join(" ")} ${s.quote === "internacional" ? countries : ""}`,
+      extra: `${s.kicker} ${s.intro} ${s.includes.join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""}`,
     })),
     ...SEGMENTS.map((s) => ({
       kind: tr("Solución", "Solution"),

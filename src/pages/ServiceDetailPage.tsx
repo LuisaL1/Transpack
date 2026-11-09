@@ -5,6 +5,7 @@ import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
+import { ServiceGuide } from "@/components/services/ServiceGuide";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";
@@ -85,6 +86,9 @@ export function ServiceDetailPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* Guía de términos (solo los servicios que la tienen) */}
+      {service.guide && <ServiceGuide guide={service.guide} />}
 
       {/* Pasos */}
       <section className={`${section} bg-azul text-white/75`}>
