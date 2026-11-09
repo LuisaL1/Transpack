@@ -33,7 +33,7 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 | `/`                | Inicio (incluye el cotizador en `#cotizar`)                                          |
 | `/nosotros`        | Quiénes somos                                                                        |
 | `/privacidad`      | Política de tratamiento de datos personales (texto en `PRIVACY`, `src/data/site.ts`) |
-| `/videos`          | Maestría Transpack: todos los videos del canal de YouTube (`pnpm videos`)        |
+| `/videos`          | Maestría Transpack: todos los videos del canal de YouTube (`pnpm videos`)            |
 | `/servicios/:slug` | Detalle de servicio (slugs en `src/data/site.ts`)                                    |
 | `/blog/:slug`      | Artículo (contenido en `src/data/blogData.ts`)                                       |
 
@@ -46,34 +46,38 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 
 ## Despliegue
 
-Vercel (framework: Vite, instalación `pnpm install`, build `pnpm build`, salida
-`dist`).
+GoDaddy (hosting Node.js conectado a GitHub) como **una sola app Node.js**, sin PHP. Guía
+completa, secretos y cambio de DNS: [`docs/godaddy.md`](docs/godaddy.md).
 
-- **Una página por ruta:** el build genera un HTML por ruta (72 páginas en seis
-  idiomas, más `404.html`, `sitemap.xml` y `robots.txt`).
-- **`vercel.json`:**
-  - sirve cada página desde su HTML (`cleanUrls`) y responde 404 real en rutas
+- **Una página por ruta:** el build genera un HTML por ruta (más `404.html`,
+  `sitemap.xml` y `robots.txt`) y sus versiones comprimidas (`.br`, `.gz`).
+- **`server/server.mjs`** (sin dependencias):
+  - sirve cada página desde su HTML (URLs limpias) y responde 404 real en rutas
     desconocidas;
-  - define las cabeceras de seguridad (CSP, HSTS…) y la caché de `/assets`.
+  - aplica las cabeceras de seguridad (CSP, HSTS…), la caché de `/assets` y las
+    redirecciones de `hosting/headers.json`;
+  - atiende los formularios (`/api/contact`, `/api/ticket`).
+- **En local:** `pnpm build && pnpm start` → http://localhost:3000.
 
-Con el repositorio conectado a Vercel, cada push a `main` publica el sitio. Cada
-push y pull request corre además la integración continua de GitHub Actions
-(`.github/workflows/ci.yml`).
+Cada push y pull request corre la integración continua de GitHub Actions
+(`.github/workflows/ci.yml`). GoDaddy compila y publica la rama configurada en
+cada push (`docs/godaddy.md`).
 
-### Variables de entorno (Vercel → Settings → Environment Variables)
+### Variables de entorno
 
-| Variable                                                          | Valor                                                                                                                         | Entorno             |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `VITE_GA_MEASUREMENT_ID`                                          | `G-BTXBFXKFEN` (Google Analytics 4 de Transpack)                                                                              | **Solo Production** |
-| `VITE_SITE_INDEXABLE`                                             | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`)                                              | Solo Production     |
-| `VITE_GOOGLE_SITE_VERIFICATION`                                   | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS)                                                       | Solo Production     |
-| `BREVO_API_KEY`                                                   | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`)                                                         | Production          |
-| `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | Production          |
+| Variable                                                          | Valor                                                                                                                         | Dónde              |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `VITE_GA_MEASUREMENT_ID`                                          | `G-BTXBFXKFEN` (Google Analytics 4 de Transpack)                                                                              | GoDaddy → Settings |
+| `VITE_SITE_INDEXABLE`                                             | `true` **solo el día en que el dominio apunte a este sitio** (ver `docs/seo.md`)                                              | GoDaddy → Settings |
+| `VITE_GOOGLE_SITE_VERIFICATION`                                   | Opcional (si Search Console se verifica con etiqueta HTML y no por DNS)                                                       | GoDaddy → Settings |
+| `BREVO_API_KEY`                                                   | Clave de API de Brevo para los formularios. **Secreta** (sin `VITE_`)                                                         | GoDaddy → Settings |
+| `LEADS_TO` / `LEADS_TO_QUOTES` / `LEADS_FROM` / `LEADS_FROM_NAME` | Opcionales: destino del formulario, destino de las cotizaciones, remitente y nombre del remitente (ver `docs/formularios.md`) | GoDaddy → Settings |
+| `ZOHO_*`                                                          | Credenciales de Zoho Desk para el ticket del cotizador (ver `api/ticket.mjs`)                                                 | GoDaddy → Settings |
+| `SITE_CANONICAL_HOST`                                             | `www.transpacksas.com` después del cambio de DNS (redirige sin `www` y `http`)                                                | GoDaddy → Settings |
 
-- **Después de crear o cambiar una variable:** Deployments → último despliegue
-  → **Redeploy**. Las variables se leen al compilar.
-- **Solo Production** evita que las vistas previas (Preview) envíen visitas a
-  Google Analytics.
+- **`VITE_*`:** se leen al compilar. Después de cambiarlas, vuelva a correr el
+  despliegue.
+- **Del servidor:** después de cambiarlas, reinicie la app en el panel.
 - **Documentación:** las variables están documentadas en `.env.example`.
 - **En local:** el ID va en `.env.production.local` (no versionado). Así solo
   `pnpm build` lo usa y `pnpm dev` nunca envía datos.
@@ -91,10 +95,10 @@ push y pull request corre además la integración continua de GitHub Actions
   cotizaciones llegan a mercadeo@transpacksas.com y el formulario de contacto a
   servicioalcliente@transpacksas.com.
   Falta que el área encargada verifique el dominio en Brevo (SPF, DKIM, DMARC),
-  cree la clave y configure las variables en Vercel (ver `docs/formularios.md`).
+  cree la clave y configure las variables en GoDaddy (ver `docs/formularios.md`).
   Mientras tanto, el formulario muestra el aviso con WhatsApp.
-- **Google Analytics**: integrado y verificado (`pnpm test:ga`). Falta crear la
-  variable en Vercel y marcar los eventos clave en GA4 (ver
+- **Google Analytics**: integrado y verificado (`pnpm test:ga`). Falta crear el
+  secreto en GitHub y marcar los eventos clave en GA4 (ver
   `docs/conversion-y-analitica.md`).
 - **Información que no está en los documentos**: precios, condiciones del
   seguro, horario de atención, lista de artículos que no se pueden transportar,

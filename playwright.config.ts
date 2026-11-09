@@ -1,8 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // Pruebas de extremo a extremo sobre el build de producción (ver TESTING.md).
-// Local: `pnpm test:e2e`. Para apuntar a otro entorno (p. ej. una URL de
-// Vercel Preview): `BASE_URL=https://... pnpm test:e2e`.
+// Local: `pnpm test:e2e`. Para apuntar a otro entorno (p. ej. la dirección
+// temporal de GoDaddy): `BASE_URL=https://... pnpm test:e2e`.
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4173";
 
 export default defineConfig({

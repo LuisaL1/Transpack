@@ -31,7 +31,7 @@ formularios de terceros (FormSubmit, Formspree, etc.).
 ## Cómo viaja la información
 
 ```
-Navegador ──POST /api/contact──► Función de Vercel (api/contact.mjs) ──API de Brevo──┬─► mercadeo@transpacksas.com (cotizaciones)
+Navegador ──POST /api/contact──► Servidor GoDaddy (api/contact.mjs)  ──API de Brevo──┬─► mercadeo@transpacksas.com (cotizaciones)
                                                                                      ├─► servicioalcliente@transpacksas.com (lo demás)
                                                                                      └─► confirmación al visitante
 ```
@@ -102,7 +102,7 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
   - el patrón de puntos del inicio, sutil.
 - **Cómo se carga:** desde el dominio por el que llegó la solicitud
   (`https://<host>/brand/email-header.png`), así funciona en producción y en
-  las vistas previas de Vercel. Si la imagen no carga, se ve el azul de marca
+  la dirección temporal del hosting. Si la imagen no carga, se ve el azul de marca
   de respaldo y el texto alternativo "Transpack S.A.S.".
 - **Cómo cambiarlo:**
   1. edite `scripts/generate-email-header.mjs` (colores, posición del cuadrado,
@@ -119,8 +119,8 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
    registros que Brevo indique: SPF, DKIM y DMARC. Como mínimo, verifique el
    remitente que se va a usar.
 2. Cree una **clave de API**: SMTP & API → API Keys.
-3. En Vercel → proyecto → **Settings → Environment Variables**, entorno
-   **Production** (y Preview si se quiere probar ahí):
+3. En GoDaddy → **My Apps → Transpack → Settings** → variables de entorno
+   (ver `docs/godaddy.md`):
 
    | Variable          | Valor                                                                                          | Obligatoria |
    | ----------------- | ---------------------------------------------------------------------------------------------- | ----------- |
@@ -130,7 +130,7 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
    | `LEADS_FROM`      | Remitente verificado en Brevo (por defecto `no-reply@transpacksas.com`)                        | No          |
    | `LEADS_FROM_NAME` | Nombre del remitente (por defecto "Transpack")                                                 | No          |
 
-4. **Vuelva a desplegar:** Deployments → último despliegue → Redeploy.
+4. **Reinicie la app:** _Save_ y _Restart_ en la misma pantalla.
 5. **Compruebe:**
    - abra `https://<dominio>/api/contact` en el navegador: debe responder
      `{"configured":true}` (no muestra la clave);
@@ -140,7 +140,7 @@ girar el cuadrado naranja). Por eso el encabezado es una imagen:
 
 ## Diagnóstico de envíos
 
-- **Vercel → Logs:** cada envío deja `[contact] Solicitud enviada a … (Brevo <id>)`
+- **Registros del servidor** (_Logs_ de la app en GoDaddy): cada envío deja `[contact] Solicitud enviada a … (Brevo <id>)`
   y `[contact] Confirmación enviada al visitante (Brevo <id>)`; si Brevo lo
   rechaza, la línea trae el motivo. Sin datos personales ni la clave.
 - **`pnpm brevo:events [días]`:** muestra los eventos recientes de Brevo

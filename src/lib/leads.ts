@@ -1,4 +1,4 @@
-// Envía una solicitud del sitio a /api/contact (función de Vercel → Brevo →
+// Envía una solicitud del sitio a /api/contact (función del servidor → Brevo →
 // correo de Transpack). `fields` llega como tabla en el correo. Nunca se envía
 // a servicios de formularios de terceros.
 import type { Lang } from "@/i18n";

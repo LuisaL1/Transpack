@@ -29,7 +29,7 @@ pnpm exec playwright install chromium   # navegador para las pruebas de extremo 
 | `pnpm test:ga`       | Compila **con** el ID real de Google Analytics y verifica: aviso de cookies, consentimiento denegado por defecto, sin cookie `_ga` antes de aceptar, cookie y envío de datos al aceptar, nada al rechazar. Necesita internet | ~10 s         |
 
 Para correr las pruebas de extremo a extremo contra otro entorno (por ejemplo,
-una URL de Vercel Preview): `BASE_URL=https://su-preview.vercel.app pnpm test:e2e`.
+la dirección temporal de GoDaddy): `BASE_URL=https://su-direccion pnpm test:e2e`.
 El reporte HTML queda en `playwright-report/` (`pnpm exec playwright show-report`).
 
 ## Qué cubre cada capa
@@ -129,7 +129,7 @@ Además:
   - ningún `.env` real versionado y `.gitignore` correcto;
   - cabeceras de seguridad presentes y la CSP solo con los servicios reales;
   - caché inmutable para `/assets`.
-- **Cabeceras HTTP** (`vercel.json`):
+- **Cabeceras HTTP** (`hosting/headers.json`, las aplica `server/server.mjs`):
   - Content-Security-Policy, HSTS (2 años), `X-Content-Type-Options`,
     `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy` y
     `Cross-Origin-Opener-Policy`;
@@ -138,12 +138,13 @@ Además:
     `*.google-analytics.com`, `*.analytics.google.com`), Google Fonts, el mapa
     de Google (contacto), el reproductor de youtube-nocookie y sus portadas
     (i.ytimg.com);
-  - sin comodín a `index.html`: cada ruta se sirve desde su HTML (`cleanUrls`).
+  - sin comodín a `index.html`: cada ruta se sirve desde su HTML (URLs limpias,
+    probado en `tests/unit/server.test.ts` junto con el 404, las redirecciones y `/api`).
 - **CSP en el navegador** (`tests/e2e/csp.spec.ts`):
-  - aplica las cabeceras de `vercel.json` sobre el build y falla si el
+  - aplica las cabeceras de `hosting/headers.json` sobre el build y falla si el
     navegador bloquea algún recurso (incluido reproducir un video);
   - **si agrega un servicio externo** (analytics, formularios, chat, CDN),
-    añádalo a la CSP de `vercel.json` y a la lista de
+    añádalo a la CSP de `hosting/headers.json` y a la lista de
     `tests/security/static.test.ts`, o las pruebas fallarán.
 - **Dependencias**:
   - `pnpm test:deps` en local y en CI;
@@ -218,7 +219,7 @@ modo estricto (`A11Y_STRICT=1 pnpm test:e2e`) y déjelo fijo en
 2. Lógica nueva → en `src/lib/` o `src/hooks/`, con su prueba en `tests/unit/`.
 3. Página o recorrido nuevo → agregue la ruta a `smoke.spec.ts` y `a11y.spec.ts`
    y, si tiene interacción, un caso en `flows.spec.ts`.
-4. Servicio externo nuevo → CSP en `vercel.json` y lista en
+4. Servicio externo nuevo → CSP en `hosting/headers.json` y lista en
    `tests/security/static.test.ts`.
 5. Color nuevo → lista blanca en `tests/unit/content.test.ts` y paleta en `AGENTS.md`.
 6. `pnpm check:all` en verde antes de abrir el PR.

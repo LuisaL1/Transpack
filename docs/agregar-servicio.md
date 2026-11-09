@@ -97,7 +97,7 @@ git commit -m "Nuevo servicio: Mudanzas de oficina"
 git push origin main
 ```
 
-Vercel publica el cambio en uno o dos minutos. Las pruebas avisan si algo quedó
+Al hacer push a `main`, GitHub Actions publica el cambio en GoDaddy en unos minutos (`docs/godaddy.md`). Las pruebas avisan si algo quedó
 incompleto: un enlace del menú a un servicio que no existe, un tipo de
 cotización que no existe, textos en inglés faltantes o un título de página
 fuera del largo recomendado para Google.
@@ -108,7 +108,7 @@ fuera del largo recomendado para Google.
   página, el menú, Google y Joel se actualizan solos.
 - **Cambiar el `slug` (la dirección):** la dirección anterior dejará de
   funcionar. Si ya se compartió o está indexada en Google, pedir una redirección
-  en [`vercel.json`](../vercel.json) de la dirección vieja a la nueva.
+  en [`hosting/headers.json`](../hosting/headers.json) (`redirects`) de la dirección vieja a la nueva.
 - **Quitar un servicio:** borrarlo de `SERVICES` en ambos idiomas, ajustar el
   conteo de la prueba y revisar que ningún otro texto lo mencione (preguntas
   frecuentes, soluciones, blog). Pedir también una redirección de su dirección.

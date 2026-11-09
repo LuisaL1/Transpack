@@ -694,7 +694,7 @@ export const PRIVACY = {
       title: "Who we share your data with",
       items: [
         "For international moves, with our agents and partners in the country of origin or destination and with customs authorities, only as needed to carry out the move. This may involve transferring your data outside Colombia.",
-        "With the providers that help us run the site and communicate with you, acting as data processors: Vercel (site hosting), Brevo (email delivery), Zoho (advisor chat and CRM) and Google (analytics, only if you accept it). Some are located outside Colombia, so your data may be transmitted to other countries.",
+        "With the providers that help us run the site and communicate with you, acting as data processors: GoDaddy (site hosting), Brevo (email delivery), Zoho (advisor chat and CRM) and Google (analytics, only if you accept it). Some are located outside Colombia, so your data may be transmitted to other countries.",
         "With authorities, when required by law.",
       ],
     },

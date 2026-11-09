@@ -830,7 +830,7 @@ export const PRIVACY = {
       title: "Con quién compartimos sus datos",
       items: [
         "En mudanzas internacionales, con nuestros agentes y aliados en el país de origen o de destino y con las autoridades aduaneras, solo en lo necesario para hacer la mudanza. Esto puede implicar transferir sus datos fuera de Colombia.",
-        "Con los proveedores que nos ayudan a operar el sitio y a comunicarnos contigo, como encargados del tratamiento: Vercel (alojamiento del sitio), Brevo (envío de correos), Zoho (chat con un asesor y CRM) y Google (analítica, solo si la aceptas). Algunos están fuera de Colombia, por lo que sus datos pueden transmitirse a otros países.",
+        "Con los proveedores que nos ayudan a operar el sitio y a comunicarnos contigo, como encargados del tratamiento: GoDaddy (alojamiento del sitio), Brevo (envío de correos), Zoho (chat con un asesor y CRM) y Google (analítica, solo si la aceptas). Algunos están fuera de Colombia, por lo que sus datos pueden transmitirse a otros países.",
         "Con autoridades, cuando la ley lo exija.",
       ],
     },

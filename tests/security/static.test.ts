@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { execSync } from "node:child_process";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 // Revisión estática de seguridad del código y la configuración (ver TESTING.md).
@@ -57,7 +57,7 @@ describe("Código", () => {
     for (const [f, s] of code) expect(s, f).not.toMatch(/mailto:/);
   });
 
-  it("las funciones de Vercel (api/) son .mjs: con .ts Vercel las cargaba como CommonJS (500) y .mts no las reconoce (404)", () => {
+  it("las funciones del servidor (api/) son .mjs: Node las carga como módulo ES sin compilar", () => {
     const fns = readdirSync("api");
     expect(fns.length).toBeGreaterThan(0);
     for (const f of fns) expect(f, `api/${f}`).toMatch(/\.mjs$/);
@@ -106,8 +106,8 @@ describe("Repositorio", () => {
   });
 });
 
-describe("Cabeceras de seguridad (vercel.json)", () => {
-  const cfg = JSON.parse(readFileSync("vercel.json", "utf8"));
+describe("Cabeceras de seguridad (hosting/headers.json, las aplica server/server.mjs)", () => {
+  const cfg = JSON.parse(readFileSync("hosting/headers.json", "utf8"));
   const block = (src: string) =>
     Object.fromEntries(
       cfg.headers
@@ -195,10 +195,10 @@ describe("Cabeceras de seguridad (vercel.json)", () => {
     expect(block("/assets/(.*)")["Cache-Control"]).toMatch(/max-age=31536000.*immutable/);
   });
 
-  it("cada ruta se sirve desde su HTML pre-generado (sin comodín a index.html)", () => {
-    expect(cfg.cleanUrls).toBe(true);
-    expect(cfg.trailingSlash).toBe(false);
-    // Un rewrite comodín ocultaría las páginas pre-generadas y el 404 real
-    expect(cfg.rewrites ?? []).toEqual([]);
+  it("mientras exista vercel.json (hasta el cambio de DNS), tiene las mismas cabeceras", () => {
+    if (!existsSync("vercel.json")) return;
+    const vercel = JSON.parse(readFileSync("vercel.json", "utf8"));
+    expect(vercel.headers).toEqual(cfg.headers);
+    expect(vercel.redirects).toEqual(cfg.redirects);
   });
 });

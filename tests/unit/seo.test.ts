@@ -16,7 +16,7 @@ describe("SEO · metadatos por página", () => {
     expect(PUBLIC_ROUTES).toHaveLength(26);
     expect(new Set(PUBLIC_ROUTES).size).toBe(26);
     expect(PUBLIC_ROUTES).toEqual(expect.arrayContaining(["/videos", "/en/videos"]));
-    // Francés, alemán, italiano y árabe se retiraron: sus URLs antiguas redirigen a /en (vercel.json)
+    // Francés, alemán, italiano y árabe se retiraron: sus URLs antiguas redirigen a /en (hosting/headers.json)
     expect(PUBLIC_ROUTES.some((r) => /^\/(fr|de|it|ar)(\/|$)/.test(r))).toBe(false);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));
     expect(PUBLIC_ROUTES.filter((r) => r.startsWith("/servicios/"))).toHaveLength(6);

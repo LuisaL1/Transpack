@@ -9,7 +9,7 @@ export const SITE_URL = "https://www.transpacksas.com";
 
 /**
  * Indexación: mientras sea false, todas las páginas llevan noindex y robots.txt
- * bloquea a los buscadores. Se activa en Vercel con VITE_SITE_INDEXABLE=true el
+ * bloquea a los buscadores. Se activa con VITE_SITE_INDEXABLE=true (variables de la app en GoDaddy) el
  * día en que www.transpacksas.com apunte a este sitio (ver docs/seo.md).
  */
 export const INDEXABLE = import.meta.env.VITE_SITE_INDEXABLE === "true";

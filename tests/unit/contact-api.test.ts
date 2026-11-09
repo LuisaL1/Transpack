@@ -14,7 +14,7 @@ import {
 import { CONTACT } from "@/data/site";
 import { LANGS, localize } from "@/i18n";
 
-// Función /api/contact (Vercel → Brevo). No envía nada real: fetch se simula.
+// Función /api/contact (servidor → Brevo). No envía nada real: fetch se simula.
 const req = (body: unknown, headers: Record<string, string> = {}) =>
   new Request("https://www.transpacksas.com/api/contact", {
     method: "POST",

@@ -1,4 +1,4 @@
-// Envía una solicitud a /api/ticket (función de Vercel → Zoho Desk: crea el
+// Envía una solicitud a /api/ticket (función del servidor → Zoho Desk: crea el
 // contacto y el ticket). Mismo patrón que sendLead() (src/lib/leads.ts). Nunca
 // se envía a servicios de terceros directos desde el navegador.
 

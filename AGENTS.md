@@ -3,12 +3,14 @@
 Sitio corporativo de Transpack S.A.S. (mudanzas locales, nacionales e
 internacionales, bodegaje y movilidad corporativa, Bogotá) hecho con React 19 +
 Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en español e inglés. Se
-publica en Vercel.
+publica en GoDaddy (hosting Node.js conectado a GitHub, sin PHP; `docs/godaddy.md`).
 
 ## Comandos
 
 - `pnpm dev` — servidor local en http://localhost:5173
 - `pnpm build` — build de producción en `dist/`, con HTML pre-generado por ruta (SEO)
+  y versiones comprimidas `.br`/`.gz` (`scripts/precompress.mjs`)
+- `pnpm start` — sirve el build como en producción (`server/server.mjs`) en http://localhost:3000
 - `pnpm typecheck` — verificación de tipos (estricta, sin variables sin uso)
 - `pnpm lint` — ESLint (calidad, hooks de React, accesibilidad, seguridad)
 - `pnpm test` / `pnpm test:e2e` — pruebas (ver `TESTING.md`)
@@ -116,14 +118,18 @@ src/
 ├── assets/images/          Imágenes importadas desde el código
 └── styles/                index.css (tokens de marca, estilos globales y animaciones) y
                             zoho-chat.css y zoho-host.css (diseño del sitio dentro del chat de Zoho)
-api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
+api/contact.mjs              Función del servidor: formularios → Brevo → correo (docs/formularios.md)
+api/ticket.mjs               Función del servidor: ticket del cotizador → Zoho Desk
+server/server.mjs           Servidor de GoDaddy (`pnpm start`): páginas de dist/, cabeceras, redirecciones y /api;
+                            sin dependencias. Ver docs/godaddy.md
+hosting/headers.json        Cabeceras (CSP, HSTS, caché) y redirecciones que aplica server.mjs
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
 scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
-                            robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
+                            robots), generate-email-header.mjs (banner de los correos), precompress.mjs (.br/.gz del build), brevo-events.mjs
                             (diagnóstico de envíos)
-docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
-tests/                      unit/ (Vitest), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
+docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md, godaddy.md y seo.md
+tests/                      unit/ (Vitest, incluye el servidor), security/ (revisión estática), seo/ (HTML del build), e2e/ (Playwright + axe)
 RecursosTranspack/          Documentos fuente del cliente (contexto, no se publican)
 ```
 
@@ -148,7 +154,7 @@ logo de Argos y el sello LACMA. Todo el contenido del sitio debe salir de ahí.
 - **El sitio está solo en español e inglés** (`LANGS` en `src/i18n/index.ts`).
   Francés, alemán, italiano y árabe se eliminaron en octubre de 2026 (la
   revisión del cliente encontró errores de gramática); sus URLs antiguas
-  redirigen a `/en` (`vercel.json`).
+  redirigen a `/en` (`hosting/headers.json`).
 - Español en la raíz (`/`, `/nosotros`, `/servicios/...`); inglés con prefijo
   y URLs traducidas (`/en/about`, `/en/services/...`).
 - Rutas, slugs e información de cada idioma: `src/i18n/index.ts`.
@@ -335,7 +341,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   original; la prueba de `crmChat` avisa si difieren). Tamaño y lugar de la
   ventana: `#tp-zoho-frame` en `src/styles/index.css`. Solo colores de la marca.
 - **Zoho nunca se carga en las páginas del sitio:** vive en
-  `public/chat-asesor.html`, con su propia CSP en `vercel.json` (con los scripts
+  `public/chat-asesor.html`, con su propia CSP en `hosting/headers.json` (con los scripts
   en línea que Zoho exige). La CSP del sitio no autoriza nada de Zoho; no la
   relaje para Zoho.
 - Las pruebas nunca cargan el Zoho real: lo simulan (`tests/e2e/fixtures.ts` lo

@@ -22,7 +22,7 @@ const key = line
   .replace(/^["']|["']$/g, "");
 if (!key) {
   console.error(
-    `Falta BREVO_API_KEY en ${FILE} (cópiela de Vercel → Settings → Environment Variables).`,
+    `Falta BREVO_API_KEY en ${FILE} (cópiela de GoDaddy → My Apps → Transpack → Settings).`,
   );
   process.exit(1);
 }

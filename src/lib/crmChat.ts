@@ -6,7 +6,7 @@
 //   conversación; al tocar el ícono solo se muestra (~0,2 s). Si no, se carga al
 //   abrir el chat. Ver la política de datos (Ley 1581 de 2012).
 // · Zoho vive en una PÁGINA AISLADA del sitio (public/chat-asesor.html) que se
-//   carga en un iframe. Esa página tiene su propia CSP (vercel.json) con los
+//   carga en un iframe. Esa página tiene su propia CSP (hosting/headers.json) con los
 //   scripts en línea que Zoho necesita; el resto del sitio conserva su CSP
 //   estricta. El iframe se muestra en la esquina solo con la clase tp-zoho-open
 //   (src/styles/index.css).

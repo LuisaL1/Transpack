@@ -1,14 +1,12 @@
-// Función de Vercel: recibe las solicitudes del sitio (formulario de contacto y
+// Función del servidor (server/server.mjs, GoDaddy): recibe las solicitudes del sitio (formulario de contacto y
 // cotizador) y las envía por correo con Brevo (API transaccional). La clave
 // nunca llega al navegador y el sitio no guarda copia de los datos.
 // Documentación: docs/formularios.md.
 //
-// JavaScript .mjs (no TypeScript): Node siempre lo carga como módulo ES. Con
-// .ts, Vercel lo compilaba a ES pero lo cargaba como CommonJS y la función se
-// caía al arrancar ("Unexpected token 'export'", error 500); .mts no lo
-// reconoce como función (404). Las pruebas la verifican (tests/unit).
+// JavaScript .mjs (no TypeScript): Node lo carga como módulo ES sin compilar.
+// Las pruebas lo verifican (tests/security).
 //
-// Variables de entorno (Vercel → Settings → Environment Variables, Production):
+// Variables de entorno (GoDaddy → My Apps → Transpack → Settings):
 //   BREVO_API_KEY     clave de API de Brevo (obligatoria, secreta: nunca VITE_)
 //   LEADS_TO          correo que recibe el formulario de contacto (por defecto servicioalcliente@transpacksas.com)
 //   LEADS_TO_QUOTES   correo que recibe las solicitudes de cotización (por defecto mercadeo@transpacksas.com)
@@ -97,7 +95,7 @@ const CONFIRM = {
   },
 };
 
-/** Dominio desde el que llegó la solicitud: el banner carga desde ahí (producción o vista previa de Vercel). */
+/** Dominio desde el que llegó la solicitud: el banner carga desde ahí (producción o la dirección temporal del hosting). */
 export function baseUrl(req) {
   const host = (req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "").trim();
   const [name, port, ...rest] = host.split(":");
@@ -194,7 +192,7 @@ export async function POST(req) {
   try {
     return await handle(req);
   } catch (e) {
-    // Error inesperado: queda en los registros de Vercel con su causa (sin la
+    // Error inesperado: queda en los registros del servidor con su causa (sin la
     // clave de Brevo) y el navegador recibe una respuesta clara, no un 500 vacío.
     const key = process.env.BREVO_API_KEY;
     const msg = e instanceof Error ? `${e.name}: ${e.message}\n${e.stack ?? ""}` : String(e);
@@ -287,7 +285,7 @@ async function handle(req) {
   }
   if (!res.ok) {
     // El motivo de Brevo (p. ej. "unauthorized": IP no autorizada o clave
-    // inválida; remitente sin verificar) queda en los registros de Vercel y en
+    // inválida; remitente sin verificar) queda en los registros del servidor y en
     // la respuesta, para diagnosticar. Nunca incluye la clave.
     const why = await res.json().catch(() => ({}));
     console.error(`[contact] Brevo rechazó el envío (HTTP ${res.status}):`, why.code, why.message);

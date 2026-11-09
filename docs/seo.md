@@ -12,8 +12,8 @@
 | Datos de la empresa        | `src/seo/site.ts`                                | Salen de `CONTACT`, `SLOGAN` y `STATS` (`src/data/site.ts`): razón social, dirección, teléfonos, correo, redes y año de fundación.                                                                                                                                                                         |
 | Navegación interna         | `SeoHead` (`src/components/layout/SeoHead.tsx`)  | Al cambiar de página actualiza idioma, título y todas las etiquetas (sin `innerHTML`). Va antes de `AnalyticsTracker`, para que `page_view` lleve el título correcto.                                                                                                                                      |
 | sitemap.xml y robots.txt   | `scripts/prerender.mjs`                          | Sitemap con las 72 canónicas, `lastmod`, `priority` y alternativas por idioma. `robots.txt` según el interruptor de indexación.                                                                                                                                                                            |
-| 404 real                   | `dist/404.html` + `vercel.json`                  | Vercel responde estado 404 en rutas desconocidas. La página ofrece inicio, cotizador y servicios, con `noindex`.                                                                                                                                                                                           |
-| Servidor                   | `vercel.json`                                    | `cleanUrls` y `trailingSlash: false` (sin el antiguo comodín a `index.html`).                                                                                                                                                                                                                              |
+| 404 real                   | `dist/404.html` + `server/server.mjs`            | El servidor responde estado 404 en rutas desconocidas. La página ofrece inicio, cotizador y servicios, con `noindex`.                                                                                                                                                                                      |
+| Servidor                   | `server/server.mjs`                              | URLs limpias y sin `/` final (sin el antiguo comodín a `index.html`); `docs/godaddy.md`.                                                                                                                                                                                                                   |
 | Imágenes de marca          | `public/brand/`                                  | `logo.png` (584 px, la mayor versión disponible del logo) y `og-image.jpg` (1200×630) para compartir en redes.                                                                                                                                                                                             |
 | Rendimiento                | `index.html`, componentes                        | Tipografías con `preconnect` + un solo `<link>` (antes `@import` en CSS). Imágenes bajo el pliegue con `loading="lazy" decoding="async"`; la imagen de cabecera de las páginas internas con `fetchPriority="high"`. Logo, avatar de Joel, logo de Argos y favicon redimensionados a su tamaño real de uso. |
 | Indexación                 | `VITE_SITE_INDEXABLE`                            | **Desactivada** (`noindex, nofollow` y `robots.txt` con `Disallow: /`).                                                                                                                                                                                                                                    |
@@ -80,7 +80,7 @@ que no pre-genera), renderiza desde cero.
 ## Por qué la indexación queda desactivada
 
 Mientras www.transpacksas.com siga mostrando el sitio anterior, este sitio vive
-en una dirección de prueba (Vercel). Si Google lo indexara ahí, tendría dos
+en una dirección de prueba (la temporal de GoDaddy). Si Google lo indexara ahí, tendría dos
 sitios de Transpack con contenido parecido compitiendo entre sí, y podría
 perjudicar el posicionamiento que ya tiene el dominio. Por eso todas las páginas
 llevan `noindex` y `robots.txt` bloquea a los buscadores. Se activa el día en que
@@ -88,12 +88,12 @@ el dominio apunte a este sitio.
 
 ## Checklist del día de publicación
 
-1. **Dominio en Vercel**:
-   - agregar `www.transpacksas.com` y `transpacksas.com` (Settings → Domains);
-   - dejar `www` como principal, con el dominio sin `www` redirigido (301) a él.
-     Es el dominio canónico de `src/seo/site.ts`.
-2. **Activar la indexación**: `VITE_SITE_INDEXABLE=true` en Settings →
-   Environment Variables (solo Production) y **Redeploy**.
+1. **Dominio en GoDaddy**: siga el cambio de DNS de `docs/godaddy.md` (sin
+   tocar el correo) y ponga `SITE_CANONICAL_HOST=www.transpacksas.com` en la app:
+   `www` queda como principal, con el dominio sin `www` redirigido (301) a él.
+   Es el dominio canónico de `src/seo/site.ts`.
+2. **Activar la indexación**: `VITE_SITE_INDEXABLE=true` en las variables de la app en GoDaddy
+   y volver a correr el despliegue.
    - Verifique que `https://www.transpacksas.com/robots.txt` muestre
      `Allow: /` y el sitemap.
 3. **Google Search Console**:
@@ -107,7 +107,7 @@ el dominio apunte a este sitio.
    - Horario: solo el que confirme la empresa.
 6. **Redirecciones 301 desde el sitio anterior** (WordPress):
    - listar sus URL (en Search Console o en su sitemap);
-   - agregar en `vercel.json` un bloque `"redirects"` de cada URL antigua a la
+   - agregar en `hosting/headers.json` (`"redirects"`) una entrada de cada URL antigua a la
      página equivalente (por ejemplo, la antigua página de mudanzas
      internacionales → `/servicios/mudanzas-internacionales`).
 7. **Validar**:

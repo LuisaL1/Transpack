@@ -6,7 +6,7 @@ import { useLang } from "@/i18n";
 import { notFoundText } from "@/data/pages";
 
 // Página no encontrada (404): enlaces al inicio, al cotizador y a cada
-// servicio. En producción Vercel la sirve con estado 404 (dist/404.html).
+// servicio. En producción el servidor (server/server.mjs) la sirve con estado 404 (dist/404.html).
 // Textos en src/data/pages.ts.
 export function NotFoundPage() {
   const { lp, tr } = useLang();

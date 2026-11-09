@@ -14,7 +14,7 @@ panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
 | Diseño dentro de la ventana / copia para subir a Zoho                      | `src/styles/zoho-chat.css` / `public/zoho-salesiq.css`                                                          |
 | La ventana de Zoho llena el iframe                                         | `src/styles/zoho-host.css`                                                                                      |
 | Tamaño y lugar de la ventana (iframe `#tp-zoho-frame`)                     | `src/styles/index.css`                                                                                          |
-| Página aislada donde vive Zoho                                             | `public/chat-asesor.html` (CSP propia en `vercel.json`)                                                         |
+| Página aislada donde vive Zoho                                             | `public/chat-asesor.html` (CSP propia en `hosting/headers.json`)                                                |
 
 ## Cómo funciona
 
@@ -62,7 +62,7 @@ panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
   primer mensaje va directo a los asesores, "En espera de conectarse…").
 - **Título de la ventana:** "Joelito" (en la conversación nueva Zoho muestra su
   título; hoy "Chatee con nosotros ahora").
-- **Dominio autorizado:** `www.transpacksas.com` (y el de Vercel si se prueba
+- **Dominio autorizado:** `www.transpacksas.com` (y la dirección temporal de GoDaddy si se prueba
   ahí). **Idioma:** español.
 - **CSS personalizado:** subir `public/zoho-salesiq.css` (abajo, "Diseño").
 
@@ -97,7 +97,7 @@ La ventana de Zoho tiene el diseño del chat del sitio:
   difieren. El tamaño y lugar de la ventana y el botón flotante son del sitio:
   Zoho no los toma de este CSS.
 
-## Página aislada y CSP (vercel.json)
+## Página aislada y CSP (hosting/headers.json)
 
 Zoho **no se carga en las páginas del sitio**: vive en `public/chat-asesor.html`,
 que el sitio abre en el iframe `#tp-zoho-frame`.
@@ -123,7 +123,7 @@ Otros dominios de Zoho permitidos en la página aislada:
 
 Si algo del chat no funciona en producción (por ejemplo, adjuntar archivos),
 abra la consola del navegador: un mensaje "Refused to …" indica el dominio que
-falta. Agréguelo en las reglas de `/chat-asesor` de `vercel.json`.
+falta. Agréguelo en las reglas de `/chat-asesor` de `hosting/headers.json`.
 
 ## Protección de datos
 
@@ -160,5 +160,5 @@ Las pruebas **nunca cargan el Zoho real**.
   ventana de respaldo con WhatsApp y el formulario.
 - `tests/e2e/analytics.spec.ts` (`pnpm test:ga`): sin aceptar las cookies no se
   precarga; al aceptarlas, sí.
-- `tests/e2e/csp.spec.ts`: con las cabeceras de `vercel.json`, abrir el chat (y
+- `tests/e2e/csp.spec.ts`: con las cabeceras de `hosting/headers.json`, abrir el chat (y
   su diseño inyectado) no queda bloqueado.

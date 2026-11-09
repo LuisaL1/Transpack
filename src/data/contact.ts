@@ -1,7 +1,7 @@
 // Formulario de contacto (ventana emergente, components/layout/ContactModal.tsx):
 // motivos, textos y el enlace que lo abre. Reemplaza los enlaces de correo (mailto) del
 // sitio: cualquier enlace a "#contacto" abre el formulario. El envío va a
-// /api/contact (función de Vercel → Brevo → correo de Transpack).
+// /api/contact (función del servidor → Brevo → correo de Transpack).
 import { makeTr, type Tr } from "@/i18n";
 
 export type ContactReason =

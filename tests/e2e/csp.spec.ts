@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { expect, test } from "./fixtures";
 
-// Aplica las cabeceras de vercel.json (que `vite preview` no envía) y verifica
+// Aplica las cabeceras de hosting/headers.json (que `vite preview` no envía) y verifica
 // que la Política de Seguridad de Contenido no bloquee nada del sitio.
-const cfg = JSON.parse(readFileSync("vercel.json", "utf8"));
+const cfg = JSON.parse(readFileSync("hosting/headers.json", "utf8"));
 const pick = (src: string): Record<string, string> =>
   Object.fromEntries(
     cfg.headers

@@ -1,4 +1,4 @@
-// Función de Vercel: crea un ticket en Zoho Desk a partir de los datos del
+// Función del servidor (server/server.mjs): crea un ticket en Zoho Desk a partir de los datos del
 // visitante (nombre, correo, asunto, mensaje). El navegador nunca habla con
 // Zoho: esta función canjea el refresh token por un access token (OAuth) y llama
 // a la API de Zoho Desk. Este archivo no importa nada de src/.
@@ -9,7 +9,7 @@
 // Zoho Desk EXIGE un contacto para cada ticket: la función primero busca el
 // contacto por su correo (o lo crea) y luego crea el ticket con ese contactId.
 //
-// Variables de entorno (Vercel → Settings → Environment Variables, Production):
+// Variables de entorno (GoDaddy → My Apps → Transpack → Settings):
 //   ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN  credenciales OAuth
 //       (Self Client de api-console.zoho.com). SECRETAS: nunca con prefijo VITE_.
 //       El refresh token debe tener los alcances (scopes) de DESK:
