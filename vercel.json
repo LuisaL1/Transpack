@@ -8,6 +8,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/videos",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/en/videos",
+      "destination": "/en",
+      "permanent": false
+    },
+    {
       "source": "/:lang(fr|de|it|ar)",
       "destination": "/en",
       "permanent": false

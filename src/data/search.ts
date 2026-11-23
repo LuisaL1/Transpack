@@ -122,13 +122,6 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       "empaque proteccion integral packing",
     ),
     page(
-      "play-btn",
-      tr("Maestría Transpack", "Transpack Mastery"),
-      tr("Todos los videos de nuestro canal de YouTube", "Every video from our YouTube channel"),
-      "/videos",
-      "youtube videos shorts embalaje empaque packing transpack en video",
-    ),
-    page(
       "geo-alt",
       tr("Contacto", "Contact"),
       tr("Dirección, teléfonos, WhatsApp y correo", "Address, phone, WhatsApp and email"),

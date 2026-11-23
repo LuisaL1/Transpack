@@ -33,7 +33,6 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
 | `/`                | Inicio (incluye el cotizador en `#cotizar`)                                          |
 | `/nosotros`        | Quiénes somos                                                                        |
 | `/privacidad`      | Política de tratamiento de datos personales (texto en `PRIVACY`, `src/data/site.ts`) |
-| `/videos`          | Maestría Transpack: todos los videos del canal de YouTube (`pnpm videos`)        |
 | `/servicios/:slug` | Detalle de servicio (slugs en `src/data/site.ts`)                                    |
 | `/blog/:slug`      | Artículo (contenido en `src/data/blogData.ts`)                                       |
 

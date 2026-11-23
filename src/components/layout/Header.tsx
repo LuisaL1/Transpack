@@ -96,7 +96,6 @@ export function Header() {
   const iconCls =
     "grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors text-tinta hover:bg-gris hover:text-azul";
   const current = MENUS.find((m) => m.key === active);
-  const videosPage = /^(\/en)?\/videos\/?$/.test(pathname);
   const sectionOf = (m: Menu) =>
     (m.key === "nosotros" && /^(\/en)?\/(nosotros|about)/.test(pathname)) ||
     (m.key === "servicios" && /^(\/en)?\/(servicios|services)/.test(pathname)) ||
@@ -146,17 +145,6 @@ export function Header() {
                       className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
                     />
                   </button>
-                  {/* Maestría Transpack: enlace directo entre Blog y Contacto */}
-                  {m.key === "blog" && (
-                    <Link
-                      to={lp("/videos")}
-                      onMouseEnter={hoverClose}
-                      aria-current={videosPage ? "page" : undefined}
-                      className={`${underline} ${videosPage ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"}`}
-                    >
-                      {t.videos}
-                    </Link>
-                  )}
                 </Fragment>
               );
             })}

@@ -73,16 +73,6 @@ export function MobileMenu({ menus }: { menus: Menu[] }) {
                 </div>
               )}
             </div>
-            {/* Maestría Transpack: enlace directo entre Blog y Contacto */}
-            {m.key === "blog" && (
-              <Link
-                to={lp("/videos")}
-                className="flex w-full items-center justify-between border-b border-linea py-4 font-title text-lg font-semibold text-tinta"
-              >
-                {t.videos}
-                <Bi n="play-btn" className="text-sm text-azul" />
-              </Link>
-            )}
           </Fragment>
         );
       })}

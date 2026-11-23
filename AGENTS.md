@@ -19,8 +19,6 @@ publica en Vercel.
 - `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos),
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada) y
   `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas nacionales)
-- `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
-  YouTube para "Maestría Transpack"; necesita internet). Córralo cuando el canal publique
 - `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
   inicio del mapa, de la capa oficial de Datos Abiertos Bogotá/IDECA, CC BY 4.0, con su
   crédito en el mapa; necesita internet)
@@ -54,7 +52,6 @@ src/
 │   ├── ServiceDetailPage.tsx   "/servicios/:slug"
 │   ├── ArticlePage.tsx         "/blog/:slug"
 │   ├── PrivacyPage.tsx         "/privacidad" (texto en PRIVACY de site.ts)
-│   ├── VideosPage.tsx          "/videos": Maestría Transpack (todos los videos del canal)
 │   └── NotFoundPage.tsx        404
 ├── components/
 │   ├── layout/             Layout (cabecera + contenido + pie + chat), SeoHead,
@@ -70,7 +67,6 @@ src/
 │   │                       (Globe, con CountryCard al tocar un país), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
 │   ├── services/           ColombiaRoutesMap (mapa animado de Mudanzas nacionales)
-│   ├── videos/             VideoCard (tarjeta de video de Maestría Transpack)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -92,7 +88,6 @@ src/
 │   ├── consent.ts          Textos del aviso de cookies
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
 │   ├── clientLogos.ts      Logos de clientes y banderas de las embajadas (franja del inicio y Nosotros)
-│   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
 │   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
 │   ├── sectorPhotos.ts     Carrusel con que empieza el mapa: sectores exclusivos de Bogotá (GENERADO con `pnpm fotos`)
 │   ├── bogotaMap.ts        Localidades de Bogotá (GENERADO con `pnpm map:bogota`, no editar a mano)
@@ -119,7 +114,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -223,6 +218,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   política en español e inglés. La versión en español es la oficial.
 - El cotizador **no calcula precios** (la Lógica de Cotización no los define):
   perfila la solicitud y la envía por WhatsApp o correo.
+- Menús (noviembre de 2026, revisión del cliente): sin menú "Cobertura" (la sección
+  azul del inicio sigue) y sin la página "Maestría Transpack" (`/videos` y
+  `/en/videos` redirigen al inicio en `vercel.json`); los Shorts del inicio siguen.
 - Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez
   de "Diáspora"). Trato de "tú".
 
@@ -240,7 +238,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
-  política, Maestría Transpack, 404) el panel de `PageHero` es blanco, con la franja
+  política, 404) el panel de `PageHero` es blanco, con la franja
   naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
   cliente no se logra con capas sobre las fotos actuales (probado en octubre
   de 2026): debe venir en las fotos que entregue el cliente.
