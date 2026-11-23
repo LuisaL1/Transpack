@@ -123,7 +123,11 @@ export function Header() {
           <Logo light={false} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          <nav className="hidden items-center gap-1.5 lg:flex xl:gap-3.5" aria-label={t.mainNav}>
+          {/* Menús en el centro, entre el logo y las acciones */}
+          <nav
+            className="hidden flex-1 items-center justify-center gap-3 lg:flex xl:gap-6"
+            aria-label={t.mainNav}
+          >
             {MENUS.map((m) => {
               const open = active === m.key;
               const underline = `relative inline-flex items-center gap-1 whitespace-nowrap py-1.5 text-[0.82rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 text-tinta hover:text-azul`;
@@ -148,7 +152,9 @@ export function Header() {
                 </Fragment>
               );
             })}
-            <span className="h-5 w-px bg-linea" aria-hidden="true" />
+          </nav>
+          {/* Buscar, soporte y cotizar, a la derecha */}
+          <div className="hidden items-center gap-1.5 lg:flex xl:gap-3.5">
             <div className="flex items-center gap-1">
               <button
                 onClick={() => {
@@ -181,7 +187,7 @@ export function Header() {
             >
               {t.quote}
             </Link>
-          </nav>
+          </div>
 
           {/* Panel desplegable (megamenú) */}
           {current && (
