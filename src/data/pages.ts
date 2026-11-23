@@ -11,6 +11,7 @@ export const serviceDetailText = (tr: Tr) => ({
   servicio: tr("El servicio", "The service"),
   comoHacemos: tr("¿Cómo lo hacemos?", "How do we do it?"),
   incluye: tr("Qué incluye", "What's included"),
+  compromiso: tr("Nuestro compromiso:", "Our commitment:"),
   pasoPaso: tr("Paso a paso", "Step by step"),
   asiSeraProceso: tr("Así será su proceso", "What your process looks like"),
   preguntasFrecuentes: tr("Preguntas frecuentes", "Frequently asked questions"),

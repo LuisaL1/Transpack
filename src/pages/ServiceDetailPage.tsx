@@ -74,6 +74,14 @@ export function ServiceDetailPage() {
               {t.comoHacemos}
             </h2>
             <p className="mb-8 text-[1.05rem]">{service.intro}</p>
+            {service.commitment && (
+              <p className="mb-4 flex items-start gap-3 rounded-2xl bg-gris px-5 py-4 text-violeta">
+                <Bi n="heart" className="mt-0.5 text-lg text-naranja" />
+                <span>
+                  <strong>{t.compromiso}</strong> {service.commitment}
+                </span>
+              </p>
+            )}
             {service.note && (
               <p className="flex items-start gap-3 rounded-2xl bg-beige px-5 py-4 font-medium text-violeta">
                 <Bi n="clock" className="mt-0.5 text-lg text-naranja" /> {service.note}

@@ -120,6 +120,8 @@ export type Service = {
   includes: string[];
   steps: { title: string; text: string }[];
   note?: string;
+  // "Nuestro compromiso", debajo de "¿Cómo lo hacemos?"
+  commitment?: string;
   // Guía de términos que se muestra después de "¿Cómo lo hacemos?"
   guide?: ServiceGuide;
   featured?: boolean;
@@ -223,42 +225,43 @@ export const SERVICES: Service[] = [
     icon: "house-door",
     title: "Mudanzas locales",
     short:
-      "Trasteos dentro de Bogotá y su área urbana, con personal capacitado, protección del mobiliario y vehículos adecuados al volumen.",
+      "Trasteos en Bogotá y sus alrededores, realizados por personal experto y capacitado para la protección profesional del mobiliario, con vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
     image: imgEmbalajeHogar,
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:
-      "Planeamos cada mudanza local según el inmueble de origen y de destino: piso, ascensor, escaleras, acceso del vehículo y horarios permitidos por la administración. Así llegamos con el equipo y el tiempo justos.",
+      "Antes de empezar, realizamos una valoración previa (presencial, virtual o telefónica) donde cada mueble, cada artículo y cada detalle importante se registra para planificar su traslado. Así sabemos exactamente qué mueve y garantizamos una mudanza sin estrés ni preocupaciones.",
     includes: [
-      "Visita técnica o videollamada cuando el volumen lo requiere",
-      "Personal de cargue capacitado en manipulación de muebles",
-      "Protección de mobiliario, electrodomésticos y objetos delicados",
-      "Desarme y armado de muebles",
-      "Vehículo adecuado al volumen de su inventario",
+      "Visita técnica, videollamada o estimación telefónica para determinar el volumen de su mudanza",
+      "Personal experto y capacitado en manipulación y traslado de muebles, enseres y bienes de alto valor",
+      "Protección adecuada del mobiliario, electrodomésticos y objetos delicados",
+      "Vehículos seguros y adecuados para su traslado",
       "Opción de bodegaje temporal",
+      "Cobertura de seguro de acuerdo con sus necesidades",
     ],
     steps: [
       {
-        title: "Cuéntanos su trasteo",
-        text: "Origen, destino, fecha, tipo de inmueble y lo que vas a mover.",
+        title: "Contáctenos",
+        text: "Para recibir su presupuesto.",
       },
       {
-        title: "Recibe su estimado",
-        text: "Te enviamos un valor estimado y, si estás de acuerdo, la cotización formal.",
+        title: "Cotización",
+        text: "Obtenga la cotización del servicio ajustada a sus necesidades.",
       },
       {
-        title: "Empacamos y protegemos",
-        text: "Según el nivel de servicio que elijas: básico, protección o integral.",
+        title: "Coordinación",
+        text: "Coordinamos su mudanza con nuestro equipo logístico (tiempos, protección, traslado).",
       },
       {
-        title: "Entregamos en destino",
-        text: "Descargamos y ubicamos todo en su nuevo espacio.",
+        title: "Entrega en destino",
+        text: "Descargamos y ubicamos su menaje en su nuevo espacio.",
       },
     ],
+    commitment:
+      "una mudanza sin estrés. Planifique su nuevo espacio; nosotros nos encargamos de acompañarlo durante el proceso.",
     note: "Las mudanzas locales suelen programarse con 1 a 2 semanas de anticipación, pero también atendemos solicitudes urgentes según disponibilidad.",
-    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-nacionales",
@@ -709,7 +712,7 @@ export const FAQS = [
   },
   {
     q: "¿Necesito una visita técnica para cotizar?",
-    a: "No siempre. Si la información de su inventario y del inmueble es suficiente, podemos darte un estimado. Cuando hay complejidad o riesgo de error (accesos difíciles, objetos especiales, grandes volúmenes), recomendamos una visita o videollamada.",
+    a: "Con un inventario podemos darle un estimado; sin embargo, cuando hay complejidad por accesos difíciles o artículos sobredimensionados, recomendamos realizar una visita técnica.",
   },
   {
     q: "¿Por qué es tan importante el inventario?",

@@ -152,39 +152,37 @@ export const SERVICES: Service[] = [
     icon: "house-door",
     title: "Local moving",
     short:
-      "Moves within Bogotá and its metropolitan area, with trained crews, furniture protection and vehicles sized to your load.",
+      "Moves in Bogotá and its surroundings, carried out by expert, trained crews for the professional protection of your furniture, with vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
     image: imgEmbalajeHogar,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:
-      "We plan every local move around the origin and destination property: floor, elevator, stairs, truck access and the hours allowed by building management. That way we arrive with the right crew and the right time.",
+      "Before we start, we carry out a prior assessment (in person, by video or by phone) in which every piece of furniture, every item and every important detail is recorded to plan your move. That way we know exactly what you are moving and guarantee a stress-free, worry-free move.",
     includes: [
-      "On-site survey or video call when the volume requires it",
-      "Loading crew trained in furniture handling",
-      "Protection for furniture, appliances and fragile items",
-      "Furniture disassembly and reassembly",
-      "A vehicle sized to your inventory",
+      "On-site survey, video call or phone estimate to determine the volume of your move",
+      "Expert crews trained in handling and moving furniture, household goods and high-value items",
+      "Proper protection for furniture, appliances and fragile items",
+      "Safe vehicles suited to your move",
       "Optional temporary storage",
+      "Insurance coverage according to your needs",
     ],
     steps: [
+      { title: "Contact us", text: "To receive your estimate." },
+      { title: "Quote", text: "Get a service quote tailored to your needs." },
       {
-        title: "Tell us about your move",
-        text: "Origin, destination, date, type of property and what you are moving.",
+        title: "Coordination",
+        text: "We coordinate your move with our logistics team (timing, protection, transport).",
       },
       {
-        title: "Get your estimate",
-        text: "We send you an estimate and, if you agree, the formal quote.",
+        title: "Delivery at destination",
+        text: "We unload and place your household goods in your new space.",
       },
-      {
-        title: "We pack and protect",
-        text: "Depending on the service level you choose: basic, protection or full service.",
-      },
-      { title: "We deliver", text: "We unload and place everything in your new space." },
     ],
+    commitment:
+      "a stress-free move. Plan your new space; we will be with you throughout the process.",
     note: "Local moves are usually booked 1 to 2 weeks in advance, but we also handle urgent requests subject to availability.",
-    guide: HOME_MOVE_GUIDE,
   },
   {
     slug: "mudanzas-nacionales",
@@ -592,7 +590,7 @@ export const FAQS = [
   },
   {
     q: "Do I need an on-site survey to get a quote?",
-    a: "Not always. If the information about your inventory and property is enough, we can give you an estimate. When there is complexity or a risk of error (difficult access, special items, large volumes), we recommend a visit or a video call.",
+    a: "With an inventory we can give you an estimate; however, when there is complexity due to difficult access or oversized items, we recommend an on-site survey.",
   },
   {
     q: "Why is the inventory so important?",
