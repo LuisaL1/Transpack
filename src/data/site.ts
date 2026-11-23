@@ -1,12 +1,14 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+// Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
+import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
+import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
+import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
-import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -201,7 +203,7 @@ export const SERVICES: Service[] = [
       "Traslado a las principales ciudades de Colombia con inventario detallado, embalaje profesional, monitoreo del vehículo y entrega puerta a puerta.",
     quote: "nacional",
     cta: "Cotizar",
-    image: imgCargue,
+    image: imgNacionalCarretera,
     heroMap: true,
     headline: "Su hogar puerta a puerta",
     intro:
@@ -243,7 +245,7 @@ export const SERVICES: Service[] = [
       "Vía marítima o aérea, desde y hacia Colombia. Lo asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
     quote: "internacional",
     cta: "Hablar con un asesor",
-    image: imgGlobal,
+    image: imgInternacionalPuerto,
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
@@ -295,7 +297,7 @@ export const SERVICES: Service[] = [
       "Almacenamiento seguro en Bogotá, por días, meses o mientras se completa su traslado. Infraestructura propia y control de inventario.",
     quote: "bodegaje",
     cta: "Cotizar",
-    image: imgCargador,
+    image: imgBodegajeBodega,
     kicker: "Almacenamiento en Bogotá",
     headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesite",
     intro:
@@ -358,7 +360,7 @@ export const SERVICES: Service[] = [
       "Ofrecemos una orientación clara y oportuna de la documentación y regulación aduanera para llevar a cabo el proceso de su mudanza en cumplimiento de la normativa internacional.",
     quote: "internacional",
     cta: "Cotizar",
-    image: imgInspeccionCanina,
+    image: imgAduanaCajas,
     kicker: "Trámites internacionales",
     headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
