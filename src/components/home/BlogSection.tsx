@@ -20,7 +20,7 @@ export function BlogSection() {
           </div>
           <p className="max-w-[420px] text-[1.06rem] text-suave">{t.sub}</p>
         </Reveal>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {blogPosts.map((p, i) => (
             <Reveal key={p.slug} delay={i * 80}>
               <Link

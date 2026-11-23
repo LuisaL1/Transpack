@@ -59,9 +59,6 @@ const SLUGS: Record<string, Record<L, string>> = {
   "por-que-una-mudanza-maritima-internacional-puede-tardar": {
     en: "why-an-international-sea-move-can-take-longer",
   },
-  "elegancia-en-transito-seguridad-mudanzas-internacionales-premium": {
-    en: "elegance-in-transit-security-premium-international-moves",
-  },
   "empresa-de-mudanzas-internacionales-en-colombia-58-anos": {
     en: "international-moving-company-colombia-58-years",
   },
