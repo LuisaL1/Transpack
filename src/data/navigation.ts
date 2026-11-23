@@ -23,7 +23,6 @@ export type Menu = {
   items: MenuItem[];
   cols?: 1 | 2;
   posts?: boolean;
-  chips?: boolean;
 };
 
 export function menusFor(lang: Lang): Menu[] {
@@ -107,12 +106,12 @@ export function menusFor(lang: Lang): Menu[] {
       feature: {
         kicker: tr("Soluciones", "Solutions"),
         title: tr(
-          "Diseñamos el servicio según quién se mueve",
-          "We design the service around who is moving",
+          "Ofrecemos un servicio ajustado a sus necesidades",
+          "A service tailored to your needs",
         ),
         text: tr(
-          "Tres unidades especializadas y un acompañamiento dedicado para quienes empiezan una vida en otro país.",
-          "Three specialized units and dedicated support for those starting a life in another country.",
+          "Diferentes líneas de servicio especializadas y acompañamiento personalizado para quienes empiezan otra etapa en un nuevo hogar.",
+          "Different specialized service lines and personal support for those starting a new chapter in a new home.",
         ),
         cta: tr("Ver todas las soluciones", "See all solutions"),
         to: lp("/#soluciones"),
@@ -129,30 +128,18 @@ export function menusFor(lang: Lang): Menu[] {
         },
         {
           label: tr("Movilidad corporativa", "Corporate Mobility"),
-          desc: tr(
-            "Traslado de oficinas y reubicación de funcionarios",
-            "Office moves and employee relocation",
-          ),
+          desc: tr("Traslado de oficinas", "Office moves"),
           icon: "buildings",
           to: lp("/?segmento=corporate#soluciones"),
         },
         {
-          label: tr("Diplomático e institucional", "Diplomatic & Institutional"),
+          label: tr("Diplomático", "Diplomatic"),
           desc: tr(
-            "Embajadas y organismos, con protocolo y confidencialidad",
-            "Embassies and institutions, with protocol and confidentiality",
+            "Embajadas y organismos extranjeros y no gubernamentales",
+            "Embassies and foreign and non-governmental organizations",
           ),
           icon: "flag",
           to: lp("/?segmento=diplomatic#soluciones"),
-        },
-        {
-          label: tr("Vivir en el exterior", "Living abroad"),
-          desc: tr(
-            "Colombianos que se van del país o regresan a él",
-            "Colombians moving abroad or coming back home",
-          ),
-          icon: "airplane",
-          to: lp("/?segmento=diaspora#soluciones"),
         },
       ],
       cols: 2,
@@ -202,7 +189,6 @@ export function menusFor(lang: Lang): Menu[] {
           to: lp("/nosotros#certificaciones"),
         },
       ],
-      chips: true,
       cols: 2,
     },
     {
@@ -314,7 +300,6 @@ export const headerText = (tr: Tr) => ({
   openMenu: tr("Abrir menú", "Open menu"),
   closeMenu: tr("Cerrar menú", "Close menu"),
   mobileNav: tr("Menú móvil", "Mobile menu"),
-  embassiesServed: tr("Embajadas atendidas en", "Embassies served in"),
   supportTitle: tr("Soporte Transpack", "Transpack support"),
   supportSub: tr(
     "¿Necesitas ayuda con su mudanza o su solicitud?",

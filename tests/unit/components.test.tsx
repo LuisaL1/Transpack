@@ -47,7 +47,7 @@ describe("Soluciones por segmento", () => {
       </MemoryRouter>,
     );
     const tabs = screen.getAllByRole("tab");
-    expect(tabs.length).toBe(4);
+    expect(tabs.length).toBe(3);
     await userEvent.click(screen.getByRole("tab", { name: /Movilidad corporativa/ }));
     expect(screen.getByRole("tab", { name: /Movilidad corporativa/ })).toHaveAttribute(
       "aria-selected",

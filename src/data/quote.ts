@@ -33,7 +33,7 @@ export const serviceOptions = (
     value: "empresarial",
     icon: "buildings",
     title: tr("Traslado empresarial", "Corporate move"),
-    sub: tr("Oficinas o funcionarios", "Offices or employees"),
+    sub: tr("Traslado de oficinas", "Office moves"),
   },
   {
     value: "bodegaje",
@@ -210,7 +210,7 @@ export const quoteText = (tr: Tr) => ({
   hacerOtraSolicitud: tr("Hacer otra solicitud", "Start a new request"),
   paso: tr("Paso", "Step"),
   stepOf: tr("de", "of"),
-  necesitasTrasladar: tr("¿Qué necesitas trasladar?", "What do you need to move?"),
+  necesitasTrasladar: tr("Información para su mudanza", "Information for your move"),
   desdeDondeHaciaDonde: tr("¿Desde dónde y hacia dónde?", "From where and to where?"),
   paisOrigen: tr("País de origen", "Origin country"),
   ejColombia: tr("Ej. Colombia", "E.g. Colombia"),

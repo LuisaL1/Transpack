@@ -6,7 +6,6 @@ import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgCargador from "@/assets/images/cargador.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
-import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
@@ -404,9 +403,9 @@ export const SEGMENTS = [
     title: "Tu mudanza local: Ágil, segura y sin complicaciones",
     text: "",
     points: [
-      "Embalaje, desarme y armado de muebles",
-      "Protección de objetos delicados y de alto valor",
-      "Bodegaje temporal mientras te instalas",
+      "Protección, desarme y armado de muebles",
+      "Empaque y manejo de objetos delicados y de alto valor",
+      "Bodegaje temporal o permanente en nuestras instalaciones",
     ],
     cta: "Cotizar mudanza de hogar",
     quote: "local" as QuoteService,
@@ -419,11 +418,11 @@ export const SEGMENTS = [
     icon: "buildings",
     tab: "Movilidad corporativa",
     kicker: "Transpack Movilidad corporativa",
-    title: "Transpack, un solo operador para trasladar su oficina con talento",
+    title: "Transpack, un equipo profesional para el traslado seguro de su oficina",
     text: "",
     points: [
-      "Ejecutivo de cuenta y operación recurrente",
-      "Reportes, trazabilidad y condiciones corporativas",
+      "Ejecutivo de cuenta para atender sus requerimientos",
+      "Reportes de trazabilidad y condiciones operativas seguras",
     ],
     cta: "Solicitar propuesta corporativa",
     quote: "empresarial" as QuoteService,
@@ -434,34 +433,17 @@ export const SEGMENTS = [
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomático e institucional",
-    kicker: "Transpack Diplomático e institucional",
+    tab: "Diplomático",
+    kicker: "Transpack Diplomático",
     title: "Discreción, protocolo y precisión para misiones diplomáticas",
     text: "",
     points: [
       "Atención protocolaria y absoluta confidencialidad",
-      "Proceso de registro como proveedor institucional",
-      "Cumplimiento normativo en origen y destino",
+      "Asesoría en normativa aduanera y requisitos en origen y destino",
     ],
     cta: "Contactar al área institucional",
     quote: "internacional" as QuoteService,
     image: imgArteHogar,
-  },
-  {
-    id: "diaspora",
-    icon: "airplane",
-    tab: "Vivir en el exterior",
-    kicker: "Te mudas a otro país o regresas a Colombia",
-    title: "No solo llevamos sus cosas: facilitamos su transición",
-    text: "",
-    points: [
-      "Asesoría sobre requisitos, tiempos y costos antes de empacar",
-      "Elección entre envío marítimo o aéreo según su caso",
-      "Red de agentes y aliados estratégicos que te recibe en el país de destino",
-    ],
-    cta: "Planear mi mudanza internacional",
-    quote: "internacional" as QuoteService,
-    image: imgExterior,
   },
 ];
 
@@ -478,25 +460,19 @@ export const LEVELS = [
   {
     n: "02",
     title: "Protección y empaque",
-    text: "Empacamos sus cajas y protegemos el mobiliario con manipulación profesional.",
-    points: [
-      "Todo lo del nivel básico",
-      "Empaque de cajas",
-      "Protección del mobiliario",
-      "Manipulación profesional",
-    ],
+    text: "Protegemos sus muebles y empacamos sus cajas con un equipo profesional.",
+    points: ["Empaque de cajas", "Protección del mobiliario", "Equipo logístico profesional"],
     value: "Nivel 2 · Protección y empaque",
     featured: true,
   },
   {
     n: "03",
     title: "Servicio integral",
-    text: "Nos encargamos de todo el proceso, de principio a fin, para que tú solo llegues.",
+    text: "Nos encargamos de todo el proceso con una protección tipo internacional y empaque total.",
     points: [
-      "Todo lo del nivel 2",
       "Desarme y armado",
-      "Organización en destino",
-      "Coordinación completa",
+      "Empaque total con materiales de primera calidad",
+      "Desempaque y ubicación de sus muebles en destino",
     ],
     value: "Nivel 3 · Servicio integral",
   },
@@ -505,23 +481,23 @@ export const LEVELS = [
 export const PROCESS = [
   {
     title: "Diagnóstico",
-    text: "Entendemos origen, destino, plazo, inventario y el nivel de servicio que buscas.",
+    text: "Nos informamos del origen, destino, tiempos y nivel de servicio que busca.",
   },
   {
-    title: "Diseño de la solución",
-    text: "Combinamos transporte, embalaje, bodegaje y trámites. Si hace falta, hacemos visita técnica.",
+    title: "Visita técnica",
+    text: "Se realiza una visita técnica para determinar el tipo de embalaje, el volumen y el transporte.",
   },
   {
     title: "Embalaje e inventario",
-    text: "Clasificamos y protegemos cada objeto con materiales adecuados a su valor y fragilidad.",
+    text: "Coordinamos el servicio de empaque con materiales de primera calidad tipo internacional, la recogida y el inventario.",
   },
   {
     title: "Operación y seguimiento",
-    text: "Coordinamos la ruta nacional o internacional y te mantenemos informado.",
+    text: "Coordinamos envío, rutas, tiempos y destino, manteniéndole informado.",
   },
   {
     title: "Entrega puerta a puerta",
-    text: "Terminamos cuando su nuevo espacio está listo para habitar.",
+    text: "Servicio de entrega puerta a puerta coordinado con nuestros agentes aliados en cada país.",
   },
 ];
 

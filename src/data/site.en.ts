@@ -7,7 +7,6 @@ import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgCargador from "@/assets/images/cargador.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
-import imgExterior from "@/assets/images/exterior.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -291,9 +290,9 @@ export const SEGMENTS = [
     title: "Your local move: Fast, safe and hassle-free",
     text: "",
     points: [
-      "Packing, furniture disassembly and reassembly",
-      "Protection for fragile and high-value items",
-      "Temporary storage while you settle in",
+      "Furniture protection, disassembly and reassembly",
+      "Packing and handling of fragile and high-value items",
+      "Temporary or long-term storage at our facilities",
     ],
     cta: "Get a quote for a home move",
     quote: "local" as QuoteService,
@@ -306,11 +305,11 @@ export const SEGMENTS = [
     icon: "buildings",
     tab: "Corporate Mobility",
     kicker: "Transpack Corporate Mobility",
-    title: "Transpack, a single provider to move your office with talent",
+    title: "Transpack, a professional team to move your office safely",
     text: "",
     points: [
-      "Account executive and recurring operations",
-      "Reporting, traceability and corporate terms",
+      "An account executive to handle your requests",
+      "Traceability reports and safe operating conditions",
     ],
     cta: "Request a corporate proposal",
     quote: "empresarial" as QuoteService,
@@ -321,34 +320,17 @@ export const SEGMENTS = [
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomatic & Institutional",
-    kicker: "Transpack Diplomatic & Institutional",
+    tab: "Diplomatic",
+    kicker: "Transpack Diplomatic",
     title: "Discretion, protocol and precision for diplomatic missions",
     text: "",
     points: [
       "Protocol-level service and complete confidentiality",
-      "Registration process as an institutional supplier",
-      "Regulatory compliance at origin and destination",
+      "Advice on customs regulations and requirements at origin and destination",
     ],
     cta: "Contact our institutional team",
     quote: "internacional" as QuoteService,
     image: imgGuacales,
-  },
-  {
-    id: "diaspora",
-    icon: "airplane",
-    tab: "Living abroad",
-    kicker: "Moving abroad or coming back to Colombia",
-    title: "We don't just move your things: we ease your transition",
-    text: "",
-    points: [
-      "Advice on requirements, timelines and costs before you pack",
-      "Sea or air shipping, depending on your case",
-      "A network of agents and strategic partners that receives you in your destination country",
-    ],
-    cta: "Plan my international move",
-    quote: "internacional" as QuoteService,
-    image: imgExterior,
   },
 ];
 
@@ -365,25 +347,19 @@ export const LEVELS = [
   {
     n: "02",
     title: "Protection and packing",
-    text: "We pack your boxes and protect your furniture with professional handling.",
-    points: [
-      "Everything in the basic level",
-      "Box packing",
-      "Furniture protection",
-      "Professional handling",
-    ],
+    text: "We protect your furniture and pack your boxes with a professional team.",
+    points: ["Box packing", "Furniture protection", "Professional logistics team"],
     value: "Level 2 · Protection and packing",
     featured: true,
   },
   {
     n: "03",
     title: "Full service",
-    text: "We take care of the whole process, start to finish, so all you have to do is arrive.",
+    text: "We take care of the whole process, with international-grade protection and full packing.",
     points: [
-      "Everything in level 2",
       "Disassembly and reassembly",
-      "Unpacking and setup at destination",
-      "Full coordination",
+      "Full packing with top-quality materials",
+      "Unpacking and placing your furniture at destination",
     ],
     value: "Level 3 · Full service",
   },
@@ -392,21 +368,24 @@ export const LEVELS = [
 export const PROCESS = [
   {
     title: "Assessment",
-    text: "We understand origin, destination, timeline, inventory and the service level you need.",
+    text: "We learn about the origin, destination, timeline and service level you are looking for.",
   },
   {
-    title: "Solution design",
-    text: "We combine transport, packing, storage and paperwork. If needed, we do an on-site survey.",
+    title: "On-site survey",
+    text: "We carry out an on-site survey to determine the type of packing, the volume and the transport.",
   },
   {
     title: "Packing and inventory",
-    text: "We classify and protect every item with materials suited to its value and fragility.",
+    text: "We coordinate packing with international-grade, top-quality materials, pickup and inventory.",
   },
   {
     title: "Operation and tracking",
-    text: "We coordinate the national or international route and keep you informed.",
+    text: "We coordinate shipping, routes, timing and destination, keeping you informed.",
   },
-  { title: "Door-to-door delivery", text: "We are done when your new space is ready to live in." },
+  {
+    title: "Door-to-door delivery",
+    text: "Door-to-door delivery coordinated with our partner agents in each country.",
+  },
 ];
 
 export const FAQS = [

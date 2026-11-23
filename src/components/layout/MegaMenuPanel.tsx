@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { postsFor } from "@/data/content";
-import { headerText, type Menu } from "@/data/navigation";
-import { DESTINATIONS } from "@/data/worldMap";
-import { useDestinationName } from "@/hooks/useContent";
+import type { Menu } from "@/data/navigation";
 import { useLang } from "@/i18n";
 import { Bi } from "@/components/ui";
 import { MenuLink } from "@/components/layout/MenuLink";
@@ -10,10 +8,8 @@ import { MenuLink } from "@/components/layout/MenuLink";
 // Panel desplegable de escritorio (megamenú)
 export function MegaMenuPanel({ menu }: { menu: Menu }) {
   const f = menu.feature;
-  const { lang, lp, tr } = useLang();
+  const { lang, lp } = useLang();
   const blogPosts = postsFor(lang);
-  const placeName = useDestinationName();
-  const t = headerText(tr);
   return (
     <div className="animate-fade-up grid grid-cols-[250px_1fr] gap-3 rounded-[22px] bg-white p-3 shadow-[var(--shadow-float)] ring-1 ring-azul/5">
       <div className="relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-azul to-violeta p-6 text-white/75">
@@ -94,25 +90,6 @@ export function MegaMenuPanel({ menu }: { menu: Menu }) {
             </MenuLink>
           ))}
         </div>
-
-        {menu.chips && (
-          <div className="mt-2 border-t border-linea px-3 pt-3">
-            <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-suave">
-              {t.embassiesServed}
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {DESTINATIONS.filter((d) => d.embassy).map((d) => (
-                <Link
-                  key={d.name}
-                  to={lp("/?servicio=internacional#cotizar")}
-                  className="rounded-full border border-linea px-2.5 py-1 text-[0.76rem] font-medium text-tinta transition-colors hover:border-azul hover:text-azul"
-                >
-                  {placeName(d.name)}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
