@@ -46,7 +46,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       title: s.title,
       desc: s.short,
       to: lp(`/servicios/${s.slug}`),
-      extra: `${s.kicker} ${s.intro} ${s.includes.join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""}`,
+      extra: `${s.kicker} ${s.intro} ${(s.includes ?? []).join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""}`,
     })),
     ...SEGMENTS.map((s) => ({
       kind: tr("Solución", "Solution"),

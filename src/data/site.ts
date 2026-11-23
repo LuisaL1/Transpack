@@ -17,6 +17,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgResidencial from "@/assets/images/residencial.jpeg";
 
 export const CONTACT = {
@@ -117,8 +118,12 @@ export type Service = {
   kicker: string;
   headline: string;
   intro: string;
-  includes: string[];
-  steps: { title: string; text: string }[];
+  // "Qué incluye"; sin lista, se muestra "photo" en su lugar
+  includes?: string[];
+  photo?: { src: string; alt: string };
+  // "Así será su proceso"; sin pasos, se muestra "reel" (carrusel de fotos) en su lugar
+  steps?: { title: string; text: string }[];
+  reel?: { src: string; caption: string }[];
   note?: string;
   // "Nuestro compromiso", debajo de "¿Cómo lo hacemos?"
   commitment?: string;
@@ -403,37 +408,23 @@ export const SERVICES: Service[] = [
     icon: "easel",
     title: "Embalaje especializado",
     short:
-      "Guacales de madera a la medida, amortiguación de alta densidad y protección para obras de arte, cristalería y mobiliario de alto valor.",
+      "Protección para obras de arte, cristalería e ítems de alto valor, con elaboración de guacales a la medida.",
     quote: "local",
     cta: "Cotizar",
     image: imgGuacales,
-    kicker: "Ingeniería de empaque",
+    kicker: "Obras de arte y objetos de valor",
     headline:
       "Sus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
     intro:
-      "Obras de arte, colecciones, cristalería y mobiliario de diseñador requieren ingeniería de empaque: guacales de madera a la medida para lienzos, amortiguación de impacto de alta densidad y protección contra la humedad en tránsitos largos.",
-    includes: [
-      "Guacales de madera fabricados a la medida",
-      "Amortiguación de impacto de alta densidad",
-      "Protección contra humedad para tránsitos marítimos",
-      "Manejo de pianos y elementos sobredimensionados",
-      "Inventario y rotulado pieza por pieza",
-      "Personal con experiencia en objetos delicados",
-    ],
-    steps: [
-      {
-        title: "Evaluación",
-        text: "Identificamos piezas especiales, medidas y fragilidad.",
-      },
-      {
-        title: "Diseño del empaque",
-        text: "Definimos materiales y guacales para cada pieza.",
-      },
-      { title: "Embalaje", text: "Empacamos, rotulamos e inventariamos." },
-      {
-        title: "Traslado",
-        text: "Manipulación experta hasta el destino final.",
-      },
+      "Obras de arte, colecciones, cristalería y mobiliario de alto valor requieren de una protección especializada, realizada por expertos con materiales de primera calidad, en cumplimiento de normativas internacionales para el cuidado y resguardo de sus objetos más delicados.",
+    photo: { src: imgEmbalajeCuadro, alt: "Embalaje de un cuadro" },
+    reel: [
+      { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
+      { src: imgEmbalajeCarton, caption: "Embalaje de un cuadro" },
+      { src: imgGuacalExportacion, caption: "Guacal de exportación" },
+      { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
+      { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
+      { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
     ],
   },
   {

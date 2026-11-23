@@ -17,6 +17,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import type { QuoteService, Service, ServiceGuide } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
@@ -305,27 +306,22 @@ export const SERVICES: Service[] = [
     icon: "easel",
     title: "Specialized packing",
     short:
-      "Custom wooden crates, high-density cushioning and protection for artwork, glassware and high-value furniture.",
+      "Protection for artwork, glassware and high-value items, with custom-built wooden crates.",
     quote: "local",
     cta: "Get a quote",
     image: imgGuacales,
-    kicker: "Packing engineering",
+    kicker: "Artwork and valuables",
     headline: "Your most valuable items in professional hands. Specialized packing and total care",
     intro:
-      "Artwork, collections, glassware and designer furniture require packing engineering: custom wooden crates for canvases, high-density impact cushioning and moisture protection for long transits.",
-    includes: [
-      "Custom-built wooden crates",
-      "High-density impact cushioning",
-      "Moisture protection for sea transit",
-      "Handling of pianos and oversized items",
-      "Piece-by-piece inventory and labeling",
-      "Crews experienced with fragile items",
-    ],
-    steps: [
-      { title: "Assessment", text: "We identify special pieces, their size and fragility." },
-      { title: "Packing design", text: "We choose materials and crates for each piece." },
-      { title: "Packing", text: "We pack, label and inventory." },
-      { title: "Transport", text: "Expert handling all the way to the final destination." },
+      "Artwork, collections, glassware and high-value furniture require specialized protection, carried out by experts with top-quality materials, in compliance with international standards for the care and safekeeping of your most delicate items.",
+    photo: { src: imgEmbalajeCuadro, alt: "Packing a painting" },
+    reel: [
+      { src: imgArteHogar, caption: "Protecting artwork at home" },
+      { src: imgEmbalajeCarton, caption: "Packing a painting" },
+      { src: imgGuacalExportacion, caption: "Export crate" },
+      { src: imgEmbalajeSala, caption: "On-site packing" },
+      { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
+      { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
     ],
   },
   {

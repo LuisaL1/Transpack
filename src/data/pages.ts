@@ -14,6 +14,9 @@ export const serviceDetailText = (tr: Tr) => ({
   compromiso: tr("Nuestro compromiso:", "Our commitment:"),
   pasoPaso: tr("Paso a paso", "Step by step"),
   asiSeraProceso: tr("Así será su proceso", "What your process looks like"),
+  // Carrusel de fotos que reemplaza los pasos (Embalaje especializado)
+  nuestroTrabajo: tr("Nuestro trabajo", "Our work"),
+  asiProtegemos: tr("Así protegemos sus piezas de valor", "How we protect your valuables"),
   preguntasFrecuentes: tr("Preguntas frecuentes", "Frequently asked questions"),
   antesCotizar: tr("Antes de cotizar", "Before you get a quote"),
   siTienesOtraDuda: tr(
