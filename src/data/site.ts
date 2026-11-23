@@ -298,33 +298,32 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgCargador,
     kicker: "Almacenamiento en Bogotá",
-    headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesites",
+    headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesite",
     intro:
-      "Nuestra infraestructura de bodegaje en Bogotá te permite guardar menaje, mobiliario de oficina o archivo mientras te instalas, remodelas o esperas su fecha de viaje. Puedes contratarlo solo o como parte de su mudanza.",
+      "Nuestra infraestructura de bodegaje en Bogotá le permite guardar menaje, mobiliario de oficina o archivo mientras se instala, remodela o espera su traslado definitivo. Puede contratarlo solo o como parte de su mudanza, por el tiempo que lo requiera.",
     includes: [
       "Bodegas propias en Bogotá",
       "Control de inventario de lo almacenado",
-      "Recogida en su ubicación y entrega cuando lo pidas",
+      "Recogida en su ubicación y entrega cuando lo pida",
       "Embalaje adecuado para almacenamiento prolongado",
-      "Planes por días, meses o largo plazo",
       "Ideal para empresas, expatriados y familias en transición",
     ],
     steps: [
       {
-        title: "Cuéntanos qué guardar",
-        text: "Tipo de bienes, volumen y tiempo estimado.",
+        title: "Qué desea almacenar",
+        text: "Tipo de bienes, tiempo y volumen estimado.",
       },
       {
         title: "Recogemos",
-        text: "Embalamos e inventariamos en su ubicación.",
+        text: "Empacamos e inventariamos todo en su domicilio.",
       },
       {
         title: "Almacenamos",
-        text: "Sus bienes quedan bajo control en nuestras bodegas.",
+        text: "Sus bienes quedan bajo custodia en nuestras instalaciones con vigilancia 24/7.",
       },
       {
         title: "Entregamos",
-        text: "Cuando lo necesites, en la dirección que nos indiques.",
+        text: "Cuando lo necesite, en la dirección que nos indique.",
       },
     ],
   },

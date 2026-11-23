@@ -209,19 +209,21 @@ export const SERVICES: Service[] = [
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
-      "Our storage facilities in Bogotá let you keep household goods, office furniture or files while you settle in, renovate or wait for your travel date. You can book it on its own or as part of your move.",
+      "Our storage facilities in Bogotá let you keep household goods, office furniture or files while you settle in, renovate or wait for your final move. You can book it on its own or as part of your move, for as long as you need.",
     includes: [
       "Our own warehouses in Bogotá",
       "Inventory control of everything stored",
       "Pickup at your location and delivery whenever you ask",
       "Packing suited to long-term storage",
-      "Daily, monthly or long-term plans",
       "Ideal for companies, expats and families in transition",
     ],
     steps: [
-      { title: "Tell us what to store", text: "Type of goods, volume and estimated time." },
-      { title: "We pick up", text: "We pack and inventory at your location." },
-      { title: "We store", text: "Your belongings stay under control in our warehouses." },
+      { title: "What you want to store", text: "Type of goods, estimated time and volume." },
+      { title: "We pick up", text: "We pack and inventory everything at your home." },
+      {
+        title: "We store",
+        text: "Your belongings stay in our custody at our facilities, with 24/7 security.",
+      },
       { title: "We deliver", text: "Whenever you need it, to the address you choose." },
     ],
   },
