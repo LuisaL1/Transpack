@@ -39,7 +39,7 @@ for (const route of ROUTES) {
 
 test("solo se publican español e inglés", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Elegir región e idioma" }).click();
+  await page.getByRole("button", { name: /^Elegir región e idioma/ }).click();
   const options = page.getByRole("option");
   await expect(options).toHaveCount(2);
   await expect(options.nth(0)).toContainText("Español");

@@ -124,7 +124,7 @@ test("CSP permite cargar el chat con un asesor (Zoho SalesIQ) y su diseño", asy
     });
   });
   await page.goto("/");
-  await page.getByRole("button", { name: /Hablar con Joelito, asesor virtual/ }).click();
+  await page.getByRole("button", { name: /hablar con el asesor virtual/ }).click();
   await expect(page.locator("html")).toHaveClass(/tp-zoho-open/, { timeout: 15_000 });
   expect(loaded).toBe(true);
   await page.waitForTimeout(1000);

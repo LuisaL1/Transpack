@@ -51,7 +51,7 @@ export function LangBar({ hidden }: { hidden: boolean }) {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-haspopup="listbox"
-            aria-label={t.choose}
+            aria-label={`${t.choose}: ${REGIONS[lang]} (${LANG_INFO[lang].name})`}
             tabIndex={hidden ? -1 : 0}
             className="inline-flex items-center gap-2 rounded-full px-2 py-1 text-white/90 transition-colors hover:bg-white/10"
           >
