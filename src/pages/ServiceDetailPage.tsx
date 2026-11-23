@@ -44,7 +44,7 @@ export function ServiceDetailPage() {
           <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-azul text-[1.6rem] text-naranja shadow-[0_12px_26px_-12px_rgba(39,43,124,.8)]">
             <Bi n={service.icon} />
           </span>
-          <Eyebrow>{service.kicker}</Eyebrow>
+          {service.kicker && <Eyebrow>{service.kicker}</Eyebrow>}
           <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] text-tinta">
             {service.headline}
           </h1>
