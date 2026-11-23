@@ -13,14 +13,14 @@ const guideText = (g: ServiceGuide) =>
   [
     g.title,
     g.lead ?? "",
-    ...g.sections.flatMap((s) => [
+    ...(g.sections ?? []).flatMap((s) => [
       s.title,
       ...s.text,
       ...(s.items ?? []).map((i) => `${i.b} ${i.t}`),
       s.after ?? "",
     ]),
-    g.closing.title,
-    ...g.closing.text,
+    g.closing?.title ?? "",
+    ...(g.closing?.text ?? []),
   ].join(" ");
 
 // Índice de búsqueda en el idioma pedido (las rutas ya salen localizadas)

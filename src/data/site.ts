@@ -132,7 +132,8 @@ export type ServiceGuide = {
   eyebrow: string;
   title: string;
   lead?: string;
-  sections: {
+  // Sin secciones ni cierre, la guía es solo el título y la entrada
+  sections?: {
     icon: string;
     title: string;
     text: string[];
@@ -140,7 +141,7 @@ export type ServiceGuide = {
     items?: { b: string; t: string }[];
     after?: string;
   }[];
-  closing: { title: string; text: string[] };
+  closing?: { title: string; text: string[] };
 };
 
 // Guía de Mudanzas locales y nacionales (texto del cliente, noviembre de 2026)
@@ -310,134 +311,46 @@ export const SERVICES: Service[] = [
     icon: "globe-americas",
     title: "Mudanzas internacionales",
     short:
-      "Vía marítima o aérea, desde y hacia Colombia. Te asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
+      "Vía marítima o aérea, desde y hacia Colombia. Lo asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
     quote: "internacional",
     cta: "Hablar con un asesor",
     image: imgGlobal,
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
-      "Una mudanza internacional no se trata igual que una urbana. Primero entiendes el proceso, los requisitos, los tiempos y los costos; después cotizamos. Un asesor especializado te acompaña desde el primer contacto, con el respaldo de más de 2.000 agentes y aliados estratégicos en 176 países.",
+      "Una mudanza internacional no se trata igual que una urbana. Primero entiende el proceso, los requisitos, los tiempos y los costos. Un asesor especializado lo acompaña desde el primer contacto, con el respaldo de más de 2.000 agentes y aliados estratégicos en 176 países.",
     includes: [
-      "Asesoría inicial sobre requisitos de origen y destino",
-      "Modalidad marítima (grandes volúmenes) o aérea (cargas urgentes)",
-      "Gestión documental y aduanera del menaje doméstico",
-      "Guacales de madera y embalaje de exportación",
-      "Coordinación con agentes certificados LACMA, IAM y PAIMA",
-      "Entrega puerta a puerta en el país de destino",
+      "Visita técnica por parte de uno de nuestros coordinadores de empaque",
+      "Asesoría inicial sobre requisitos y normativa de origen y destino",
+      "Presupuesto adaptado al volumen de su mudanza (aéreo o marítimo)",
+      "Orientación sobre requisitos documentales y aduaneros para el traslado de su menaje",
+      "Embalaje tipo exportación con materiales de primera calidad",
+      "Coordinación de procesos en destino a través de nuestros agentes certificados",
+      "Servicio puerta a puerta con entrega en su domicilio final",
     ],
     steps: [
       {
         title: "Perfilamiento",
-        text: "Origen, destino, fecha, motivo del traslado e inventario preliminar.",
+        text: "Conocer el origen, destino y características particulares de su mudanza.",
       },
       {
         title: "Asesoría especializada",
-        text: "Revisamos requisitos, tiempos y costos adicionales contigo.",
+        text: "Le informamos requisitos, tiempos y costos de la operación.",
       },
       {
-        title: "Embalaje de exportación",
-        text: "Inventario, clasificación y protección para el tránsito internacional.",
+        title: "Empaque tipo exportación",
+        text: "Embalaje y protección profesional de su mudanza realizado por expertos.",
       },
       {
-        title: "Tránsito y entrega",
-        text: "Seguimiento hasta que su nuevo hogar está habitable.",
+        title: "Logística y entrega",
+        text: "Programación de envío y entrega en su domicilio final.",
       },
     ],
     note: "Recomendamos iniciar el proceso entre 1 y 2 meses antes de la fecha de empaque.",
     guide: {
       eyebrow: "Guía rápida",
-      title: "¡Bienvenido a tu nueva aventura!",
-      lead: "Sabemos que una mudanza internacional es el inicio de una gran etapa, y queremos que disfrutes el proceso sin preocuparte por la terminología técnica. Para que hablemos el mismo idioma desde el primer día, hemos preparado esta guía rápida con los términos que escucharás durante tu traslado. ¡Verás que es más sencillo de lo que parece!",
-      sections: [
-        {
-          icon: "clipboard-check",
-          title: "El inicio de todo: conociendo tu mudanza",
-          text: [
-            "Antes de mover una sola caja, necesitamos saber qué vamos a trasladar. A esto lo llamamos la Encuesta Previa. Dependiendo de tu tiempo y comodidad, podemos hacer una Estimación Presencial (vamos a tu casa), Virtual (por videollamada) o Telefónica.",
-            "Al final, crearemos tu Lista de Inventario, que es el documento oficial donde anotamos cada uno de tus Bienes del Hogar (muebles, electrodomésticos) y Efectos Personales (ropa, libros).",
-          ],
-        },
-        {
-          icon: "box-seam",
-          title: "Manos a la obra: empaque y logística",
-          text: ["En este viaje no estás solo. Tendrás el apoyo de dos equipos clave:"],
-          items: [
-            {
-              b: "Agente de Origen:",
-              t: "el equipo en tu país actual que se encargará de empacar todo profesionalmente.",
-            },
-            {
-              b: "Agente de Destino:",
-              t: "la empresa que recibirá tus cosas en el nuevo país, las llevará a tu nuevo hogar, hará el Desembalaje (desempaque) y te ayudará con el Montaje e Instalación de tus muebles.",
-            },
-          ],
-          after:
-            "Para proteger tus pertenencias usamos Materiales de Embalaje de alta calidad (¡y también Materiales Ecológicos para cuidar el planeta!). Todo se acomoda de forma segura mediante un proceso llamado Carga y Estiba, asegurándonos de que haya una Carga Equilibrada dentro del contenedor para que nada se mueva en el camino. Tus cosas viajarán en un Contenedor Multimodal (que se adapta a barcos, trenes o camiones) y irá perfectamente protegido como un Contenedor Sellado.",
-        },
-        {
-          icon: "passport",
-          title: "El paso por la Aduana (¡sin estrés!)",
-          text: [
-            "Cruzar fronteras requiere papeleo, pero nuestro Agente de Aduanas se encargará de gestionar todo el despacho por ti. Escucharás hablar de:",
-          ],
-          items: [
-            {
-              b: "Declaración Aduanera y Formularios:",
-              t: "los documentos oficiales donde le contamos a las autoridades qué llevamos y cuánto vale.",
-            },
-            {
-              b: "Permiso de Importación o Especial:",
-              t: "autorizaciones necesarias si viajas con artículos especiales como obras de arte, antigüedades o tus mascotas.",
-            },
-            {
-              b: "Exención de Impuestos:",
-              t: "un beneficio espectacular al que puedes aplicar si demuestras tu Residencia Legal, el cual te permite ingresar tus cosas sin pagar impuestos, siempre y cuando lo hagamos dentro del Plazo de Importación que dicta la ley de tu nuevo país.",
-            },
-          ],
-        },
-        {
-          icon: "water",
-          title: "Los documentos de tu viaje marítimo",
-          text: [
-            "Si tus cosas viajan por mar, el documento más importante es el Bill of Lading (BOL), que es el contrato y título de propiedad de tu envío.",
-          ],
-          items: [
-            {
-              b: "Conocimiento de Embarque Original (OBL):",
-              t: "si te lo pedimos, significa que necesitaremos el papel en físico para liberar tus cosas en el puerto.",
-            },
-            {
-              b: "Express Release:",
-              t: "¡es mucho más rápido! Todo se libera digitalmente sin necesidad de papeles físicos.",
-            },
-          ],
-        },
-        {
-          icon: "shield-check",
-          title: "Tu tranquilidad es lo primero: riesgos y seguros",
-          text: [
-            "Aunque nuestro personal cuenta con la mejor Capacitación para evitar Riesgos de Transporte, Carga o Descarga, siempre es mejor viajar protegido. Por eso te ofreceremos una Cobertura de Seguro:",
-          ],
-          items: [
-            {
-              b: "Póliza Todo Riesgo (Cobertura Completa):",
-              t: "tu mejor opción. Te protege contra prácticamente cualquier imprevisto o daño.",
-            },
-            {
-              b: "Cobertura Parcial:",
-              t: "ideal si solo quieres proteger ciertos artículos específicos o riesgos limitados.",
-            },
-          ],
-        },
-      ],
-      closing: {
-        title: "Nuestro compromiso contigo",
-        text: [
-          "Queremos que sepas que entendemos los Desafíos Logísticos de este proceso y respetamos profundamente la Cultura de tu lugar de destino. Monitoreamos nuestro servicio constantemente con Indicadores de Calidad (KPIs). Y si algo no sale perfecto, contamos con un equipo dedicado a la Gestión de Quejas y Reclamaciones para darte una solución justa y rápida.",
-          "¡Relájate y empieza a empacar tus sueños, nosotros nos encargamos del resto!",
-        ],
-      },
+      title: "¡Bienvenido a su nueva aventura!",
+      lead: "Sabemos que una mudanza internacional es el inicio de una gran etapa, y queremos que disfrute el proceso sin preocuparse por la terminología técnica. Para que hablemos el mismo idioma desde el primer día, hemos preparado esta guía rápida con los términos que escuchará durante su traslado. ¡Verá que es más sencillo de lo que parece!",
     },
     featured: true,
     tags: [
