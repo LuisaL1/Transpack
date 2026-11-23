@@ -1,7 +1,7 @@
 // Artículos del blog. Texto tomado de los PDF de RecursosTranspack/
-// (#1 mudanza marítima internacional, #2 elegancia en tránsito, #3 58 años).
+// (#1 mudanza marítima internacional y #3 58 años; el #2, "elegancia en
+// tránsito", se retiró a pedido del cliente en noviembre de 2026).
 import imgContenedor from "@/assets/images/global.jpg";
-import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgGlobal from "@/assets/images/global.jpg";
 
 export type Item = string | { b: string; t: string };
@@ -131,75 +131,6 @@ export const blogPosts: Post[] = [
       {
         t: "p",
         text: "Una mudanza internacional no debería sentirse improvisada, especialmente cuando se trata de proteger pertenencias importantes y comenzar una nueva etapa de vida. En Transpack acompañamos mudanzas nacionales e internacionales con procesos organizados, embalaje especializado y asesoría personalizada, para que hagas su traslado con experiencia, confianza y respaldo profesional.",
-      },
-    ],
-  },
-  {
-    slug: "elegancia-en-transito-seguridad-mudanzas-internacionales-premium",
-    title:
-      "Elegancia en tránsito: la ciencia de la seguridad en las mudanzas internacionales premium",
-    cat: "Premium",
-    cover: imgGuacales,
-    excerpt:
-      "Para líderes corporativos, diplomáticos y familias de alto perfil, la seguridad del patrimonio y la paz mental son innegociables. Estos son los 5 pilares de una transición sin fricciones.",
-    cta: "Hablar con un consultor",
-    blocks: [
-      {
-        t: "p",
-        text: "Establecerse en un nuevo destino global es un hito de expansión. Sin embargo, para líderes corporativos, diplomáticos y familias de alto perfil, una mudanza internacional no es un simple asunto de transporte: es una transición crítica donde la seguridad del patrimonio, la gestión del tiempo y la paz mental son innegociables.",
-      },
-      {
-        t: "p",
-        text: "Cuando obras de arte, mobiliario de diseñador y colecciones privadas deben cruzar fronteras, la improvisación es el mayor riesgo. La verdadera tranquilidad radica en delegar el proceso en una firma con el respaldo estructural para mitigar cualquier eventualidad.",
-      },
-      {
-        t: "h2",
-        text: "Los 5 pilares de una transición global sin fricciones",
-      },
-      {
-        t: "ul",
-        items: [
-          {
-            b: "Embalaje técnico especializado.",
-            t: "Las piezas de alto valor requieren ingeniería de empaque: guacales de madera a la medida para lienzos, amortiguación de impacto de alta densidad y control de humedad en tránsitos marítimos, u óptima protección en transporte aéreo.",
-          },
-          {
-            b: "Cumplimiento aduanero riguroso.",
-            t: "Un inventario mal declarado o la omisión de un permiso portuario puede costar semanas de retraso y sanciones económicas. La gestión debe estar en manos de expertos que dominen la legislación de origen y destino.",
-          },
-          {
-            b: "Trazabilidad y control activo.",
-            t: "El cliente premium exige visibilidad sobre el estado de su envío y una comunicación proactiva que elimine la incertidumbre durante el tránsito.",
-          },
-          {
-            b: "Garantía y certificaciones internacionales.",
-            t: "El aval de LACMA (Latin American & Caribbean Movers Association), IAM (International Association of Movers) y PAIMA (Pan American International Movers Association) asegura que la red de agentes en destino opere con los mismos estándares que en origen.",
-          },
-          {
-            b: "Continuidad del estilo de vida.",
-            t: "El servicio debe ser estrictamente puerta a puerta. La mudanza culmina únicamente cuando el nuevo hogar está habitable, con el mobiliario ensamblado y ubicado con la misma delicadeza con la que fue empacado.",
-          },
-        ],
-      },
-      {
-        t: "h2",
-        text: "Transpack S.A.S.: más de medio siglo de excelencia logística en Colombia",
-      },
-      {
-        t: "p",
-        text: "Con más de medio siglo de trayectoria, Transpack S.A.S. se ha consolidado como el socio estratégico para la reubicación de multinacionales, embajadas y cuentas clave. Nuestra propuesta combina:",
-      },
-      {
-        t: "ul",
-        items: [
-          "Ingeniería de empaque premium adaptada a activos de alto valor.",
-          "Asesoría aduanera integral para exportaciones e importaciones ágiles.",
-          "Respaldo global certificado por LACMA, IAM y PAIMA.",
-        ],
-      },
-      {
-        t: "p",
-        text: "Para quienes la seguridad de su patrimonio no es negociable, Transpack S.A.S. es la garantía de una transición sin fronteras. Permita que nuestros expertos diseñen una estrategia de mudanza internacional a la medida de sus exigencias corporativas y familiares.",
       },
     ],
   },

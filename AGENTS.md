@@ -221,6 +221,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Menús (noviembre de 2026, revisión del cliente): sin menú "Cobertura" (la sección
   azul del inicio sigue) y sin la página "Maestría Transpack" (`/videos` y
   `/en/videos` redirigen al inicio en `vercel.json`); los Shorts del inicio siguen.
+  Del blog se retiró el artículo "Elegancia en tránsito" (premium): el cliente dijo
+  que sus términos no eran correctos. Su URL redirige al blog del inicio.
 - Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez
   de "Diáspora"). Trato de "tú".
 
