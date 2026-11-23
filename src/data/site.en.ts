@@ -255,12 +255,12 @@ export const SERVICES: Service[] = [
     icon: "file-earmark-text",
     title: "Customs and documentation",
     short:
-      "Support with the export and import of household goods, declared inventories and origin and destination requirements.",
+      "We offer clear, timely guidance on the documentation and customs regulations needed to carry out your move in compliance with international regulations.",
     quote: "internacional",
     cta: "Get a quote",
     image: imgInspeccionCanina,
     kicker: "International paperwork",
-    headline: "Guidance and document procedures for the customs process in every country",
+    headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
       "A poorly declared inventory or a missing permit can cost weeks of delay and penalties. We guide you through the export and import documentation for household goods and personal effects, according to each country's regulations.",
     includes: [
