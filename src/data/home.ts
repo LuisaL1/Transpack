@@ -3,7 +3,6 @@
 // Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
 // están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
-import { videosPageText } from "@/data/pages";
 
 export const heroText = (tr: Tr) => ({
   since: tr("Desde 1968", "Since 1968"),
@@ -22,6 +21,11 @@ export const heroText = (tr: Tr) => ({
   cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   ctaServices: tr("Ver servicios", "See services"),
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
+  embassiesLabel: tr("Embajadas que confían en Transpack", "Embassies that trust Transpack"),
+  embassyOf: tr("Embajada de", "Embassy of"),
+  // "the United States", "the United Arab Emirates"
+  embassyName: (country: string) =>
+    tr(country, /^United/.test(country) ? `the ${country}` : country),
   clientsTitle: tr(
     "Empresas, embajadas y organismos que han confiado su movilidad a Transpack",
     "Companies, embassies and institutions that have trusted Transpack with their mobility",
@@ -42,22 +46,25 @@ export const servicesText = (tr: Tr) => ({
 export const segmentsText = (tr: Tr) => ({
   eyebrow: tr("Soluciones", "Solutions"),
   title: tr(
-    "Diseñamos el servicio según quién se mueve",
-    "We design the service around who is moving",
+    "Cuidamos su patrimonio y una entrega segura",
+    "We look after your belongings and a safe delivery",
   ),
   sub: tr(
-    "Personas, empresas e instituciones tienen necesidades distintas. Por eso trabajamos con tres unidades especializadas y un acompañamiento dedicado para quienes empiezan una vida en otro país.",
-    "People, companies and institutions have different needs. That is why we work with three specialized units and dedicated support for those starting a life in another country.",
+    "Personas, empresas e instituciones tienen necesidades distintas. Por eso trabajamos con un equipo de profesionales especializados y un acompañamiento dedicado para quienes inician una nueva etapa.",
+    "People, companies and institutions have different needs. That is why we work with a team of specialized professionals and dedicated support for those starting a new chapter.",
   ),
   tabsLabel: tr("Soluciones por segmento", "Solutions by segment"),
 });
 
 export const levelsText = (tr: Tr) => ({
   eyebrow: tr("Niveles de servicio", "Service levels"),
-  title: tr("Elige cuánto quieres delegar", "Choose how much to hand over"),
+  title: tr(
+    "Elija la línea de servicio de acuerdo con sus necesidades",
+    "Choose the service line that fits your needs",
+  ),
   sub: tr(
-    "No cotizamos solo “una mudanza”: cotizamos la mudanza con el nivel de servicio que necesitas.",
-    "We don't just quote “a move”: we quote your move with the service level you need.",
+    "No cotizamos solo un trasteo, le ofrecemos una mudanza con el nivel de servicio que necesita.",
+    "We don't just quote a move: we offer you a move with the service level you need.",
   ),
   popular: tr("Más solicitado", "Most popular"),
   choose: tr("Elegir", "Choose"),
@@ -66,12 +73,12 @@ export const levelsText = (tr: Tr) => ({
 export const coverageText = (tr: Tr) => ({
   eyebrow: tr("Cobertura global", "Global coverage"),
   title: tr(
-    "De Colombia al mundo, con una red que no se improvisa",
-    "From Colombia to the world, with a network you can't improvise",
+    "De Colombia al mundo, una logística que no se improvisa",
+    "From Colombia to the world, logistics that can't be improvised",
   ),
   text: tr(
-    "Casi seis décadas construyendo una red operativa con más de 2.000 agentes y aliados estratégicos en 176 países: Estados Unidos, Canadá, la Unión Europea, Asia y toda Latinoamérica. Su mudanza se opera con los mismos estándares en origen y en destino.",
-    "Almost six decades building an operating network of more than 2,000 agents and strategic partners in 176 countries: the United States, Canada, the European Union, Asia and all of Latin America. Your move runs to the same standards at origin and destination.",
+    "Con más de 5 décadas estableciendo alianzas logísticas con más de 2.000 agentes profesionales y certificados alrededor del mundo.",
+    "More than 5 decades building logistics alliances with more than 2,000 professional, certified agents around the world.",
   ),
   modes: [
     {
@@ -150,13 +157,10 @@ export const galleryText = (tr: Tr) => ({
 
 export const quoteSectionText = (tr: Tr) => ({
   eyebrow: tr("Cotiza su mudanza", "Get a moving quote"),
-  title: tr(
-    "Cuéntanos su traslado en menos de 2 minutos",
-    "Tell us about your move in under 2 minutes",
-  ),
+  title: tr("Contáctenos para cotizar su mudanza", "Contact us for a quote on your move"),
   sub: tr(
-    "Con esta información un asesor te contactará con una propuesta a su medida. Sin compromiso.",
-    "With this information an advisor will contact you with a tailored proposal. No commitment.",
+    "Con esta información un asesor se comunicará con una propuesta ajustada a su requerimiento.",
+    "With this information an advisor will get in touch with a proposal tailored to your needs.",
   ),
 });
 
@@ -197,7 +201,6 @@ export const videosText = (tr: Tr) => ({
     "Real processes, told by our team: how we plan, protect and move what matters most, in Colombia and abroad.",
   ),
   more: tr("Ver más en YouTube", "More on YouTube"),
-  all: videosPageText(tr).title,
   play: tr("Reproducir video", "Play video"),
   short: "Short",
 });
@@ -208,16 +211,13 @@ export const mapText = (tr: Tr) => ({
     "Map of Transpack destinations from Bogotá",
   ),
   origin: tr("Bogotá · origen", "Bogotá · origin"),
-  photoAlt: tr(
-    "Asesor de Transpack con un contenedor, una caja de mudanza, un avión y un camión",
-    "Transpack advisor with a container, a moving box, a plane and a truck",
-  ),
   // Tarjeta al tocar un país (CountryCard)
   close: tr("Cerrar", "Close"),
   capital: tr("Capital", "Capital"),
   countryName: "Colombia",
   locality: tr("Localidad de Bogotá", "Bogotá locality"),
   cityCredit: tr("Mapa: IDECA · CC BY 4.0", "Map: IDECA · CC BY 4.0"),
+  exclusive: tr("Zona exclusiva", "Exclusive area"),
   cityPhoto: (city: string, country: string) =>
     tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
   credit: tr("Foto", "Photo"),

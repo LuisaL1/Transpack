@@ -2,14 +2,15 @@
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+// Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
+import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
+import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
+import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpeg";
-import imgGuacales from "@/assets/images/guacales.jpg";
-import imgOficina from "@/assets/images/oficina.jpg";
-import imgExterior from "@/assets/images/exterior.jpg";
-import imgGlobal from "@/assets/images/global.jpg";
-import imgCargue from "@/assets/images/cargue.jpg";
+import imgGuacales from "@/assets/images/guacales.jpeg";
+import imgOficina from "@/assets/images/oficina.jpeg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
@@ -17,6 +18,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import type { QuoteService, Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
@@ -76,37 +78,36 @@ export const SERVICES: Service[] = [
     icon: "house-door",
     title: "Local moving",
     short:
-      "Moves within Bogotá and its metropolitan area, with trained crews, furniture protection and vehicles sized to your load.",
+      "Moves in Bogotá and its surroundings, carried out by expert, trained crews for the professional protection of your furniture, with vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
     image: imgEmbalajeHogar,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:
-      "We plan every local move around the origin and destination property: floor, elevator, stairs, truck access and the hours allowed by building management. That way we arrive with the right crew and the right time.",
+      "Before we start, we carry out a prior assessment (in person, by video or by phone) in which every piece of furniture, every item and every important detail is recorded to plan your move. That way we know exactly what you are moving and guarantee a stress-free, worry-free move.",
     includes: [
-      "On-site survey or video call when the volume requires it",
-      "Loading crew trained in furniture handling",
-      "Protection for furniture, appliances and fragile items",
-      "Furniture disassembly and reassembly",
-      "A vehicle sized to your inventory",
+      "On-site survey, video call or phone estimate to determine the volume of your move",
+      "Expert crews trained in handling and moving furniture, household goods and high-value items",
+      "Proper protection for furniture, appliances and fragile items",
+      "Safe vehicles suited to your move",
       "Optional temporary storage",
+      "Insurance coverage according to your needs",
     ],
     steps: [
+      { title: "Contact us", text: "To receive your estimate." },
+      { title: "Quote", text: "Get a service quote tailored to your needs." },
       {
-        title: "Tell us about your move",
-        text: "Origin, destination, date, type of property and what you are moving.",
+        title: "Coordination",
+        text: "We coordinate your move with our logistics team (timing, protection, transport).",
       },
       {
-        title: "Get your estimate",
-        text: "We send you an estimate and, if you agree, the formal quote.",
+        title: "Delivery at destination",
+        text: "We unload and place your household goods in your new space.",
       },
-      {
-        title: "We pack and protect",
-        text: "Depending on the service level you choose: basic, protection or full service.",
-      },
-      { title: "We deliver", text: "We unload and place everything in your new space." },
     ],
+    commitment:
+      "a stress-free move. Plan your new space; we will be with you throughout the process.",
     note: "Local moves are usually booked 1 to 2 weeks in advance, but we also handle urgent requests subject to availability.",
   },
   {
@@ -114,22 +115,21 @@ export const SERVICES: Service[] = [
     icon: "truck",
     title: "National moving",
     short:
-      "Moves between Colombian cities with a detailed inventory, professional packing, vehicle monitoring and door-to-door delivery.",
+      "Moves to Colombia's main cities with a detailed inventory, professional packing, vehicle monitoring and door-to-door delivery.",
     quote: "nacional",
     cta: "Get a quote",
-    image: imgCargue,
+    image: imgNacionalCarretera,
     heroMap: true,
-    kicker: "Between Colombian cities",
-    headline: "Your belongings, door to door",
+    headline: "Your home, door to door",
     intro:
-      "In a national move the inventory is the foundation of everything: it lets us calculate the volume, the vehicle and the resources needed. We take care of security, protection and on-time delivery on every route.",
+      "In a national move, the inventory and careful planning are the foundation of everything: they let us calculate the volume, choose the type of vehicle and the packing materials needed for proper protection, and schedule a safe trip on an optimized route to meet the timeline you need.",
     includes: [
-      "Detailed inventory and volume calculation",
-      "Professional packing and specialized protection",
-      "Vehicle monitoring throughout the trip",
-      "Loading and unloading planned at origin and destination",
-      "Door-to-door service nationwide",
-      "Storage in Bogotá if your new home is not ready yet",
+      "On-site survey, video call or phone estimate to determine the volume of your move",
+      "Expert crews trained in handling and moving furniture, household goods and high-value items",
+      "Proper protection for furniture, appliances and fragile items",
+      "Safe vehicles suited to your move",
+      "Optional temporary storage in Bogotá",
+      "Insurance coverage according to your needs",
     ],
     steps: [
       { title: "Inventory", text: "We list everything that moves to estimate volume and cost." },
@@ -143,6 +143,8 @@ export const SERVICES: Service[] = [
       },
       { title: "Delivery", text: "We unload and place everything in your new city." },
     ],
+    commitment:
+      "proper advice so you can plan your new destination; we will be with you throughout the process.",
   },
   {
     slug: "mudanzas-internacionales",
@@ -152,38 +154,44 @@ export const SERVICES: Service[] = [
       "By sea or air, to and from Colombia. We advise you on requirements, timelines and customs before we quote.",
     quote: "internacional",
     cta: "Talk to an advisor",
-    image: imgGlobal,
+    image: imgInternacionalPuerto,
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
-      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs; then we quote. A specialized advisor guides you from the first contact, backed by more than 2,000 agents and strategic partners in 176 countries.",
+      "An international move is not handled like a local one. First you understand the process, the requirements, the timelines and the costs. A specialized advisor guides you from the first contact, backed by more than 2,000 agents and strategic partners in 176 countries.",
     includes: [
-      "Initial advice on origin and destination requirements",
-      "Sea freight (large volumes) or air freight (urgent shipments)",
-      "Customs and documentation for household goods",
-      "Wooden crates and export packing",
-      "Coordination with LACMA, IAM and PAIMA certified agents",
-      "Door-to-door delivery in the destination country",
+      "On-site survey by one of our packing coordinators",
+      "Initial advice on origin and destination requirements and regulations",
+      "A budget tailored to the volume of your move (air or sea)",
+      "Guidance on the documentation and customs requirements for moving your household goods",
+      "Export-grade packing with top-quality materials",
+      "Coordination of destination services through our certified agents",
+      "Door-to-door service with delivery to your final home",
     ],
     steps: [
       {
         title: "Profiling",
-        text: "Origin, destination, date, reason for moving and a preliminary inventory.",
+        text: "Understanding the origin, destination and particular features of your move.",
       },
       {
         title: "Specialized advice",
-        text: "We review requirements, timelines and additional costs with you.",
+        text: "We explain the requirements, timelines and costs of the operation.",
       },
       {
         title: "Export packing",
-        text: "Inventory, classification and protection for international transit.",
+        text: "Professional packing and protection of your move, carried out by experts.",
       },
       {
-        title: "Transit and delivery",
-        text: "We follow up until your new home is ready to live in.",
+        title: "Logistics and delivery",
+        text: "Shipment scheduling and delivery to your final home.",
       },
     ],
     note: "We recommend starting the process 1 to 2 months before your packing date.",
+    guide: {
+      eyebrow: "Quick guide",
+      title: "Welcome to your new adventure!",
+      lead: "We know an international move is the start of a big new chapter, and we want you to enjoy the process without worrying about technical jargon. So that we speak the same language from day one, we have put together this quick guide to the terms you will hear during your move. You will see it is simpler than it looks!",
+    },
     featured: true,
     tags: [
       { icon: "water", label: "Sea" },
@@ -198,23 +206,25 @@ export const SERVICES: Service[] = [
       "Secure storage in Bogotá, by the day, the month or while your move is completed. Our own facilities and inventory control.",
     quote: "bodegaje",
     cta: "Get a quote",
-    image: imgCargador,
+    image: imgBodegajeBodega,
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
-      "Our storage facilities in Bogotá let you keep household goods, office furniture or files while you settle in, renovate or wait for your travel date. You can book it on its own or as part of your move.",
+      "Our storage facilities in Bogotá let you keep household goods, office furniture or files while you settle in, renovate or wait for your final move. You can book it on its own or as part of your move, for as long as you need.",
     includes: [
       "Our own warehouses in Bogotá",
       "Inventory control of everything stored",
       "Pickup at your location and delivery whenever you ask",
       "Packing suited to long-term storage",
-      "Daily, monthly or long-term plans",
       "Ideal for companies, expats and families in transition",
     ],
     steps: [
-      { title: "Tell us what to store", text: "Type of goods, volume and estimated time." },
-      { title: "We pick up", text: "We pack and inventory at your location." },
-      { title: "We store", text: "Your belongings stay under control in our warehouses." },
+      { title: "What you want to store", text: "Type of goods, estimated time and volume." },
+      { title: "We pick up", text: "We pack and inventory everything at your home." },
+      {
+        title: "We store",
+        text: "Your belongings stay in our custody at our facilities, with 24/7 security.",
+      },
       { title: "We deliver", text: "Whenever you need it, to the address you choose." },
     ],
   },
@@ -223,27 +233,22 @@ export const SERVICES: Service[] = [
     icon: "easel",
     title: "Specialized packing",
     short:
-      "Custom wooden crates, high-density cushioning and protection for artwork, glassware and high-value furniture.",
+      "Protection for artwork, glassware and high-value items, with custom-built wooden crates.",
     quote: "local",
     cta: "Get a quote",
     image: imgGuacales,
-    kicker: "Packing engineering",
+    kicker: "Artwork and valuables",
     headline: "Your most valuable items in professional hands. Specialized packing and total care",
     intro:
-      "Artwork, collections, glassware and designer furniture require packing engineering: custom wooden crates for canvases, high-density impact cushioning and moisture protection for long transits.",
-    includes: [
-      "Custom-built wooden crates",
-      "High-density impact cushioning",
-      "Moisture protection for sea transit",
-      "Handling of pianos and oversized items",
-      "Piece-by-piece inventory and labeling",
-      "Crews experienced with fragile items",
-    ],
-    steps: [
-      { title: "Assessment", text: "We identify special pieces, their size and fragility." },
-      { title: "Packing design", text: "We choose materials and crates for each piece." },
-      { title: "Packing", text: "We pack, label and inventory." },
-      { title: "Transport", text: "Expert handling all the way to the final destination." },
+      "Artwork, collections, glassware and high-value furniture require specialized protection, carried out by experts with top-quality materials, in compliance with international standards for the care and safekeeping of your most delicate items.",
+    photo: { src: imgEmbalajeCuadro, alt: "Packing a painting" },
+    reel: [
+      { src: imgArteHogar, caption: "Protecting artwork at home" },
+      { src: imgEmbalajeCarton, caption: "Packing a painting" },
+      { src: imgGuacalExportacion, caption: "Export crate" },
+      { src: imgEmbalajeSala, caption: "On-site packing" },
+      { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
+      { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
     ],
   },
   {
@@ -251,12 +256,12 @@ export const SERVICES: Service[] = [
     icon: "file-earmark-text",
     title: "Customs and documentation",
     short:
-      "Support with the export and import of household goods, declared inventories and origin and destination requirements.",
+      "We offer clear, timely guidance on the documentation and customs regulations needed to carry out your move in compliance with international regulations.",
     quote: "internacional",
     cta: "Get a quote",
-    image: imgInspeccionCanina,
+    image: imgAduanaCajas,
     kicker: "International paperwork",
-    headline: "Guidance and document procedures for the customs process in every country",
+    headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
       "A poorly declared inventory or a missing permit can cost weeks of delay and penalties. We guide you through the export and import documentation for household goods and personal effects, according to each country's regulations.",
     includes: [
@@ -284,12 +289,12 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residential",
     kicker: "Transpack Residential",
-    title: "We move your home, not just your belongings",
+    title: "Your local move: Fast, safe and hassle-free",
     text: "",
     points: [
-      "Packing, furniture disassembly and reassembly",
-      "Protection for fragile and high-value items",
-      "Temporary storage while you settle in",
+      "Furniture protection, disassembly and reassembly",
+      "Packing and handling of fragile and high-value items",
+      "Temporary or long-term storage at our facilities",
     ],
     cta: "Get a quote for a home move",
     quote: "local" as QuoteService,
@@ -302,11 +307,11 @@ export const SEGMENTS = [
     icon: "buildings",
     tab: "Corporate Mobility",
     kicker: "Transpack Corporate Mobility",
-    title: "Transpack, a single provider to move your office with talent",
+    title: "Transpack, a professional team to move your office safely",
     text: "",
     points: [
-      "Account executive and recurring operations",
-      "Reporting, traceability and corporate terms",
+      "An account executive to handle your requests",
+      "Traceability reports and safe operating conditions",
     ],
     cta: "Request a corporate proposal",
     quote: "empresarial" as QuoteService,
@@ -317,34 +322,17 @@ export const SEGMENTS = [
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomatic & Institutional",
-    kicker: "Transpack Diplomatic & Institutional",
+    tab: "Diplomatic",
+    kicker: "Transpack Diplomatic",
     title: "Discretion, protocol and precision for diplomatic missions",
     text: "",
     points: [
       "Protocol-level service and complete confidentiality",
-      "Registration process as an institutional supplier",
-      "Regulatory compliance at origin and destination",
+      "Advice on customs regulations and requirements at origin and destination",
     ],
     cta: "Contact our institutional team",
     quote: "internacional" as QuoteService,
     image: imgGuacales,
-  },
-  {
-    id: "diaspora",
-    icon: "airplane",
-    tab: "Living abroad",
-    kicker: "Moving abroad or coming back to Colombia",
-    title: "We don't just move your things: we ease your transition",
-    text: "",
-    points: [
-      "Advice on requirements, timelines and costs before you pack",
-      "Sea or air shipping, depending on your case",
-      "A network of agents and strategic partners that receives you in your destination country",
-    ],
-    cta: "Plan my international move",
-    quote: "internacional" as QuoteService,
-    image: imgExterior,
   },
 ];
 
@@ -361,25 +349,19 @@ export const LEVELS = [
   {
     n: "02",
     title: "Protection and packing",
-    text: "We pack your boxes and protect your furniture with professional handling.",
-    points: [
-      "Everything in the basic level",
-      "Box packing",
-      "Furniture protection",
-      "Professional handling",
-    ],
+    text: "We protect your furniture and pack your boxes with a professional team.",
+    points: ["Box packing", "Furniture protection", "Professional logistics team"],
     value: "Level 2 · Protection and packing",
     featured: true,
   },
   {
     n: "03",
     title: "Full service",
-    text: "We take care of the whole process, start to finish, so all you have to do is arrive.",
+    text: "We take care of the whole process, with international-grade protection and full packing.",
     points: [
-      "Everything in level 2",
       "Disassembly and reassembly",
-      "Unpacking and setup at destination",
-      "Full coordination",
+      "Full packing with top-quality materials",
+      "Unpacking and placing your furniture at destination",
     ],
     value: "Level 3 · Full service",
   },
@@ -388,21 +370,24 @@ export const LEVELS = [
 export const PROCESS = [
   {
     title: "Assessment",
-    text: "We understand origin, destination, timeline, inventory and the service level you need.",
+    text: "We learn about the origin, destination, timeline and service level you are looking for.",
   },
   {
-    title: "Solution design",
-    text: "We combine transport, packing, storage and paperwork. If needed, we do an on-site survey.",
+    title: "On-site survey",
+    text: "We carry out an on-site survey to determine the type of packing, the volume and the transport.",
   },
   {
     title: "Packing and inventory",
-    text: "We classify and protect every item with materials suited to its value and fragility.",
+    text: "We coordinate packing with international-grade, top-quality materials, pickup and inventory.",
   },
   {
     title: "Operation and tracking",
-    text: "We coordinate the national or international route and keep you informed.",
+    text: "We coordinate shipping, routes, timing and destination, keeping you informed.",
   },
-  { title: "Door-to-door delivery", text: "We are done when your new space is ready to live in." },
+  {
+    title: "Door-to-door delivery",
+    text: "Door-to-door delivery coordinated with our partner agents in each country.",
+  },
 ];
 
 export const FAQS = [
@@ -420,7 +405,7 @@ export const FAQS = [
   },
   {
     q: "Do I need an on-site survey to get a quote?",
-    a: "Not always. If the information about your inventory and property is enough, we can give you an estimate. When there is complexity or a risk of error (difficult access, special items, large volumes), we recommend a visit or a video call.",
+    a: "With an inventory we can give you an estimate; however, when there is complexity due to difficult access or oversized items, we recommend an on-site survey.",
   },
   {
     q: "Why is the inventory so important?",
@@ -513,7 +498,7 @@ export const PRIVACY = {
         "WhatsApp: if you choose to send your request on WhatsApp, that conversation is also governed by WhatsApp's (Meta) terms and privacy policy.",
         "In your browser: your cookie choice is stored only in your browser (local storage) and is never sent to Transpack. You can delete it at any time by clearing this site's data in your browser.",
         "Advisor chat: the site's chat runs on Zoho SalesIQ, the chat tool of our CRM, which acts as data processor. If you accept cookies in the notice, Zoho loads in the background when you arrive on the site so the chat opens instantly; if you do not accept them, it only loads when you open the chat. Once loaded, it receives technical data about the visit (pages viewed, approximate location, browser and device). What you write in the chat is stored on Zoho's servers, which may be outside Colombia, and in our CRM.",
-        "Map photos: when you tap a country on the home page map, your browser loads the photo of its capital directly from Wikimedia Commons, which receives the technical data of that request (IP address and browser). We do not send it any other data about you.",
+        "Map photos: your browser loads the photos on the home page map (the Bogotá photos it opens with and the one of each place you tap) directly from Wikimedia Commons, which receives the technical data of that request (IP address and browser). We do not send it any other data about you.",
         "Retention: we keep the requests we receive for as long as needed to handle them and provide the service, and afterwards for as long as accounting, tax and legal rules require.",
       ],
     },

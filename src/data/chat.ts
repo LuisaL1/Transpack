@@ -21,7 +21,12 @@ export const chatText = (tr: Tr) => ({
   ),
   talkTo: tr(`Hablar con ${NAME}`, `Talk to ${NAME}`),
   closeChat: tr("Cerrar chat", "Close chat"),
-  openChat: tr(`Hablar con ${NAME}, asesor virtual`, `Talk to ${NAME}, virtual advisor`),
+  // Empieza con el texto visible del botón (nombre, "IA" y "En línea"), como pide
+  // la accesibilidad (label-content-name-mismatch)
+  openChat: tr(
+    `${NAME} IA, en línea: hablar con el asesor virtual`,
+    `${NAME} AI, online: talk to the virtual advisor`,
+  ),
   close: tr("Cerrar", "Close"),
   ai: tr("IA", "AI"),
   online: tr("En línea", "Online"),

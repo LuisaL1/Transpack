@@ -14,7 +14,7 @@ const outDir = process.argv[2] ?? "src/data";
 
 // Destinos con ruta y nombre en el mapa (capital de cada país) + origen.
 // "embassy": países donde Transpack ha atendido embajadas (blog #3); el resto
-// son destinos de las regiones donde opera (Suramérica, África y Asia).
+// son destinos de las regiones donde opera (Suramérica, África, Asia y Oceanía).
 // Se intercalan por región para que la animación recorra todo el mapa.
 const ORIGIN = { id: "170", name: "Bogotá, Colombia", lonlat: [-74.07, 4.71] };
 // Recorrido por Colombia al empezar la animación de la portada: capitales de
@@ -92,6 +92,10 @@ const DEST = [
   { id: "756", name: "Suiza", lonlat: [7.45, 46.95], region: "europa" },
   { id: "752", name: "Suecia", lonlat: [18.07, 59.33], region: "europa" },
   { id: "616", name: "Polonia", lonlat: [21.01, 52.23], region: "europa" },
+  // Oceanía: sus países principales (pedido del cliente, nov. 2026); el resto
+  // queda sombreado sin ruta ni nombre (OCEANIA_REST)
+  { id: "036", name: "Australia", lonlat: [149.13, -35.28], region: "oceania" },
+  { id: "554", name: "Nueva Zelanda", lonlat: [174.78, -41.29], region: "oceania" },
 ];
 // Regiones donde Transpack opera, que también se iluminan (código ISO 3166
 // numérico; los territorios sin código en Natural Earth van por nombre).
@@ -248,15 +252,24 @@ const EUROPE_REST = [
   "438", // Liechtenstein,
   "674", // San Marino,
 ];
+// Resto de Oceanía: sombreado como región donde opera, sin ruta ni nombre
+const OCEANIA_REST = [
+  "598", // Papúa Nueva Guinea
+  "242", // Fiyi
+  "090", // Islas Salomón
+  "548", // Vanuatu
+  "540", // Nueva Caledonia
+];
 const hotIds = new Set([
   ...DEST.map((d) => d.id),
   ...SOUTH_AMERICA,
   ...AFRICA,
   ...ASIA,
   ...EUROPE_REST,
+  ...OCEANIA_REST,
 ]);
 // Continente de cada destino: la animación de la portada los recorre en orden
-// (América, Europa, África, Asia)
+// (América, Europa, África, Asia, Oceanía)
 const NORTH_AMERICA = ["840", "124", "484"];
 const EUROPE = ["724", "250", "276", "380"];
 const regionOf = (d) =>
@@ -305,7 +318,7 @@ ${CITIES.map((c) => `  { name: "${c.name}", ${ll(c.lonlat)}, side: "${c.side}" a
 ];
 
 /** Destinos con ruta en el globo (capitales). "embassy": país donde Transpack ha
- * atendido embajadas; "region": continente (america, europa, africa o asia) */
+ * atendido embajadas; "region": continente (america, europa, africa, asia u oceania) */
 export const DESTINATIONS = [
 ${DEST.map((d) => `  { name: "${d.name}", ${ll(d.lonlat)}, embassy: ${!!d.embassy}, region: "${regionOf(d)}" },`).join("\n")}
 ];

@@ -49,7 +49,7 @@ servicio existente y cambiar sus datos:
 
 - **Foto:** guardarla en `src/assets/images/` (JPG de máximo 1200 px en el lado
   largo, idealmente menos de 200 KB) e importarla arriba del archivo:
-  `import imgOficina from "@/assets/images/oficina.jpg";`. El original del
+  `import imgOficina from "@/assets/images/oficina.jpeg";`. El original del
   cliente va en `RecursosTranspack/Imagenes/`.
 - **Inglés:** agregar el mismo servicio, con el **mismo `slug`**, en
   [`src/data/site.en.ts`](../src/data/site.en.ts) con los textos traducidos.

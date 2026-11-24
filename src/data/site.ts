@@ -1,13 +1,14 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+// Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
+import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
+import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
+import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpeg";
-import imgGuacales from "@/assets/images/guacales.jpg";
-import imgOficina from "@/assets/images/oficina.jpg";
-import imgExterior from "@/assets/images/exterior.jpg";
-import imgGlobal from "@/assets/images/global.jpg";
+import imgGuacales from "@/assets/images/guacales.jpeg";
+import imgOficina from "@/assets/images/oficina.jpeg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -17,6 +18,7 @@ import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
+import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
 import imgResidencial from "@/assets/images/residencial.jpeg";
 
 export const CONTACT = {
@@ -114,14 +116,39 @@ export type Service = {
   // En el encabezado, el mapa animado de rutas por Colombia en vez de la foto
   // (la foto sigue como imagen para compartir en redes)
   heroMap?: boolean;
-  kicker: string;
+  // Rótulo sobre el título; sin él, no se muestra
+  kicker?: string;
   headline: string;
   intro: string;
-  includes: string[];
-  steps: { title: string; text: string }[];
+  // "Qué incluye"; sin lista, se muestra "photo" en su lugar
+  includes?: string[];
+  photo?: { src: string; alt: string };
+  // "Así será su proceso"; sin pasos, se muestra "reel" (carrusel de fotos) en su lugar
+  steps?: { title: string; text: string }[];
+  reel?: { src: string; caption: string }[];
   note?: string;
+  // "Nuestro compromiso", debajo de "¿Cómo lo hacemos?"
+  commitment?: string;
+  // Guía de términos que se muestra después de "¿Cómo lo hacemos?"
+  guide?: ServiceGuide;
   featured?: boolean;
   tags?: { icon: string; label: string }[];
+};
+
+export type ServiceGuide = {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  // Sin secciones ni cierre, la guía es solo el título y la entrada
+  sections?: {
+    icon: string;
+    title: string;
+    text: string[];
+    // Términos en negrita con su explicación
+    items?: { b: string; t: string }[];
+    after?: string;
+  }[];
+  closing?: { title: string; text: string[] };
 };
 
 export const SERVICES: Service[] = [
@@ -130,40 +157,42 @@ export const SERVICES: Service[] = [
     icon: "house-door",
     title: "Mudanzas locales",
     short:
-      "Trasteos dentro de Bogotá y su área urbana, con personal capacitado, protección del mobiliario y vehículos adecuados al volumen.",
+      "Trasteos en Bogotá y sus alrededores, realizados por personal experto y capacitado para la protección profesional del mobiliario, con vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
     image: imgEmbalajeHogar,
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:
-      "Planeamos cada mudanza local según el inmueble de origen y de destino: piso, ascensor, escaleras, acceso del vehículo y horarios permitidos por la administración. Así llegamos con el equipo y el tiempo justos.",
+      "Antes de empezar, realizamos una valoración previa (presencial, virtual o telefónica) donde cada mueble, cada artículo y cada detalle importante se registra para planificar su traslado. Así sabemos exactamente qué mueve y garantizamos una mudanza sin estrés ni preocupaciones.",
     includes: [
-      "Visita técnica o videollamada cuando el volumen lo requiere",
-      "Personal de cargue capacitado en manipulación de muebles",
-      "Protección de mobiliario, electrodomésticos y objetos delicados",
-      "Desarme y armado de muebles",
-      "Vehículo adecuado al volumen de su inventario",
+      "Visita técnica, videollamada o estimación telefónica para determinar el volumen de su mudanza",
+      "Personal experto y capacitado en manipulación y traslado de muebles, enseres y bienes de alto valor",
+      "Protección adecuada del mobiliario, electrodomésticos y objetos delicados",
+      "Vehículos seguros y adecuados para su traslado",
       "Opción de bodegaje temporal",
+      "Cobertura de seguro de acuerdo con sus necesidades",
     ],
     steps: [
       {
-        title: "Cuéntanos su trasteo",
-        text: "Origen, destino, fecha, tipo de inmueble y lo que vas a mover.",
+        title: "Contáctenos",
+        text: "Para recibir su presupuesto.",
       },
       {
-        title: "Recibe su estimado",
-        text: "Te enviamos un valor estimado y, si estás de acuerdo, la cotización formal.",
+        title: "Cotización",
+        text: "Obtenga la cotización del servicio ajustada a sus necesidades.",
       },
       {
-        title: "Empacamos y protegemos",
-        text: "Según el nivel de servicio que elijas: básico, protección o integral.",
+        title: "Coordinación",
+        text: "Coordinamos su mudanza con nuestro equipo logístico (tiempos, protección, traslado).",
       },
       {
-        title: "Entregamos en destino",
-        text: "Descargamos y ubicamos todo en su nuevo espacio.",
+        title: "Entrega en destino",
+        text: "Descargamos y ubicamos su menaje en su nuevo espacio.",
       },
     ],
+    commitment:
+      "una mudanza sin estrés. Planifique su nuevo espacio; nosotros nos encargamos de acompañarlo durante el proceso.",
     note: "Las mudanzas locales suelen programarse con 1 a 2 semanas de anticipación, pero también atendemos solicitudes urgentes según disponibilidad.",
   },
   {
@@ -171,22 +200,21 @@ export const SERVICES: Service[] = [
     icon: "truck",
     title: "Mudanzas nacionales",
     short:
-      "Traslados entre ciudades de Colombia con inventario detallado, embalaje profesional, monitoreo del vehículo y entrega puerta a puerta.",
+      "Traslado a las principales ciudades de Colombia con inventario detallado, embalaje profesional, monitoreo del vehículo y entrega puerta a puerta.",
     quote: "nacional",
     cta: "Cotizar",
-    image: imgCargue,
+    image: imgNacionalCarretera,
     heroMap: true,
-    kicker: "Entre ciudades de Colombia",
-    headline: "Su patrimonio de puerta a puerta",
+    headline: "Su hogar puerta a puerta",
     intro:
-      "En una mudanza nacional el inventario es la base de todo: nos permite calcular el volumen, el vehículo y los recursos necesarios. Cuidamos la seguridad, la protección y el cumplimiento de tiempos en cada ruta.",
+      "En una mudanza nacional, el inventario y una óptima planificación son la base de todo: nos permiten calcular el volumen, determinar el tipo de vehículo y los materiales de empaque requeridos para una adecuada protección, y programar un viaje seguro, con la ruta optimizada para ajustarnos a los tiempos que usted requiere.",
     includes: [
-      "Inventario detallado y cálculo de volumen",
-      "Embalaje profesional y protección especializada",
-      "Monitoreo del vehículo durante el trayecto",
-      "Condiciones de cargue y descargue planeadas en origen y destino",
-      "Servicio puerta a puerta en todo el país",
-      "Bodegaje en Bogotá si su nuevo espacio aún no está listo",
+      "Visita técnica, videollamada o estimación telefónica para determinar el volumen de su mudanza",
+      "Personal experto y capacitado en manipulación y traslado de muebles, enseres y bienes de alto valor",
+      "Protección adecuada del mobiliario, electrodomésticos y objetos delicados",
+      "Vehículos seguros y adecuados para su traslado",
+      "Opción de bodegaje temporal en Bogotá",
+      "Cobertura de seguro de acuerdo con sus necesidades",
     ],
     steps: [
       {
@@ -206,47 +234,55 @@ export const SERVICES: Service[] = [
         text: "Descargamos y ubicamos todo en su nueva ciudad.",
       },
     ],
+    commitment:
+      "una correcta asesoría para que planifique su nuevo destino; nosotros nos encargamos de acompañarlo durante el proceso.",
   },
   {
     slug: "mudanzas-internacionales",
     icon: "globe-americas",
     title: "Mudanzas internacionales",
     short:
-      "Vía marítima o aérea, desde y hacia Colombia. Te asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
+      "Vía marítima o aérea, desde y hacia Colombia. Lo asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
     quote: "internacional",
     cta: "Hablar con un asesor",
-    image: imgGlobal,
+    image: imgInternacionalPuerto,
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
-      "Una mudanza internacional no se trata igual que una urbana. Primero entiendes el proceso, los requisitos, los tiempos y los costos; después cotizamos. Un asesor especializado te acompaña desde el primer contacto, con el respaldo de más de 2.000 agentes y aliados estratégicos en 176 países.",
+      "Una mudanza internacional no se trata igual que una urbana. Primero entiende el proceso, los requisitos, los tiempos y los costos. Un asesor especializado lo acompaña desde el primer contacto, con el respaldo de más de 2.000 agentes y aliados estratégicos en 176 países.",
     includes: [
-      "Asesoría inicial sobre requisitos de origen y destino",
-      "Modalidad marítima (grandes volúmenes) o aérea (cargas urgentes)",
-      "Gestión documental y aduanera del menaje doméstico",
-      "Guacales de madera y embalaje de exportación",
-      "Coordinación con agentes certificados LACMA, IAM y PAIMA",
-      "Entrega puerta a puerta en el país de destino",
+      "Visita técnica por parte de uno de nuestros coordinadores de empaque",
+      "Asesoría inicial sobre requisitos y normativa de origen y destino",
+      "Presupuesto adaptado al volumen de su mudanza (aéreo o marítimo)",
+      "Orientación sobre requisitos documentales y aduaneros para el traslado de su menaje",
+      "Embalaje tipo exportación con materiales de primera calidad",
+      "Coordinación de procesos en destino a través de nuestros agentes certificados",
+      "Servicio puerta a puerta con entrega en su domicilio final",
     ],
     steps: [
       {
         title: "Perfilamiento",
-        text: "Origen, destino, fecha, motivo del traslado e inventario preliminar.",
+        text: "Conocer el origen, destino y características particulares de su mudanza.",
       },
       {
         title: "Asesoría especializada",
-        text: "Revisamos requisitos, tiempos y costos adicionales contigo.",
+        text: "Le informamos requisitos, tiempos y costos de la operación.",
       },
       {
-        title: "Embalaje de exportación",
-        text: "Inventario, clasificación y protección para el tránsito internacional.",
+        title: "Empaque tipo exportación",
+        text: "Embalaje y protección profesional de su mudanza realizado por expertos.",
       },
       {
-        title: "Tránsito y entrega",
-        text: "Seguimiento hasta que su nuevo hogar está habitable.",
+        title: "Logística y entrega",
+        text: "Programación de envío y entrega en su domicilio final.",
       },
     ],
     note: "Recomendamos iniciar el proceso entre 1 y 2 meses antes de la fecha de empaque.",
+    guide: {
+      eyebrow: "Guía rápida",
+      title: "¡Bienvenido a su nueva aventura!",
+      lead: "Sabemos que una mudanza internacional es el inicio de una gran etapa, y queremos que disfrute el proceso sin preocuparse por la terminología técnica. Para que hablemos el mismo idioma desde el primer día, hemos preparado esta guía rápida con los términos que escuchará durante su traslado. ¡Verá que es más sencillo de lo que parece!",
+    },
     featured: true,
     tags: [
       { icon: "water", label: "Marítima" },
@@ -261,35 +297,34 @@ export const SERVICES: Service[] = [
       "Almacenamiento seguro en Bogotá, por días, meses o mientras se completa su traslado. Infraestructura propia y control de inventario.",
     quote: "bodegaje",
     cta: "Cotizar",
-    image: imgCargador,
+    image: imgBodegajeBodega,
     kicker: "Almacenamiento en Bogotá",
-    headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesites",
+    headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesite",
     intro:
-      "Nuestra infraestructura de bodegaje en Bogotá te permite guardar menaje, mobiliario de oficina o archivo mientras te instalas, remodelas o esperas su fecha de viaje. Puedes contratarlo solo o como parte de su mudanza.",
+      "Nuestra infraestructura de bodegaje en Bogotá le permite guardar menaje, mobiliario de oficina o archivo mientras se instala, remodela o espera su traslado definitivo. Puede contratarlo solo o como parte de su mudanza, por el tiempo que lo requiera.",
     includes: [
       "Bodegas propias en Bogotá",
       "Control de inventario de lo almacenado",
-      "Recogida en su ubicación y entrega cuando lo pidas",
+      "Recogida en su ubicación y entrega cuando lo pida",
       "Embalaje adecuado para almacenamiento prolongado",
-      "Planes por días, meses o largo plazo",
       "Ideal para empresas, expatriados y familias en transición",
     ],
     steps: [
       {
-        title: "Cuéntanos qué guardar",
-        text: "Tipo de bienes, volumen y tiempo estimado.",
+        title: "Qué desea almacenar",
+        text: "Tipo de bienes, tiempo y volumen estimado.",
       },
       {
         title: "Recogemos",
-        text: "Embalamos e inventariamos en su ubicación.",
+        text: "Empacamos e inventariamos todo en su domicilio.",
       },
       {
         title: "Almacenamos",
-        text: "Sus bienes quedan bajo control en nuestras bodegas.",
+        text: "Sus bienes quedan bajo custodia en nuestras instalaciones con vigilancia 24/7.",
       },
       {
         title: "Entregamos",
-        text: "Cuando lo necesites, en la dirección que nos indiques.",
+        text: "Cuando lo necesite, en la dirección que nos indique.",
       },
     ],
   },
@@ -298,37 +333,23 @@ export const SERVICES: Service[] = [
     icon: "easel",
     title: "Embalaje especializado",
     short:
-      "Guacales de madera a la medida, amortiguación de alta densidad y protección para obras de arte, cristalería y mobiliario de alto valor.",
+      "Protección para obras de arte, cristalería e ítems de alto valor, con elaboración de guacales a la medida.",
     quote: "local",
     cta: "Cotizar",
     image: imgGuacales,
-    kicker: "Ingeniería de empaque",
+    kicker: "Obras de arte y objetos de valor",
     headline:
       "Sus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
     intro:
-      "Obras de arte, colecciones, cristalería y mobiliario de diseñador requieren ingeniería de empaque: guacales de madera a la medida para lienzos, amortiguación de impacto de alta densidad y protección contra la humedad en tránsitos largos.",
-    includes: [
-      "Guacales de madera fabricados a la medida",
-      "Amortiguación de impacto de alta densidad",
-      "Protección contra humedad para tránsitos marítimos",
-      "Manejo de pianos y elementos sobredimensionados",
-      "Inventario y rotulado pieza por pieza",
-      "Personal con experiencia en objetos delicados",
-    ],
-    steps: [
-      {
-        title: "Evaluación",
-        text: "Identificamos piezas especiales, medidas y fragilidad.",
-      },
-      {
-        title: "Diseño del empaque",
-        text: "Definimos materiales y guacales para cada pieza.",
-      },
-      { title: "Embalaje", text: "Empacamos, rotulamos e inventariamos." },
-      {
-        title: "Traslado",
-        text: "Manipulación experta hasta el destino final.",
-      },
+      "Obras de arte, colecciones, cristalería y mobiliario de alto valor requieren de una protección especializada, realizada por expertos con materiales de primera calidad, en cumplimiento de normativas internacionales para el cuidado y resguardo de sus objetos más delicados.",
+    photo: { src: imgEmbalajeCuadro, alt: "Embalaje de un cuadro" },
+    reel: [
+      { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
+      { src: imgEmbalajeCarton, caption: "Embalaje de un cuadro" },
+      { src: imgGuacalExportacion, caption: "Guacal de exportación" },
+      { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
+      { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
+      { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
     ],
   },
   {
@@ -336,12 +357,12 @@ export const SERVICES: Service[] = [
     icon: "file-earmark-text",
     title: "Gestión documental y aduanera",
     short:
-      "Acompañamiento en exportación e importación de menaje doméstico, inventarios declarados y requisitos de origen y destino.",
+      "Ofrecemos una orientación clara y oportuna de la documentación y regulación aduanera para llevar a cabo el proceso de su mudanza en cumplimiento de la normativa internacional.",
     quote: "internacional",
     cta: "Cotizar",
-    image: imgInspeccionCanina,
+    image: imgAduanaCajas,
     kicker: "Trámites internacionales",
-    headline: "Asesoría y trámites documentales para el proceso aduanero en cada país",
+    headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
       "Un inventario mal declarado o un permiso omitido puede costar semanas de retraso y sanciones. Te acompañamos con la documentación de exportación e importación de menaje y efectos personales, según la normativa de cada país.",
     includes: [
@@ -381,12 +402,12 @@ export const SEGMENTS = [
     icon: "house-door",
     tab: "Residencial",
     kicker: "Transpack Residencial",
-    title: "Transportamos el hogar, no solo los bienes",
+    title: "Tu mudanza local: Ágil, segura y sin complicaciones",
     text: "",
     points: [
-      "Embalaje, desarme y armado de muebles",
-      "Protección de objetos delicados y de alto valor",
-      "Bodegaje temporal mientras te instalas",
+      "Protección, desarme y armado de muebles",
+      "Empaque y manejo de objetos delicados y de alto valor",
+      "Bodegaje temporal o permanente en nuestras instalaciones",
     ],
     cta: "Cotizar mudanza de hogar",
     quote: "local" as QuoteService,
@@ -399,11 +420,11 @@ export const SEGMENTS = [
     icon: "buildings",
     tab: "Movilidad corporativa",
     kicker: "Transpack Movilidad corporativa",
-    title: "Transpack, un solo operador para trasladar su oficina con talento",
+    title: "Transpack, un equipo profesional para el traslado seguro de su oficina",
     text: "",
     points: [
-      "Ejecutivo de cuenta y operación recurrente",
-      "Reportes, trazabilidad y condiciones corporativas",
+      "Ejecutivo de cuenta para atender sus requerimientos",
+      "Reportes de trazabilidad y condiciones operativas seguras",
     ],
     cta: "Solicitar propuesta corporativa",
     quote: "empresarial" as QuoteService,
@@ -414,34 +435,17 @@ export const SEGMENTS = [
   {
     id: "diplomatic",
     icon: "flag",
-    tab: "Diplomático e institucional",
-    kicker: "Transpack Diplomático e institucional",
+    tab: "Diplomático",
+    kicker: "Transpack Diplomático",
     title: "Discreción, protocolo y precisión para misiones diplomáticas",
     text: "",
     points: [
       "Atención protocolaria y absoluta confidencialidad",
-      "Proceso de registro como proveedor institucional",
-      "Cumplimiento normativo en origen y destino",
+      "Asesoría en normativa aduanera y requisitos en origen y destino",
     ],
     cta: "Contactar al área institucional",
     quote: "internacional" as QuoteService,
     image: imgArteHogar,
-  },
-  {
-    id: "diaspora",
-    icon: "airplane",
-    tab: "Vivir en el exterior",
-    kicker: "Te mudas a otro país o regresas a Colombia",
-    title: "No solo llevamos sus cosas: facilitamos su transición",
-    text: "",
-    points: [
-      "Asesoría sobre requisitos, tiempos y costos antes de empacar",
-      "Elección entre envío marítimo o aéreo según su caso",
-      "Red de agentes y aliados estratégicos que te recibe en el país de destino",
-    ],
-    cta: "Planear mi mudanza internacional",
-    quote: "internacional" as QuoteService,
-    image: imgExterior,
   },
 ];
 
@@ -458,25 +462,19 @@ export const LEVELS = [
   {
     n: "02",
     title: "Protección y empaque",
-    text: "Empacamos sus cajas y protegemos el mobiliario con manipulación profesional.",
-    points: [
-      "Todo lo del nivel básico",
-      "Empaque de cajas",
-      "Protección del mobiliario",
-      "Manipulación profesional",
-    ],
+    text: "Protegemos sus muebles y empacamos sus cajas con un equipo profesional.",
+    points: ["Empaque de cajas", "Protección del mobiliario", "Equipo logístico profesional"],
     value: "Nivel 2 · Protección y empaque",
     featured: true,
   },
   {
     n: "03",
     title: "Servicio integral",
-    text: "Nos encargamos de todo el proceso, de principio a fin, para que tú solo llegues.",
+    text: "Nos encargamos de todo el proceso con una protección tipo internacional y empaque total.",
     points: [
-      "Todo lo del nivel 2",
       "Desarme y armado",
-      "Organización en destino",
-      "Coordinación completa",
+      "Empaque total con materiales de primera calidad",
+      "Desempaque y ubicación de sus muebles en destino",
     ],
     value: "Nivel 3 · Servicio integral",
   },
@@ -485,23 +483,23 @@ export const LEVELS = [
 export const PROCESS = [
   {
     title: "Diagnóstico",
-    text: "Entendemos origen, destino, plazo, inventario y el nivel de servicio que buscas.",
+    text: "Nos informamos del origen, destino, tiempos y nivel de servicio que busca.",
   },
   {
-    title: "Diseño de la solución",
-    text: "Combinamos transporte, embalaje, bodegaje y trámites. Si hace falta, hacemos visita técnica.",
+    title: "Visita técnica",
+    text: "Se realiza una visita técnica para determinar el tipo de embalaje, el volumen y el transporte.",
   },
   {
     title: "Embalaje e inventario",
-    text: "Clasificamos y protegemos cada objeto con materiales adecuados a su valor y fragilidad.",
+    text: "Coordinamos el servicio de empaque con materiales de primera calidad tipo internacional, la recogida y el inventario.",
   },
   {
     title: "Operación y seguimiento",
-    text: "Coordinamos la ruta nacional o internacional y te mantenemos informado.",
+    text: "Coordinamos envío, rutas, tiempos y destino, manteniéndole informado.",
   },
   {
     title: "Entrega puerta a puerta",
-    text: "Terminamos cuando su nuevo espacio está listo para habitar.",
+    text: "Servicio de entrega puerta a puerta coordinado con nuestros agentes aliados en cada país.",
   },
 ];
 
@@ -520,7 +518,7 @@ export const FAQS = [
   },
   {
     q: "¿Necesito una visita técnica para cotizar?",
-    a: "No siempre. Si la información de su inventario y del inmueble es suficiente, podemos darte un estimado. Cuando hay complejidad o riesgo de error (accesos difíciles, objetos especiales, grandes volúmenes), recomendamos una visita o videollamada.",
+    a: "Con un inventario podemos darle un estimado; sin embargo, cuando hay complejidad por accesos difíciles o artículos sobredimensionados, recomendamos realizar una visita técnica.",
   },
   {
     q: "¿Por qué es tan importante el inventario?",
@@ -632,7 +630,7 @@ export const PRIVACY = {
         "WhatsApp: si eliges enviar tu solicitud por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta).",
         "En tu navegador: tu decisión sobre cookies se guarda solo en tu navegador (almacenamiento local) y nunca se envía a Transpack. Puedes borrarla cuando quieras borrando los datos de este sitio en tu navegador.",
         "Chat con un asesor: el chat del sitio funciona con Zoho SalesIQ, la herramienta de chat de nuestro CRM, que actúa como encargado del tratamiento. Si aceptas las cookies en el aviso, Zoho se carga en segundo plano al entrar al sitio para que el chat abra al instante; si no las aceptas, se carga solo cuando abres el chat. Desde que se carga, recibe datos técnicos de la visita (páginas vistas, ubicación aproximada, navegador y dispositivo). Lo que escribas en el chat se guarda en los servidores de Zoho, que pueden estar fuera de Colombia, y en nuestro CRM.",
-        "Fotos del mapa: al tocar un país en el mapa de la portada, tu navegador carga la foto de su capital directamente desde Wikimedia Commons, que recibe los datos técnicos de esa petición (dirección IP y navegador). No le enviamos ningún otro dato tuyo.",
+        "Fotos del mapa: las fotos del mapa de la portada (las de Bogotá con que empieza y la de cada lugar que tocas) las carga tu navegador directamente desde Wikimedia Commons, que recibe los datos técnicos de esa petición (dirección IP y navegador). No le enviamos ningún otro dato tuyo.",
         "Conservación: guardamos las solicitudes que recibimos durante el tiempo necesario para atenderlas y prestar el servicio, y después el que exijan las normas contables, tributarias y legales.",
       ],
     },

@@ -19,13 +19,11 @@ publica en Vercel.
 - `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos),
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada) y
   `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas nacionales)
-- `pnpm videos` — regenera `src/data/youtubeVideos.ts` (videos y Shorts del canal de
-  YouTube para "Experiencias Transpack"; necesita internet). Córralo cuando el canal publique
 - `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
   inicio del mapa, de la capa oficial de Datos Abiertos Bogotá/IDECA, CC BY 4.0, con su
   crédito en el mapa; necesita internet)
 - `pnpm fotos` — regenera `src/data/countryPhotos.ts` (foto de la capital de cada destino
-  del mapa, desde Wikidata y Wikimedia Commons; necesita internet) y la hoja para que el
+  del mapa, desde Wikidata y Wikimedia Commons, y `src/data/sectorPhotos.ts`, el carrusel del inicio; necesita internet) y la hoja para que el
   cliente las apruebe (`RecursosTranspack/fotos-paises.html`). No descarga imágenes:
   guarda solo enlaces, autor y licencia. Córralo si cambian los destinos del mapa
 - `pnpm format` — formatea con oxfmt
@@ -54,7 +52,6 @@ src/
 │   ├── ServiceDetailPage.tsx   "/servicios/:slug"
 │   ├── ArticlePage.tsx         "/blog/:slug"
 │   ├── PrivacyPage.tsx         "/privacidad" (texto en PRIVACY de site.ts)
-│   ├── VideosPage.tsx          "/videos": Experiencias Transpack (todos los videos del canal)
 │   └── NotFoundPage.tsx        404
 ├── components/
 │   ├── layout/             Layout (cabecera + contenido + pie + chat), SeoHead,
@@ -70,7 +67,6 @@ src/
 │   │                       (Globe, con CountryCard al tocar un país), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
 │   ├── services/           ColombiaRoutesMap (mapa animado de Mudanzas nacionales)
-│   ├── videos/             VideoCard (tarjeta de video de Experiencias Transpack)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -91,9 +87,9 @@ src/
 │   ├── meta.ts             Títulos, descripciones y migas de cada página por idioma (SEO)
 │   ├── consent.ts          Textos del aviso de cookies
 │   ├── contact.ts          Formulario de contacto: motivos, textos y contactHref()
-│   ├── clientLogos.ts      Logos de clientes
-│   ├── youtubeVideos.ts    Videos y Shorts del canal (GENERADO con `pnpm videos`, no editar a mano)
+│   ├── clientLogos.ts      Logos de clientes y banderas de las embajadas (franja del inicio y Nosotros)
 │   ├── countryPhotos.ts    Foto de la capital de cada destino del mapa (GENERADO con `pnpm fotos`, no editar a mano)
+│   ├── sectorPhotos.ts     Carrusel con que empieza el mapa: sectores exclusivos de Bogotá (GENERADO con `pnpm fotos`)
 │   ├── bogotaMap.ts        Localidades de Bogotá (GENERADO con `pnpm map:bogota`, no editar a mano)
 │   ├── worldMap.ts         Bogotá y destinos con longitud y latitud (GENERADO con `pnpm map`, no editar a mano)
 │   ├── worldGlobe.ts       Puntos de tierra del globo (GENERADO con `pnpm map`; se carga aparte con import())
@@ -118,7 +114,7 @@ src/
 api/contact.mjs              Función de Vercel: formularios → Brevo → correo (docs/formularios.md)
 public/                     Archivos servidos tal cual (favicon, brand/logo.png, brand/og-image.jpg y
                             chat-asesor.html: página aislada donde vive Zoho, con su propia CSP)
-scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-youtube-videos.mjs (pnpm videos), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
+scripts/                    generate-world-map.mjs y generate-colombia-map.mjs (pnpm map), generate-bogota-map.mjs (pnpm map:bogota), fetch-country-photos.mjs (pnpm fotos), prerender.mjs (HTML por ruta, sitemap,
                             robots), generate-email-header.mjs (banner de los correos), brevo-events.mjs
                             (diagnóstico de envíos)
 docs/                       chat-crm.md, conversion-y-analitica.md, formularios.md y seo.md
@@ -205,9 +201,17 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   desde que la barra se ve en pantalla, y al pasar el cursor cada una se
   levanta con sombra y franja naranja, como los logos de clientes. El HTML
   pre-generado y los lectores de pantalla llevan el valor completo.
-- Embajadas atendidas: las 10 de `EMBASSIES`. En el mapa, solo esos destinos
+- Embajadas atendidas: las 10 de `EMBASSIES`. En el inicio van en su propia
+  cuadrícula, debajo de los logos de clientes, con su **logo** en grises (a
+  color al pasar el cursor) y su nombre al lado ("Embajada de …";
+  `EMBASSY_LOGOS`, pedido del cliente en noviembre de 2026): el de la Embajada de Francia en Colombia y, para
+  las demás, el de su cancillería o gobierno o el emblema nacional (fuentes en
+  `src/assets/images/clientes/embajadas/FUENTES.txt`). Son emblemas oficiales: el
+  cliente debe confirmar que puede usarlos. En Nosotros siguen con su bandera
+  (`EMBASSY_FLAGS`). Al agregar una embajada, agregue su logo y su bandera en
+  `src/data/clientLogos.ts`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
-  (Suramérica, África y Asia excepto Irán y Rusia), definidos en
+  (Suramérica, África, Asia excepto Irán y Rusia, y Oceanía), definidos en
   `scripts/generate-world-map.mjs`.
 - Política de datos (`PRIVACY` en `src/data/site.ts` y sus traducciones, página
   `/privacidad`): es un borrador pendiente de aprobación legal. El NIT
@@ -216,8 +220,19 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   política en español e inglés. La versión en español es la oficial.
 - El cotizador **no calcula precios** (la Lógica de Cotización no los define):
   perfila la solicitud y la envía por WhatsApp o correo.
-- Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez
-  de "Diáspora"). Trato de "tú".
+- Menús (noviembre de 2026, revisión del cliente): sin menú "Cobertura" (la sección
+  azul del inicio sigue) y sin la página "Maestría Transpack" (`/videos` y
+  `/en/videos` redirigen al inicio en `vercel.json`); los Shorts del inicio siguen.
+  Del blog se retiró el artículo "Elegancia en tránsito" (premium): el cliente dijo
+  que sus términos no eran correctos. Su URL redirige al blog del inicio.
+- Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
+  de "diáspora").
+- Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje y gestión
+  aduanera; `SERVICES` en `src/data/site.ts`) y en los textos del inicio que el
+  cliente corrigió (soluciones, niveles, cotizador, proceso). Pedido del cliente,
+  noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
+  sección.
 
 ## Diseño
 
@@ -235,16 +250,16 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   para no abrir huecos entre palabras; los centrados, `text-center`. Los
   párrafos del header (megamenús, panel de soporte) van siempre a la izquierda
   (regla `header p`).
-- Clientes del inicio (`Hero`): lista fija con todos los logos (ya no carrusel):
-  en gris; al pasar el cursor, el logo toma sus colores y su ficha se levanta
-  con sombra y la franja naranja.
+- Clientes y embajadas del inicio (`Hero`): dos cuadrículas fijas con todos
+  los logos (ya no carrusel): en gris; al pasar el cursor, el logo toma sus
+  colores y su ficha se levanta con sombra y la franja naranja.
 - **Fondo general de la página totalmente blanco** (pedido del cliente, octubre
   de 2026): sin franjas grises entre secciones ni manchas beige o naranja en la
   portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
-  política, Experiencias Transpack, 404) el texto de `PageHero` va sobre blanco y la
+  política, 404) el texto de `PageHero` va sobre blanco y la
   cabecera usa siempre letras oscuras. **Efecto de velocidad en las fotos**
   (noviembre de 2026, en vez de la franja naranja diagonal que separaba foto y
   texto): `SpeedFrame` (`src/components/ui/SpeedFrame.tsx`) da a la foto, hacia
@@ -257,21 +272,36 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;
-  negro pedido en noviembre de 2026), con Colombia y las rutas en naranja
-  y Estados Unidos en naranja claro (pedido del cliente). Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
-  1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): la foto `imagen-transpack-inicio2.jpg` completa → se cierra
-  en un círculo con **Bogotá y sus 20 localidades** (unos 7 s, sin rutas; se pueden
-  tocar) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
-  capitales de departamento (`CITIES`, unos 8 s) → por continente
+  negro pedido en noviembre de 2026), con Colombia en `#1800AD` (`--color-resaltado`;
+  antes naranja, cambio pedido en noviembre de 2026), Estados Unidos en un tono más claro
+  del mismo color, las localidades de Bogotá con los colores de Colombia en la
+  vista nacional (tono claro de ese color con bordes en el color pleno), sin globo
+  alrededor (elegido por el cliente en noviembre de 2026; la que se
+  toca o está bajo el puntero, en naranja), y
+  las rutas y puntos en naranja. Historia en bucle (desde noviembre de 2026 empieza en Bogotá; velocidad
+  1,6 / 1,2 / 1,5 ≈ 0,89× en `useGlobe`; en noviembre de 2026 se hizo un 50 % más lenta): un **carrusel de fotos de los sectores exclusivos de Bogotá** (El Nogal, Hacienda Santa Bárbara en Usaquén, la Séptima con 94, El Refugio y el Parque de la 93; 2 s cada una, con su nombre y crédito; reemplazó la foto de la casa a pedido del cliente, noviembre de 2026, para mostrar los sectores de estratos 5 y 6 de sus clientes; `SECTORS` en `scripts/fetch-country-photos.mjs` → `src/data/sectorPhotos.ts`, cargadas desde Wikimedia como las demás) → la última se cierra
+  en **Bogotá y sus 20 localidades** (unos 15 s, pedido del cliente en noviembre de 2026; se pueden tocar; tres camiones iguales al de Mudanzas
+  nacionales salen de Puente Aranda, la sede, uno tras otro, y entre los tres pasan, despacio, por todas
+  menos Sumapaz, que queda fuera del mapa, con una estela naranja que se desvanece; frenan un momento en
+  cada una, que se oscurece poco a poco con una onda azul. Cada camión termina, en un momento distinto,
+  en una de las de clientes exclusivos, estratos 5 y 6 (Usaquén, Chapinero y Suba, `FINE`): se detiene
+  más, la localidad se pone naranja con el aviso "Zona exclusiva" y queda en naranja suave con una
+  estrella junto al nombre. Rutas y tiempos en `TRUCK_ROUTES` de `src/lib/globe.ts`, pedido del cliente
+  en noviembre de 2026; solo las
+  localidades sobre el fondo de la página, sin el globo, y el sur rural se desvanece
+  hacia abajo: pedido del cliente, noviembre de 2026) → la cámara se aleja hasta Colombia de cerca y rutas desde Bogotá a las principales
+  capitales de departamento (`CITIES`, unos 4 s) → por continente
   (América con toda Latinoamérica; Europa con sus 10 países principales, el resto
-  solo sombreado; África y Asia), todas las rutas con el mismo estilo → globo
-  girando con todos los destinos → vuelve la foto. Ciudades y destinos: `scripts/generate-world-map.mjs`
+  solo sombreado; África, Asia y Oceanía con Australia y Nueva Zelanda, pedido del cliente
+  en noviembre de 2026, el resto de Oceanía solo sombreado), todas las rutas con el mismo estilo; en Colombia y en cada
+  continente, 2 s de pausa antes de pasar al siguiente (pedido del cliente, noviembre de 2026) → globo
+  girando con todos los destinos → vuelve la primera foto del carrusel. Ciudades y destinos: `scripts/generate-world-map.mjs`
   (`pnpm map`); nombres de capitales en `mapText` de `src/data/home.ts`. Lógica y
   dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa fuera
   de pantalla; mapa fijo con movimiento reducido).
 - Al tocar un país del mapa (o, al inicio, una localidad de Bogotá, o durante la
   parte de Colombia, una de sus ciudades)
-  la animación se detiene y `CountryCard` muestra la foto de su capital (o de la
+  la animación se detiene y `CountryCard` muestra la foto de su sitio más representativo (el monumento de la capital, de la ciudad o de la localidad: Torre Eiffel, Coliseo, Monserrate, TransMiCable…; elegidas a mano en `OVERRIDES` de `scripts/fetch-country-photos.mjs`, pedido del cliente en noviembre de 2026; las que no están ahí usan la foto automática de su capital) (o de la
   ciudad), con autor y licencia (lo exige la licencia). Las fotos **no están
   en el proyecto** (así lo pidió el equipo, noviembre de 2026): se cargan desde
   `thumb.wikimedia.org` y `upload.wikimedia.org` (las ya pequeñas), los únicos
@@ -283,10 +313,14 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   redes), un **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG):
   silueta exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la
   portada y carreteras que pasan por los pueblos reales de cada troncal
-  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Misma estética del globo:
-  Colombia y rutas en naranja, puntos en tinta, Bogotá en naranja. Un solo
+  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Misma estética del globo
+  (el cliente pidió en noviembre de 2026 que resaltara más): el mapa va en un
+  círculo sobre fondo blanco, con el mar gris claro, sombra suave, los países
+  vecinos en negro carbón, Colombia en un tono claro de `#1800AD` con borde pleno y las
+  carreteras en gris oscuro; puntos en tinta, Bogotá en naranja. Un solo
   camión azul y blanco (visto desde arriba, para girar suave en las curvas sin
-  voltearse) viaja de la ciudad donde está a otra por el camino más corto,
+  voltearse) viaja de la ciudad donde está a otra por el camino más corto (al azar, pero
+  sin volver a una de sus últimas 6 ciudades, `RECENT`, para que recorra todo el país),
   dejando una estela naranja gruesa, con resplandor y un brillo blanco que la
   recorre; origen (casa azul) y destino (casa naranja) llevan un marcador.
   Animaciones del viaje (`.map-*` en `src/styles/index.css`): la casa del

@@ -34,11 +34,10 @@ export function ShortCard({
           className="absolute inset-0 h-full w-full border-0"
         />
       ) : (
-        <button
-          onClick={() => setPlaying(true)}
-          className="absolute inset-0 text-start"
-          aria-label={`${playLabel}: ${title}`}
-        >
+        <button onClick={() => setPlaying(true)} className="absolute inset-0 text-start">
+          {/* Sin aria-label: el nombre accesible es el texto visible, con la acción
+              delante (label-content-name-mismatch) */}
+          <span className="sr-only">{playLabel}: </span>
           <img
             decoding="async"
             src={`https://i.ytimg.com/vi/${id}/oar2.jpg`}

@@ -9,7 +9,7 @@ export const WORLD = {
     countries: {
       type: "GeometryCollection",
       geometries: [
-        { type: "MultiPolygon", arcs: [[[0]], [[1]]], id: "242", properties: { z: 0 } },
+        { type: "MultiPolygon", arcs: [[[0]], [[1]]], id: "242", properties: { z: 1 } },
         { type: "Polygon", arcs: [[2, 3, 4, 5, 6, 7, 8, 9, 10]], id: "834", properties: { z: 1 } },
         { type: "Polygon", arcs: [[11, 12, 13, 14]], id: "732", properties: { z: 1 } },
         {
@@ -72,7 +72,7 @@ export const WORLD = {
           type: "MultiPolygon",
           arcs: [[[70, 71]], [[72]], [[73]], [[74]]],
           id: "598",
-          properties: { z: 0 },
+          properties: { z: 1 },
         },
         {
           type: "MultiPolygon",
@@ -342,7 +342,7 @@ export const WORLD = {
           id: "512",
           properties: { z: 1 },
         },
-        { type: "MultiPolygon", arcs: [[[366]], [[367]]], id: "548", properties: { z: 0 } },
+        { type: "MultiPolygon", arcs: [[[366]], [[367]]], id: "548", properties: { z: 1 } },
         { type: "Polygon", arcs: [[368, 369, 370, 371]], id: "116", properties: { z: 1 } },
         {
           type: "Polygon",
@@ -472,15 +472,15 @@ export const WORLD = {
         { type: "Polygon", arcs: [[504, 505]], id: "620", properties: { z: 1 } },
         { type: "Polygon", arcs: [[-505, 506, -242, 507]], id: "724", properties: { z: 1 } },
         { type: "Polygon", arcs: [[508, 509]], id: "372", properties: { z: 1 } },
-        { type: "Polygon", arcs: [[510]], id: "540", properties: { z: 0 } },
+        { type: "Polygon", arcs: [[510]], id: "540", properties: { z: 1 } },
         {
           type: "MultiPolygon",
           arcs: [[[511]], [[512]], [[513]], [[514]], [[515]]],
           id: "090",
-          properties: { z: 0 },
+          properties: { z: 1 },
         },
-        { type: "MultiPolygon", arcs: [[[516]], [[517]]], id: "554", properties: { z: 0 } },
-        { type: "MultiPolygon", arcs: [[[518]], [[519]]], id: "036", properties: { z: 0 } },
+        { type: "MultiPolygon", arcs: [[[516]], [[517]]], id: "554", properties: { z: 1 } },
+        { type: "MultiPolygon", arcs: [[[518]], [[519]]], id: "036", properties: { z: 1 } },
         { type: "Polygon", arcs: [[520]], id: "144", properties: { z: 1 } },
         {
           type: "MultiPolygon",

@@ -74,10 +74,10 @@ export const aboutTimeline = (tr: Tr) => [
     ),
   },
   {
-    year: tr("Rigor diplomático", "Diplomatic Rigor"),
+    year: tr("Experiencia diplomática", "Diplomatic Experience"),
     text: tr(
-      "Fuimos elegidos por embajadas e instituciones para gestionar traslados con precisión y confidencialidad.",
-      "We were chosen by embassies and institutions to handle moves with precision and confidentiality.",
+      "Hemos sido elegidos por embajadas y organizaciones internacionales para gestionar traslados con precisión y confidencialidad.",
+      "We have been chosen by embassies and international organizations to handle moves with precision and confidentiality.",
     ),
   },
   {
@@ -100,23 +100,23 @@ export const aboutText = (tr: Tr) => ({
   certificationsList: "LACMA · IAM · PAIMA",
   quienesSomos: tr("Quiénes somos", "About us"),
   masCincoDecadasMoviendo: tr("Más de cinco décadas moviendo", "More than five decades moving"),
-  masQuieres: tr("lo que más quieres", "what you love most"),
+  masQuieres: tr("lo que más te importa", "what matters most to you"),
   somosOrganizacionConsolidadaDesde: tr(
-    "Somos una organización consolidada desde 1968, especializada en trasteos locales, mudanzas nacionales e internacionales y bodegaje, con alta calidad en embalaje y traslados a cualquier parte de Colombia y el mundo.",
-    "We are an established company founded in 1968, specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world.",
+    "Transpack surgió en 1968 como una compañía especializada en trasteos locales, mudanzas nacionales e internacionales y bodegaje, con alta calidad en embalaje y traslados a cualquier parte de Colombia y el mundo.",
+    "Transpack was founded in 1968 as a company specialized in local, national and international moving and storage, with high-quality packing and moves to anywhere in Colombia and the world.",
   ),
   nuestraHistoria: tr("Nuestra historia", "Our story"),
   redOperativaGlobalNo: tr(
-    "Una red operativa global que no se improvisa",
-    "A global operating network you can't improvise",
+    "Una logística global no se improvisa",
+    "Global logistics can't be improvised",
   ),
   nuestraHistoriaEmpezoHace: tr(
     "Durante 58 años, en Transpack SAS hemos acompañado a familias, ejecutivos y organizaciones en sus procesos de mudanza y reubicación internacional. Iniciamos nuestra trayectoria en una época en la que el comercio internacional era más lento, manual y enfrentaba mayores incertidumbres logísticas; desde entonces, hemos convertido esa experiencia en conocimiento, capacidad operativa y confianza.",
     "For 58 years, Transpack SAS has supported families, executives and organizations through their moves and international relocations. We began our journey at a time when international trade was slower and more manual, and faced greater logistical uncertainty; since then, we have turned that experience into knowledge, operating capacity and trust.",
   ),
   hoyEsaRedNos: tr(
-    "Con el paso de las décadas, hemos consolidado una red de más de 2.000 agentes internacionales en 176 países y desarrollado soluciones de transporte marítimo y aéreo para cada tipo de traslado. Esta cobertura nos permite conectar a Colombia con destinos en Estados Unidos, Canadá, la Unión Europea, Asia y Latinoamérica, adaptándonos a los volúmenes, los tiempos y las necesidades de cada cliente.",
-    "Over the decades, we have built a network of more than 2,000 international agents in 176 countries and developed sea and air transport solutions for every type of move. This coverage lets us connect Colombia with destinations in the United States, Canada, the European Union, Asia and Latin America, adapting to each client's volumes, timelines and needs.",
+    "Hemos establecido alianzas estratégicas con más de 2.000 agentes internacionales en 176 países, ofreciendo soluciones de transporte marítimo y aéreo para cada tipo de traslado. Esta cobertura nos permite conectar a Colombia con destinos en Estados Unidos, Canadá, la Unión Europea, Asia y Latinoamérica, adaptándonos a los volúmenes, los tiempos y las necesidades de cada cliente.",
+    "We have established strategic alliances with more than 2,000 international agents in 176 countries, offering sea and air transport solutions for every type of move. This coverage lets us connect Colombia with destinations in the United States, Canada, the European Union, Asia and Latin America, adapting to each client's volumes, timelines and needs.",
   ),
   hoyAcompanamos: tr(
     "Hoy acompañamos a clientes particulares, multinacionales, embajadas e instituciones que encuentran en nosotros un aliado para sus operaciones más exigentes. Cada reubicación refleja nuestro compromiso con la seguridad, la precisión, la trazabilidad, la puntualidad y la confidencialidad, principios con los que continuamos construyendo nuestra historia y conectando personas y organizaciones con el mundo.",

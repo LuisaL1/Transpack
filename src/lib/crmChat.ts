@@ -15,11 +15,15 @@
 //   ADVISOR_START_ACTION (se configura en Zoho), solo con la conversación vacía.
 // · Diseño: src/styles/zoho-chat.css (adentro de la ventana; su copia para subir
 //   a Zoho es public/zoho-salesiq.css) y src/styles/zoho-host.css.
+// · Mientras Zoho no asigna quién responde, muestra un responsable genérico
+//   ("Operador", con su ícono): el sitio lo cambia por Joelito y su foto
+//   (renameOperator; en SalesIQ no hay opción para cambiarlo).
 // · Solo en español. El código del widget no es secreto.
 // Documentación: docs/chat-crm.md.
 import chatCss from "@/styles/zoho-chat.css?raw";
 import hostCss from "@/styles/zoho-host.css?raw";
 import { CHAT_LEAD_EVENT, CRM_CHAT_EVENT } from "@/lib/advisorEvents";
+import { NAME } from "@/data/chat";
 
 /** Código del widget de SalesIQ (Zoho → Configuración → Canales → Sitio web) */
 export const SALESIQ_WIDGET = "siq8d38e38af4540824c78096b7725bb11aa5c42288eecc3028007e86bb9e4360dc";
@@ -115,7 +119,40 @@ export function styleChatWindow(): boolean {
     style.textContent = chatCss;
     doc.head.appendChild(style);
   }
+  renameOperator(doc);
   return true;
+}
+
+/** Nombres genéricos que pone Zoho antes de asignar quién responde */
+const GENERIC = new Set(["Operador", "Operator"]);
+
+/** Cambia el responsable genérico de Zoho ("Operador") por Joelito, y su ícono
+ *  por la foto (clase tp-joel, zoho-chat.css). Solo el ícono junto a ese nombre:
+ *  si responde un asesor real, se respeta su nombre y su foto. */
+function renameOperator(doc: Document) {
+  const fix = () => {
+    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+    const hits: Text[] = [];
+    for (let n = walker.nextNode(); n; n = walker.nextNode())
+      if (GENERIC.has(n.nodeValue?.trim() ?? "")) hits.push(n as Text);
+    for (const n of hits) {
+      n.nodeValue = n.nodeValue!.replace(/\S+/, NAME);
+      // El ícono genérico más cercano (mismo mensaje o cabecera)
+      let el = n.parentElement;
+      for (let i = 0; el && i < 6; i++, el = el.parentElement) {
+        const icon = el.querySelector(".siqico-user-logo");
+        if (icon) {
+          icon.classList.add("tp-joel");
+          break;
+        }
+      }
+    }
+  };
+  fix();
+  const body = doc.body as HTMLElement & { tpRenameWatch?: boolean };
+  if (body.tpRenameWatch) return;
+  body.tpRenameWatch = true;
+  new MutationObserver(fix).observe(body, { childList: true, subtree: true, characterData: true });
 }
 
 /** Espera a que Zoho cree la ventana para darle el diseño del sitio. */

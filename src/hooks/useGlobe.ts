@@ -8,15 +8,16 @@ import { trackEvent } from "@/lib/analytics";
 export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number; h: number };
 
 /**
- * Anima el mapa de la portada: la foto (photoRef) y el mapa en un <canvas>
+ * Anima el mapa de la portada: el carrusel de fotos (photoRef) y el mapa en un <canvas>
  * (canvasRef). El dibujo y la historia están en src/lib/globe.ts, que se carga
  * aparte (import()) con d3-geo y las siluetas de los países; mientras tanto, y
- * en el HTML pre-generado, se ve la foto. Se pausa fuera de pantalla y con la
+ * en el HTML pre-generado, se ve la primera foto. Se pausa fuera de pantalla y con la
  * pestaña oculta. Con movimiento reducido queda el mapa fijo.
  *
  * Al tocar un país, una ciudad de Colombia o una localidad de Bogotá, la
  * animación se detiene y `picked`
  * trae el lugar y su foto (CountryCard); `close` la cierra y la animación sigue.
+ * Con el mouse encima del mapa también se detiene.
  */
 export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,14 +48,18 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     let time = 0;
     let onScreen = true;
     let paused = false;
+    // Con el mouse encima del mapa la animación se detiene (pedido del cliente,
+    // nov. 2026); en pantallas táctiles no, porque no hay "encima"
+    let hovering = false;
     let dpr = 1;
     let cancelled = false;
     let hits: Hit[] = [];
+    let hovered: string | undefined;
 
     const draw = () => {
       if (!globe) return;
       const s = still ? globe.stillScene() : globe.scene(time);
-      hits = globe.drawGlobe(ctx, s, time, labelsRef.current, dpr);
+      hits = globe.drawGlobe(ctx, s, time, { ...labelsRef.current, hovered }, dpr);
       // La foto se cierra en el círculo del mapa: de cubrir todo a su radio
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -62,6 +67,14 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       const r = full + (globe.lensRadius(w, h) - full) * s.morph;
       photo.style.clipPath = `circle(${r}px at 50% 50%)`;
       photo.style.opacity = String(s.photo);
+      // Carrusel: la foto actual y, al final de su turno, la siguiente encima
+      const k = Math.floor(s.slide);
+      const next = Math.min(Math.max((s.slide - k - 0.8) / 0.2, 0), 1);
+      [...photo.children].forEach((el, i) => {
+        (el as HTMLElement).style.opacity = String(
+          i === k ? 1 : i === k + 1 ? next * next * (3 - 2 * next) : 0,
+        );
+      });
       // La foto se ve completa y quieta; al dar paso al mapa se acerca, como si
       // la cámara entrara en el círculo
       const entering = time % globe.LOOP < globe.LOOP / 2;
@@ -83,7 +96,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     const play = () => {
       cancelAnimationFrame(raf);
       last = 0;
-      if (!still && !paused && globe && onScreen && !document.hidden)
+      if (!still && !paused && !hovering && globe && onScreen && !document.hidden)
         raf = requestAnimationFrame(tick);
     };
     resumeRef.current = () => {
@@ -109,7 +122,15 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       return best ?? globe?.localityAt(x, y) ?? null;
     };
     const onMove = (e: PointerEvent) => {
-      canvas.style.cursor = hitAt(e) ? "pointer" : "";
+      const hit = hitAt(e);
+      canvas.style.cursor = hit ? "pointer" : "";
+      // La localidad bajo el puntero se ilumina (con la animación detenida, se
+      // vuelve a dibujar)
+      const name = hit?.kind === "locality" ? hit.place.name : undefined;
+      if (name !== hovered) {
+        hovered = name;
+        if (paused || still) requestAnimationFrame(draw);
+      }
     };
     const onClick = (e: MouseEvent) => {
       const hit = globe && hitAt(e);
@@ -147,6 +168,25 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     io.observe(canvas);
     document.addEventListener("visibilitychange", play);
     canvas.addEventListener("pointermove", onMove);
+    const onLeave = () => {
+      hovered = undefined;
+      if (paused || still) requestAnimationFrame(draw);
+    };
+    canvas.addEventListener("pointerleave", onLeave);
+    // Sobre todo el mapa, incluida la tarjeta de un lugar
+    const root = canvas.parentElement ?? canvas;
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      hovering = true;
+      play();
+    };
+    const onExit = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      hovering = false;
+      play();
+    };
+    root.addEventListener("pointerenter", onEnter);
+    root.addEventListener("pointerleave", onExit);
     canvas.addEventListener("click", onClick);
 
     import("@/lib/globe").then((m) => {
@@ -163,6 +203,9 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       io.disconnect();
       document.removeEventListener("visibilitychange", play);
       canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("pointerenter", onEnter);
+      root.removeEventListener("pointerleave", onExit);
       canvas.removeEventListener("click", onClick);
     };
   }, []);

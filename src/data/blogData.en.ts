@@ -1,7 +1,6 @@
 // English version of the blog articles (blogData.ts). The slug stays in Spanish
 // as an internal id; the English URL comes from the i18n slug map.
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgGuacales from "@/assets/images/guacales.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
 import type { Post } from "@/data/blogData";
 
@@ -107,71 +106,6 @@ export const blogPosts: Post[] = [
       {
         t: "p",
         text: "An international move should never feel improvised, especially when it comes to protecting important belongings and starting a new chapter of your life. At Transpack we handle national and international moves with organized processes, specialized packing and personal advice, so you can move with experience, confidence and professional support.",
-      },
-    ],
-  },
-  {
-    slug: "elegancia-en-transito-seguridad-mudanzas-internacionales-premium",
-    title: "Elegance in transit: the science of security in premium international moves",
-    cat: "Premium",
-    cover: imgGuacales,
-    excerpt:
-      "For corporate leaders, diplomats and high-profile families, protecting their assets and their peace of mind is non-negotiable. These are the 5 pillars of a seamless transition.",
-    cta: "Talk to a consultant",
-    blocks: [
-      {
-        t: "p",
-        text: "Settling in a new global destination is a milestone of growth. Yet for corporate leaders, diplomats and high-profile families, an international move is not simply a matter of transport: it is a critical transition where the security of their assets, time management and peace of mind are non-negotiable.",
-      },
-      {
-        t: "p",
-        text: "When artwork, designer furniture and private collections must cross borders, improvisation is the greatest risk. True peace of mind comes from entrusting the process to a firm with the structural backing to handle any eventuality.",
-      },
-      { t: "h2", text: "The 5 pillars of a seamless global transition" },
-      {
-        t: "ul",
-        items: [
-          {
-            b: "Specialized technical packing.",
-            t: "High-value pieces require packing engineering: custom wooden crates for canvases, high-density impact cushioning and moisture control for sea transit, or optimal protection for air freight.",
-          },
-          {
-            b: "Rigorous customs compliance.",
-            t: "A poorly declared inventory or a missing port permit can cost weeks of delay and financial penalties. It must be handled by experts who master the legislation at origin and destination.",
-          },
-          {
-            b: "Traceability and active control.",
-            t: "Premium clients expect visibility into the status of their shipment and proactive communication that removes uncertainty during transit.",
-          },
-          {
-            b: "International guarantees and certifications.",
-            t: "Endorsement from LACMA (Latin American & Caribbean Movers Association), IAM (International Association of Movers) and PAIMA (Pan American International Movers Association) ensures the agent network at destination works to the same standards as at origin.",
-          },
-          {
-            b: "Lifestyle continuity.",
-            t: "The service must be strictly door to door. The move ends only when the new home is ready to live in, with the furniture assembled and placed with the same care it was packed with.",
-          },
-        ],
-      },
-      {
-        t: "h2",
-        text: "Transpack S.A.S.: more than half a century of logistics excellence in Colombia",
-      },
-      {
-        t: "p",
-        text: "With more than half a century of experience, Transpack S.A.S. has become the strategic partner for relocating multinationals, embassies and key accounts. Our offer combines:",
-      },
-      {
-        t: "ul",
-        items: [
-          "Premium packing engineering adapted to high-value assets.",
-          "Comprehensive customs advice for smooth exports and imports.",
-          "Certified global backing from LACMA, IAM and PAIMA.",
-        ],
-      },
-      {
-        t: "p",
-        text: "For those whose assets' security is non-negotiable, Transpack S.A.S. is the guarantee of a transition without borders. Let our experts design an international moving strategy tailored to your corporate and family requirements.",
       },
     ],
   },

@@ -12,7 +12,6 @@ for (const route of [
   "/",
   "/nosotros",
   "/privacidad",
-  "/videos",
   "/servicios/mudanzas-internacionales",
   // Mapa animado de rutas (ColombiaRoutesMap)
   "/servicios/mudanzas-nacionales",

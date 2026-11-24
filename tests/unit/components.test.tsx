@@ -4,8 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { QuoteWizard } from "@/components/home/QuoteWizard";
 import { Segments } from "@/components/home/Segments";
-import { ShortsGrid } from "@/components/videos/ShortsGrid";
-import { CHANNEL_SHORTS } from "@/data/youtubeVideos";
 
 describe("Cotizador", () => {
   it("al elegir el servicio pasa al paso 2 con los campos de ese servicio", async () => {
@@ -47,7 +45,7 @@ describe("Soluciones por segmento", () => {
       </MemoryRouter>,
     );
     const tabs = screen.getAllByRole("tab");
-    expect(tabs.length).toBe(4);
+    expect(tabs.length).toBe(3);
     await userEvent.click(screen.getByRole("tab", { name: /Movilidad corporativa/ }));
     expect(screen.getByRole("tab", { name: /Movilidad corporativa/ })).toHaveAttribute(
       "aria-selected",
@@ -57,29 +55,5 @@ describe("Soluciones por segmento", () => {
       "href",
       "/?servicio=empresarial#cotizar",
     );
-  });
-});
-
-describe("Experiencias Transpack", () => {
-  it("muestra una fila de Shorts y «Ver más» despliega el resto", async () => {
-    render(
-      <MemoryRouter>
-        <ShortsGrid
-          shorts={CHANNEL_SHORTS}
-          playLabel="Reproducir"
-          watchLabel="Ver"
-          shortLabel="Short"
-        />
-      </MemoryRouter>,
-    );
-    // Todos van en el HTML; fuera de la primera fila, escondidos
-    const shown = () =>
-      screen.getAllByRole("article").filter((a) => !/(^| )hidden( |$)/.test(a.className)).length;
-    expect(screen.getAllByRole("article")).toHaveLength(CHANNEL_SHORTS.length);
-    expect(shown()).toBe(2);
-    await userEvent.click(screen.getByRole("button", { name: /Ver más Shorts/ }));
-    expect(shown()).toBe(CHANNEL_SHORTS.length);
-    await userEvent.click(screen.getByRole("button", { name: "Ver menos" }));
-    expect(shown()).toBe(2);
   });
 });

@@ -3,7 +3,7 @@
 // una lista de enlaces: "to" = ruta interna, "href" = enlace externo,
 // "chat" = abre a Joel.
 import { ceoInfo } from "@/data/about";
-import { privacyLink, videosPageText } from "@/data/pages";
+import { privacyLink } from "@/data/pages";
 import { contactHref } from "@/data/contact";
 import { siteFor } from "@/data/content";
 import { LANG_INFO, localize, makeTr, type Lang, type Tr } from "@/i18n";
@@ -23,7 +23,6 @@ export type Menu = {
   items: MenuItem[];
   cols?: 1 | 2;
   posts?: boolean;
-  chips?: boolean;
 };
 
 export function menusFor(lang: Lang): Menu[] {
@@ -107,12 +106,12 @@ export function menusFor(lang: Lang): Menu[] {
       feature: {
         kicker: tr("Soluciones", "Solutions"),
         title: tr(
-          "Diseñamos el servicio según quién se mueve",
-          "We design the service around who is moving",
+          "Ofrecemos un servicio ajustado a sus necesidades",
+          "A service tailored to your needs",
         ),
         text: tr(
-          "Tres unidades especializadas y un acompañamiento dedicado para quienes empiezan una vida en otro país.",
-          "Three specialized units and dedicated support for those starting a life in another country.",
+          "Diferentes líneas de servicio especializadas y acompañamiento personalizado para quienes empiezan otra etapa en un nuevo hogar.",
+          "Different specialized service lines and personal support for those starting a new chapter in a new home.",
         ),
         cta: tr("Ver todas las soluciones", "See all solutions"),
         to: lp("/#soluciones"),
@@ -129,80 +128,20 @@ export function menusFor(lang: Lang): Menu[] {
         },
         {
           label: tr("Movilidad corporativa", "Corporate Mobility"),
-          desc: tr(
-            "Traslado de oficinas y reubicación de funcionarios",
-            "Office moves and employee relocation",
-          ),
+          desc: tr("Traslado de oficinas", "Office moves"),
           icon: "buildings",
           to: lp("/?segmento=corporate#soluciones"),
         },
         {
-          label: tr("Diplomático e institucional", "Diplomatic & Institutional"),
+          label: tr("Diplomático", "Diplomatic"),
           desc: tr(
-            "Embajadas y organismos, con protocolo y confidencialidad",
-            "Embassies and institutions, with protocol and confidentiality",
+            "Embajadas y organismos extranjeros y no gubernamentales",
+            "Embassies and foreign and non-governmental organizations",
           ),
           icon: "flag",
           to: lp("/?segmento=diplomatic#soluciones"),
         },
-        {
-          label: tr("Vivir en el exterior", "Living abroad"),
-          desc: tr(
-            "Colombianos que se van del país o regresan a él",
-            "Colombians moving abroad or coming back home",
-          ),
-          icon: "airplane",
-          to: lp("/?segmento=diaspora#soluciones"),
-        },
       ],
-      cols: 2,
-    },
-    {
-      key: "cobertura",
-      label: tr("Cobertura", "Coverage"),
-      feature: {
-        kicker: tr("Cobertura global", "Global coverage"),
-        title: tr(
-          "2.000+ agentes y aliados estratégicos en 176 países",
-          "2,000+ agents and strategic partners in 176 countries",
-        ),
-        text: tr(
-          "Operamos con los mismos estándares en origen y en destino, por vía marítima o aérea.",
-          "We operate to the same standards at origin and destination, by sea or by air.",
-        ),
-        cta: tr("Ver la red global", "See the global network"),
-        to: lp("/#cobertura"),
-      },
-      items: [
-        {
-          label: tr("Mudanzas internacionales", "International moving"),
-          desc: tr(
-            "Marítimas y aéreas, desde y hacia Colombia",
-            "By sea and air, to and from Colombia",
-          ),
-          icon: "globe-americas",
-          to: lp("/servicios/mudanzas-internacionales"),
-        },
-        {
-          label: tr("Mudanzas nacionales", "National moving"),
-          desc: tr("Entre ciudades, puerta a puerta", "Between cities, door to door"),
-          icon: "truck",
-          to: lp("/servicios/mudanzas-nacionales"),
-        },
-        {
-          label: tr("Gestión aduanera", "Customs and documentation"),
-          desc: tr("Exportación e importación de menaje", "Export and import of household goods"),
-          icon: "file-earmark-text",
-          to: lp("/servicios/gestion-aduanera"),
-        },
-        {
-          label: tr("Certificaciones", "Certifications"),
-          desc: "LACMA · IAM · PAIMA",
-          icon: "award",
-          to: lp("/nosotros#certificaciones"),
-        },
-      ],
-      chips: true,
       cols: 2,
     },
     {
@@ -220,7 +159,6 @@ export function menusFor(lang: Lang): Menu[] {
       },
       items: [
         { label: tr("Preguntas frecuentes", "FAQ"), icon: "question-circle", to: lp("/#faq") },
-        { label: videosPageText(tr).title, icon: "play-btn", to: lp("/videos") },
         {
           label: tr("Canal de YouTube", "YouTube channel"),
           icon: "youtube",
@@ -304,8 +242,6 @@ export function supportFor(lang: Lang): MenuItem[] {
 
 export const headerText = (tr: Tr) => ({
   mainNav: tr("Principal", "Main"),
-  // Enlace directo (sin megamenú) entre Blog y Contacto
-  videos: videosPageText(tr).title,
   search: tr("Buscar en el sitio (Ctrl + K)", "Search the site (Ctrl + K)"),
   searchTitle: tr("Buscar (Ctrl + K)", "Search (Ctrl + K)"),
   searchMobile: tr("Buscar en el sitio", "Search the site"),
@@ -314,7 +250,6 @@ export const headerText = (tr: Tr) => ({
   openMenu: tr("Abrir menú", "Open menu"),
   closeMenu: tr("Cerrar menú", "Close menu"),
   mobileNav: tr("Menú móvil", "Mobile menu"),
-  embassiesServed: tr("Embajadas atendidas en", "Embassies served in"),
   supportTitle: tr("Soporte Transpack", "Transpack support"),
   supportSub: tr(
     "¿Necesitas ayuda con su mudanza o su solicitud?",
@@ -328,7 +263,6 @@ export const footerText = (tr: Tr) => ({
   services: tr("Servicios", "Services"),
   solutions: tr("Soluciones", "Solutions"),
   about: tr("Quiénes somos", "About us"),
-  videos: videosPageText(tr).title,
   contact: tr("Contacto", "Contact"),
   legal: "Transpack S.A.S. · Bogotá, Colombia",
   privacy: privacyLink(tr),

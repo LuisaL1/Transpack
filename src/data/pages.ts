@@ -11,8 +11,12 @@ export const serviceDetailText = (tr: Tr) => ({
   servicio: tr("El servicio", "The service"),
   comoHacemos: tr("¿Cómo lo hacemos?", "How do we do it?"),
   incluye: tr("Qué incluye", "What's included"),
+  compromiso: tr("Nuestro compromiso:", "Our commitment:"),
   pasoPaso: tr("Paso a paso", "Step by step"),
   asiSeraProceso: tr("Así será su proceso", "What your process looks like"),
+  // Carrusel de fotos que reemplaza los pasos (Embalaje especializado)
+  nuestroTrabajo: tr("Nuestro trabajo", "Our work"),
+  asiProtegemos: tr("Así protegemos sus piezas de valor", "How we protect your valuables"),
   preguntasFrecuentes: tr("Preguntas frecuentes", "Frequently asked questions"),
   antesCotizar: tr("Antes de cotizar", "Before you get a quote"),
   siTienesOtraDuda: tr(
@@ -99,31 +103,4 @@ export const privacyText = (tr: Tr) => ({
 });
 
 /** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
-// Experiencias Transpack (/videos): todos los videos del canal de YouTube
-export const videosPageText = (tr: Tr) => ({
-  title: tr("Experiencias Transpack", "Transpack Experiences"),
-  eyebrow: tr("Canal de YouTube", "YouTube channel"),
-  intro: tr(
-    "Todos los videos del canal de Transpack en un solo lugar: cómo embalamos, protegemos y movemos lo que más importa, dentro y fuera de Colombia.",
-    "Every video from the Transpack channel in one place: how we pack, protect and move what matters most, in Colombia and abroad.",
-  ),
-  home: tr("Inicio", "Home"),
-  path: tr("Ruta de navegación", "Breadcrumb"),
-  count: (n: number) => tr(`${n} videos`, `${n} videos`),
-  subscribe: tr("Suscríbete al canal", "Subscribe to the channel"),
-  featured: tr("Video destacado", "Featured video"),
-  shorts: "Shorts",
-  short: "Short",
-  shortsSub: tr("Del más reciente al más antiguo", "From newest to oldest"),
-  play: tr("Reproducir video", "Play video"),
-  watch: tr("Ver en YouTube", "Watch on YouTube"),
-  more: (n: number) => tr(`Ver más Shorts (${n})`, `See more Shorts (${n})`),
-  less: tr("Ver menos", "See less"),
-  ctaTitle: tr("¿Listo para tu próxima mudanza?", "Ready for your next move?"),
-  ctaText: tr(
-    "Cuéntanos qué necesitas y te ayudamos a embalarlo y moverlo con cuidado.",
-    "Tell us what you need and we'll help you pack it and move it with care.",
-  ),
-});
-
 export const privacyLink = (tr: Tr) => tr("Política de datos", "Privacy policy");

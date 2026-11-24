@@ -8,6 +8,26 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/blog/elegancia-en-transito-seguridad-mudanzas-internacionales-premium",
+      "destination": "/#blog",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/elegance-in-transit-security-premium-international-moves",
+      "destination": "/en#blog",
+      "permanent": true
+    },
+    {
+      "source": "/videos",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/en/videos",
+      "destination": "/en",
+      "permanent": false
+    },
+    {
       "source": "/:lang(fr|de|it|ar)",
       "destination": "/en",
       "permanent": false

@@ -5,6 +5,7 @@ import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
+import { ServiceGuide } from "@/components/services/ServiceGuide";
 
 const container = "mx-auto w-[min(100%-32px,1200px)]";
 const section = "relative py-[clamp(64px,8vw,112px)]";
@@ -43,7 +44,7 @@ export function ServiceDetailPage() {
           <span className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-azul text-[1.6rem] text-naranja shadow-[0_12px_26px_-12px_rgba(39,43,124,.8)]">
             <Bi n={service.icon} />
           </span>
-          <Eyebrow>{service.kicker}</Eyebrow>
+          {service.kicker && <Eyebrow>{service.kicker}</Eyebrow>}
           <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] text-tinta">
             {service.headline}
           </h1>
@@ -73,49 +74,108 @@ export function ServiceDetailPage() {
               {t.comoHacemos}
             </h2>
             <p className="mb-8 text-[1.05rem]">{service.intro}</p>
+            {service.commitment && (
+              <p className="mb-4 flex items-start gap-3 rounded-2xl bg-gris px-5 py-4 text-violeta">
+                <Bi n="heart" className="mt-0.5 text-lg text-naranja" />
+                <span>
+                  <strong>{t.compromiso}</strong> {service.commitment}
+                </span>
+              </p>
+            )}
             {service.note && (
-              <p className="flex items-start gap-3 rounded-2xl bg-beige px-5 py-4 font-medium text-violeta">
+              <p className="flex items-start gap-3 rounded-2xl bg-beige px-5 py-4 text-start font-medium text-violeta">
                 <Bi n="clock" className="mt-0.5 text-lg text-naranja" /> {service.note}
               </p>
             )}
           </Reveal>
-          <Reveal delay={100} className="rounded-[22px] bg-gris p-8 md:p-10">
-            <h3 className="mb-6 text-xl">{t.incluye}</h3>
-            <Checks items={service.includes} />
-          </Reveal>
+          {service.includes ? (
+            <Reveal delay={100} className="rounded-[22px] bg-gris p-8 md:p-10">
+              <h3 className="mb-6 text-xl">{t.incluye}</h3>
+              <Checks items={service.includes} />
+            </Reveal>
+          ) : (
+            service.photo && (
+              <Reveal delay={100}>
+                <img
+                  src={service.photo.src}
+                  alt={service.photo.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/3] w-full rounded-[22px] object-cover shadow-[var(--shadow-card)]"
+                />
+              </Reveal>
+            )
+          )}
         </div>
       </section>
 
-      {/* Pasos */}
-      <section className={`${section} bg-azul text-white/75`}>
-        <div className={container}>
-          <Reveal className="mb-12">
-            <Eyebrow light>{t.pasoPaso}</Eyebrow>
+      {/* Guía de términos (solo los servicios que la tienen) */}
+      {service.guide && <ServiceGuide guide={service.guide} />}
+
+      {/* Pasos o, en su lugar, carrusel de fotos */}
+      {service.reel && (
+        <section className={`${section} bg-azul text-white/75`}>
+          <Reveal className={`${container} mb-12`}>
+            <Eyebrow light>{t.nuestroTrabajo}</Eyebrow>
             <h2 className="text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15] !text-white">
-              {t.asiSeraProceso}
+              {t.asiProtegemos}
             </h2>
           </Reveal>
-          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {service.steps.map((st, i) => (
-              <Reveal
-                as="li"
-                key={st.title}
-                delay={i * 80}
-                className="relative rounded-[22px] border border-white/10 bg-white/5 p-7"
+          <div className="marquee flex overflow-hidden" dir="ltr">
+            {[0, 1].map((k) => (
+              <ul
+                key={k}
+                className="animate-marquee flex shrink-0 gap-5 pr-5"
+                aria-hidden={k === 1}
               >
-                <span
-                  className="mb-4 block font-title text-[2.6rem] font-bold leading-none text-transparent"
-                  style={{ WebkitTextStroke: "1.5px #ff7619" }}
-                >
-                  0{i + 1}
-                </span>
-                <h3 className="mb-2 text-lg !text-white">{st.title}</h3>
-                <p className="text-start text-[0.92rem]">{st.text}</p>
-              </Reveal>
+                {service.reel?.map((p) => (
+                  <li key={p.caption} className="w-[min(78vw,340px)] shrink-0">
+                    <img
+                      src={p.src}
+                      alt={k === 1 ? "" : p.caption}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[4/5] w-full rounded-[22px] object-cover"
+                    />
+                    <p className="mt-3 text-start text-[0.92rem]">{p.caption}</p>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ol>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
+      {service.steps && (
+        <section className={`${section} bg-azul text-white/75`}>
+          <div className={container}>
+            <Reveal className="mb-12">
+              <Eyebrow light>{t.pasoPaso}</Eyebrow>
+              <h2 className="text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15] !text-white">
+                {t.asiSeraProceso}
+              </h2>
+            </Reveal>
+            <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {service.steps.map((st, i) => (
+                <Reveal
+                  as="li"
+                  key={st.title}
+                  delay={i * 80}
+                  className="relative rounded-[22px] border border-white/10 bg-white/5 p-7"
+                >
+                  <span
+                    className="mb-4 block font-title text-[2.6rem] font-bold leading-none text-transparent"
+                    style={{ WebkitTextStroke: "1.5px #ff7619" }}
+                  >
+                    0{i + 1}
+                  </span>
+                  <h3 className="mb-2 text-lg !text-white">{st.title}</h3>
+                  <p className="text-start text-[0.92rem]">{st.text}</p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
 
       {/* Preguntas */}
       <section className={section}>

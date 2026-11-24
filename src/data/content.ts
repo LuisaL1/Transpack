@@ -83,6 +83,8 @@ export const DESTINATION_NAMES: Record<string, Record<Exclude<Lang, "es">, strin
   Suiza: { en: "Switzerland" },
   Suecia: { en: "Sweden" },
   Polonia: { en: "Poland" },
+  Australia: { en: "Australia" },
+  "Nueva Zelanda": { en: "New Zealand" },
 };
 
 export const destinationName = (name: string, lang: Lang) =>

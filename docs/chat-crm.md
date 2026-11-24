@@ -79,6 +79,10 @@ La ventana de Zoho tiene el diseño del chat del sitio:
 - barra de escribir blanca con el campo gris de una línea ("Escribe tu mensaje
   al asesor…") y el botón cuadrado de enviar (gris vacío, azul con naranja al
   escribir); botón de responder y mensaje citado con colores de la marca;
+- mientras Zoho no asigna quién responde, muestra un responsable genérico
+  ("Operador", con su ícono): el sitio lo cambia por "Joelito" y su foto
+  (`renameOperator` en `src/lib/crmChat.ts`; en SalesIQ no hay opción para
+  cambiarlo). Un asesor real conserva su nombre y su foto;
 - tipografías del sitio (IBM Plex Sans y Montserrat) y solo colores de la marca.
 
 - **Por qué funciona:** la ventana de Zoho es un iframe del mismo origen que la
