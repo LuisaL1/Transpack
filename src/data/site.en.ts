@@ -2,13 +2,15 @@
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
 import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
+// Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
+import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
+import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
+import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgCargador from "@/assets/images/cargador.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
-import imgGlobal from "@/assets/images/global.jpg";
-import imgCargue from "@/assets/images/cargue.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
@@ -116,7 +118,7 @@ export const SERVICES: Service[] = [
       "Moves to Colombia's main cities with a detailed inventory, professional packing, vehicle monitoring and door-to-door delivery.",
     quote: "nacional",
     cta: "Get a quote",
-    image: imgCargue,
+    image: imgNacionalCarretera,
     heroMap: true,
     headline: "Your home, door to door",
     intro:
@@ -152,7 +154,7 @@ export const SERVICES: Service[] = [
       "By sea or air, to and from Colombia. We advise you on requirements, timelines and customs before we quote.",
     quote: "internacional",
     cta: "Talk to an advisor",
-    image: imgGlobal,
+    image: imgInternacionalPuerto,
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
@@ -204,7 +206,7 @@ export const SERVICES: Service[] = [
       "Secure storage in Bogotá, by the day, the month or while your move is completed. Our own facilities and inventory control.",
     quote: "bodegaje",
     cta: "Get a quote",
-    image: imgCargador,
+    image: imgBodegajeBodega,
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
@@ -257,7 +259,7 @@ export const SERVICES: Service[] = [
       "We offer clear, timely guidance on the documentation and customs regulations needed to carry out your move in compliance with international regulations.",
     quote: "internacional",
     cta: "Get a quote",
-    image: imgInspeccionCanina,
+    image: imgAduanaCajas,
     kicker: "International paperwork",
     headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
