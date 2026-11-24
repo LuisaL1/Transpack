@@ -5,6 +5,7 @@ import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
+import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
@@ -165,7 +166,7 @@ export const SERVICES: Service[] = [
       "Trasteos en Bogotá y sus alrededores, realizados por personal experto y capacitado para la protección profesional del mobiliario, con vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
-    image: imgEmbalajeHogar,
+    image: imgLocalesResidencial,
     heroMap: "bogota",
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
