@@ -1,8 +1,7 @@
 import { expect, test, type Page } from "./fixtures";
 
 // Botón flotante del chat (abre el widget de Zoho SalesIQ)
-const launcher = (page: Page) =>
-  page.getByRole("button", { name: /Hablar con Joelito, asesor virtual/ });
+const launcher = (page: Page) => page.getByRole("button", { name: /hablar con el asesor virtual/ });
 
 // Registro del Zoho simulado, dentro de la página aislada (#tp-zoho-frame)
 const zohoLog = (page: Page) =>
@@ -264,7 +263,7 @@ test("si el chat con un asesor no carga, ofrece WhatsApp y el formulario", async
 test("cambio de idioma conserva la página", async ({ page, isMobile }) => {
   test.skip(isMobile, "En celular la franja de idiomas se oculta al desplazarse");
   await page.goto("/servicios/bodegaje");
-  await page.getByRole("button", { name: "Elegir región e idioma" }).click();
+  await page.getByRole("button", { name: /^Elegir región e idioma/ }).click();
   await page.getByRole("option", { name: /International/ }).click();
   await expect(page).toHaveURL(/\/en\/services\//);
   await expect(page.locator("html")).toHaveAttribute("lang", /^en/);

@@ -43,12 +43,15 @@ export function ChatLauncher({
       <span className="hidden text-start md:block">
         <span className="flex items-center gap-1.5 text-[0.82rem] font-semibold leading-tight">
           {open ? t.close : NAME}
+          {/* Espacios en el texto para que el nombre accesible coincida con lo visible */}
+          {!open && " "}
           {!open && (
             <span className="rounded-full bg-naranja px-1.5 py-px text-[0.6rem] font-bold tracking-wide text-white">
               {t.ai}
             </span>
           )}
         </span>
+        {!open && " "}
         {!open && (
           <span className="block text-[0.72rem] leading-tight text-white/70">{t.online}</span>
         )}

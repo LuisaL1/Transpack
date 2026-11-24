@@ -223,8 +223,14 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `/en/videos` redirigen al inicio en `vercel.json`); los Shorts del inicio siguen.
   Del blog se retiró el artículo "Elegancia en tránsito" (premium): el cliente dijo
   que sus términos no eran correctos. Su URL redirige al blog del inicio.
-- Lenguaje claro, sin tecnicismos (por ejemplo, "Vivir en el exterior" en vez
-  de "Diáspora"). Trato de "tú".
+- Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
+  de "diáspora").
+- Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje y gestión
+  aduanera; `SERVICES` en `src/data/site.ts`) y en los textos del inicio que el
+  cliente corrigió (soluciones, niveles, cotizador, proceso). Pedido del cliente,
+  noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
+  sección.
 
 ## Diseño
 
