@@ -23,7 +23,7 @@ export function StatValue({ value, suffix }: { value: number; suffix: string }) 
 
 /**
  * Cifra que cuenta desde 0 hasta su valor cada vez que `active` pasa a true
- * (carrusel de cifras del inicio). Con `instant`, o si el visitante pidió
+ * (cifras del inicio). Con `instant`, o si el visitante pidió
  * reducir el movimiento, muestra el valor completo sin contar. En el HTML
  * pre-generado y para los lectores de pantalla va siempre el valor completo.
  */
@@ -73,6 +73,73 @@ export function StatCounter({
     <span>
       <span aria-hidden="true">{fmt(shown)}</span>
       <span className="sr-only">{fmt(value)}</span>
+      <span className="text-naranja">{suffix}</span>
+    </span>
+  );
+}
+
+/**
+ * Cifra tipo odómetro (nov. 2026, estilo terminal-industries): cada dígito es
+ * una columna que rueda hasta su valor, una vuelta completa y un poco escalonada,
+ * cuando `active` pasa a true. En el HTML pre-generado, sin JS y con movimiento
+ * reducido, las columnas ya están en el valor final; los lectores de pantalla
+ * leen el valor completo.
+ */
+export function StatOdometer({
+  value,
+  suffix = "",
+  active,
+  plain = false,
+}: {
+  value: number;
+  suffix?: string;
+  active: boolean;
+  /** Sin separador de miles (p. ej. un año: 1968) */
+  plain?: boolean;
+}) {
+  const fmt = useNumberFormat();
+  const text = plain ? String(value) : fmt(value);
+  // armed: en el navegador, con movimiento permitido, las columnas esperan en 0
+  const [armed, setArmed] = useState(false);
+  useIsoLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setArmed(true);
+  }, []);
+  const rolling = armed && !active;
+  let digit = 0;
+  return (
+    <span>
+      <span aria-hidden="true" className="inline-flex tabular-nums">
+        {[...text].map((ch, i) => {
+          if (!/\d/.test(ch)) return <span key={i}>{ch}</span>;
+          const d = Number(ch);
+          const k = digit++;
+          return (
+            <span key={i} className="inline-block h-[1em] overflow-hidden leading-none">
+              {/* En el servidor, solo el dígito final (sin una lista de números
+                  sueltos en el HTML); en el navegador, la columna completa */}
+              {armed ? (
+                <span
+                  className="flex flex-col transition-transform duration-[1600ms] ease-[cubic-bezier(.2,.8,.2,1)]"
+                  style={{
+                    transform: `translateY(-${rolling ? 0 : 10 + d}em)`,
+                    transitionDelay: `${k * 110}ms`,
+                  }}
+                >
+                  {Array.from({ length: 20 }, (_, n) => (
+                    <span key={n} className="h-[1em]">
+                      {n % 10}
+                    </span>
+                  ))}
+                </span>
+              ) : (
+                <span className="block h-[1em]">{d}</span>
+              )}
+            </span>
+          );
+        })}
+      </span>
+      <span className="sr-only">{text}</span>
       <span className="text-naranja">{suffix}</span>
     </span>
   );

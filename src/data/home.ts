@@ -1,6 +1,6 @@
 // Textos de las secciones del inicio (src/components/home). Cada función recibe
 // `tr` (ver src/i18n): el español va primero y el inglés después.
-// Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
+// Las cifras, servicios, niveles, proceso y preguntas frecuentes
 // están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
 
@@ -20,7 +20,10 @@ export const heroText = (tr: Tr) => ({
   subHighlights: [tr("60.000 toneladas", "60,000 tons"), tr("176 países", "176 countries")],
   cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   ctaServices: tr("Ver servicios", "See services"),
+  // Marquesina de destinos bajo los botones
+  routesFrom: tr("Desde Bogotá", "From Bogotá"),
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
+  embassiesLabel: tr("Embajadas que confían en Transpack", "Embassies that trust Transpack"),
   embassyOf: tr("Embajada de", "Embassy of"),
   // "the United States", "the United Arab Emirates"
   embassyName: (country: string) =>
@@ -33,31 +36,13 @@ export const heroText = (tr: Tr) => ({
 
 export const statsText = (tr: Tr) => ({
   label: tr("Transpack en cifras", "Transpack in numbers"),
-  // Carrusel de cifras (Stats.tsx)
-  carousel: tr("carrusel", "carousel"),
-  slide: tr("cifra", "figure"),
-  of: (a: number, b: number) => tr(`${a} de ${b}`, `${a} of ${b}`),
-  goTo: (a: number) => tr(`Ver cifra ${a}`, `Show figure ${a}`),
 });
 
 export const servicesText = (tr: Tr) => ({
   eyebrow: tr("Servicios", "Services"),
-  // Va debajo de las tarjetas, como cierre de la sección
+  // Título del explorador de servicios (arriba de la lista)
   title: tr("Una solución integral para cada traslado", "A complete solution for every move"),
   more: tr("Ver servicio", "View service"),
-});
-
-export const segmentsText = (tr: Tr) => ({
-  eyebrow: tr("Soluciones", "Solutions"),
-  title: tr(
-    "Cuidamos su patrimonio y una entrega segura",
-    "We look after your belongings and a safe delivery",
-  ),
-  sub: tr(
-    "Personas, empresas e instituciones tienen necesidades distintas. Por eso trabajamos con un equipo de profesionales especializados y un acompañamiento dedicado para quienes inician una nueva etapa.",
-    "People, companies and institutions have different needs. That is why we work with a team of specialized professionals and dedicated support for those starting a new chapter.",
-  ),
-  tabsLabel: tr("Soluciones por segmento", "Solutions by segment"),
 });
 
 export const levelsText = (tr: Tr) => ({
@@ -76,6 +61,14 @@ export const levelsText = (tr: Tr) => ({
 
 export const coverageText = (tr: Tr) => ({
   eyebrow: tr("Cobertura global", "Global coverage"),
+  // Marquesina gigante con contorno al pie de la sección (decorativa)
+  regions: [
+    tr("América", "Americas"),
+    tr("Europa", "Europe"),
+    tr("África", "Africa"),
+    tr("Asia", "Asia"),
+    tr("Oceanía", "Oceania"),
+  ],
   title: tr(
     "De Colombia al mundo, una logística que no se improvisa",
     "From Colombia to the world, logistics that can't be improvised",
@@ -225,4 +218,15 @@ export const mapText = (tr: Tr) => ({
   cityPhoto: (city: string, country: string) =>
     tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
   credit: tr("Foto", "Photo"),
+  // Panel del mapa (propuesta "noche"): pestañas con la etapa del recorrido y leyenda
+  stagesLabel: tr("Recorrido del mapa", "Map tour"),
+  stages: [tr("Bogotá", "Bogotá"), tr("Colombia", "Colombia"), tr("Mundo", "World")],
+  network: tr("Red de destinos", "Destination network"),
+  countries: tr("176 países", "176 countries"),
+  legendRoutes: tr("Rutas desde Bogotá", "Routes from Bogotá"),
+  legendHighlight: tr("Colombia", "Colombia"),
+  legendHint: tr("Toca un destino para ver su foto", "Tap a destination to see its photo"),
+  // Historia guiada por el scroll (escritorio)
+  scrollHint: tr("Desliza para explorar", "Scroll to explore"),
+  goToStage: (stage: string) => tr(`Ir a ${stage} en el mapa`, `Go to ${stage} on the map`),
 });

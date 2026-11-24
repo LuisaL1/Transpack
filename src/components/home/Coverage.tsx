@@ -1,9 +1,12 @@
 import lacmaImg from "@/assets/images/lacma.jpg";
 import imgGlobal from "@/assets/images/global.jpg";
+import { useRef } from "react";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
-import { Bi, Eyebrow, Reveal, StatValue } from "@/components/ui";
+import { useInView } from "@/hooks/useInView";
+import { useMotion } from "@/hooks/useMotion";
+import { Bi, Eyebrow, Reveal, StatOdometer } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
 // Cobertura global: la foto del avión y el buque con efecto de velocidad
@@ -13,15 +16,38 @@ import { container, section } from "@/components/ui/layout";
 // encuadra hacia la derecha para que el buque se vea completo; abajo, las
 // cifras de la red sobre tarjetas translúcidas. En celular la foto va arriba,
 // completa, y el texto debajo sobre azul.
+// Movimiento (nov. 2026): la foto se desplaza con parallax, los modos de
+// transporte entran escalonados, las cifras ruedan como odómetro y al pie
+// pasa una marquesina gigante con contorno de los continentes que avanza con
+// el scroll.
 export function Coverage() {
   const { tr } = useLang();
   const t = coverageText(tr);
   const { STATS } = useSite();
   // Cifras reales del sitio (STATS): agentes y aliados, y países
   const chips = [STATS[3], STATS[1]];
+  const ref = useRef<HTMLElement>(null);
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const counting = useInView(chipsRef);
+  useMotion(ref, (m, el) => {
+    const scrub = { trigger: el, start: "top bottom", end: "bottom top", scrub: true };
+    m.gsap.fromTo(
+      "[data-cov-photo]",
+      { yPercent: -7, scale: 1.14 },
+      { yPercent: 7, scale: 1.14, ease: "none", scrollTrigger: scrub },
+    );
+    m.gsap.fromTo(
+      "[data-cov-marquee]",
+      { xPercent: 0 },
+      { xPercent: -28, ease: "none", scrollTrigger: scrub },
+    );
+    const modes = el.querySelectorAll("[data-cov-mode]");
+    m.reveal(modes, modes[0], { y: 28, stagger: 0.12 });
+  });
   return (
     <section
       id="cobertura"
+      ref={ref}
       className={`${section} overflow-hidden bg-azul-900 text-white/80 lg:min-h-[720px]`}
     >
       <img
@@ -29,6 +55,7 @@ export function Coverage() {
         decoding="async"
         src={imgGlobal}
         alt={t.imageAlt}
+        data-cov-photo
         className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[85%_50%] lg:block"
       />
       {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
@@ -46,7 +73,7 @@ export function Coverage() {
             decoding="async"
             src={imgGlobal}
             alt={t.imageAlt}
-            className="aspect-[1280/698] w-full object-cover shadow-[var(--shadow-float)]"
+            className="aspect-[1280/698] w-full rounded-[24px] object-cover shadow-[var(--shadow-float)]"
           />
         </Reveal>
         <Reveal>
@@ -59,6 +86,7 @@ export function Coverage() {
             {t.modes.map((m) => (
               <div
                 key={m.title}
+                data-cov-mode
                 className="flex gap-3.5 rounded-2xl border border-white/12 bg-white/8 p-4 backdrop-blur-sm"
               >
                 <Bi n={m.icon} className="text-[1.7rem] text-naranja" />
@@ -89,21 +117,45 @@ export function Coverage() {
         </Reveal>
 
         {/* Cifras de la red, sobre la foto */}
-        <Reveal delay={120} className="flex flex-wrap gap-4 lg:justify-end">
+        <div ref={chipsRef} className="flex flex-wrap gap-4 lg:justify-end">
           {chips.map((c) => (
             <div
               key={c.label}
               className="min-w-[200px] rounded-2xl border border-white/15 bg-white/10 px-6 py-5 shadow-[0_24px_50px_-20px_rgba(13,15,51,.8)] backdrop-blur-md"
             >
               <strong className="block font-title text-[2.4rem] leading-none text-white">
-                <StatValue value={c.value} suffix={c.suffix} />
+                <StatOdometer value={c.value} suffix={c.suffix} active={counting} />
               </strong>
               <span className="mt-1.5 block text-[0.85rem] font-medium text-white/85">
                 {c.short ?? c.label}
               </span>
             </div>
           ))}
-        </Reveal>
+        </div>
+      </div>
+
+      {/* Marquesina gigante con contorno (decorativa): avanza con el scroll */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none relative mt-14 overflow-hidden whitespace-nowrap md:mt-20"
+      >
+        <div
+          data-cov-marquee
+          className="inline-block font-title text-[clamp(3.5rem,9vw,8.5rem)] font-bold uppercase leading-none tracking-[0.02em] text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,.18)]"
+        >
+          {[0, 1, 2].map((k) => (
+            <span key={k}>
+              {t.regions.map((r) => (
+                <span key={r}>
+                  {r}
+                  <span className="mx-[0.4em] inline-block align-middle text-[0.45em] [-webkit-text-stroke:1.5px_rgba(255,118,25,.6)]">
+                    ✦
+                  </span>
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

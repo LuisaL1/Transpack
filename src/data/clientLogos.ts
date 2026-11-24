@@ -1,6 +1,8 @@
-// Logos de clientes para la franja del hero. Fuentes: Wikimedia Commons y
-// Simple Icons (DHL usa la versión de Commons). Se muestran en un solo tono gris
-// con CSS, así que los archivos pueden conservar sus colores originales.
+// Logos de clientes para la lista del hero (todos a la vista, sin carrusel).
+// Fuentes: Wikimedia Commons y Simple Icons (DHL usa la versión de Commons). Se
+// muestran en un solo tono gris con CSS y, al pasar el cursor, con sus colores
+// originales: por eso los archivos conservan sus colores (el de Mitsubishi es
+// monocromático y se ve negro).
 // "ratio" = ancho / alto del logo, para que todos se vean del mismo peso visual.
 import dhl from "@/assets/images/clientes/dhl.svg";
 import mitsubishi from "@/assets/images/clientes/mitsubishi.svg";
@@ -97,23 +99,6 @@ export const EMBASSY_LOGOS: Record<string, { src: string; ratio: number }> = {
   Italia: { src: logoIt, ratio: 0.88 },
 };
 export const embassyLogo = (i: number) => EMBASSY_LOGOS[EMBASSIES[i]];
-
-/** Logos de clientes con las embajadas repartidas entre ellos (franja del hero) */
-export function logosWithEmbassies<E>(embassies: E[]) {
-  const items: (
-    | { kind: "logo"; logo: (typeof CLIENT_LOGOS)[number] }
-    | { kind: "embassy"; embassy: E; logo: { src: string; ratio: number } }
-  )[] = [];
-  const n = CLIENT_LOGOS.length;
-  CLIENT_LOGOS.forEach((logo, i) => {
-    items.push({ kind: "logo", logo });
-    const from = Math.floor((i * embassies.length) / n);
-    const to = Math.floor(((i + 1) * embassies.length) / n);
-    for (let k = from; k < to; k++)
-      items.push({ kind: "embassy", embassy: embassies[k], logo: embassyLogo(k) });
-  });
-  return items;
-}
 
 // Altura que iguala el área visual de cada logo (los anchos se ven más bajos)
 export const logoHeight = (ratio: number) =>

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useSite } from "@/hooks/useContent";
 import { slugEs, useLang } from "@/i18n";
-import { Bi, btn, Checks, Eyebrow, Reveal } from "@/components/ui";
+import { Bi, btn, Checks, Eyebrow, PhotoFrame, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
@@ -28,7 +28,21 @@ export function ServiceDetailPage() {
 
   return (
     <>
-      <PageHero image={service.image} media={service.heroMap ? <ColombiaRoutesMap /> : undefined}>
+      <PageHero
+        image={service.image}
+        media={service.heroMap ? <ColombiaRoutesMap /> : undefined}
+        drop={service.imageDrop}
+        blend={service.imageBlend}
+        tab={
+          // Pestaña de la foto: el servicio, con su ícono
+          <span className="inline-flex items-center gap-2.5 font-title text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-azul">
+            <span className="grid h-8 w-8 place-items-center rounded-[10px] bg-azul text-[0.95rem] text-naranja">
+              <Bi n={service.icon} />
+            </span>
+            {service.title}
+          </span>
+        }
+      >
         <nav aria-label={t.ruta} className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave">
           <Link to={lp("/")} className="hover:text-azul">
             {t.inicio}
@@ -48,7 +62,7 @@ export function ServiceDetailPage() {
           <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] text-tinta">
             {service.headline}
           </h1>
-          <p className="mb-8 max-w-2xl text-[1.08rem] text-texto">{service.short}</p>
+          <p className="mb-8 max-w-2xl text-start text-[1.08rem] text-texto">{service.short}</p>
           <div className="flex flex-wrap gap-3">
             <Link to={quoteLink} className={`${btn.primary} ${btn.lg} w-full sm:w-auto`}>
               {generic ? t.quoteService(service.title) : service.cta}
@@ -83,7 +97,7 @@ export function ServiceDetailPage() {
               </p>
             )}
             {service.note && (
-              <p className="flex items-start gap-3 rounded-2xl bg-beige px-5 py-4 font-medium text-violeta">
+              <p className="flex items-start gap-3 rounded-2xl bg-beige px-5 py-4 text-start font-medium text-violeta">
                 <Bi n="clock" className="mt-0.5 text-lg text-naranja" /> {service.note}
               </p>
             )}
@@ -96,13 +110,15 @@ export function ServiceDetailPage() {
           ) : (
             service.photo && (
               <Reveal delay={100}>
-                <img
-                  src={service.photo.src}
-                  alt={service.photo.alt}
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[4/3] w-full rounded-[22px] object-cover shadow-[var(--shadow-card)]"
-                />
+                <PhotoFrame tab corner="tr" className="aspect-[4/3]">
+                  <img
+                    src={service.photo.src}
+                    alt={service.photo.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                </PhotoFrame>
               </Reveal>
             )
           )}
@@ -130,14 +146,16 @@ export function ServiceDetailPage() {
               >
                 {service.reel?.map((p) => (
                   <li key={p.caption} className="w-[min(78vw,340px)] shrink-0">
-                    <img
-                      src={p.src}
-                      alt={k === 1 ? "" : p.caption}
-                      loading="lazy"
-                      decoding="async"
-                      className="aspect-[4/5] w-full rounded-[22px] object-cover"
-                    />
-                    <p className="mt-3 text-[0.92rem]">{p.caption}</p>
+                    <PhotoFrame tab className="aspect-[4/5] [--frame-bg:var(--color-azul)]">
+                      <img
+                        src={p.src}
+                        alt={k === 1 ? "" : p.caption}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                      />
+                    </PhotoFrame>
+                    <p className="mt-3 text-start text-[0.92rem]">{p.caption}</p>
                   </li>
                 ))}
               </ul>
@@ -169,7 +187,7 @@ export function ServiceDetailPage() {
                     0{i + 1}
                   </span>
                   <h3 className="mb-2 text-lg !text-white">{st.title}</h3>
-                  <p className="text-[0.92rem]">{st.text}</p>
+                  <p className="text-start text-[0.92rem]">{st.text}</p>
                 </Reveal>
               ))}
             </ol>
@@ -185,7 +203,7 @@ export function ServiceDetailPage() {
             <h2 className="mb-4 text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15]">
               {t.antesCotizar}
             </h2>
-            <p className="text-suave">{t.siTienesOtraDuda}</p>
+            <p className="text-start text-suave">{t.siTienesOtraDuda}</p>
           </Reveal>
           <Reveal className="faq">
             {FAQS.slice(0, 4).map((f) => (

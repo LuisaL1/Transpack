@@ -1,6 +1,8 @@
 // Sección de videos: Shorts del canal de YouTube de Transpack (VIDEOS de
 // src/data/site.ts).
+import { useRef } from "react";
 import { useSite } from "@/hooks/useContent";
+import { useMotion } from "@/hooks/useMotion";
 import { useLang } from "@/i18n";
 import { videosText } from "@/data/home";
 import { Bi, btn, Eyebrow, Reveal } from "@/components/ui";
@@ -10,9 +12,24 @@ export function VideoShorts() {
   const { VIDEOS, YOUTUBE_CHANNEL } = useSite();
   const { tr } = useLang();
   const t = videosText(tr);
+  // Las tarjetas entran en abanico (nov. 2026)
+  const ref = useRef<HTMLElement>(null);
+  useMotion(ref, (m, el) => {
+    const cards = el.querySelectorAll("[data-shorts] > *");
+    m.gsap.from(cards, {
+      y: 90,
+      rotation: (i: number) => (i - 1) * 7,
+      opacity: 0,
+      duration: 1.1,
+      ease: "expo.out",
+      stagger: 0.12,
+      scrollTrigger: { trigger: cards[0], start: m.ENTER, once: true },
+    });
+  });
   return (
     <section
       id="videos"
+      ref={ref}
       className="relative overflow-hidden bg-violeta py-[clamp(72px,9vw,128px)] text-white/78"
     >
       <span
@@ -30,7 +47,7 @@ export function VideoShorts() {
           <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12] !text-white">
             {t.title}
           </h2>
-          <p className="mb-8 max-w-md">{t.text}</p>
+          <p className="mb-8 max-w-md text-start">{t.text}</p>
           <div className="flex flex-wrap gap-3">
             <a
               href={YOUTUBE_CHANNEL}
@@ -44,7 +61,10 @@ export function VideoShorts() {
         </Reveal>
 
         <Reveal delay={120} className="min-w-0">
-          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto sm:gap-5 px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:pb-10">
+          <div
+            data-shorts
+            className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto sm:gap-5 px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:pb-10"
+          >
             {VIDEOS.map((v, i) => (
               <ShortCard
                 key={v.id}

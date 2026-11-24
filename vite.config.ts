@@ -42,6 +42,12 @@ export default defineConfig({
               name: "vendor",
               test: /node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/,
             },
+            {
+              // Motor de movimiento (GSAP y Lenis, src/lib/motion.ts): se carga
+              // aparte con import(), después de la primera pintura
+              name: "motion",
+              test: /node_modules[\\/](gsap|lenis)[\\/]/,
+            },
           ],
         },
       },

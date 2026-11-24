@@ -74,6 +74,8 @@ export const ctaBandText = (tr: Tr) => ({
     "A specialized advisor will design your moving plan with you.",
   ),
   cta: tr("Cotizar ahora", "Get a quote"),
+  // Marquesina gigante con contorno arriba de la franja (decorativa)
+  marquee: tr("Cotiza tu mudanza", "Get your moving quote"),
 });
 
 // Política de tratamiento de datos (/privacidad). El texto legal está en

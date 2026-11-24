@@ -93,7 +93,7 @@ export function ColombiaRoutesMap() {
         viewBox={VIEWBOX}
         role="img"
         aria-label={t.mapaRutas}
-        className="absolute inset-0 h-full w-full overflow-visible px-4 py-5 lg:py-2 lg:ps-[22%] lg:pe-6"
+        className="absolute inset-0 h-full w-full overflow-visible px-4 py-5 lg:px-6 lg:py-6"
       >
         <defs>
           {/* Resplandor de la estela */}

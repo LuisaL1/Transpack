@@ -40,8 +40,6 @@ pnpm map         # regenerar el mapamundi (ver scripts/generate-world-map.mjs)
   `/en/services/...`).
 - El cotizador acepta preselección por URL: `/?servicio=internacional&nivel=2#cotizar`
   (`servicio`: local, nacional, internacional, empresarial, bodegaje · `nivel`: 1, 2, 3).
-- Las soluciones abren un segmento con `/?segmento=corporate#soluciones`
-  (residencial, corporate, diplomatic, diaspora).
 
 ## Despliegue
 

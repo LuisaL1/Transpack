@@ -63,6 +63,9 @@ test("CSP permite reproducir un video de YouTube", async ({ page, isMobile }) =>
   test.skip(isMobile, "Basta con revisarlo una vez");
   const blocked: string[] = [];
   page.on("console", (m) => {
+    // Los avisos "report-only" son de la política de prueba del propio YouTube
+    // dentro de su iframe (nov. 2026): no bloquean nada y no son de este sitio
+    if (/report-only/i.test(m.text())) return;
     if (/Content Security Policy|Refused to/i.test(m.text())) blocked.push(m.text());
   });
   await page.route("**/*", async (r) => {

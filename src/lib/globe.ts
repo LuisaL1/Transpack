@@ -1,5 +1,5 @@
 // Mapa animado de la portada: recorrido de la cámara, rutas y dibujo en
-// <canvas>, con los continentes en negro, Colombia en #1800AD y las rutas en naranja. Se carga aparte con
+// <canvas>, en un panel azul marino (propuesta "noche"), con Colombia resaltada y las rutas en naranja. Se carga aparte con
 // import() desde src/hooks/useGlobe.ts (trae d3-geo y las siluetas de los
 // países), así no pesa en el JS principal.
 //
@@ -277,6 +277,38 @@ const OUT = 1500; // vuelve la foto
 /** Duración de una vuelta completa de la historia (ms) */
 export const LOOP = LEAVE + OUT;
 
+// Historia guiada por el scroll (propuesta, nov. 2026): el avance del scroll (0
+// a 1) elige el momento de la historia, y al subir retrocede. Tres etapas de un
+// tercio cada una: Bogotá (la foto se cierra en la ciudad y los camiones la
+// recorren), Colombia (la cámara se aleja y salen las rutas a las ciudades) y el
+// mundo (continentes y, al final, el mapamundi con todas las rutas). La foto se
+// cierra en el primer 8 %; el mapamundi se abre desde el 90 %.
+const SCROLL_AT = [0, 0.08, 1 / 3, 2 / 3, 0.9];
+const SCROLL_TIME = [PHOTO, PHOTO + MORPH, BOGOTA_END, LOCAL, PANORAMA];
+// Mapamundi final: el Atlántico, de las Américas a Europa y África, con Bogotá
+const ATLANTIC: View = { lon: -38, lat: 14, zoom: 1 };
+/** Estado de la historia para un avance del scroll de 0 a 1 (Hero en escritorio) */
+export function scrollScene(p: number): Scene {
+  const x = clamp01(p);
+  const end = SCROLL_AT[SCROLL_AT.length - 1];
+  if (x > end) {
+    // Del último continente al mapamundi, con todas las rutas
+    const f = (x - end) / (1 - end);
+    const s = scene(PANORAMA + OPEN * f);
+    return {
+      ...s,
+      view: mix(CONTINENTS[CONTINENTS.length - 1].view, ATLANTIC, f),
+      regionLabels: [],
+      slide: 0,
+    };
+  }
+  let i = 0;
+  while (i < SCROLL_AT.length - 2 && x > SCROLL_AT[i + 1]) i++;
+  const f = (x - SCROLL_AT[i]) / (SCROLL_AT[i + 1] - SCROLL_AT[i]);
+  // El carrusel se queda en la primera foto (la del HTML pre-generado)
+  return { ...scene(SCROLL_TIME[i] + (SCROLL_TIME[i + 1] - SCROLL_TIME[i]) * f), slide: 0 };
+}
+
 // ─── Cámara ─────────────────────────────────────────────────────────────────
 
 // Radio del círculo donde se ve el globo y de la esfera con zoom 1 (fracción
@@ -407,16 +439,24 @@ export const lensRadius = (w: number, h: number) => Math.min(w, h) * LENS;
 const ORANGE = "#FF7619";
 // Países resaltados (Colombia, Estados Unidos) y localidades de Bogotá: #1800AD
 // (pedido del cliente, nov. 2026; antes en naranja). Rutas y puntos siguen en naranja.
-const HIGHLIGHT = "24,0,173";
-const INK = "62,65,96"; // gris oscuro (texto del sitio)
-const GRAY = "107,110,138"; // gris medio
-const CHARCOAL = "34,34,40"; // negro carbón (continentes)
+//
+// Propuesta "noche" (exploración, nov. 2026; aún sin aprobar por el cliente): el
+// mapa va en un panel azul marino (#0D0F33). Continentes en azul grisáceo claro
+// translúcido, Colombia y Bogotá en lavanda luminosa, rutas y puntos en naranja
+// con resplandor. Los textos van claros con halo oscuro.
+const HIGHLIGHT = "200,206,255"; // lavanda: Colombia, EE. UU. y localidades
+const NIGHT = "13,15,51"; // #0D0F33, fondo del panel (halos y fronteras)
+const SOLID = "27,30,92"; // #1B1E5C, base opaca de Colombia y Bogotá de cerca
+const LAND = "150,162,236"; // continentes
+const TEXT = "236,238,252"; // textos claros
+const SHADE = "4,5,22"; // sombras
+const ATMOSPHERE = "110,125,255"; // halo azul alrededor del globo
 
 // Relieve 3D (prototipo pedido por el cliente, nov. 2026): Colombia de cerca y
 // Bogotá son bloques con grosor; Bogotá además se ve inclinada (en perspectiva)
 // y las localidades exclusivas suben cuando llega su camión
-const WALL_DARK: [number, number, number] = [82, 64, 194]; // color resaltado sobre blanco, 75 %
-const WALL_LIGHT: [number, number, number] = [163, 153, 222]; // ídem, 40 %
+const WALL_DARK: [number, number, number] = [8, 9, 34]; // paredes del bloque, abajo
+const WALL_LIGHT: [number, number, number] = [62, 68, 150]; // ídem, arriba
 const SLAB_COLOMBIA = 9; // grosor de Colombia de cerca (px de CSS)
 const SLAB_BOGOTA = 16; // grosor del bloque de Bogotá (px de CSS)
 const RISE = 14; // cuánto suben las localidades exclusivas (px de CSS)
@@ -451,14 +491,14 @@ function pill(
         ? y - h - 12 * dpr
         : y + 12 * dpr;
   ctx.save();
-  ctx.shadowColor = `rgba(${INK},.28)`;
-  ctx.shadowBlur = 12 * dpr;
-  ctx.fillStyle = dark ? `rgb(${INK})` : "#ffffff";
+  ctx.shadowColor = `rgba(${SHADE},.55)`;
+  ctx.shadowBlur = 14 * dpr;
+  ctx.fillStyle = dark ? ORANGE : "#ffffff";
   ctx.beginPath();
   ctx.roundRect(left, top, w, h, h / 2);
   ctx.fill();
   ctx.restore();
-  ctx.fillStyle = dark ? "#ffffff" : `rgb(${INK})`;
+  ctx.fillStyle = dark ? "#ffffff" : `rgb(${NIGHT})`;
   ctx.textBaseline = "middle";
   ctx.fillText(text, left + 11 * dpr, top + h / 2 + 0.5 * dpr);
 }
@@ -480,9 +520,9 @@ function tag(
   const tx = x + (vertical ? 0 : side === "left" ? -9 : 9) * dpr;
   const ty = y + (side === "below" ? 12 : side === "above" ? -12 : 0) * dpr;
   ctx.lineWidth = 3 * dpr;
-  ctx.strokeStyle = "rgba(255,255,255,.85)";
+  ctx.strokeStyle = `rgba(${NIGHT},.85)`;
   ctx.strokeText(text, tx, ty);
-  ctx.fillStyle = `rgb(${INK})`;
+  ctx.fillStyle = `rgb(${TEXT})`;
   ctx.fillText(text, tx, ty);
   ctx.textAlign = "start";
 }
@@ -497,13 +537,19 @@ function pin(
   fill: string,
   stroke: string,
 ) {
+  ctx.save();
+  // Resplandor del color del punto
+  ctx.shadowColor = fill === ORANGE ? "rgba(255,118,25,.95)" : "rgba(255,255,255,.8)";
+  ctx.shadowBlur = r * 3 * dpr;
   ctx.fillStyle = fill;
   ctx.strokeStyle = stroke;
   ctx.lineWidth = 2 * dpr;
   ctx.beginPath();
   ctx.arc(x, y, r * dpr, 0, Math.PI * 2);
   ctx.fill();
+  ctx.shadowBlur = 0;
   ctx.stroke();
+  ctx.restore();
 }
 function pulse(
   ctx: CanvasRenderingContext2D,
@@ -538,7 +584,7 @@ function drawSlab(
   if (shadow) {
     ctx.save();
     ctx.translate(0, depth);
-    ctx.shadowColor = `rgba(${INK},.45)`;
+    ctx.shadowColor = `rgba(${SHADE},.7)`;
     ctx.shadowBlur = 22 * dpr;
     ctx.shadowOffsetY = 8 * dpr;
     ctx.fillStyle = `rgb(${dark})`;
@@ -570,13 +616,12 @@ function drawLand(
   borderWidth: number,
   bogota: number,
 ) {
-  // Continentes en negro (pedido del cliente, nov. 2026): un negro carbón algo
-  // translúcido, no puro, para que no pese; las regiones donde opera más
-  // oscuras y el resto del mundo más suave
+  // Continentes en azul grisáceo translúcido sobre el mar azul marino: las
+  // regiones donde opera más claras y el resto del mundo más tenue
   const fills = [
-    `rgba(${CHARCOAL},${0.48 + 0.08 * pano})`,
-    `rgba(${CHARCOAL},${0.78 + 0.06 * pano})`,
-    // Estados Unidos: un tono más claro que Colombia (antes naranja claro)
+    `rgba(${LAND},${0.16 + 0.04 * pano})`,
+    `rgba(${LAND},${0.34 + 0.06 * pano})`,
+    // Estados Unidos: un tono más suave que Colombia
     `rgba(${HIGHLIGHT},.45)`,
   ];
   BY_ZONE.forEach((fc, z) => {
@@ -585,7 +630,7 @@ function drawLand(
     path(fc);
     ctx.fill();
   });
-  ctx.strokeStyle = "rgba(255,255,255,.55)";
+  ctx.strokeStyle = `rgba(${NIGHT},.75)`;
   ctx.lineWidth = borderWidth * dpr;
   ctx.beginPath();
   path(BORDERS);
@@ -597,7 +642,7 @@ function drawLand(
     ctx.save();
     ctx.globalAlpha *= close * (1 - bogota);
     drawSlab(ctx, shape, SLAB_COLOMBIA * dpr * close, dpr, WALL_DARK, WALL_LIGHT);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = `rgb(${SOLID})`;
     ctx.fill(shape);
     ctx.restore();
   }
@@ -605,7 +650,7 @@ function drawLand(
   path(COLOMBIA);
   ctx.fillStyle = `rgba(${HIGHLIGHT},${(0.95 - 0.8 * close) * (1 - bogota)})`;
   ctx.fill();
-  ctx.strokeStyle = close > 0 ? `rgb(${HIGHLIGHT})` : "#ffffff";
+  ctx.strokeStyle = close > 0 ? `rgb(${HIGHLIGHT})` : `rgba(${NIGHT},.75)`;
   ctx.lineWidth = (close > 0 ? 2.2 : borderWidth) * dpr;
   ctx.stroke();
 }
@@ -635,7 +680,7 @@ function drawLocal(
     const e = ease(amount);
     const on = amount < 1;
     ctx.save();
-    ctx.strokeStyle = on ? ORANGE : `rgba(${INK},.5)`;
+    ctx.strokeStyle = on ? ORANGE : `rgba(${TEXT},.35)`;
     ctx.lineWidth = (on ? 3 : 2) * dpr;
     ctx.setLineDash([2 * dpr, 7 * dpr]);
     if (on) {
@@ -652,7 +697,7 @@ function drawLocal(
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
-    ctx.fillStyle = `rgba(${INK},.55)`;
+    ctx.fillStyle = `rgba(${TEXT},.5)`;
     ctx.textAlign = "center";
     ctx.fillText(labels.country.toUpperCase(), n[0], n[1]);
     ctx.textAlign = "start";
@@ -676,11 +721,11 @@ function drawLocal(
     }
     if (i === 0) {
       pulse(ctx, p[0], p[1], dpr, time, "255,118,25");
-      pin(ctx, p[0], p[1], dpr, 6, "#ffffff", `rgb(${INK})`);
+      pin(ctx, p[0], p[1], dpr, 6, "#ffffff", ORANGE);
       pill(ctx, p[0], p[1], labels.origin, dpr, true, "right");
       return;
     }
-    pin(ctx, p[0], p[1], dpr, 4, ORANGE, "#ffffff");
+    pin(ctx, p[0], p[1], dpr, 4, ORANGE, `rgb(${NIGHT})`);
     tag(ctx, p[0], p[1], c.name, dpr, c.side);
   });
   ctx.restore();
@@ -838,15 +883,15 @@ function drawTruck(
   ctx.scale(1, tilt);
   ctx.rotate(angle);
   ctx.scale(k, k);
-  ctx.fillStyle = "rgba(29,32,80,.2)";
+  ctx.fillStyle = `rgba(${SHADE},.45)`;
   box(-14, -4.4, 28, 11, 2.2);
   ctx.fill();
-  ctx.fillStyle = AZUL;
+  ctx.fillStyle = "#FFFFFF";
   box(-15, -5.5, 19, 11, 1.6);
   ctx.fill();
   ctx.save();
   ctx.clip();
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = ORANGE;
   for (const p of STRIPES) ctx.fill(p);
   ctx.restore();
   ctx.fillStyle = "#FFFFFF";
@@ -885,7 +930,7 @@ function bogotaShapes(flat: Flat, key: string) {
 // la que se toca o está bajo el puntero, en naranja
 function paintLocalities(ctx: CanvasRenderingContext2D, sh: Shapes, dpr: number) {
   drawSlab(ctx, sh.all, SLAB_BOGOTA * dpr, dpr, WALL_DARK, WALL_LIGHT);
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = `rgb(${SOLID})`;
   ctx.fill(sh.all);
   ctx.fillStyle = `rgba(${HIGHLIGHT},.15)`;
   ctx.fill(sh.all);
@@ -910,7 +955,7 @@ function paintRaised(
   ctx.translate(0, -lift);
   if (orange) drawSlab(ctx, shape, lift, dpr, ORANGE_DARK, ORANGE_LIGHT);
   else drawSlab(ctx, shape, lift, dpr, WALL_DARK, WALL_LIGHT);
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = `rgb(${SOLID})`;
   ctx.fill(shape);
   ctx.fillStyle = orange ? `rgba(255,118,25,${orange})` : `rgba(${HIGHLIGHT},.15)`;
   ctx.fill(shape);
@@ -1057,7 +1102,7 @@ function drawBogota(
   if (home) {
     ctx.save();
     ctx.translate(home[0], home[1]);
-    ctx.fillStyle = AZUL;
+    ctx.fillStyle = ORANGE;
     ctx.strokeStyle = "#FFFFFF";
     ctx.lineWidth = 2 * dpr;
     ctx.beginPath();
@@ -1074,13 +1119,13 @@ function drawBogota(
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
-    ctx.fillStyle = `rgba(${INK},.55)`;
+    ctx.fillStyle = `rgba(${TEXT},.5)`;
     ctx.textAlign = "center";
     ctx.fillText(labels.city.toUpperCase(), n[0], n[1]);
     ctx.letterSpacing = "0px";
   }
   ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
-  ctx.fillStyle = `rgba(${INK},.6)`;
+  ctx.fillStyle = `rgba(${TEXT},.5)`;
   ctx.textAlign = "center";
   // Abajo a la derecha, donde no hay localidades
   const lens = lensRadius(W, H);
@@ -1103,9 +1148,9 @@ function drawBogota(
     ctx.textBaseline = "middle";
     // Como los nombres de las ciudades de Colombia: gris oscuro con borde blanco
     ctx.lineWidth = 3 * dpr;
-    ctx.strokeStyle = "rgba(255,255,255,.85)";
+    ctx.strokeStyle = `rgba(${NIGHT},.85)`;
     ctx.strokeText(text, p[0], p[1]);
-    ctx.fillStyle = `rgb(${INK})`;
+    ctx.fillStyle = `rgb(${TEXT})`;
     ctx.fillText(text, p[0], p[1]);
   }
   ctx.textAlign = "start";
@@ -1207,8 +1252,8 @@ export function drawGlobe(
         cy + R * 0.05,
         R * 1.12,
       );
-      shade.addColorStop(0, `rgba(${INK},${0.16 * (1 - near)})`);
-      shade.addColorStop(1, `rgba(${INK},0)`);
+      shade.addColorStop(0, `rgba(${ATMOSPHERE},${0.3 * (1 - near)})`);
+      shade.addColorStop(1, `rgba(${ATMOSPHERE},0)`);
       ctx.fillStyle = shade;
       ctx.fillRect(0, 0, W, H);
     }
@@ -1218,16 +1263,16 @@ export function drawGlobe(
     ctx.arc(cx, cy, lens, 0, Math.PI * 2);
     ctx.clip();
 
-    // Mar gris muy claro, más luminoso arriba a la izquierda
+    // Mar azul marino, más luminoso arriba a la izquierda
     const sea = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.05, cx, cy, R);
-    sea.addColorStop(0, "#FFFFFF");
-    sea.addColorStop(0.6, "#F0F6F6");
-    sea.addColorStop(1, "#E1E5EE");
+    sea.addColorStop(0, "#34399A");
+    sea.addColorStop(0.6, "#1B1E5C");
+    sea.addColorStop(1, "#1D2050");
     ctx.fillStyle = sea;
     ctx.beginPath();
     path(SPHERE);
     ctx.fill();
-    ctx.strokeStyle = `rgba(${GRAY},.14)`;
+    ctx.strokeStyle = "rgba(255,255,255,.07)";
     ctx.lineWidth = dpr;
     ctx.beginPath();
     path(GRATICULE);
@@ -1246,10 +1291,10 @@ export function drawGlobe(
     // izquierda y el borde en sombra, sobre el mar y los continentes
     if (near < 1) {
       const light = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx, cy, R);
-      light.addColorStop(0, `rgba(255,255,255,${0.32 * (1 - near)})`);
+      light.addColorStop(0, `rgba(255,255,255,${0.16 * (1 - near)})`);
       light.addColorStop(0.45, "rgba(255,255,255,0)");
-      light.addColorStop(0.75, `rgba(${INK},0)`);
-      light.addColorStop(1, `rgba(${INK},${0.34 * (1 - near)})`);
+      light.addColorStop(0.75, `rgba(${SHADE},0)`);
+      light.addColorStop(1, `rgba(${SHADE},${0.45 * (1 - near)})`);
       ctx.fillStyle = light;
       ctx.beginPath();
       path(SPHERE);
@@ -1296,8 +1341,15 @@ export function drawGlobe(
         }
       }
     }
-    ctx.strokeStyle = "rgba(255,118,25,.22)";
+    ctx.strokeStyle = "rgba(255,118,25,.18)";
     ctx.stroke(back);
+    // Resplandor: un trazo ancho y tenue debajo del trazo fino
+    ctx.save();
+    ctx.lineWidth = 6 * dpr;
+    ctx.strokeStyle = "rgba(255,118,25,.16)";
+    ctx.stroke(front);
+    ctx.restore();
+    ctx.lineWidth = 1.6 * dpr;
     ctx.strokeStyle = ORANGE;
     ctx.stroke(front);
     // Destinos (cuando la ruta llegó) y, mientras se ve su continente, su nombre;
@@ -1318,7 +1370,7 @@ export function drawGlobe(
         ctx.arc(x, y, 9 * dpr, 0, Math.PI * 2);
         ctx.stroke();
       }
-      pin(ctx, x, y, dpr, 3.5, ORANGE, "#ffffff");
+      pin(ctx, x, y, dpr, 3.5, ORANGE, `rgb(${NIGHT})`);
       if (!s.regionLabels.includes(d)) continue;
       const text = labels.place(d);
       const side = LABEL_SIDE[d.name] ?? "right";
@@ -1346,7 +1398,7 @@ export function drawGlobe(
       const [x, y] = [bx, by];
       // En naranja y con pastilla blanca, para que se vean sobre los continentes negros
       pulse(ctx, x, y, dpr, time, "255,118,25");
-      pin(ctx, x, y, dpr, 5.5, "#ffffff", `rgb(${INK})`);
+      pin(ctx, x, y, dpr, 5.5, "#ffffff", ORANGE);
       if (!s.spinning) pill(ctx, x, y, labels.origin, dpr, false, "below");
     }
 
@@ -1354,7 +1406,7 @@ export function drawGlobe(
 
     // Borde del círculo cuando funciona como lupa
     if (near > 0) {
-      ctx.strokeStyle = `rgba(${INK},${0.18 * near})`;
+      ctx.strokeStyle = `rgba(255,255,255,${0.14 * near})`;
       ctx.lineWidth = 1.5 * dpr;
       ctx.beginPath();
       ctx.arc(cx, cy, lens, 0, Math.PI * 2);

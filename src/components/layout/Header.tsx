@@ -17,6 +17,10 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  // Escondida al bajar (pasada la parte de arriba); vuelve al subir
+  const [tucked, setTucked] = useState(false);
+  // Línea naranja de avance de lectura (se actualiza sin re-render)
+  const progressRef = useRef<HTMLSpanElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
   const { pathname, hash, search, key } = useLocation();
@@ -25,7 +29,21 @@ export function Header() {
   const t = headerText(tr);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      if (Math.abs(y - last) > 8) {
+        // Un salto grande (ir a una sección desde el menú) no la esconde:
+        // quien acaba de navegar espera verla
+        const jump = Math.abs(y - last) > window.innerHeight;
+        setTucked(!jump && y > last && y > 480);
+        last = y;
+      }
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progressRef.current)
+        progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -91,6 +109,8 @@ export function Header() {
   };
 
   const solid = scrolled || menuOpen || active !== null;
+  // Nunca se esconde con un menú o el buscador abiertos
+  const hide = tucked && !menuOpen && active === null && !searchOpen;
   // Todas las portadas son blancas (inicio y PageHero): la cabecera siempre
   // usa letras oscuras.
   const iconCls =
@@ -104,13 +124,20 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] focus-within:translate-y-0 ${
+          hide ? "-translate-y-full" : ""
+        } ${
           solid
             ? "bg-white/95 shadow-[0_1px_0_#e1e5ee,0_8px_24px_-16px_rgba(39,43,124,.25)] backdrop-blur-xl"
             : ""
         }`}
       >
         <LangBar hidden={scrolled || menuOpen} />
+        <span
+          ref={progressRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-naranja"
+        />
         <div
           ref={navRef}
           onMouseLeave={hoverClose}
@@ -125,7 +152,7 @@ export function Header() {
           {/* Escritorio */}
           {/* Menús en el centro, entre el logo y las acciones */}
           <nav
-            className="hidden flex-1 items-center justify-center gap-3 lg:flex xl:gap-6"
+            className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-10 wide:gap-14"
             aria-label={t.mainNav}
           >
             {MENUS.map((m) => {
@@ -140,7 +167,9 @@ export function Header() {
                     aria-expanded={open}
                     aria-haspopup="true"
                     className={`${underline} ${
-                      open || sectionOf(m) ? "after:scale-x-100" : "after:scale-x-0"
+                      open || sectionOf(m)
+                        ? "after:scale-x-100"
+                        : "after:scale-x-0 hover:after:scale-x-100"
                     }`}
                   >
                     {m.label}

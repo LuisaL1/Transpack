@@ -101,50 +101,6 @@ export function menusFor(lang: Lang): Menu[] {
       cols: 2,
     },
     {
-      key: "soluciones",
-      label: tr("Soluciones", "Solutions"),
-      feature: {
-        kicker: tr("Soluciones", "Solutions"),
-        title: tr(
-          "Ofrecemos un servicio ajustado a sus necesidades",
-          "A service tailored to your needs",
-        ),
-        text: tr(
-          "Diferentes líneas de servicio especializadas y acompañamiento personalizado para quienes empiezan otra etapa en un nuevo hogar.",
-          "Different specialized service lines and personal support for those starting a new chapter in a new home.",
-        ),
-        cta: tr("Ver todas las soluciones", "See all solutions"),
-        to: lp("/#soluciones"),
-      },
-      items: [
-        {
-          label: tr("Residencial", "Residential"),
-          desc: tr(
-            "Mudanzas de hogar locales, nacionales e internacionales",
-            "Local, national and international household moves",
-          ),
-          icon: "house-door",
-          to: lp("/?segmento=residencial#soluciones"),
-        },
-        {
-          label: tr("Movilidad corporativa", "Corporate Mobility"),
-          desc: tr("Traslado de oficinas", "Office moves"),
-          icon: "buildings",
-          to: lp("/?segmento=corporate#soluciones"),
-        },
-        {
-          label: tr("Diplomático", "Diplomatic"),
-          desc: tr(
-            "Embajadas y organismos extranjeros y no gubernamentales",
-            "Embassies and foreign and non-governmental organizations",
-          ),
-          icon: "flag",
-          to: lp("/?segmento=diplomatic#soluciones"),
-        },
-      ],
-      cols: 2,
-    },
-    {
       key: "blog",
       label: "Blog",
       feature: {
@@ -261,7 +217,6 @@ export const headerText = (tr: Tr) => ({
 
 export const footerText = (tr: Tr) => ({
   services: tr("Servicios", "Services"),
-  solutions: tr("Soluciones", "Solutions"),
   about: tr("Quiénes somos", "About us"),
   contact: tr("Contacto", "Contact"),
   legal: "Transpack S.A.S. · Bogotá, Colombia",

@@ -1,5 +1,5 @@
 // Contenido del buscador del sitio: qué se puede encontrar (servicios,
-// soluciones, artículos, preguntas frecuentes y páginas), las búsquedas
+// artículos, preguntas frecuentes y páginas), las búsquedas
 // sugeridas y los textos del cuadro de búsqueda. El motor está en
 // src/lib/search.ts.
 import { DESTINATION_NAMES, postsFor, siteFor } from "@/data/content";
@@ -25,7 +25,7 @@ const guideText = (g: ServiceGuide) =>
 
 // Índice de búsqueda en el idioma pedido (las rutas ya salen localizadas)
 export function searchIndex(lang: Lang): SearchEntry[] {
-  const { FAQS, PRIVACY, SEGMENTS, SERVICES } = siteFor(lang);
+  const { FAQS, PRIVACY, SERVICES } = siteFor(lang);
   const posts = postsFor(lang);
   const tr = makeTr(lang);
   const lp = (path: string) => localize(path, lang);
@@ -47,14 +47,6 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       desc: s.short,
       to: lp(`/servicios/${s.slug}`),
       extra: `${s.kicker ?? ""} ${s.intro} ${(s.includes ?? []).join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""}`,
-    })),
-    ...SEGMENTS.map((s) => ({
-      kind: tr("Solución", "Solution"),
-      icon: s.icon,
-      title: s.tab,
-      desc: s.title,
-      to: lp(`/?segmento=${s.id}#soluciones`),
-      extra: `${s.kicker} ${s.text} ${s.points.join(" ")}`,
     })),
     ...posts.map((p) => ({
       kind: tr("Artículo", "Article"),

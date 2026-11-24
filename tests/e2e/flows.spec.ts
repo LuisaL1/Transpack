@@ -105,8 +105,9 @@ test("portada: globo animado al lado del titular y botón para cotizar", async (
   await expect(page).toHaveURL(/#cotizar/);
 });
 
-// Puntos de los destinos en el mapa (px de CSS): discos naranjas; las rutas,
-// también naranjas, son líneas más finas
+// Puntos de los destinos en el mapa (px de CSS): discos naranjas con un anillo
+// azul oscuro; las rutas, también naranjas (y con resplandor donde se juntan),
+// no tienen ese anillo
 const mapPins = (c: HTMLCanvasElement) => {
   const { data, width, height } = c.getContext("2d")!.getImageData(0, 0, c.width, c.height);
   const dpr = c.width / c.clientWidth;
@@ -114,11 +115,20 @@ const mapPins = (c: HTMLCanvasElement) => {
     const i = (y * width + x) * 4;
     return data[i] > 230 && data[i + 1] > 90 && data[i + 1] < 150 && data[i + 2] < 70;
   };
-  const r = Math.round(2 * dpr);
+  const dark = (x: number, y: number) => {
+    const i = (y * width + x) * 4;
+    return data[i] < 90 && data[i + 1] < 90 && data[i + 2] < 130 && data[i + 3] > 200;
+  };
+  const r = Math.round(dpr);
+  const ring = Math.round(3.5 * dpr);
   const found: [number, number][] = [];
-  for (let y = r; y < height - r; y += 2)
-    for (let x = r; x < width - r; x += 2) {
+  for (let y = ring; y < height - ring; y += 1)
+    for (let x = ring; x < width - ring; x += 1) {
       if (![-r, 0, r].every((dy) => [-r, 0, r].every((dx) => orange(x + dx, y + dy)))) continue;
+      if (
+        ![dark(x - ring, y), dark(x + ring, y), dark(x, y - ring), dark(x, y + ring)].every(Boolean)
+      )
+        continue;
       if (found.some(([fx, fy]) => Math.hypot(fx - x, fy - y) < 12 * dpr)) continue;
       found.push([x, y]);
     }
@@ -133,15 +143,37 @@ test("mapa de la portada: tras el carrusel muestra Bogotá y al tocar una locali
   await closeCookies(page);
   const map = page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" });
   await map.scrollIntoViewIfNeeded();
+  // En escritorio el mapa avanza con el scroll (el Hero queda fijo): bajar un
+  // poco lleva a Bogotá. En celular avanza solo, como antes
+  const toBogota = () =>
+    page.evaluate(() => {
+      // Solo en escritorio (en celular el Hero no queda fijo)
+      if (!matchMedia("(min-width: 1024px)").matches) return;
+      const track = document.querySelector<HTMLElement>("[data-globe-track]")!;
+      const len = track.offsetHeight - innerHeight;
+      if (len > 0) scrollTo({ top: len * 0.2, behavior: "instant" });
+    });
+  await toBogota();
+  // Primero, que la foto se haya ido y se vea el mapa (con la máquina cargada
+  // tarda más): la capa de fotos va justo después del canvas
+  await expect
+    .poll(() => map.evaluate((c) => getComputedStyle(c.nextElementSibling!).opacity), {
+      timeout: 40000,
+    })
+    .toBe("0");
   const box = (await map.boundingBox())!;
   const card = page.getByRole("dialog");
-  // Tras el carrusel de fotos (unos 15 s) aparece Bogotá: el centro del mapa cae
-  // sobre una localidad. Con el mouse encima la animación se pausa, así que
-  // después de cada intento se saca del mapa para que siga
+  // Tras el carrusel de fotos (unos 15 s; en escritorio, al bajar) aparece
+  // Bogotá: el centro del mapa cae sobre una localidad. Con el mouse encima la
+  // animación se pausa (en celular), así que después de cada intento se saca
+  // del mapa para que siga. El clic va a coordenadas de la pantalla: el de un
+  // elemento lo desplaza antes "a la vista", y con el Hero fijo eso movería la
+  // página (y el mapa avanzaría a Colombia)
   await expect
     .poll(
       async () => {
-        await map.click({ position: { x: box.width / 2, y: box.height / 2 } });
+        await toBogota();
+        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
         const shown = await card.waitFor({ timeout: 300 }).then(
           () => true,
           () => false,
@@ -155,7 +187,9 @@ test("mapa de la portada: tras el carrusel muestra Bogotá y al tocar una locali
     )
     .toBe(true);
   await expect(card.getByRole("img", { name: /, Bogotá$/ })).toBeVisible();
-  await card.getByRole("button", { name: "Cerrar" }).click();
+  // También en coordenadas: desplazar la página cerraría la tarjeta por sí solo
+  const closeBox = (await card.getByRole("button", { name: "Cerrar" }).boundingBox())!;
+  await page.mouse.click(closeBox.x + closeBox.width / 2, closeBox.y + closeBox.height / 2);
   await expect(card).toHaveCount(0);
 });
 
@@ -191,12 +225,13 @@ test("cotizador: preselección por URL y validación", async ({ page }) => {
   await expect(form.getByText("Indica el país de origen.")).toBeVisible();
 });
 
-test("soluciones: el menú abre el segmento pedido", async ({ page }) => {
-  await page.goto("/?segmento=diplomatic#soluciones");
-  await expect(page.getByRole("tab", { name: /Diplomático/ })).toHaveAttribute(
-    "aria-selected",
-    "true",
+test("servicios: Movilidad corporativa y Diplomático tienen su página", async ({ page }) => {
+  await page.goto("/servicios/movilidad-corporativa");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "traslado seguro de su oficina",
   );
+  await page.goto("/en/services/diplomatic");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("diplomatic missions");
 });
 
 test("chat: se precarga escondido y al tocar el ícono abre ya en la conversación", async ({
@@ -277,6 +312,9 @@ test("el logo lleva al inicio y arriba, también estando ya en el inicio", async
   // Ya en el inicio, más abajo: el logo vuelve arriba
   await page.mouse.wheel(0, 3000);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(1000);
+  // Al bajar, la cabecera se esconde; vuelve al subir un poco, como lo haría
+  // quien visita el sitio
+  await page.mouse.wheel(0, -200);
   await logo.click();
   await expect.poll(() => page.evaluate(() => scrollY), { timeout: 5000 }).toBe(0);
   // Desde una sección del inicio (#cotizar), también

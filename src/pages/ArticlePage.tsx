@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { readMinutes, type Item } from "@/data/blogData";
 import { usePosts } from "@/hooks/useContent";
 import { slugEs, useLang } from "@/i18n";
-import { Bi, btn, Reveal } from "@/components/ui";
+import { Bi, btn, PhotoFrame, Reveal } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 
@@ -30,7 +30,7 @@ export function ArticlePage() {
 
   return (
     <>
-      <PageHero image={post.cover}>
+      <PageHero image={post.cover} drop={blogPosts.indexOf(post) % 2 ? "top" : "right"}>
         <div className="animate-fade-up mx-auto max-w-3xl">
           <Link
             to={lp("/#blog")}
@@ -52,7 +52,7 @@ export function ArticlePage() {
       </PageHero>
 
       <article className="mx-auto w-[min(100%-32px,760px)] py-16 md:py-20">
-        <p className="mb-8 border-s-[3px] border-naranja ps-5 text-[1.15rem] font-medium leading-relaxed text-tinta">
+        <p className="mb-8 border-s-[3px] border-naranja ps-5 text-start text-[1.15rem] font-medium leading-relaxed text-tinta">
           {post.excerpt}
         </p>
         <div className="prose-tp text-[1.03rem] leading-[1.75]">
@@ -89,18 +89,18 @@ export function ArticlePage() {
               <Reveal key={o.slug} delay={i * 80}>
                 <Link
                   to={lp(`/blog/${o.slug}`)}
-                  className="group grid h-full overflow-hidden bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)] sm:grid-cols-[200px_1fr]"
+                  className="group grid h-full rounded-[28px] bg-white p-2 transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)] sm:grid-cols-[200px_1fr]"
                 >
-                  <div className="aspect-[16/10] overflow-hidden sm:aspect-auto">
+                  <PhotoFrame tab corner="tr" className="aspect-[16/10] sm:aspect-auto">
                     <img
                       loading="lazy"
                       decoding="async"
                       src={o.cover}
                       alt=""
-                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      className="h-full w-full object-cover"
                     />
-                  </div>
-                  <div className="flex flex-col gap-2 p-6">
+                  </PhotoFrame>
+                  <div className="flex flex-col gap-2 p-4 sm:p-5">
                     <span className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-naranja">
                       {o.cat}
                     </span>

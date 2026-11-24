@@ -19,7 +19,6 @@ import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
-import imgResidencial from "@/assets/images/residencial.jpeg";
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -116,6 +115,11 @@ export type Service = {
   // En el encabezado, el mapa animado de rutas por Colombia en vez de la foto
   // (la foto sigue como imagen para compartir en redes)
   heroMap?: boolean;
+  // La foto del encabezado llega como una caja que se deja, desde este lado
+  // (DropIn); sin él, aparece quieta
+  imageDrop?: "left" | "right" | "top";
+  // La foto del encabezado sin marco: se funde con el fondo blanco
+  imageBlend?: boolean;
   // Rótulo sobre el título; sin él, no se muestra
   kicker?: string;
   headline: string;
@@ -161,6 +165,8 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Cotizar",
     image: imgEmbalajeHogar,
+    imageDrop: "top",
+    imageBlend: true,
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:
@@ -246,6 +252,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Hablar con un asesor",
     image: imgInternacionalPuerto,
+    imageDrop: "right",
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
@@ -298,6 +305,7 @@ export const SERVICES: Service[] = [
     quote: "bodegaje",
     cta: "Cotizar",
     image: imgBodegajeBodega,
+    imageDrop: "top",
     kicker: "Almacenamiento en Bogotá",
     headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesite",
     intro:
@@ -337,6 +345,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Cotizar",
     image: imgGuacales,
+    imageDrop: "right",
     kicker: "Obras de arte y objetos de valor",
     headline:
       "Sus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
@@ -361,6 +370,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Cotizar",
     image: imgAduanaCajas,
+    imageDrop: "top",
     kicker: "Trámites internacionales",
     headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
@@ -392,62 +402,89 @@ export const SERVICES: Service[] = [
       },
     ],
   },
-];
-
-// ─── Soluciones por segmento (Modelo de Negocio, 4.1 y 4.2) ──────────────────
-
-export const SEGMENTS = [
+  // Antes en "Soluciones" (nov. 2026). Textos: correcciones del cliente de
+  // noviembre de 2026 y Modelo de Negocio (4.1 y 7); sin "traslado de
+  // funcionarios", que ya cubren las mudanzas nacionales e internacionales.
   {
-    id: "residencial",
-    icon: "house-door",
-    tab: "Residencial",
-    kicker: "Transpack Residencial",
-    title: "Tu mudanza local: Ágil, segura y sin complicaciones",
-    text: "",
-    points: [
-      "Protección, desarme y armado de muebles",
-      "Empaque y manejo de objetos delicados y de alto valor",
-      "Bodegaje temporal o permanente en nuestras instalaciones",
-    ],
-    cta: "Cotizar mudanza de hogar",
-    quote: "local" as QuoteService,
-    image: imgResidencial,
-    // Foto panorámica: el marco usa su proporción para que se vea completa
-    imageWide: true,
-  },
-  {
-    id: "corporate",
+    slug: "movilidad-corporativa",
     icon: "buildings",
-    tab: "Movilidad corporativa",
-    kicker: "Transpack Movilidad corporativa",
-    title: "Transpack, un equipo profesional para el traslado seguro de su oficina",
-    text: "",
-    points: [
+    title: "Movilidad corporativa",
+    short:
+      "Traslado seguro de oficinas, con un ejecutivo de cuenta para sus requerimientos y reportes de trazabilidad.",
+    quote: "empresarial",
+    cta: "Solicitar propuesta corporativa",
+    image: imgOficina,
+    imageDrop: "right",
+    kicker: "Traslado de oficinas",
+    headline: "Transpack, un equipo profesional para el traslado seguro de su oficina",
+    intro:
+      "Trasladamos oficinas con un equipo profesional y condiciones operativas seguras. Trabajamos bajo acuerdos o contratos, con un ejecutivo de cuenta que atiende sus requerimientos y una operación que se repite cada vez que su empresa lo necesita.",
+    includes: [
       "Ejecutivo de cuenta para atender sus requerimientos",
       "Reportes de trazabilidad y condiciones operativas seguras",
+      "Acuerdos o contratos para operaciones recurrentes",
+      "Bodegaje en Bogotá para mobiliario de oficina o archivo",
     ],
-    cta: "Solicitar propuesta corporativa",
-    quote: "empresarial" as QuoteService,
-    image: imgOficina,
-    // Foto panorámica: el marco usa su proporción para que se vea completa
-    imageWide: true,
+    steps: [
+      {
+        title: "Diagnóstico",
+        text: "Entendemos qué se traslada, el volumen y los plazos de su empresa.",
+      },
+      {
+        title: "Propuesta",
+        text: "Diseñamos la operación y le presentamos una propuesta.",
+      },
+      {
+        title: "Acuerdo",
+        text: "Definimos las condiciones en un acuerdo o contrato.",
+      },
+      {
+        title: "Operación",
+        text: "Coordinamos el traslado y le reportamos su avance hasta la entrega.",
+      },
+    ],
   },
   {
-    id: "diplomatic",
+    slug: "diplomatico",
     icon: "flag",
-    tab: "Diplomático",
-    kicker: "Transpack Diplomático",
-    title: "Discreción, protocolo y precisión para misiones diplomáticas",
-    text: "",
-    points: [
+    title: "Diplomático",
+    short:
+      "Traslados para embajadas y organismos extranjeros y no gubernamentales, con atención protocolaria y absoluta confidencialidad.",
+    quote: "internacional",
+    cta: "Contactar al área institucional",
+    image: imgArteHogar,
+    imageDrop: "top",
+    kicker: "Embajadas y organismos extranjeros y no gubernamentales",
+    headline: "Discreción, protocolo y precisión para misiones diplomáticas",
+    intro:
+      "Embajadas de Estados Unidos, España, Canadá, México, India, Francia, Alemania, Egipto, Emiratos Árabes e Italia, y entidades como la CAF, han confiado en nosotros el traslado de su personal. Acompañamos a misiones diplomáticas y organismos internacionales con atención protocolaria y un proceso institucional.",
+    includes: [
       "Atención protocolaria y absoluta confidencialidad",
       "Asesoría en normativa aduanera y requisitos en origen y destino",
+      "Proceso de registro como proveedor institucional",
+      "Mudanzas internacionales por vía marítima o aérea",
     ],
-    cta: "Contactar al área institucional",
-    quote: "internacional" as QuoteService,
-    image: imgArteHogar,
+    steps: [
+      {
+        title: "Presentación",
+        text: "Le presentamos nuestra experiencia con embajadas y organismos internacionales.",
+      },
+      {
+        title: "Registro",
+        text: "Completamos el proceso de registro como proveedor institucional.",
+      },
+      {
+        title: "Operación",
+        text: "Coordinamos cada traslado con atención protocolaria y confidencialidad.",
+      },
+      {
+        title: "Relación",
+        text: "Acompañamos a su misión en cada nuevo traslado de su personal.",
+      },
+    ],
   },
 ];
+
 
 // ─── Niveles de servicio (Lógica de Cotización, sección 8) ───────────────────
 

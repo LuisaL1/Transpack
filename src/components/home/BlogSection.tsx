@@ -1,45 +1,59 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { blogSectionText } from "@/data/home";
 import { usePosts } from "@/hooks/useContent";
-import { Bi, Eyebrow, Reveal } from "@/components/ui";
+import { useMotion } from "@/hooks/useMotion";
+import { Bi, Eyebrow, PhotoFrame, Reveal } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
-// Últimos artículos del blog (src/data/blogData.ts)
+// Últimos artículos del blog (src/data/blogData.ts). Las tarjetas se inclinan
+// y brillan siguiendo al puntero (tilt y .spotlight; nov. 2026).
 export function BlogSection() {
   const { lp, tr } = useLang();
   const t = blogSectionText(tr);
   const blogPosts = usePosts();
+  const ref = useRef<HTMLElement>(null);
+  useMotion(ref, (m, el) => {
+    const off = [...el.querySelectorAll<HTMLElement>("[data-blog-card]")].map((c) => m.tilt(c, 3));
+    return () => off.forEach((f) => f());
+  });
   return (
-    <section id="blog" className={`${section} bg-white`}>
+    <section id="blog" ref={ref} className={`${section} bg-white`}>
       <div className={container}>
         <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-x-16 gap-y-4 md:mb-16">
           <div>
             <Eyebrow>{t.eyebrow}</Eyebrow>
             <h2 className="text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">{t.title}</h2>
           </div>
-          <p className="max-w-[420px] text-[1.06rem] text-suave">{t.sub}</p>
+          <p className="max-w-[420px] text-start text-[1.06rem] text-suave">{t.sub}</p>
         </Reveal>
         <div className="grid gap-6 md:grid-cols-2">
           {blogPosts.map((p, i) => (
             <Reveal key={p.slug} delay={i * 80}>
               <Link
                 to={lp(`/blog/${p.slug}`)}
-                className="group flex h-full flex-col overflow-hidden bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-card)]"
+                data-blog-card
+                className="spotlight group relative flex h-full flex-col rounded-[28px] border border-linea bg-white p-2 transition-[translate,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[var(--shadow-card)]"
               >
-                <div className="aspect-[16/10] overflow-hidden">
+                {/* La categoría va en la pestaña de la foto, unida al texto */}
+                <PhotoFrame
+                  className="aspect-[16/10]"
+                  tab={
+                    <span className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-naranja">
+                      {p.cat}
+                    </span>
+                  }
+                >
                   <img
                     decoding="async"
                     src={p.cover}
                     alt=""
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="h-full w-full object-cover"
                   />
-                </div>
-                <div className="flex flex-1 flex-col gap-2.5 px-6 pb-7 pt-6">
-                  <span className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-naranja">
-                    {p.cat}
-                  </span>
+                </PhotoFrame>
+                <div className="flex flex-1 flex-col gap-2.5 px-4 pb-5 pt-4">
                   <h3 className="flex-1 text-[1.12rem] leading-snug">{p.title}</h3>
                   <span className="inline-flex items-center gap-1.5 text-[0.93rem] font-semibold text-azul">
                     {t.read}{" "}

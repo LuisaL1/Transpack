@@ -327,7 +327,7 @@ export function QuoteWizard({
               {t.paso} {step} {t.stepOf} {QUOTE_STEPS_TOTAL}
             </p>
 
-            <fieldset key={step} className="animate-fade-up m-0 min-w-0 border-0 p-0">
+            <fieldset key={step} className="animate-step-in m-0 min-w-0 border-0 p-0">
               {step === 1 && (
                 <>
                   {legend(t.necesitasTrasladar)}

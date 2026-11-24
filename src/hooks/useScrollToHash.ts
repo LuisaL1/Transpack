@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { scrollToElement, scrollToY } from "@/lib/smoothScroll";
 
 // En cada navegación: si hay #ancla, baja a esa sección; si no, vuelve arriba.
 // Depende también de `key`, que cambia en cada clic aunque la dirección sea la
@@ -13,12 +14,12 @@ export function useScrollToHash() {
       let tries = 0;
       const go = () => {
         const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (el) scrollToElement(el);
         else if (tries++ < 10) setTimeout(go, 50);
       };
       requestAnimationFrame(go);
     } else {
-      window.scrollTo(0, 0);
+      scrollToY(0, true);
     }
   }, [pathname, hash, search, key]);
 }

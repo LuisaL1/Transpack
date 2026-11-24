@@ -2,7 +2,9 @@
 export { Bi } from "./Bi";
 export { btn } from "./buttons";
 export { Checks } from "./Checks";
+export { DropIn, type DropFrom } from "./DropIn";
 export { Eyebrow } from "./Eyebrow";
+export { PhotoFrame, type TabCorner } from "./PhotoFrame";
 export { Reveal } from "./Reveal";
 export { SectionHead } from "./SectionHead";
-export { StatCounter, StatValue } from "./StatValue";
+export { StatCounter, StatOdometer, StatValue } from "./StatValue";

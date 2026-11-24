@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit -p .",
     "lint": "eslint .",
     "format": "oxfmt",
-    "map": "node scripts/generate-world-map.mjs src/data && node scripts/generate-colombia-map.mjs src/data",
+    "map": "node scripts/generate-world-map.mjs src/data && node scripts/generate-world-lines.mjs && node scripts/generate-colombia-map.mjs src/data",
     "map:bogota": "node scripts/generate-bogota-map.mjs src/data/bogotaMap.ts",
     "fotos": "node scripts/fetch-country-photos.mjs src/data/countryPhotos.ts RecursosTranspack/fotos-paises.html",
     "email:header": "node scripts/generate-email-header.mjs",
@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "bootstrap-icons": "^1.13.2",
+    "gsap": "3.14.0",
+    "lenis": "1.3.19",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.6"
