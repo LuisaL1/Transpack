@@ -61,7 +61,7 @@ src/
 │   │                       (SiteSearch) y Footer
 │   ├── sections/           Secciones compartidas: PageHero y CtaBand
 │   ├── home/               Una sección del inicio por archivo (Hero, Stats,
-│   │                       Services, Segments, Levels, Coverage, Process,
+│   │                       Services, Levels, Coverage, Process,
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (Globe, con CountryCard al tocar un país), el
@@ -73,7 +73,7 @@ src/
 │   └── ui/                 Primitivas: Bi (íconos), btn, Eyebrow, SectionHead,
 │                           Reveal, StatValue, Checks y medidas de sección (layout.ts)
 ├── data/                   CONTENIDO del sitio (fuente única de verdad)
-│   ├── site.ts (+ .en)                   Contacto, cifras, servicios, segmentos,
+│   ├── site.ts (+ .en)                   Contacto, cifras, servicios,
 │   │                                     niveles, proceso, preguntas frecuentes
 │   ├── blogData.ts (+ idiomas)           Artículos del blog
 │   ├── content.ts          siteFor(lang) / postsFor(lang) y nombres de destinos
@@ -195,13 +195,15 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   y exportación), **2.000+ agentes y aliados estratégicos** (así lo pidió el
   cliente, octubre de 2026; ni "representantes" ni "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
-  textos coincidan con `STATS`. En el inicio se muestran como carrusel con
-  movimiento (`Stats.tsx`), una cifra a la vez (5 s cada una): al entrar, cada
-  cifra cuenta desde 0 hasta su valor (`StatCounter`), desde que el carrusel se
-  ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
-  valor completo.
-- Embajadas atendidas: las 10 de `EMBASSIES`. En la franja de clientes del inicio se
-  muestran con su **logo** en grises y su nombre al lado ("Embajada de …";
+  textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
+  en una barra compacta (`Stats.tsx`; ya no en carrusel desde noviembre de
+  2026): al entrar, cada cifra cuenta desde 0 hasta su valor (`StatCounter`),
+  desde que la barra se ve en pantalla, y al pasar el cursor cada una se
+  levanta con sombra y franja naranja, como los logos de clientes. El HTML
+  pre-generado y los lectores de pantalla llevan el valor completo.
+- Embajadas atendidas: las 10 de `EMBASSIES`. En el inicio van en su propia
+  cuadrícula, debajo de los logos de clientes, con su **logo** en grises (a
+  color al pasar el cursor) y su nombre al lado ("Embajada de …";
   `EMBASSY_LOGOS`, pedido del cliente en noviembre de 2026): el de la Embajada de Francia en Colombia y, para
   las demás, el de su cancillería o gobierno o el emblema nacional (fuentes en
   `src/assets/images/clientes/embajadas/FUENTES.txt`). Son emblemas oficiales: el
@@ -226,11 +228,19 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
   de "diáspora").
 - Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
-  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje y gestión
-  aduanera; `SERVICES` en `src/data/site.ts`) y en los textos del inicio que el
-  cliente corrigió (soluciones, niveles, cotizador, proceso). Pedido del cliente,
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, gestión
+  aduanera, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
+  y en los textos del inicio que el cliente corrigió (niveles, cotizador, proceso). Pedido del cliente,
   noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
   sección.
+
+- **Sin "Soluciones"** (noviembre de 2026): el menú y la sección del inicio
+  "Soluciones" se quitaron. Movilidad corporativa (`/servicios/movilidad-corporativa`)
+  y Diplomático (`/servicios/diplomatico`) son ahora servicios, con su página, en
+  el menú "Servicios", el pie, el buscador y el sitemap; sus textos salen de las
+  correcciones del cliente de noviembre de 2026 y del Modelo de Negocio (4.1 y 7).
+  Residencial se descartó porque repetía Mudanzas locales y nacionales. Los
+  enlaces viejos `/?segmento=…#soluciones` llevan al inicio.
 
 ## Diseño
 
@@ -240,16 +250,40 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `linea`, `rojizo` `#E8401C`…). La lista blanca de colores está en `tests/unit/content.test.ts`:
   para usar un color nuevo, agréguelo ahí a propósito.
 - Tipografías: IBM Plex Sans (títulos) y Montserrat (texto).
+- Alineación del texto (noviembre de 2026): los párrafos se justifican solo en
+  pantallas anchas (1024 px+, regla base de `src/styles/index.css`); en celular
+  y tableta siguen la alineación de su bloque, y las listas nunca se justifican.
+  Los textos cortos o en columnas angostas (tarjetas, subtítulos de sección,
+  entradillas, lemas en mayúsculas) llevan `text-start` en el propio elemento
+  para no abrir huecos entre palabras; los centrados, `text-center`. Los
+  párrafos del header (megamenús, panel de soporte) van siempre a la izquierda
+  (regla `header p`).
+- Clientes y embajadas del inicio (`Hero`): dos cuadrículas fijas con todos
+  los logos (ya no carrusel): en gris; al pasar el cursor, el logo toma sus
+  colores y su ficha se levanta con sombra y la franja naranja.
 - **Fondo general de la página totalmente blanco** (pedido del cliente, octubre
   de 2026): sin franjas grises entre secciones ni manchas beige o naranja en la
   portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
-  política, 404) el panel de `PageHero` es blanco, con la franja
-  naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
-  cliente no se logra con capas sobre las fotos actuales (probado en octubre
-  de 2026): debe venir en las fotos que entregue el cliente.
+  política, 404) el texto de `PageHero` va sobre blanco y la
+  cabecera usa siempre letras oscuras. La foto (o el mapa de Mudanzas
+  nacionales) va a la derecha como una tarjeta con esquinas redondeadas y
+  sombra, sin línea divisora con el texto (noviembre de 2026; la franja naranja
+  diagonal se quitó). **Fotos que llegan como una caja** (pedido del cliente,
+  noviembre de 2026): `DropIn` (`src/components/ui/DropIn.tsx`, animaciones
+  `.drop-*` en `src/styles/index.css`) oculta la foto hasta que entra en
+  pantalla; entonces llega desde un lado o desde arriba, golpea contra su lugar
+  (se aplasta un poco) y da un pequeño rebote. Solo en: la foto del encabezado
+  de Mudanzas locales, Mudanzas internacionales, Bodegaje, Embalaje
+  especializado, Gestión documental y aduanera, Movilidad corporativa y
+  Diplomático (`imageDrop` en `SERVICES`), la de Quiénes somos y la de los
+  artículos del blog (`PageHero drop`) y las dos de Certificaciones en
+  Nosotros. En Mudanzas locales la foto va sin tarjeta y se funde con el fondo
+  (`imageBlend` en `SERVICES`, `PageHero blend`, clase `.photo-blend`). Con movimiento reducido se ven directamente. Antes se probó un
+  efecto de "velocidad" (desenfoque de movimiento en el borde de las fotos) y
+  no convenció: se quitó.
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;

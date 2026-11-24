@@ -30,7 +30,7 @@ export function Process() {
                 </span>
               </span>
               <h3 className="mb-2 text-[1.1rem]">{p.title}</h3>
-              <p className="text-[0.92rem] text-suave">{p.text}</p>
+              <p className="text-start text-[0.92rem] text-suave">{p.text}</p>
             </Reveal>
           ))}
         </ol>

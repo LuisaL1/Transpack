@@ -30,7 +30,7 @@ export function VideoShorts() {
           <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12] !text-white">
             {t.title}
           </h2>
-          <p className="mb-8 max-w-md">{t.text}</p>
+          <p className="mb-8 max-w-md text-start">{t.text}</p>
           <div className="flex flex-wrap gap-3">
             <a
               href={YOUTUBE_CHANNEL}

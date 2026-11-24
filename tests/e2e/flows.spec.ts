@@ -191,12 +191,11 @@ test("cotizador: preselección por URL y validación", async ({ page }) => {
   await expect(form.getByText("Indica el país de origen.")).toBeVisible();
 });
 
-test("soluciones: el menú abre el segmento pedido", async ({ page }) => {
-  await page.goto("/?segmento=diplomatic#soluciones");
-  await expect(page.getByRole("tab", { name: /Diplomático/ })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
+test("servicios: Movilidad corporativa y Diplomático tienen su página", async ({ page }) => {
+  await page.goto("/servicios/movilidad-corporativa");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("traslado seguro de su oficina");
+  await page.goto("/en/services/diplomatic");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("diplomatic missions");
 });
 
 test("chat: se precarga escondido y al tocar el ícono abre ya en la conversación", async ({

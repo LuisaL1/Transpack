@@ -1,6 +1,6 @@
 // Textos de las secciones del inicio (src/components/home). Cada función recibe
 // `tr` (ver src/i18n): el español va primero y el inglés después.
-// Las cifras, servicios, segmentos, niveles, proceso y preguntas frecuentes
+// Las cifras, servicios, niveles, proceso y preguntas frecuentes
 // están en src/data/site.ts (y su traducción site.en.ts).
 import type { Tr } from "@/i18n";
 
@@ -21,6 +21,7 @@ export const heroText = (tr: Tr) => ({
   cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   ctaServices: tr("Ver servicios", "See services"),
   clientsLabel: tr("Empresas que confían en Transpack", "Companies that trust Transpack"),
+  embassiesLabel: tr("Embajadas que confían en Transpack", "Embassies that trust Transpack"),
   embassyOf: tr("Embajada de", "Embassy of"),
   // "the United States", "the United Arab Emirates"
   embassyName: (country: string) =>
@@ -33,11 +34,6 @@ export const heroText = (tr: Tr) => ({
 
 export const statsText = (tr: Tr) => ({
   label: tr("Transpack en cifras", "Transpack in numbers"),
-  // Carrusel de cifras (Stats.tsx)
-  carousel: tr("carrusel", "carousel"),
-  slide: tr("cifra", "figure"),
-  of: (a: number, b: number) => tr(`${a} de ${b}`, `${a} of ${b}`),
-  goTo: (a: number) => tr(`Ver cifra ${a}`, `Show figure ${a}`),
 });
 
 export const servicesText = (tr: Tr) => ({
@@ -45,19 +41,6 @@ export const servicesText = (tr: Tr) => ({
   // Va debajo de las tarjetas, como cierre de la sección
   title: tr("Una solución integral para cada traslado", "A complete solution for every move"),
   more: tr("Ver servicio", "View service"),
-});
-
-export const segmentsText = (tr: Tr) => ({
-  eyebrow: tr("Soluciones", "Solutions"),
-  title: tr(
-    "Cuidamos su patrimonio y una entrega segura",
-    "We look after your belongings and a safe delivery",
-  ),
-  sub: tr(
-    "Personas, empresas e instituciones tienen necesidades distintas. Por eso trabajamos con un equipo de profesionales especializados y un acompañamiento dedicado para quienes inician una nueva etapa.",
-    "People, companies and institutions have different needs. That is why we work with a team of specialized professionals and dedicated support for those starting a new chapter.",
-  ),
-  tabsLabel: tr("Soluciones por segmento", "Solutions by segment"),
 });
 
 export const levelsText = (tr: Tr) => ({

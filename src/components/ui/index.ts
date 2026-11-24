@@ -2,6 +2,7 @@
 export { Bi } from "./Bi";
 export { btn } from "./buttons";
 export { Checks } from "./Checks";
+export { DropIn, type DropFrom } from "./DropIn";
 export { Eyebrow } from "./Eyebrow";
 export { Reveal } from "./Reveal";
 export { SectionHead } from "./SectionHead";

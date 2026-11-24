@@ -38,7 +38,7 @@ export function Levels() {
                   {l.n}
                 </span>
                 <h3 className={`mb-2 text-xl ${l.featured ? "!text-white" : ""}`}>{l.title}</h3>
-                <p className={`mb-6 ${l.featured ? "" : "text-suave"}`}>{l.text}</p>
+                <p className={`mb-6 text-start ${l.featured ? "" : "text-suave"}`}>{l.text}</p>
                 <div className="mb-8 flex-1">
                   <Checks items={l.points} light={l.featured} small />
                 </div>

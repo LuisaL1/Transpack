@@ -18,7 +18,7 @@ export function BlogSection() {
             <Eyebrow>{t.eyebrow}</Eyebrow>
             <h2 className="text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">{t.title}</h2>
           </div>
-          <p className="max-w-[420px] text-[1.06rem] text-suave">{t.sub}</p>
+          <p className="max-w-[420px] text-start text-[1.06rem] text-suave">{t.sub}</p>
         </Reveal>
         <div className="grid gap-6 md:grid-cols-2">
           {blogPosts.map((p, i) => (

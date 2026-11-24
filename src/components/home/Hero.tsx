@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { heroText } from "@/data/home";
-import { logoHeight, logosWithEmbassies } from "@/data/clientLogos";
+import { CLIENT_LOGOS, embassyLogo, logoHeight } from "@/data/clientLogos";
 import { useSite } from "@/hooks/useContent";
 import { Bi, btn } from "@/components/ui";
 import { Globe } from "@/components/home/Globe";
@@ -10,7 +10,10 @@ import { container } from "@/components/ui/layout";
 // Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular y los
 // botones; a la derecha el globo animado (Globe), grande y
 // recortado por el borde de la página, como en la web de referencia del
-// cliente (Spectrum). En celular el globo va debajo del texto. Los clientes al pie.
+// cliente (Spectrum). En celular el globo va debajo del texto. Al pie, los
+// clientes y las embajadas atendidas, todos a la vista en cuadrículas fijas (ya
+// no en carrusel, nov. 2026): en gris; al pasar el cursor, cada logo recupera
+// sus colores y su ficha se levanta con sombra y la franja naranja de la marca.
 // Resalta en negrita y azul las cifras indicadas dentro de un texto
 function highlight(text: string, marks: string[]) {
   const parts: React.ReactNode[] = [];
@@ -32,7 +35,7 @@ function highlight(text: string, marks: string[]) {
 export function Hero() {
   const { lp, tr } = useLang();
   const t = heroText(tr);
-  const items = logosWithEmbassies(useSite().EMBASSIES);
+  const { EMBASSIES } = useSite();
   return (
     <section className="relative overflow-hidden bg-white pt-[150px] text-texto md:pt-[180px]">
       <div className="relative">
@@ -82,69 +85,93 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Clientes */}
-      <div className="relative pb-14 pt-10" aria-label={t.clientsLabel}>
-        <p className="mb-7 px-4 text-center text-[0.95rem] font-medium text-texto">
+      {/* Clientes y embajadas: todos a la vista; el logo toma color al pasar el cursor */}
+      <div className="relative pb-14 pt-10">
+        <p className="mb-10 px-4 text-center text-[0.95rem] font-medium text-texto">
           {t.clientsTitle}
         </p>
-        <div className="marquee flex overflow-hidden pt-10" dir="ltr">
-          {[0, 1].map((k) => (
-            <div
-              key={k}
-              className="animate-marquee flex shrink-0 items-center gap-16 pr-16"
-              aria-hidden={k === 1}
+        <ul
+          aria-label={t.clientsLabel}
+          className={`${container} grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 lg:grid-cols-8`}
+        >
+          {CLIENT_LOGOS.map((c, i) => (
+            <li
+              key={c.name}
+              title={c.name}
+              className={`${TILE} grid h-20 place-items-center px-2 sm:h-24 sm:px-4 ${
+                // En celular (3 columnas), si el último queda solo, va al centro
+                i === CLIENT_LOGOS.length - 1 && CLIENT_LOGOS.length % 3 === 1
+                  ? "max-sm:col-start-2"
+                  : ""
+              }`}
             >
-              {items.map((item) => {
-                if (item.kind === "embassy") {
-                  // Embajadas: su logo en grises (en silueta, como los demás, se
-                  // perderían los escudos) y su nombre al lado, en el gris de la franja
-                  const name = `${t.embassyOf} ${t.embassyName(item.embassy)}`;
-                  const h = Math.min(logoHeight(item.logo.ratio) * 2, 64);
-                  return (
-                    <div
-                      key={item.embassy}
-                      title={name}
-                      className="flex shrink-0 items-center gap-4 opacity-80 transition-opacity duration-300 hover:opacity-100"
-                    >
-                      <img
-                        decoding="async"
-                        src={item.logo.src}
-                        alt=""
-                        style={{ height: h, width: h * item.logo.ratio }}
-                        className="shrink-0 object-contain contrast-125 grayscale"
-                      />
-                      <span className="text-left font-title leading-tight text-black/55">
-                        <span className="block text-[0.8rem] font-semibold uppercase tracking-[0.16em]">
-                          {t.embassyOf}
-                        </span>
-                        <span className="block whitespace-nowrap text-[1.45rem] font-semibold">
-                          {t.embassyName(item.embassy)}
-                        </span>
-                        {k === 0 && <span className="sr-only">{name}</span>}
-                      </span>
-                    </div>
-                  );
-                }
-                const c = item.logo;
-                return (
-                  <img
-                    decoding="async"
-                    key={c.name}
-                    src={c.src}
-                    alt={k === 0 ? c.name : ""}
-                    title={c.name}
-                    style={{
-                      height: logoHeight(c.ratio) * 2,
-                      width: logoHeight(c.ratio) * c.ratio * 2,
-                    }}
-                    className="shrink-0 object-contain opacity-55 brightness-0 transition-opacity duration-300 hover:opacity-90"
-                  />
-                );
-              })}
-            </div>
+              <img
+                decoding="async"
+                loading="lazy"
+                src={c.src}
+                alt={c.name}
+                style={{
+                  height: logoHeight(c.ratio) * 1.15,
+                  width: logoHeight(c.ratio) * c.ratio * 1.15,
+                }}
+                className="max-w-full object-contain opacity-55 brightness-0 transition duration-300 group-hover:scale-110 group-hover:opacity-100 group-hover:brightness-100"
+              />
+              <TileStripe />
+            </li>
           ))}
-        </div>
+        </ul>
+
+        {/* Embajadas: su escudo o emblema en grises (en silueta, como los logos,
+            se perderían) y su nombre al lado; al pasar el cursor, a color */}
+        <ul
+          aria-label={t.embassiesLabel}
+          className={`${container} mt-2 grid grid-cols-2 gap-2 sm:mt-3 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5`}
+        >
+          {EMBASSIES.map((e, i) => {
+            const logo = embassyLogo(i);
+            const h = Math.min(logoHeight(logo.ratio) * 1.3, 46);
+            return (
+              <li
+                key={e}
+                title={`${t.embassyOf} ${t.embassyName(e)}`}
+                className={`${TILE} flex h-20 items-center gap-3 px-3 sm:h-24 sm:px-4`}
+              >
+                <img
+                  decoding="async"
+                  loading="lazy"
+                  src={logo.src}
+                  alt=""
+                  style={{ height: h, width: h * logo.ratio }}
+                  className="max-w-[36%] shrink-0 object-contain sm:max-w-[42%] opacity-70 grayscale contrast-125 transition duration-300 group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 group-hover:contrast-100"
+                />
+                <span className="min-w-0 text-left font-title leading-tight text-black/55 transition-colors duration-300 group-hover:text-azul">
+                  <span className="block whitespace-nowrap text-[0.6rem] font-semibold uppercase tracking-[0.06em] sm:text-[0.68rem] sm:tracking-[0.14em]">
+                    {t.embassyOf}
+                  </span>
+                  <span className="block text-[0.95rem] font-semibold sm:text-[1.05rem]">
+                    {t.embassyName(e)}
+                  </span>
+                </span>
+                <TileStripe />
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
+  );
+}
+
+// Ficha de logo: se levanta con borde y sombra naranja al pasar el cursor
+const TILE =
+  "group relative overflow-hidden rounded-2xl border border-transparent bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-linea hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)]";
+
+// Franja naranja que crece desde la izquierda al pasar el cursor por la ficha
+function TileStripe() {
+  return (
+    <span
+      aria-hidden="true"
+      className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-naranja transition-transform duration-300 group-hover:scale-x-100"
+    />
   );
 }

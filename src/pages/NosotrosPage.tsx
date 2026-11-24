@@ -8,7 +8,7 @@ import { useLang } from "@/i18n";
 import { aboutText, aboutTimeline, aboutValues, ceoInfo } from "@/data/about";
 import { container, section } from "@/components/ui/layout";
 import { CLIENT_LOGOS, embassyFlag, logoHeight } from "@/data/clientLogos";
-import { Bi, btn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
+import { Bi, btn, DropIn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 
 // Nosotros (/nosotros): historia, misión y visión, valores, clientes y
@@ -22,14 +22,14 @@ export function NosotrosPage() {
   const CEO = ceoInfo(tr);
   return (
     <>
-      <PageHero image={imgEquipo}>
+      <PageHero image={imgEquipo} drop="right">
         <div className="animate-fade-up max-w-3xl">
           <Eyebrow>{t.quienesSomos}</Eyebrow>
           <h1 className="mb-6 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.1] text-tinta">
             {t.masCincoDecadasMoviendo} <span className="text-naranja">{t.masQuieres}</span>
           </h1>
-          <p className="max-w-2xl text-[1.1rem]">{t.somosOrganizacionConsolidadaDesde}</p>
-          <p className="mt-8 border-s-[3px] border-naranja ps-4 font-title text-[0.78rem] font-medium uppercase tracking-[0.14em] text-azul">
+          <p className="max-w-2xl text-start text-[1.1rem]">{t.somosOrganizacionConsolidadaDesde}</p>
+          <p className="mt-8 border-s-[3px] border-naranja ps-4 text-start font-title text-[0.78rem] font-medium uppercase tracking-[0.14em] text-azul">
             {SLOGAN}
           </p>
         </div>
@@ -77,7 +77,7 @@ export function NosotrosPage() {
               <h2 className="mb-1 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">
                 {CEO.name}
               </h2>
-              <p className="mb-6 font-title text-[0.95rem] font-semibold uppercase tracking-[0.12em] text-naranja">
+              <p className="mb-6 text-start font-title text-[0.95rem] font-semibold uppercase tracking-[0.12em] text-naranja">
                 {CEO.role} · {CEO.tagline}
               </p>
               <p className="mb-8 whitespace-pre-line text-[1.05rem]">{CEO.bio}</p>
@@ -115,7 +115,7 @@ export function NosotrosPage() {
                 <strong className="mb-1 block font-title text-xl font-semibold text-azul">
                   {t.year}
                 </strong>
-                <p className="text-suave">{t.text}</p>
+                <p className="text-start text-suave">{t.text}</p>
               </Reveal>
             ))}
           </ol>
@@ -167,7 +167,7 @@ export function NosotrosPage() {
                   <Bi n={v.icon} />
                 </span>
                 <h3 className="mb-2 text-xl">{v.title}</h3>
-                <p className="text-[0.93rem] text-suave">{v.text}</p>
+                <p className="text-start text-[0.93rem] text-suave">{v.text}</p>
               </Reveal>
             ))}
           </div>
@@ -231,22 +231,28 @@ export function NosotrosPage() {
       {/* Certificaciones y forma de trabajo */}
       <section id="certificaciones" className={section}>
         <div className={`${container} grid items-center gap-14 lg:grid-cols-2 lg:gap-20`}>
-          <Reveal className="grid grid-cols-2 gap-3">
-            <img
-              loading="lazy"
-              decoding="async"
-              src={imgEmbalaje}
-              alt={t.equipoTranspackEmpacandoSala}
-              className="aspect-[3/4] h-full w-full object-cover"
-            />
-            <img
-              loading="lazy"
-              decoding="async"
-              src={imgGuacales}
-              alt={t.guacalesMaderaExportacion}
-              className="mt-10 aspect-[3/4] h-full w-full object-cover"
-            />
-          </Reveal>
+          {/* Las dos fotos llegan como cajas que se dejan: una desde la
+              izquierda y la otra cae desde arriba, un poco después */}
+          <div className="grid grid-cols-2 gap-3">
+            <DropIn from="left">
+              <img
+                loading="lazy"
+                decoding="async"
+                src={imgEmbalaje}
+                alt={t.equipoTranspackEmpacandoSala}
+                className="aspect-[3/4] h-full w-full object-cover"
+              />
+            </DropIn>
+            <DropIn from="top" delay={350} className="mt-10">
+              <img
+                loading="lazy"
+                decoding="async"
+                src={imgGuacales}
+                alt={t.guacalesMaderaExportacion}
+                className="aspect-[3/4] h-full w-full object-cover"
+              />
+            </DropIn>
+          </div>
           <Reveal delay={100}>
             <Eyebrow>{t.certificaciones}</Eyebrow>
             <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">

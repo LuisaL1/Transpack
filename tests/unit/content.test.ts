@@ -38,20 +38,26 @@ describe("Servicios", () => {
       }
   });
 
-  it("cada servicio y segmento lleva a un tipo de cotización que existe", () => {
+  it("cada servicio lleva a un tipo de cotización que existe", () => {
     const quoteTypes = serviceOptions(makeTr("es")).map((o) => o.value);
     for (const s of es.SERVICES) expect(quoteTypes, s.slug).toContain(s.quote);
-    for (const s of es.SEGMENTS) expect(quoteTypes, s.id).toContain(s.quote);
   });
 
-  it("el menú apunta a servicios y segmentos que existen", () => {
+  it("el menú apunta a servicios que existen", () => {
     for (const m of menusFor("es"))
       for (const i of m.items) {
         const svc = i.to?.match(/^\/servicios\/([\w-]+)/)?.[1];
         if (svc) expect(slugs, `${m.key}: ${i.label}`).toContain(svc);
-        const seg = i.to?.match(/segmento=([\w-]+)/)?.[1];
-        if (seg) expect(es.SEGMENTS.map((s) => s.id)).toContain(seg);
       }
+  });
+
+  it("el header ya no tiene «Soluciones»: Movilidad corporativa y Diplomático están en Servicios", () => {
+    const menus = menusFor("es");
+    expect(menus.map((m) => m.key)).not.toContain("soluciones");
+    const servicios = menus.find((m) => m.key === "servicios")?.items.map((i) => i.to);
+    expect(servicios).toContain("/servicios/movilidad-corporativa");
+    expect(servicios).toContain("/servicios/diplomatico");
+    expect(slugs).not.toContain("residencial");
   });
 });
 
@@ -108,17 +114,13 @@ describe("Traducciones", () => {
     expect(es.CONTACT.nit).toMatch(/^(\d{3}\.?\d{3}\.?\d{3}-\d)?$/);
   });
 
-  it("cada idioma tiene los mismos servicios, segmentos, niveles, pasos y preguntas", () => {
+  it("cada idioma tiene los mismos servicios, niveles, pasos y preguntas", () => {
     for (const l of OTHERS) {
       const s = siteFor(l);
       expect(
         s.SERVICES.map((x) => x.slug),
         l,
       ).toEqual(es.SERVICES.map((x) => x.slug));
-      expect(
-        s.SEGMENTS.map((x) => x.id),
-        l,
-      ).toEqual(es.SEGMENTS.map((x) => x.id));
       expect(s.LEVELS.length, l).toBe(es.LEVELS.length);
       expect(s.PROCESS.length, l).toBe(es.PROCESS.length);
       expect(s.FAQS.length, l).toBe(es.FAQS.length);

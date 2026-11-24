@@ -2,7 +2,6 @@ import { CtaBand } from "@/components/sections";
 import { Hero } from "@/components/home/Hero";
 import { Stats } from "@/components/home/Stats";
 import { Services } from "@/components/home/Services";
-import { Segments } from "@/components/home/Segments";
 import { Levels } from "@/components/home/Levels";
 import { Coverage } from "@/components/home/Coverage";
 import { Process } from "@/components/home/Process";
@@ -21,7 +20,6 @@ export function LandingPage() {
       <Hero />
       <Stats />
       <Services />
-      <Segments />
       <Levels />
       <Coverage />
       <Process />
