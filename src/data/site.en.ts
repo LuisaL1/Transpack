@@ -6,6 +6,7 @@ import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
+import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
@@ -80,7 +81,7 @@ export const SERVICES: Service[] = [
       "Moves in Bogotá and its surroundings, carried out by expert, trained crews for the professional protection of your furniture, with vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
-    image: imgEmbalajeHogar,
+    image: imgLocalesResidencial,
     imageDrop: "top",
     imageBlend: true,
     kicker: "Moving in Bogotá",
