@@ -28,7 +28,12 @@ export function ServiceDetailPage() {
 
   return (
     <>
-      <PageHero image={service.image} media={service.heroMap ? <ColombiaRoutesMap /> : undefined}>
+      <PageHero
+        image={service.image}
+        media={service.heroMap ? <ColombiaRoutesMap /> : undefined}
+        drop={service.imageDrop}
+        blend={service.imageBlend}
+      >
         <nav aria-label={t.ruta} className="mb-4 flex items-center gap-2 text-[0.85rem] text-suave">
           <Link to={lp("/")} className="hover:text-azul">
             {t.inicio}

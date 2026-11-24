@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { QuoteWizard } from "@/components/home/QuoteWizard";
-import { Segments } from "@/components/home/Segments";
 
 describe("Cotizador", () => {
   it("al elegir el servicio pasa al paso 2 con los campos de ese servicio", async () => {
@@ -37,23 +36,3 @@ describe("Cotizador", () => {
   });
 });
 
-describe("Soluciones por segmento", () => {
-  it("cada pestaña muestra su segmento y su enlace al cotizador", async () => {
-    render(
-      <MemoryRouter>
-        <Segments />
-      </MemoryRouter>,
-    );
-    const tabs = screen.getAllByRole("tab");
-    expect(tabs.length).toBe(3);
-    await userEvent.click(screen.getByRole("tab", { name: /Movilidad corporativa/ }));
-    expect(screen.getByRole("tab", { name: /Movilidad corporativa/ })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
-    expect(screen.getByRole("link", { name: /propuesta corporativa/i })).toHaveAttribute(
-      "href",
-      "/?servicio=empresarial#cotizar",
-    );
-  });
-});

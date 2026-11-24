@@ -125,7 +125,7 @@ export function Header() {
           {/* Escritorio */}
           {/* Menús en el centro, entre el logo y las acciones */}
           <nav
-            className="hidden flex-1 items-center justify-center gap-3 lg:flex xl:gap-6"
+            className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-10 wide:gap-14"
             aria-label={t.mainNav}
           >
             {MENUS.map((m) => {

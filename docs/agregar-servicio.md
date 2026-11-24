@@ -111,4 +111,4 @@ fuera del largo recomendado para Google.
   en [`vercel.json`](../vercel.json) de la dirección vieja a la nueva.
 - **Quitar un servicio:** borrarlo de `SERVICES` en ambos idiomas, ajustar el
   conteo de la prueba y revisar que ningún otro texto lo mencione (preguntas
-  frecuentes, soluciones, blog). Pedir también una redirección de su dirección.
+  frecuentes, blog). Pedir también una redirección de su dirección.

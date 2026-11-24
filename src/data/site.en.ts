@@ -1,7 +1,6 @@
 // English version of the site content. Same structure as site.ts: when a text
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
-import imgInspeccionCanina from "@/assets/images/inspeccion-canina.jpg";
 // Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
 import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
@@ -19,7 +18,7 @@ import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
-import type { QuoteService, Service } from "@/data/site";
+import type { Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
 export type { QuoteService, Service } from "@/data/site";
@@ -82,6 +81,8 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Get a quote",
     image: imgEmbalajeHogar,
+    imageDrop: "top",
+    imageBlend: true,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:
@@ -155,6 +156,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Talk to an advisor",
     image: imgInternacionalPuerto,
+    imageDrop: "right",
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
@@ -207,6 +209,7 @@ export const SERVICES: Service[] = [
     quote: "bodegaje",
     cta: "Get a quote",
     image: imgBodegajeBodega,
+    imageDrop: "top",
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
@@ -237,6 +240,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Get a quote",
     image: imgGuacales,
+    imageDrop: "right",
     kicker: "Artwork and valuables",
     headline: "Your most valuable items in professional hands. Specialized packing and total care",
     intro:
@@ -260,6 +264,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Get a quote",
     image: imgAduanaCajas,
+    imageDrop: "top",
     kicker: "International paperwork",
     headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
@@ -279,62 +284,87 @@ export const SERVICES: Service[] = [
       { title: "Release", text: "We follow up until your belongings are delivered." },
     ],
   },
-];
-
-// ─── Solutions by segment ─────────────────────────────────────────────────────
-
-export const SEGMENTS = [
+  // Formerly under "Solutions" (Nov. 2026)
   {
-    id: "residencial",
-    icon: "house-door",
-    tab: "Residential",
-    kicker: "Transpack Residential",
-    title: "Your local move: Fast, safe and hassle-free",
-    text: "",
-    points: [
-      "Furniture protection, disassembly and reassembly",
-      "Packing and handling of fragile and high-value items",
-      "Temporary or long-term storage at our facilities",
-    ],
-    cta: "Get a quote for a home move",
-    quote: "local" as QuoteService,
-    image: imgInspeccionCanina,
-    // Foto panorámica: el marco usa su proporción para que se vea completa
-    imageWide: true,
-  },
-  {
-    id: "corporate",
+    slug: "movilidad-corporativa",
     icon: "buildings",
-    tab: "Corporate Mobility",
-    kicker: "Transpack Corporate Mobility",
-    title: "Transpack, a professional team to move your office safely",
-    text: "",
-    points: [
-      "An account executive to handle your requests",
-      "Traceability reports and safe operating conditions",
-    ],
+    title: "Corporate Mobility",
+    short:
+      "Safe office moves, with an account executive for your requirements and traceability reports.",
+    quote: "empresarial",
     cta: "Request a corporate proposal",
-    quote: "empresarial" as QuoteService,
     image: imgOficina,
-    // Foto panorámica: el marco usa su proporción para que se vea completa
-    imageWide: true,
+    imageDrop: "right",
+    kicker: "Office moves",
+    headline: "Transpack, a professional team for the safe move of your office",
+    intro:
+      "We move offices with a professional team and safe operating conditions. We work under agreements or contracts, with an account executive who handles your requirements and an operation that repeats every time your company needs it.",
+    includes: [
+      "Account executive to handle your requirements",
+      "Traceability reports and safe operating conditions",
+      "Agreements or contracts for recurring operations",
+      "Storage in Bogotá for office furniture or archives",
+    ],
+    steps: [
+      {
+        title: "Assessment",
+        text: "We understand what is being moved, the volume and your company's timelines.",
+      },
+      {
+        title: "Proposal",
+        text: "We design the operation and present you with a proposal.",
+      },
+      {
+        title: "Agreement",
+        text: "We set the terms in an agreement or contract.",
+      },
+      {
+        title: "Operation",
+        text: "We coordinate the move and report its progress until delivery.",
+      },
+    ],
   },
   {
-    id: "diplomatic",
+    slug: "diplomatico",
     icon: "flag",
-    tab: "Diplomatic",
-    kicker: "Transpack Diplomatic",
-    title: "Discretion, protocol and precision for diplomatic missions",
-    text: "",
-    points: [
-      "Protocol-level service and complete confidentiality",
-      "Advice on customs regulations and requirements at origin and destination",
+    title: "Diplomatic",
+    short:
+      "Moves for embassies and foreign and non-governmental organizations, with protocol-minded service and absolute confidentiality.",
+    quote: "internacional",
+    cta: "Contact the institutional team",
+    image: imgArteHogar,
+    imageDrop: "top",
+    kicker: "Embassies and foreign and non-governmental organizations",
+    headline: "Discretion, protocol and precision for diplomatic missions",
+    intro:
+      "The embassies of the United States, Spain, Canada, Mexico, India, France, Germany, Egypt, the United Arab Emirates and Italy, and institutions such as CAF, have trusted us to move their staff. We support diplomatic missions and international organizations with protocol-minded service and an institutional process.",
+    includes: [
+      "Protocol-minded service and absolute confidentiality",
+      "Guidance on customs regulations and requirements at origin and destination",
+      "Registration process as an institutional supplier",
+      "International moves by sea or air",
     ],
-    cta: "Contact our institutional team",
-    quote: "internacional" as QuoteService,
-    image: imgGuacales,
+    steps: [
+      {
+        title: "Introduction",
+        text: "We present our experience with embassies and international organizations.",
+      },
+      {
+        title: "Registration",
+        text: "We complete the registration process as an institutional supplier.",
+      },
+      {
+        title: "Operation",
+        text: "We coordinate each move with protocol-minded service and confidentiality.",
+      },
+      {
+        title: "Relationship",
+        text: "We support your mission in every new move of its staff.",
+      },
+    ],
   },
 ];
+
 
 // ─── Service levels ───────────────────────────────────────────────────────────
 

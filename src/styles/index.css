@@ -218,24 +218,154 @@ p {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
 
-/* Líneas de velocidad en el borde de las fotos (SpeedFrame): cruzan hacia el
-   borde (--dir: -1 izquierda, 1 derecha) y se desvanecen */
-@keyframes speedLine {
+/* Foto que se funde con el fondo blanco (PageHero con `blend`): sus cuatro
+   bordes se desvanecen, más hacia el lado del texto */
+.photo-blend {
+  mask-image:
+    linear-gradient(90deg, transparent, #000 24%, #000 90%, transparent),
+    linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 24%, #000 90%, transparent),
+    linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+  -webkit-mask-composite: source-in;
+}
+
+/* Imágenes que llegan como una caja que se deja (<DropIn />): ocultas hasta
+   entrar en pantalla; llegan acelerando, golpean contra su lugar (se aplastan
+   un poco hacia la pared o el piso) y dan un pequeño rebote. */
+.drop-in {
+  opacity: 0;
+}
+.drop-in.is-dropped {
+  animation-duration: 1.05s;
+  animation-fill-mode: both;
+}
+.drop-from-top {
+  transform-origin: 50% 100%;
+}
+.drop-from-right {
+  transform-origin: 0% 50%;
+}
+.drop-from-left {
+  transform-origin: 100% 50%;
+}
+.drop-from-top.is-dropped {
+  animation-name: dropTop;
+}
+.drop-from-right.is-dropped {
+  animation-name: dropRight;
+}
+.drop-from-left.is-dropped {
+  animation-name: dropLeft;
+}
+/* Cae acelerando, se aplasta contra el piso y rebota dos veces, cada vez menos */
+@keyframes dropTop {
   0% {
-    transform: translateX(calc(var(--dir, -1) * -60%));
     opacity: 0;
+    transform: translateY(-115%);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
   }
-  30% {
+  12% {
     opacity: 1;
   }
+  48% {
+    opacity: 1;
+    transform: translateY(0) scale(1, 1);
+    animation-timing-function: ease-out;
+  }
+  56% {
+    transform: translateY(0) scale(1.05, 0.9);
+    animation-timing-function: ease-out;
+  }
+  70% {
+    transform: translateY(-7%) scale(0.98, 1.03);
+    animation-timing-function: ease-in;
+  }
+  80% {
+    transform: translateY(0) scale(1.02, 0.97);
+    animation-timing-function: ease-out;
+  }
+  90% {
+    transform: translateY(-1.5%) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
   100% {
-    transform: translateX(calc(var(--dir, -1) * 110%));
-    opacity: 0;
+    opacity: 1;
+    transform: none;
   }
 }
-.speed-line {
-  opacity: 0;
-  animation: speedLine 2.4s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+/* Llega desde la derecha, golpea la pared de la izquierda y rebota */
+@keyframes dropRight {
+  0% {
+    opacity: 0;
+    transform: translateX(115%);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  12% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 1;
+    transform: translateX(0) scale(1, 1);
+    animation-timing-function: ease-out;
+  }
+  56% {
+    transform: translateX(0) scale(0.92, 1.03);
+    animation-timing-function: ease-out;
+  }
+  70% {
+    transform: translateX(4%) scale(1.02, 0.99);
+    animation-timing-function: ease-in;
+  }
+  80% {
+    transform: translateX(0) scale(0.98, 1.01);
+    animation-timing-function: ease-out;
+  }
+  90% {
+    transform: translateX(1%) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Llega desde la izquierda, golpea la pared de la derecha y rebota */
+@keyframes dropLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-115%);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  12% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 1;
+    transform: translateX(0) scale(1, 1);
+    animation-timing-function: ease-out;
+  }
+  56% {
+    transform: translateX(0) scale(0.92, 1.03);
+    animation-timing-function: ease-out;
+  }
+  70% {
+    transform: translateX(-4%) scale(1.02, 0.99);
+    animation-timing-function: ease-in;
+  }
+  80% {
+    transform: translateX(0) scale(0.98, 1.01);
+    animation-timing-function: ease-out;
+  }
+  90% {
+    transform: translateX(-1%) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Mapa de Mudanzas nacionales (ColombiaRoutesMap): casas de origen y destino
@@ -364,7 +494,8 @@ p {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  .reveal,
+  .drop-in {
     opacity: 1;
     transform: none;
   }

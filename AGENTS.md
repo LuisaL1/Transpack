@@ -61,7 +61,7 @@ src/
 │   │                       (SiteSearch) y Footer
 │   ├── sections/           Secciones compartidas: PageHero y CtaBand
 │   ├── home/               Una sección del inicio por archivo (Hero, Stats,
-│   │                       Services, Segments, Levels, Coverage, Process,
+│   │                       Services, Levels, Coverage, Process,
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (Globe, con CountryCard al tocar un país), el
@@ -73,7 +73,7 @@ src/
 │   └── ui/                 Primitivas: Bi (íconos), btn, Eyebrow, SectionHead,
 │                           Reveal, StatValue, Checks y medidas de sección (layout.ts)
 ├── data/                   CONTENIDO del sitio (fuente única de verdad)
-│   ├── site.ts (+ .en)                   Contacto, cifras, servicios, segmentos,
+│   ├── site.ts (+ .en)                   Contacto, cifras, servicios,
 │   │                                     niveles, proceso, preguntas frecuentes
 │   ├── blogData.ts (+ idiomas)           Artículos del blog
 │   ├── content.ts          siteFor(lang) / postsFor(lang) y nombres de destinos
@@ -228,11 +228,19 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
   de "diáspora").
 - Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
-  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje y gestión
-  aduanera; `SERVICES` en `src/data/site.ts`) y en los textos del inicio que el
-  cliente corrigió (soluciones, niveles, cotizador, proceso). Pedido del cliente,
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, gestión
+  aduanera, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
+  y en los textos del inicio que el cliente corrigió (niveles, cotizador, proceso). Pedido del cliente,
   noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
   sección.
+
+- **Sin "Soluciones"** (noviembre de 2026): el menú y la sección del inicio
+  "Soluciones" se quitaron. Movilidad corporativa (`/servicios/movilidad-corporativa`)
+  y Diplomático (`/servicios/diplomatico`) son ahora servicios, con su página, en
+  el menú "Servicios", el pie, el buscador y el sitemap; sus textos salen de las
+  correcciones del cliente de noviembre de 2026 y del Modelo de Negocio (4.1 y 7).
+  Residencial se descartó porque repetía Mudanzas locales y nacionales. Los
+  enlaces viejos `/?segmento=…#soluciones` llevan al inicio.
 
 ## Diseño
 
@@ -260,15 +268,22 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
   política, 404) el texto de `PageHero` va sobre blanco y la
-  cabecera usa siempre letras oscuras. **Efecto de velocidad en las fotos**
-  (noviembre de 2026, en vez de la franja naranja diagonal que separaba foto y
-  texto): `SpeedFrame` (`src/components/ui/SpeedFrame.tsx`) da a la foto, hacia
-  el borde que mira al texto, un desenfoque de movimiento solo horizontal (filtro
-  SVG `#tp-motion-blur`, definido una vez en `Layout` con `SpeedFilter`), la
-  deshace hacia el fondo y la cruzan líneas de velocidad blancas y naranjas
-  (`.speed-line`). Se usa en `PageHero` (todas las páginas internas; en el mapa
-  de Mudanzas nacionales, sin desenfoque), Soluciones, Cobertura y Certificaciones
-  de Nosotros. Para quitarlo en una foto basta con sacarla de `SpeedFrame`.
+  cabecera usa siempre letras oscuras. La foto (o el mapa de Mudanzas
+  nacionales) va a la derecha como una tarjeta con esquinas redondeadas y
+  sombra, sin línea divisora con el texto (noviembre de 2026; la franja naranja
+  diagonal se quitó). **Fotos que llegan como una caja** (pedido del cliente,
+  noviembre de 2026): `DropIn` (`src/components/ui/DropIn.tsx`, animaciones
+  `.drop-*` en `src/styles/index.css`) oculta la foto hasta que entra en
+  pantalla; entonces llega desde un lado o desde arriba, golpea contra su lugar
+  (se aplasta un poco) y da un pequeño rebote. Solo en: la foto del encabezado
+  de Mudanzas locales, Mudanzas internacionales, Bodegaje, Embalaje
+  especializado, Gestión documental y aduanera, Movilidad corporativa y
+  Diplomático (`imageDrop` en `SERVICES`), la de Quiénes somos y la de los
+  artículos del blog (`PageHero drop`) y las dos de Certificaciones en
+  Nosotros. En Mudanzas locales la foto va sin tarjeta y se funde con el fondo
+  (`imageBlend` en `SERVICES`, `PageHero blend`, clase `.photo-blend`). Con movimiento reducido se ven directamente. Antes se probó un
+  efecto de "velocidad" (desenfoque de movimiento en el borde de las fotos) y
+  no convenció: se quitó.
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;

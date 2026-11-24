@@ -8,7 +8,7 @@ import { useLang } from "@/i18n";
 import { aboutText, aboutTimeline, aboutValues, ceoInfo } from "@/data/about";
 import { container, section } from "@/components/ui/layout";
 import { CLIENT_LOGOS, embassyFlag, logoHeight } from "@/data/clientLogos";
-import { Bi, btn, StatValue, Eyebrow, Reveal, SectionHead, SpeedFrame } from "@/components/ui";
+import { Bi, btn, DropIn, StatValue, Eyebrow, Reveal, SectionHead } from "@/components/ui";
 import { CtaBand, PageHero } from "@/components/sections";
 
 // Nosotros (/nosotros): historia, misión y visión, valores, clientes y
@@ -22,7 +22,7 @@ export function NosotrosPage() {
   const CEO = ceoInfo(tr);
   return (
     <>
-      <PageHero image={imgEquipo}>
+      <PageHero image={imgEquipo} drop="right">
         <div className="animate-fade-up max-w-3xl">
           <Eyebrow>{t.quienesSomos}</Eyebrow>
           <h1 className="mb-6 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.1] text-tinta">
@@ -231,8 +231,10 @@ export function NosotrosPage() {
       {/* Certificaciones y forma de trabajo */}
       <section id="certificaciones" className={section}>
         <div className={`${container} grid items-center gap-14 lg:grid-cols-2 lg:gap-20`}>
-          <Reveal className="grid grid-cols-2 gap-3">
-            <SpeedFrame edge="left" blurSrc={imgEmbalaje}>
+          {/* Las dos fotos llegan como cajas que se dejan: una desde la
+              izquierda y la otra cae desde arriba, un poco después */}
+          <div className="grid grid-cols-2 gap-3">
+            <DropIn from="left">
               <img
                 loading="lazy"
                 decoding="async"
@@ -240,8 +242,8 @@ export function NosotrosPage() {
                 alt={t.equipoTranspackEmpacandoSala}
                 className="aspect-[3/4] h-full w-full object-cover"
               />
-            </SpeedFrame>
-            <SpeedFrame edge="right" blurSrc={imgGuacales} className="mt-10">
+            </DropIn>
+            <DropIn from="top" delay={350} className="mt-10">
               <img
                 loading="lazy"
                 decoding="async"
@@ -249,8 +251,8 @@ export function NosotrosPage() {
                 alt={t.guacalesMaderaExportacion}
                 className="aspect-[3/4] h-full w-full object-cover"
               />
-            </SpeedFrame>
-          </Reveal>
+            </DropIn>
+          </div>
           <Reveal delay={100}>
             <Eyebrow>{t.certificaciones}</Eyebrow>
             <h2 className="mb-5 text-[clamp(1.9rem,1.2rem+2.4vw,3rem)] leading-[1.12]">

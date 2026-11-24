@@ -30,7 +30,10 @@ export function ArticlePage() {
 
   return (
     <>
-      <PageHero image={post.cover}>
+      <PageHero
+        image={post.cover}
+        drop={blogPosts.indexOf(post) % 2 ? "top" : "right"}
+      >
         <div className="animate-fade-up mx-auto max-w-3xl">
           <Link
             to={lp("/#blog")}

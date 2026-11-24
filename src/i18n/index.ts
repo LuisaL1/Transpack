@@ -56,6 +56,12 @@ const SLUGS: Record<string, Record<L, string>> = {
   "gestion-aduanera": {
     en: "customs-and-documentation",
   },
+  "movilidad-corporativa": {
+    en: "corporate-mobility",
+  },
+  diplomatico: {
+    en: "diplomatic",
+  },
   "por-que-una-mudanza-maritima-internacional-puede-tardar": {
     en: "why-an-international-sea-move-can-take-longer",
   },
