@@ -26,7 +26,15 @@ export function SectionHead({
       >
         {title}
       </h2>
-      {sub && <p className={`text-[1.06rem] ${light ? "text-white/75" : "text-suave"}`}>{sub}</p>}
+      {sub && (
+        <p
+          className={`text-[1.06rem] ${center ? "" : "text-start"} ${
+            light ? "text-white/75" : "text-suave"
+          }`}
+        >
+          {sub}
+        </p>
+      )}
     </Reveal>
   );
 }

@@ -33,7 +33,7 @@ export function VideosPage() {
           <h1 className="mb-6 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.1] text-tinta">
             {t.title}
           </h1>
-          <p className="max-w-2xl text-[1.05rem]">{t.intro}</p>
+          <p className="max-w-2xl text-start text-[1.05rem]">{t.intro}</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href={`${YOUTUBE_CHANNEL}?sub_confirmation=1`}

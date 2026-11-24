@@ -160,7 +160,7 @@ export function ContactModal() {
               <Bi n="check-lg" />
             </span>
             <p className="mb-1 font-title text-lg font-semibold text-azul">{t.sentTitle}</p>
-            <p className="mb-6 text-[0.92rem] text-suave">{t.sentText(form.email)}</p>
+            <p className="mb-6 text-start text-[0.92rem] text-suave">{t.sentText(form.email)}</p>
             <button type="button" onClick={close} className={`${btn.secondary} ${btn.md}`}>
               {t.closeBtn}
             </button>

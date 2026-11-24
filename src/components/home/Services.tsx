@@ -44,7 +44,7 @@ export function Services() {
                 <h3 className={`mb-1.5 mt-4 text-lg ${s.featured ? "!text-white" : ""}`}>
                   {s.title}
                 </h3>
-                <p className="mb-3 flex-1 text-[0.9rem]">{s.short}</p>
+                <p className="mb-3 flex-1 text-start text-[0.9rem]">{s.short}</p>
                 {s.tags && (
                   <div className="mb-4 flex flex-wrap gap-2">
                     {s.tags.map((t) => (

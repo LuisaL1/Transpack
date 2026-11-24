@@ -52,7 +52,7 @@ export function ArticlePage() {
       </PageHero>
 
       <article className="mx-auto w-[min(100%-32px,760px)] py-16 md:py-20">
-        <p className="mb-8 border-s-[3px] border-naranja ps-5 text-[1.15rem] font-medium leading-relaxed text-tinta">
+        <p className="mb-8 border-s-[3px] border-naranja ps-5 text-start text-[1.15rem] font-medium leading-relaxed text-tinta">
           {post.excerpt}
         </p>
         <div className="prose-tp text-[1.03rem] leading-[1.75]">

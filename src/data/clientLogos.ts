@@ -1,6 +1,8 @@
-// Logos de clientes para la franja del hero. Fuentes: Wikimedia Commons y
-// Simple Icons (DHL usa la versión de Commons). Se muestran en un solo tono gris
-// con CSS, así que los archivos pueden conservar sus colores originales.
+// Logos de clientes para la lista del hero (todos a la vista, sin carrusel).
+// Fuentes: Wikimedia Commons y Simple Icons (DHL usa la versión de Commons). Se
+// muestran en un solo tono gris con CSS y, al pasar el cursor, con sus colores
+// originales: por eso los archivos conservan sus colores (el de Mitsubishi es
+// monocromático y se ve negro).
 // "ratio" = ancho / alto del logo, para que todos se vean del mismo peso visual.
 import dhl from "@/assets/images/clientes/dhl.svg";
 import mitsubishi from "@/assets/images/clientes/mitsubishi.svg";

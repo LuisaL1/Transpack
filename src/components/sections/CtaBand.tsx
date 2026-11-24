@@ -24,7 +24,7 @@ export function CtaBand({ title, text }: { title?: string; text?: string }) {
       <Reveal className="relative mx-auto flex w-[min(100%-32px,1200px)] flex-wrap items-center justify-between gap-8">
         <div>
           <h2 className="mb-1 text-[clamp(1.7rem,1.2rem+1.8vw,2.6rem)] !text-white">{title}</h2>
-          <p className="text-[1.05rem] text-white/90">{text}</p>
+          <p className="text-start text-[1.05rem] text-white/90">{text}</p>
         </div>
         <div className="flex w-full flex-wrap gap-3 sm:w-auto">
           <Link to={lp("/#cotizar")} className={`${btn.light} ${btn.lg} w-full sm:w-auto`}>

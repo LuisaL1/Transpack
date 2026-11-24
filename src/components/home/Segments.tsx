@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useLang } from "@/i18n";
 import { segmentsText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
-import { Bi, btn, Checks, Reveal, SectionHead } from "@/components/ui";
+import { Bi, btn, Checks, Reveal, SectionHead, SpeedFrame } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
 // Soluciones por segmento (SEGMENTS de src/data/site.ts), en pestañas
@@ -50,8 +50,12 @@ export function Segments() {
             className="animate-fade-up grid items-center gap-8 rounded-[22px] border border-linea bg-white p-4 shadow-sm md:p-6 lg:grid-cols-2 lg:gap-16"
           >
             {/* Las fotos panorámicas (imageWide) van completas, en su proporción */}
-            <div
-              className={`${"imageWide" in seg && seg.imageWide ? "aspect-[1280/698]" : "aspect-[4/3.3]"} overflow-hidden`}
+            {/* La foto se deshace hacia el texto con efecto de velocidad */}
+            <SpeedFrame
+              edge="bottom"
+              lgEdge="right"
+              blurSrc={seg.image}
+              className={"imageWide" in seg && seg.imageWide ? "aspect-[1280/698]" : "aspect-[4/3.3]"}
             >
               <img
                 loading="lazy"
@@ -60,7 +64,7 @@ export function Segments() {
                 alt=""
                 className="h-full w-full object-cover"
               />
-            </div>
+            </SpeedFrame>
             <div className="px-2 py-2 lg:pr-6">
               <p className="mb-3 font-title text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-naranja">
                 {seg.kicker}

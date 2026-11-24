@@ -17,7 +17,7 @@ export function Footer() {
       <div className="mx-auto grid w-[min(100%-32px,1200px)] gap-10 border-b border-white/10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo />
-          <p className="mt-6 max-w-xs font-title text-[0.78rem] font-medium uppercase leading-[1.8] tracking-[0.12em] text-beige">
+          <p className="mt-6 max-w-xs text-start font-title text-[0.78rem] font-medium uppercase leading-[1.8] tracking-[0.12em] text-beige">
             {SLOGAN}
           </p>
           <div className="mt-6 flex gap-2">

@@ -3,7 +3,7 @@ import imgGlobal from "@/assets/images/global.jpg";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
 import { useSite } from "@/hooks/useContent";
-import { Bi, Eyebrow, Reveal, StatValue } from "@/components/ui";
+import { Bi, Eyebrow, Reveal, SpeedFrame, StatValue } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
 // Cobertura global: la foto del avión y el buque con efecto de velocidad
@@ -24,13 +24,20 @@ export function Coverage() {
       id="cobertura"
       className={`${section} overflow-hidden bg-azul-900 text-white/80 lg:min-h-[720px]`}
     >
-      <img
-        loading="lazy"
-        decoding="async"
-        src={imgGlobal}
-        alt={t.imageAlt}
-        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[85%_50%] lg:block"
-      />
+      <SpeedFrame
+        edge="left"
+        blurSrc={imgGlobal}
+        blurClassName="object-[85%_50%]"
+        className="!absolute inset-y-0 left-[28%] hidden w-[72%] lg:block"
+      >
+        <img
+          loading="lazy"
+          decoding="async"
+          src={imgGlobal}
+          alt={t.imageAlt}
+          className="h-full w-full object-cover object-[85%_50%]"
+        />
+      </SpeedFrame>
       {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
       <div
         aria-hidden="true"
@@ -41,13 +48,15 @@ export function Coverage() {
       >
         {/* Celular y tableta: la foto completa, arriba */}
         <Reveal className="lg:hidden">
-          <img
-            loading="lazy"
-            decoding="async"
-            src={imgGlobal}
-            alt={t.imageAlt}
-            className="aspect-[1280/698] w-full object-cover shadow-[var(--shadow-float)]"
-          />
+          <SpeedFrame edge="bottom" blurSrc={imgGlobal}>
+            <img
+              loading="lazy"
+              decoding="async"
+              src={imgGlobal}
+              alt={t.imageAlt}
+              className="aspect-[1280/698] w-full object-cover"
+            />
+          </SpeedFrame>
         </Reveal>
         <Reveal>
           <Eyebrow light>{t.eyebrow}</Eyebrow>

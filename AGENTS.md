@@ -199,11 +199,12 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   y exportación), **2.000+ agentes y aliados estratégicos** (así lo pidió el
   cliente, octubre de 2026; ni "representantes" ni "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
-  textos coincidan con `STATS`. En el inicio se muestran como carrusel con
-  movimiento (`Stats.tsx`), una cifra a la vez (5 s cada una): al entrar, cada
-  cifra cuenta desde 0 hasta su valor (`StatCounter`), desde que el carrusel se
-  ve en pantalla. El HTML pre-generado y los lectores de pantalla llevan el
-  valor completo.
+  textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
+  en una barra compacta (`Stats.tsx`; ya no en carrusel desde noviembre de
+  2026): al entrar, cada cifra cuenta desde 0 hasta su valor (`StatCounter`),
+  desde que la barra se ve en pantalla, y al pasar el cursor cada una se
+  levanta con sombra y franja naranja, como los logos de clientes. El HTML
+  pre-generado y los lectores de pantalla llevan el valor completo.
 - Embajadas atendidas: las 10 de `EMBASSIES`. En el mapa, solo esos destinos
   llevan `embassy: true`; los demás son destinos de las regiones donde opera
   (Suramérica, África y Asia excepto Irán y Rusia), definidos en
@@ -226,16 +227,33 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `linea`, `rojizo` `#E8401C`…). La lista blanca de colores está en `tests/unit/content.test.ts`:
   para usar un color nuevo, agréguelo ahí a propósito.
 - Tipografías: IBM Plex Sans (títulos) y Montserrat (texto).
+- Alineación del texto (noviembre de 2026): los párrafos se justifican solo en
+  pantallas anchas (1024 px+, regla base de `src/styles/index.css`); en celular
+  y tableta siguen la alineación de su bloque, y las listas nunca se justifican.
+  Los textos cortos o en columnas angostas (tarjetas, subtítulos de sección,
+  entradillas, lemas en mayúsculas) llevan `text-start` en el propio elemento
+  para no abrir huecos entre palabras; los centrados, `text-center`. Los
+  párrafos del header (megamenús, panel de soporte) van siempre a la izquierda
+  (regla `header p`).
+- Clientes del inicio (`Hero`): lista fija con todos los logos (ya no carrusel):
+  en gris; al pasar el cursor, el logo toma sus colores y su ficha se levanta
+  con sombra y la franja naranja.
 - **Fondo general de la página totalmente blanco** (pedido del cliente, octubre
   de 2026): sin franjas grises entre secciones ni manchas beige o naranja en la
   portada. El color va en los componentes (tarjetas, tablero del mapa, botones)
   y en los bloques de sección hechos a propósito (Cobertura en azul, Videos en
   violeta y la franja naranja de llamado a la acción); las páginas internas usan `PageHero` con la foto bien visible y tonos
   naranja a rojizo. En todas las páginas internas (servicios, Nosotros, blog,
-  política, Experiencias Transpack, 404) el panel de `PageHero` es blanco, con la franja
-  naranja del corte, y la cabecera usa siempre letras oscuras. El efecto de "velocidad" del brochure de referencia del
-  cliente no se logra con capas sobre las fotos actuales (probado en octubre
-  de 2026): debe venir en las fotos que entregue el cliente.
+  política, Experiencias Transpack, 404) el texto de `PageHero` va sobre blanco y la
+  cabecera usa siempre letras oscuras. **Efecto de velocidad en las fotos**
+  (noviembre de 2026, en vez de la franja naranja diagonal que separaba foto y
+  texto): `SpeedFrame` (`src/components/ui/SpeedFrame.tsx`) da a la foto, hacia
+  el borde que mira al texto, un desenfoque de movimiento solo horizontal (filtro
+  SVG `#tp-motion-blur`, definido una vez en `Layout` con `SpeedFilter`), la
+  deshace hacia el fondo y la cruzan líneas de velocidad blancas y naranjas
+  (`.speed-line`). Se usa en `PageHero` (todas las páginas internas; en el mapa
+  de Mudanzas nacionales, sin desenfoque), Soluciones, Cobertura y Certificaciones
+  de Nosotros. Para quitarlo en una foto basta con sacarla de `SpeedFrame`.
 - Portada (`Hero`): titular a la izquierda y, a la derecha, la **animación del
   mapa** (`Globe`, sin el selector "¿Qué necesitas hoy?", que se quitó en
   octubre de 2026). Continentes en negro sobre mar gris claro (sin azules;

@@ -47,7 +47,7 @@ export function ServiceDetailPage() {
           <h1 className="mb-6 text-[clamp(1.7rem,1.15rem+2vw,2.75rem)] leading-[1.12] text-tinta">
             {service.headline}
           </h1>
-          <p className="mb-8 max-w-2xl text-[1.08rem] text-texto">{service.short}</p>
+          <p className="mb-8 max-w-2xl text-start text-[1.08rem] text-texto">{service.short}</p>
           <div className="flex flex-wrap gap-3">
             <Link to={quoteLink} className={`${btn.primary} ${btn.lg} w-full sm:w-auto`}>
               {generic ? t.quoteService(service.title) : service.cta}
@@ -110,7 +110,7 @@ export function ServiceDetailPage() {
                   0{i + 1}
                 </span>
                 <h3 className="mb-2 text-lg !text-white">{st.title}</h3>
-                <p className="text-[0.92rem]">{st.text}</p>
+                <p className="text-start text-[0.92rem]">{st.text}</p>
               </Reveal>
             ))}
           </ol>
@@ -125,7 +125,7 @@ export function ServiceDetailPage() {
             <h2 className="mb-4 text-[clamp(1.8rem,1.2rem+2vw,2.6rem)] leading-[1.15]">
               {t.antesCotizar}
             </h2>
-            <p className="text-suave">{t.siTienesOtraDuda}</p>
+            <p className="text-start text-suave">{t.siTienesOtraDuda}</p>
           </Reveal>
           <Reveal className="faq">
             {FAQS.slice(0, 4).map((f) => (

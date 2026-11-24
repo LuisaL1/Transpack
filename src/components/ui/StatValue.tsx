@@ -23,7 +23,7 @@ export function StatValue({ value, suffix }: { value: number; suffix: string }) 
 
 /**
  * Cifra que cuenta desde 0 hasta su valor cada vez que `active` pasa a true
- * (carrusel de cifras del inicio). Con `instant`, o si el visitante pidió
+ * (cifras del inicio). Con `instant`, o si el visitante pidió
  * reducir el movimiento, muestra el valor completo sin contar. En el HTML
  * pre-generado y para los lectores de pantalla va siempre el valor completo.
  */

@@ -92,7 +92,7 @@ export function PrivacyPage() {
           <h1 className="mb-6 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.1] text-tinta">
             {PRIVACY.title}
           </h1>
-          <p className="max-w-2xl text-[1.05rem]">{PRIVACY.intro}</p>
+          <p className="max-w-2xl text-start text-[1.05rem]">{PRIVACY.intro}</p>
           <p className="mt-6 text-[0.85rem] text-suave">{PRIVACY.updated}</p>
         </div>
       </PageHero>
@@ -207,7 +207,7 @@ export function PrivacyPage() {
 
             <div className="mt-14 rounded-[22px] bg-azul p-8 text-white/80">
               <h2 className="mb-2 text-[1.4rem] !text-white">{t.dudas}</h2>
-              <p className="mb-6">{t.escribenos}</p>
+              <p className="mb-6 text-start">{t.escribenos}</p>
               <a href={contactHref({ motivo: "datos" })} className={`${btn.primary} ${btn.md}`}>
                 <Bi n="envelope-paper" /> {t.abrirFormulario}
               </a>

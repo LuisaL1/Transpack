@@ -9,7 +9,10 @@ import { container } from "@/components/ui/layout";
 // Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular y los
 // botones; a la derecha el globo animado (Globe), grande y
 // recortado por el borde de la página, como en la web de referencia del
-// cliente (Spectrum). En celular el globo va debajo del texto. Los clientes al pie.
+// cliente (Spectrum). En celular el globo va debajo del texto. Los clientes al
+// pie, todos a la vista en una cuadrícula fija (ya no en carrusel, nov. 2026):
+// en gris; al pasar el cursor, cada logo recupera sus colores y su ficha se
+// levanta con sombra y la franja naranja de la marca.
 // Resalta en negrita y azul las cifras indicadas dentro de un texto
 function highlight(text: string, marks: string[]) {
   const parts: React.ReactNode[] = [];
@@ -80,35 +83,45 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Clientes */}
-      <div className="relative pb-14 pt-10" aria-label={t.clientsLabel}>
-        <p className="mb-7 px-4 text-center text-[0.95rem] font-medium text-texto">
+      {/* Clientes: todos a la vista; el logo toma color al pasar el cursor */}
+      <div className="relative pb-14 pt-10">
+        <p className="mb-10 px-4 text-center text-[0.95rem] font-medium text-texto">
           {t.clientsTitle}
         </p>
-        <div className="marquee flex overflow-hidden pt-10" dir="ltr">
-          {[0, 1].map((k) => (
-            <div
-              key={k}
-              className="animate-marquee flex shrink-0 items-center gap-16 pr-16"
-              aria-hidden={k === 1}
+        <ul
+          aria-label={t.clientsLabel}
+          className={`${container} grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 lg:grid-cols-8`}
+        >
+          {CLIENT_LOGOS.map((c, i) => (
+            <li
+              key={c.name}
+              title={c.name}
+              className={`group relative grid h-20 place-items-center overflow-hidden rounded-2xl border border-transparent bg-white px-2 transition-all duration-300 hover:-translate-y-1.5 hover:border-linea hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)] sm:h-24 sm:px-4 ${
+                // En celular (3 columnas), si el último queda solo, va al centro
+                i === CLIENT_LOGOS.length - 1 && CLIENT_LOGOS.length % 3 === 1
+                  ? "max-sm:col-start-2"
+                  : ""
+              }`}
             >
-              {CLIENT_LOGOS.map((c) => (
-                <img
-                  decoding="async"
-                  key={c.name}
-                  src={c.src}
-                  alt={k === 0 ? c.name : ""}
-                  title={c.name}
-                  style={{
-                    height: logoHeight(c.ratio) * 2,
-                    width: logoHeight(c.ratio) * c.ratio * 2,
-                  }}
-                  className="shrink-0 object-contain opacity-55 brightness-0 transition-opacity duration-300 hover:opacity-90"
-                />
-              ))}
-            </div>
+              <img
+                decoding="async"
+                loading="lazy"
+                src={c.src}
+                alt={c.name}
+                style={{
+                  height: logoHeight(c.ratio) * 1.15,
+                  width: logoHeight(c.ratio) * c.ratio * 1.15,
+                }}
+                className="max-w-full object-contain opacity-55 brightness-0 transition duration-300 group-hover:scale-110 group-hover:opacity-100 group-hover:brightness-100"
+              />
+              {/* Franja naranja que crece desde la izquierda */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-naranja transition-transform duration-300 group-hover:scale-x-100"
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

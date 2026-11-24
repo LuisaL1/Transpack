@@ -30,11 +30,6 @@ export const heroText = (tr: Tr) => ({
 
 export const statsText = (tr: Tr) => ({
   label: tr("Transpack en cifras", "Transpack in numbers"),
-  // Carrusel de cifras (Stats.tsx)
-  carousel: tr("carrusel", "carousel"),
-  slide: tr("cifra", "figure"),
-  of: (a: number, b: number) => tr(`${a} de ${b}`, `${a} of ${b}`),
-  goTo: (a: number) => tr(`Ver cifra ${a}`, `Show figure ${a}`),
 });
 
 export const servicesText = (tr: Tr) => ({
