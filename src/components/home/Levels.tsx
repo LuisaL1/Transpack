@@ -9,7 +9,8 @@ import { container, section } from "@/components/ui/layout";
 
 // Niveles de servicio (LEVELS de src/data/site.ts). Movimiento (nov. 2026): los
 // números con contorno se descubren desde abajo al llegar, y las tarjetas se
-// inclinan y brillan siguiendo al puntero (tilt y .spotlight)
+// inclinan y brillan siguiendo al puntero (tilt y .spotlight). Fondo gris hielo
+// (ritmo de fondos del inicio, ver LandingPage)
 export function Levels() {
   const { lp, tr } = useLang();
   const t = levelsText(tr);
@@ -29,7 +30,7 @@ export function Levels() {
     return () => off.forEach((f) => f());
   });
   return (
-    <section id="niveles" ref={ref} className={section}>
+    <section id="niveles" ref={ref} className={`${section} bg-gris`}>
       <div className={container}>
         <SectionHead center eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         <div className="mx-auto grid max-w-[520px] gap-6 lg:max-w-none lg:grid-cols-3">

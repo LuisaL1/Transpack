@@ -170,7 +170,7 @@ export const blogSectionText = (tr: Tr) => ({
   eyebrow: "Blog",
   title: tr("Guías para mudarte con tranquilidad", "Guides for a stress-free move"),
   sub: tr(
-    "Lo que debes saber antes de su próximo traslado, explicado por quienes lo hacen todos los días.",
+    "Lo que debes saber antes de tu próximo traslado, explicado por quienes lo hacen todos los días.",
     "What you should know before your next move, explained by the people who do it every day.",
   ),
   read: tr("Leer artículo", "Read article"),

@@ -141,7 +141,7 @@ export const blogPosts: Post[] = [
     cat: "Trayectoria",
     cover: imgGlobal,
     excerpt:
-      "Por qué las organizaciones más exigentes y las misiones diplomáticas no dejan su movilidad al azar, y qué debes saber antes de elegir su operador logístico.",
+      "Por qué las organizaciones más exigentes y las misiones diplomáticas no dejan su movilidad al azar, y qué debes saber antes de elegir tu operador logístico.",
     cta: "Cotizar mi mudanza internacional",
     blocks: [
       {

@@ -107,7 +107,7 @@ export function menusFor(lang: Lang): Menu[] {
         kicker: "Blog",
         title: tr("Guías para mudarte con tranquilidad", "Guides for a stress-free move"),
         text: tr(
-          "Lo que debes saber antes de su próximo traslado, explicado por quienes lo hacen todos los días.",
+          "Lo que debes saber antes de tu próximo traslado, explicado por quienes lo hacen todos los días.",
           "What you should know before your next move, explained by the people who do it every day.",
         ),
         cta: tr("Ver todas las guías", "See all guides"),

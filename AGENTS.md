@@ -205,8 +205,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   cliente, octubre de 2026; ni "representantes" ni "agentes internacionales") y **60.000+ toneladas** de menaje doméstico
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
-  en una barra compacta (`Stats.tsx`; ya no en carrusel desde noviembre de
-  2026): al entrar, los dígitos de cada cifra ruedan como un odómetro hasta su
+  en una barra compacta en azul marino (`Stats.tsx`, `azul-900`: cifras en
+  blanco, sufijo `+`/`K+` en naranja, descripciones en blanco al 80 %; ya no en
+  carrusel desde noviembre de 2026): al entrar, los dígitos de cada cifra ruedan como un odómetro hasta su
   valor (`StatOdometer`), desde que la barra se ve en pantalla, y al pasar el cursor cada una se
   levanta con sombra y franja naranja, como los logos de clientes. El HTML
   pre-generado y los lectores de pantalla llevan el valor completo.
@@ -293,7 +294,12 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `text-center`. Los párrafos del header van siempre a la izquierda (`header p`).
 - Fondo de página blanco por defecto, con bloques de color hechos a propósito
   (Cobertura en azul, Videos en violeta, la franja naranja de llamado a la
-  acción, la foto a pantalla completa de la portada). Fondos con movimiento
+  acción, la foto a pantalla completa de la portada). **Ritmo del inicio**
+  (nov. 2026, para quitar el exceso de blanco): las secciones alternan blanco,
+  gris hielo (`bg-gris`: Niveles, Proceso, Cotizador) y azul (cifras en panel
+  `azul-900`, Cobertura, Blog en `bg-azul` con tarjetas blancas); nunca dos
+  seguidas con el mismo fondo (orden en `LandingPage.tsx`). Sobre gris, el aro
+  de los rombos de `StepsTimeline` toma `--steps-ring`. Fondos con movimiento
   sutil (como `WorldLines`) son bienvenidos donde una sección se vea estática.
 
 ### Movimiento (noviembre de 2026)

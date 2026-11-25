@@ -14,6 +14,11 @@ import { VideoShorts } from "@/components/home/VideoShorts";
 import { ContactSection } from "@/components/home/ContactSection";
 
 // Inicio (/): una sección por componente, en src/components/home
+// Ritmo de fondos (nov. 2026, para cortar las rachas de blanco): Hero blanco ·
+// cifras en panel azul marino · Servicios blanco · Niveles gris hielo ·
+// Cobertura azul noche · Proceso gris hielo · Quiénes somos blanco · Galería ·
+// Cotizador gris hielo · Blog azul · FAQ blanco · Shorts violeta · franja
+// naranja · Contacto blanco. Nunca dos secciones seguidas del mismo fondo.
 export function LandingPage() {
   return (
     <>

@@ -12,7 +12,8 @@ export type Step = { title: string; text: string };
 // pasos se encienden con el scroll, y la página solo sigue cuando están todos
 // completos. Se fija el contenedor marcado con `data-steps-pin` (un div dentro
 // de la sección, nunca la sección: ver "Fijar con ScrollTrigger" en AGENTS.md).
-// `tone`: "light" sobre blanco, "dark" sobre azul. El último paso va en naranja
+// `tone`: "light" sobre blanco (o sobre otro fondo claro: el aro de los rombos
+// toma `--steps-ring`), "dark" sobre azul. El último paso va en naranja
 // (en "dark", todos naranja y el último en blanco).
 export function StepsTimeline({
   items,
@@ -97,7 +98,7 @@ export function StepsTimeline({
               <span
                 data-step-dot
                 className={`relative mb-6 grid h-14 w-14 rotate-45 place-items-center rounded-[14px] ${dot} ${
-                  dark ? "shadow-[0_0_0_8px_#272b7c]" : "shadow-[0_0_0_8px_#fff]"
+                  dark ? "shadow-[0_0_0_8px_#272b7c]" : "shadow-[0_0_0_8px_var(--steps-ring,#fff)]"
                 }`}
               >
                 <span className="-rotate-45 font-title text-xl font-semibold">{i + 1}</span>
