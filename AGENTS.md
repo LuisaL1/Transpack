@@ -456,10 +456,15 @@ blanco.
 - **Foto a pantalla completa** (nov. 2026; reemplazó al mapa animado):
   `src/assets/images/img-header.jpg` (original en
   `RecursosTranspack/Imagenes/img-header.jpeg`) cubre todo el ancho y alto del
-  Hero (`min-h-[100svh]`, `object-cover`), también detrás de la cabecera fija.
-  Degradado oscuro (azul noche `#0D0F33` translúcido) desde la izquierda,
-  hasta un 62 % del ancho, y desde arriba (200 px, para el menú); en celular,
-  uno vertical más parejo. Titular, texto, rótulo "Desde 1968", botón
+  Hero en escritorio (`min-h-[100svh]`, `object-cover` anclada arriba, para no
+  cortar la cabeza), también detrás de la cabecera fija. Degradado oscuro (azul
+  noche `#0D0F33` translúcido) desde la izquierda, hasta un 54 % del ancho (más
+  corto desde nov. 2026, para que se vea la caja con el logo), y desde arriba
+  (200 px, para el menú). En celular y tableta (nov. 2026) la foto va arriba en
+  4:3, casi completa, y se funde con el azul noche, donde sigue el texto (antes
+  cubría todo el alto y solo se veía un 30 % de su ancho). Para reemplazarla:
+  horizontal 16:9, idealmente 2400 × 1350 px, con el sujeto en la mitad derecha
+  y aire arriba para el menú. Titular, texto, rótulo "Desde 1968", botón
   secundario (`btn.ghost`) y marquesina van en blanco. El `h1` usa
   `text-white!`: la regla base de `h1` en `index.css` no está en una capa y
   le gana a las utilidades.

@@ -17,6 +17,13 @@ import headerImg from "@/assets/images/img-header.jpg";
 // embajadas atendidas, todos a la vista en cuadrículas fijas: en gris; al pasar
 // el cursor, cada logo recupera sus colores y su ficha se levanta con sombra y
 // la franja naranja de la marca.
+//
+// Que se vea la mayor parte de la foto (nov. 2026): en escritorio la foto casi
+// cabe entera (solo recorta arriba y abajo; se ancla arriba para no cortar la
+// cabeza) y el degradado oscuro de la izquierda es más corto, para que se vea
+// la caja con el logo detrás del titular. En celular y tableta la foto ya no
+// cubre todo el alto (así solo se veía un 30 % de su ancho): va arriba, en 4:3
+// (casi completa), y se funde con el azul noche, donde sigue el texto.
 // Resalta en negrita las cifras indicadas dentro de un texto
 function highlight(text: string, marks: string[]) {
   const parts: React.ReactNode[] = [];
@@ -49,7 +56,7 @@ export function Hero() {
   return (
     <section className="relative text-texto">
       {/* Foto a pantalla completa, también detrás de la cabecera fija */}
-      <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
+      <div className="relative isolate flex items-start lg:min-h-[100svh] overflow-hidden bg-[#0D0F33] pb-16 pt-[calc(75vw-24px)] lg:items-center lg:pb-20 lg:pt-[180px]">
         <img
           src={headerImg}
           alt={t.imageAlt}
@@ -57,17 +64,22 @@ export function Hero() {
           height={804}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_center]"
+          className="absolute inset-x-0 top-0 -z-20 aspect-[4/3] w-full object-cover object-[55%_top] lg:inset-y-0 lg:aspect-auto lg:h-full lg:object-[72%_top]"
         />
-        {/* Degradado oscuro desde la izquierda (titular) y desde arriba (menú).
-            En celular, el texto va sobre toda la foto: más parejo */}
+        {/* Celular y tableta: la foto se funde abajo con el azul noche */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,15,51,.85)_0%,rgba(13,15,51,.7)_28%,rgba(13,15,51,.32)_46%,rgba(13,15,51,0)_62%)] max-lg:bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,.72)_45%,rgba(13,15,51,.85)_100%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 aspect-[4/3] bg-[linear-gradient(180deg,rgba(13,15,51,0)_45%,rgba(13,15,51,.55)_75%,#0D0F33_100%)] lg:hidden"
         />
+        {/* Escritorio: degradado oscuro desde la izquierda, detrás del titular */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[200px] bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,0)_100%)]"
+          className="pointer-events-none absolute inset-0 -z-10 hidden bg-[linear-gradient(90deg,rgba(13,15,51,.82)_0%,rgba(13,15,51,.58)_24%,rgba(13,15,51,.2)_40%,rgba(13,15,51,0)_54%)] lg:block"
+        />
+        {/* Desde arriba, para el menú */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[140px] bg-[linear-gradient(180deg,rgba(13,15,51,.5)_0%,rgba(13,15,51,0)_100%)] lg:h-[200px]"
         />
 
         <div className="mx-auto w-[min(100%-32px,1200px)] wide:w-[min(100%-120px,1320px)]">
@@ -99,7 +111,7 @@ export function Hero() {
                 </span>
               </span>
             </h1>
-            <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-white/90 lg:mx-0 lg:text-start">
+            <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-white/90 [text-shadow:0_1px_14px_rgba(13,15,51,.6)] lg:mx-0 lg:text-start">
               {highlight(t.sub, t.subHighlights)}
             </p>
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
