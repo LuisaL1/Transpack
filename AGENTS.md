@@ -207,7 +207,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
   en una barra compacta en azul marino (`Stats.tsx`, `azul-900`: cifras en
-  blanco, sufijo `+`/`K+` en naranja, descripciones en blanco al 80 %; ya no en
+  blanco, sufijo `+`/`K+` en naranja, descripciones en blanco al 80 %, íconos en cuadros blancos; ya no en
   carrusel desde noviembre de 2026): al entrar, los dígitos de cada cifra ruedan como un odómetro hasta su
   valor (`StatOdometer`), desde que la barra se ve en pantalla, y al pasar el cursor cada una se
   levanta con sombra y franja naranja, como los logos de clientes. El HTML
