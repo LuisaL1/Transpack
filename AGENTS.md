@@ -417,6 +417,22 @@ blanco.
   rebotaba), que se eliminó en noviembre de 2026 porque al cliente no le
   gustaba. Mudanzas locales usa en el encabezado la foto fundida con el fondo
   (`imageBlend`, `.photo-blend`).
+- **`ShippingPhoto`** (`src/components/services/ShippingPhoto.tsx`, nov. 2026):
+  foto del encabezado de **todos los servicios con foto** (no Mudanzas
+  nacionales, que lleva el mapa): `PhotoFrame` con la pestaña abajo a la
+  izquierda (ícono y nombre del servicio, con su animación), **doble marco**
+  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** arriba a la
+  derecha, girada, con un sello. Los datos de la etiqueta son de muestra y van
+  con el servicio (`shippingLabelText(tr, slug)` en `src/data/pages.ts`: p.
+  ej. Bogotá → Madrid por vía marítima en internacionales, orden de bodegaje en
+  Bodegaje, guacal a medida en Embalaje); al agregar un servicio, agregue su
+  etiqueta. Es decorativa (`aria-hidden`). `PageHero` la usa con
+  `shipping={service.slug}`.
+- **Fondos decorativos fijos** (`RouteLines` y `IsoCubes` en
+  `src/components/layout/`): son solo fondo, con `-z-10`, detrás de todo el
+  contenido; textos, tarjetas e imágenes siempre quedan encima. Se ven donde la
+  sección no tiene fondo propio: las secciones blancas no llevan `bg-white`
+  (el blanco es el del `body`); no se lo agregue o las taparía.
 - **`WorldLines`** (`src/components/sections/WorldLines.tsx`): fondo de
   mapamundi de líneas (costas, fronteras y rutas desde Bogotá en azul al 7–13 %)
   con destellos naranja y azul que las recorren lento y sin parar. Es un SVG

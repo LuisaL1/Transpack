@@ -19,7 +19,7 @@ export function BlogSection() {
     return () => off.forEach((f) => f());
   });
   return (
-    <section id="blog" ref={ref} className={`${section} bg-white`}>
+    <section id="blog" ref={ref} className={section}>
       <div className={container}>
         <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-x-16 gap-y-4 md:mb-16">
           <div>

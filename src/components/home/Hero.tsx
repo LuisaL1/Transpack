@@ -47,7 +47,7 @@ export function Hero() {
       m.reveal(list.children, list, { y: 24, stagger: 0.05, duration: 0.7 });
   });
   return (
-    <section className="relative bg-white text-texto">
+    <section className="relative text-texto">
       {/* Foto a pantalla completa, también detrás de la cabecera fija */}
       <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
         <img

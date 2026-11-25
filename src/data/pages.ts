@@ -108,19 +108,119 @@ export const privacyText = (tr: Tr) => ({
 /** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
 export const privacyLink = (tr: Tr) => tr("Política de datos", "Privacy policy");
 
-// Etiqueta de envío sobre la foto de Mudanzas locales (ShippingPhoto). Prueba de
-// diseño, nov. 2026: DATOS DE MUESTRA, no son de un cliente real (la etiqueta es
-// decorativa y los lectores de pantalla no la leen).
-export const shippingLabelText = (tr: Tr) => ({
-  title: tr("Guía de envío", "Shipping label"),
-  from: tr("Remitente", "From"),
-  fromValue: "Familia Rodríguez · Usaquén",
-  to: tr("Destino", "To"),
-  toValue: "Cra. 11 #93-27 · Chapinero",
-  weight: tr("Peso", "Weight"),
-  weightValue: "840 kg",
-  date: tr("Fecha", "Date"),
-  dateValue: tr("24 NOV 2026", "NOV 24 2026"),
-  guideValue: "TP-1968-0458",
-  fragile: tr("Frágil", "Fragile"),
-});
+// Etiqueta de envío sobre la foto del encabezado de cada servicio (ShippingPhoto,
+// nov. 2026). DATOS DE MUESTRA, no son de un cliente real (la etiqueta es
+// decorativa y los lectores de pantalla no la leen); van con el tipo de servicio.
+// Filas: [rótulo, valor, ocupa las dos columnas]
+type LabelRow = [string, string, boolean?];
+export const shippingLabelText = (tr: Tr, slug: string) => {
+  const from = tr("Remitente", "From");
+  const to = tr("Destino", "To");
+  const weight = tr("Peso", "Weight");
+  const date = tr("Fecha", "Date");
+  const day = tr("24 NOV 2026", "NOV 24 2026");
+  const fragile = tr("Frágil", "Fragile");
+  const guideTitle = tr("Guía de envío", "Shipping label");
+  const labels: Record<
+    string,
+    { title: string; icon: string; rows: LabelRow[]; guide: string; stamp: string }
+  > = {
+    "mudanzas-locales": {
+      title: guideTitle,
+      icon: "house-door",
+      rows: [
+        [from, "Familia Rodríguez · Usaquén", true],
+        [to, "Cra. 11 #93-27 · Chapinero", true],
+        [weight, "840 kg"],
+        [date, day],
+      ],
+      guide: "TP-BOG-0458",
+      stamp: fragile,
+    },
+    "mudanzas-nacionales": {
+      title: guideTitle,
+      icon: "truck",
+      rows: [
+        [from, "Bogotá D.C.", true],
+        [to, "Medellín, Antioquia", true],
+        [weight, "1.320 kg"],
+        [date, day],
+      ],
+      guide: "TP-NAL-2231",
+      stamp: fragile,
+    },
+    "mudanzas-internacionales": {
+      title: tr("Envío internacional", "International shipment"),
+      icon: "globe-americas",
+      rows: [
+        [from, "Bogotá, Colombia (BOG)", true],
+        [to, tr("Madrid, España (MAD)", "Madrid, Spain (MAD)"), true],
+        [tr("Vía", "Via"), tr("Marítima · 20'", "Sea · 20'")],
+        [weight, "2.450 kg"],
+      ],
+      guide: "TP-INT-7342",
+      stamp: fragile,
+    },
+    bodegaje: {
+      title: tr("Orden de bodegaje", "Storage tag"),
+      icon: "boxes",
+      rows: [
+        [tr("Cliente", "Client"), "Familia Gómez · Chicó", true],
+        [tr("Ubicación", "Location"), tr("Bodega Bogotá · B-14", "Bogotá warehouse · B-14"), true],
+        [tr("Volumen", "Volume"), "18 m³"],
+        [tr("Ingreso", "In"), day],
+      ],
+      guide: "TP-BDG-1140",
+      stamp: tr("Almacenado", "Stored"),
+    },
+    "embalaje-especializado": {
+      title: tr("Embalaje especial", "Special packing"),
+      icon: "easel",
+      rows: [
+        [tr("Pieza", "Item"), tr("Óleo sobre lienzo", "Oil on canvas"), true],
+        [tr("Embalaje", "Packing"), tr("Guacal de madera a medida", "Custom wooden crate"), true],
+        [tr("Medidas", "Size"), "120 × 90 cm"],
+        [weight, "38 kg"],
+      ],
+      guide: "TP-EMB-0612",
+      stamp: tr("Este lado arriba", "This side up"),
+    },
+    "gestion-aduanera": {
+      title: tr("Documento aduanero", "Customs document"),
+      icon: "file-earmark-text",
+      rows: [
+        [tr("Trámite", "Procedure"), tr("Exportación de menaje", "Household goods export"), true],
+        [tr("Ruta", "Route"), tr("Bogotá → Miami, EE. UU.", "Bogotá → Miami, USA"), true],
+        [weight, "1.200 kg"],
+        [date, day],
+      ],
+      guide: "TP-ADU-3087",
+      stamp: tr("Revisado", "Checked"),
+    },
+    "movilidad-corporativa": {
+      title: tr("Traslado de oficina", "Office move"),
+      icon: "buildings",
+      rows: [
+        [from, tr("Sede actual · Piso 12", "Current office · Floor 12"), true],
+        [to, tr("Nueva sede · Calle 100", "New office · Calle 100"), true],
+        [tr("Puestos", "Desks"), "45"],
+        [date, day],
+      ],
+      guide: "TP-CORP-0915",
+      stamp: tr("Prioritario", "Priority"),
+    },
+    diplomatico: {
+      title: tr("Envío diplomático", "Diplomatic shipment"),
+      icon: "flag",
+      rows: [
+        [from, tr("Misión diplomática · Bogotá", "Diplomatic mission · Bogotá"), true],
+        [to, tr("París, Francia (CDG)", "Paris, France (CDG)"), true],
+        [tr("Tipo", "Type"), tr("Menaje", "Household")],
+        [weight, "1.800 kg"],
+      ],
+      guide: "TP-DIP-0507",
+      stamp: tr("Diplomático", "Diplomatic"),
+    },
+  };
+  return labels[slug] ?? labels["mudanzas-locales"];
+};

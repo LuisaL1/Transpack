@@ -120,9 +120,6 @@ export type Service = {
   imageReveal?: "left" | "right" | "top";
   // La foto del encabezado sin marco: se funde con el fondo blanco
   imageBlend?: boolean;
-  // Prueba de diseño (nov. 2026): doble marco azul desplazado y etiqueta de
-  // envío sobre la foto del encabezado (ShippingPhoto)
-  imageShipping?: boolean;
   // Rótulo sobre el título; sin él, no se muestra
   kicker?: string;
   headline: string;
@@ -169,7 +166,6 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgEmbalajeHogar,
     imageReveal: "top",
-    imageShipping: true,
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:

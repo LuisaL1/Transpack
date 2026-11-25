@@ -6,11 +6,18 @@ import type { CSSProperties } from "react";
 // con una estela suave, en bucle de 31 a 38 s, desfasado entre rutas. Solo SVG y
 // CSS (animación .route-run en src/styles/index.css), sin JS: el punto y la
 // estela son trazos de la misma ruta que avanzan con stroke-dashoffset
-// (pathLength = 1000), así siempre van juntos. Capa fija sobre el fondo blanco
-// de las secciones y bajo la cabecera y el chat, con mix-blend-multiply para que
-// apenas se note; decorativa (aria-hidden, sin clics). Desde 1024 px; con
+// (pathLength = 1000), así siempre van juntos. Es solo fondo (nov. 2026): capa
+// fija DETRÁS de todo el contenido (z-index -1, sobre el blanco del body), así
+// textos, tarjetas e imágenes siempre quedan encima; se ve donde la sección no
+// tiene fondo propio (por eso las secciones blancas no llevan bg-white).
+// Decorativa (aria-hidden, sin clics). Desde 1024 px; con
 // movimiento reducido quedan las rutas quietas, sin el punto.
-type Route = { d: string; dur: number; delay: number; nodes: [number, number, "origin" | "drop"][] };
+type Route = {
+  d: string;
+  dur: number;
+  delay: number;
+  nodes: [number, number, "origin" | "drop"][];
+};
 
 const ROUTES: Route[] = [
   {
@@ -68,7 +75,7 @@ export function RouteLines() {
       aria-hidden="true"
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
-      className="route-lines pointer-events-none fixed inset-0 z-[5] hidden h-full w-full mix-blend-multiply lg:block"
+      className="route-lines pointer-events-none fixed inset-0 -z-10 hidden h-full w-full lg:block"
       fill="none"
     >
       {ROUTES.map((r, i) => {
@@ -89,7 +96,14 @@ export function RouteLines() {
               <g key={`${x}-${y}`} className="stroke-suave" strokeOpacity={0.3} strokeWidth={1.2}>
                 <circle cx={x} cy={y} r={5} className="fill-white" />
                 {kind === "drop" && (
-                  <circle cx={x} cy={y} r={1.6} className="fill-suave" fillOpacity={0.45} stroke="none" />
+                  <circle
+                    cx={x}
+                    cy={y}
+                    r={1.6}
+                    className="fill-suave"
+                    fillOpacity={0.45}
+                    stroke="none"
+                  />
                 )}
               </g>
             ))}

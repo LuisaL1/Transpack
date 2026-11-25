@@ -5,11 +5,19 @@ import type { CSSProperties } from "react";
 // márgenes laterales (donde no hay contenido). Levitan y giran unos pocos
 // grados (animación .iso-float en src/styles/index.css), cada una con su
 // duración y su desfase, para que nunca se sincronicen. Solo SVG y CSS, sin JS.
-// Decorativo (aria-hidden, sin clics). Desde 1360 px, cuando los márgenes junto
+// Decorativo (aria-hidden, sin clics) y solo fondo: detrás de todo el contenido
+// (z-index negativo, como RouteLines). Desde 1360 px, cuando los márgenes junto
 // al contenido (1200 px) quedan libres; con movimiento reducido, quietos.
 type Shape = "cube" | "flat" | "tall";
 
-const PIECES: { shape: Shape; side: "left" | "right"; top: string; size: number; dur: number; delay: number }[] = [
+const PIECES: {
+  shape: Shape;
+  side: "left" | "right";
+  top: string;
+  size: number;
+  dur: number;
+  delay: number;
+}[] = [
   { shape: "cube", side: "left", top: "17vh", size: 56, dur: 9, delay: 0 },
   { shape: "flat", side: "right", top: "29vh", size: 62, dur: 11, delay: -4 },
   { shape: "tall", side: "left", top: "47vh", size: 50, dur: 8, delay: -2.5 },
@@ -21,7 +29,7 @@ export function IsoCubes() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[5] hidden mix-blend-multiply min-[1360px]:block"
+      className="pointer-events-none fixed inset-0 -z-10 hidden min-[1360px]:block"
     >
       {PIECES.map((p, i) => (
         <div

@@ -130,7 +130,7 @@ function ServiceDetail({ service }: { service: Service }) {
         media={service.heroMap ? <ColombiaRoutesMap /> : undefined}
         reveal={service.imageReveal}
         blend={service.imageBlend}
-        shipping={service.imageShipping}
+        shipping={service.slug}
         tab={
           // Pestaña de la foto: el servicio, con su ícono
           <span className="inline-flex items-center gap-2.5 font-title text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-azul">

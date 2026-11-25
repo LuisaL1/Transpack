@@ -15,9 +15,9 @@ import { ShippingPhoto } from "@/components/services/ShippingPhoto";
 // sin tarjeta: sus bordes se desvanecen y se funde con el fondo blanco.
 // La tarjeta es un PhotoFrame (nov. 2026): esquinas redondeadas, sin sombra, y
 // una pestaña blanca abajo a la izquierda, del lado del texto (vacía o con
-// `tab`, p. ej. el nombre del servicio). Con `shipping` (prueba, nov. 2026), la
-// foto va con un doble marco azul desplazado y una etiqueta de envío
-// (ShippingPhoto).
+// `tab`, p. ej. el nombre del servicio). Con `shipping` (el slug del servicio;
+// nov. 2026, en todos los servicios con foto), la foto va además con un doble
+// marco azul desplazado y una etiqueta de envío acorde al servicio (ShippingPhoto).
 //
 // Movimiento (nov. 2026, como el inicio): el contenido entra escalonado y el
 // h1 sale de una máscara (CSS .hero-stagger y .line-mask, sin esperar al
@@ -37,7 +37,7 @@ export function PageHero({
   media,
   reveal = "left",
   blend = false,
-  shipping = false,
+  shipping,
   tab = true,
 }: {
   children: ReactNode;
@@ -45,7 +45,7 @@ export function PageHero({
   media?: ReactNode;
   reveal?: HeroReveal;
   blend?: boolean;
-  shipping?: boolean;
+  shipping?: string;
   tab?: ReactNode | true;
 }) {
   const visual = Boolean(image || media);
@@ -100,7 +100,9 @@ export function PageHero({
     (blend ? (
       img
     ) : shipping ? (
-      <ShippingPhoto>{img}</ShippingPhoto>
+      <ShippingPhoto slug={shipping} tab={tab}>
+        {img}
+      </ShippingPhoto>
     ) : (
       <PhotoFrame tab={tab} className="h-full">
         {img}
@@ -113,7 +115,7 @@ export function PageHero({
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden border-b border-linea bg-white pt-[124px] text-texto md:pt-[148px] wide:pt-[162px]"
+      className="relative overflow-hidden border-b border-linea pt-[124px] text-texto md:pt-[148px] wide:pt-[162px]"
     >
       {/* Cuadrado naranja girado de la marca, detrás del texto */}
       <span

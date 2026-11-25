@@ -26,7 +26,7 @@ export function AboutTeaser() {
   });
   const year = Number(t.year);
   return (
-    <section id="nosotros" ref={ref} className={`${section} bg-white`}>
+    <section id="nosotros" ref={ref} className={section}>
       <div className={`${container} grid items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-24`}>
         <Reveal className="relative aspect-[1/1.08] max-w-[560px]">
           {/* Dos fotos en marcos con pestaña (PhotoFrame); la pequeña, con un
