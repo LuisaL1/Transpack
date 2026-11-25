@@ -411,6 +411,34 @@ export const stillScene = (): Scene => ({
   map: 1,
 });
 
+// ─── Mapas de las páginas de servicio (nov. 2026) ──────────────────────────
+// Un tramo de la historia de la portada, en bucle y sin el carrusel de fotos:
+// "bogota" (Mudanzas locales: las localidades y las líneas que salen de la sede hacia
+// las zonas exclusivas) y "mundo" (Mudanzas internacionales: de Colombia a
+// cada continente y la vuelta al globo con todas las rutas). Entre vuelta y
+// vuelta el mapa se funde para que el salto al comienzo no se note.
+export type GlobeFocus = "bogota" | "mundo";
+const FOCUS_FADE = 700;
+const FOCUS_HOLD = 2600; // Bogotá completa, con todas sus líneas, antes de volver a empezar
+const FOCUS_RANGE: Record<GlobeFocus, [number, number]> = {
+  bogota: [LINES_AT - 400, BOGOTA_END],
+  mundo: [LOCAL, LEAVE],
+};
+/** Estado del mapa de una página de servicio en el momento `time` (ms) */
+export function focusScene(focus: GlobeFocus, time: number): Scene {
+  const [from, to] = FOCUS_RANGE[focus];
+  const len = to - from + (focus === "bogota" ? FOCUS_HOLD : 0);
+  const u = ((time % len) + len) % len;
+  const s = scene(Math.min(from + u, to - 1));
+  const map = Math.min(1, u / FOCUS_FADE, (len - u) / FOCUS_FADE);
+  return { ...s, photo: 0, slide: 0, morph: 1, map: ease(clamp01(map)) };
+}
+/** Vista fija (movimiento reducido) del mapa de una página de servicio */
+export const focusStill = (focus: GlobeFocus): Scene =>
+  focus === "mundo"
+    ? stillScene()
+    : { ...scene(BOGOTA_END - 1), photo: 0, slide: 0, morph: 1, map: 1 };
+
 /** Radio del círculo del globo en píxeles (para cerrar la foto en él) */
 export const lensRadius = (w: number, h: number) => Math.min(w, h) * LENS;
 

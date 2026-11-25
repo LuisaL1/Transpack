@@ -81,7 +81,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Get a quote",
     image: imgEmbalajeHogar,
-    imageReveal: "top",
+    heroMap: "bogota",
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:
@@ -119,7 +119,7 @@ export const SERVICES: Service[] = [
     quote: "nacional",
     cta: "Get a quote",
     image: imgNacionalCarretera,
-    heroMap: true,
+    heroMap: "colombia",
     headline: "Your home, door to door",
     intro:
       "In a national move, the inventory and careful planning are the foundation of everything: they let us calculate the volume, choose the type of vehicle and the packing materials needed for proper protection, and schedule a safe trip on an optimized route to meet the timeline you need.",
@@ -155,7 +155,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Talk to an advisor",
     image: imgInternacionalPuerto,
-    imageReveal: "right",
+    heroMap: "mundo",
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:

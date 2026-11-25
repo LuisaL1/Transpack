@@ -10,8 +10,8 @@ import { ShippingPhoto } from "@/components/services/ShippingPhoto";
 // La información va a la izquierda sobre fondo blanco y la foto a la derecha,
 // como una tarjeta con esquinas redondeadas y sombra (sin línea divisora entre
 // las dos, nov. 2026). En celular y tableta la foto va arriba y el texto debajo. Sin foto, el texto ocupa todo
-// el ancho. En vez de la foto puede ir otro elemento (`media`), como el mapa
-// animado de Mudanzas nacionales, en la misma tarjeta. Con `blend`, la foto va
+// el ancho. En vez de la foto puede ir otro elemento (`media`) en la misma
+// tarjeta (los mapas animados van ahora en `backdrop`, abajo). Con `blend`, la foto va
 // sin tarjeta: sus bordes se desvanecen y se funde con el fondo blanco.
 // La tarjeta es un PhotoFrame (nov. 2026): esquinas redondeadas, sin sombra, y
 // una pestaña blanca abajo a la izquierda, del lado del texto (vacía o con
@@ -31,10 +31,21 @@ import { ShippingPhoto } from "@/components/services/ShippingPhoto";
 // usan las propiedades translate y scale, aparte del transform del
 // acercamiento al pasar el cursor de PhotoFrame. El cuadrado naranja de la
 // marca flota detrás del texto.
+//
+// Con `backdrop` (panel del mapa animado) e `image`, diseño "bento" (nov.
+// 2026; Mudanzas locales, nacionales e internacionales; antes, capas fundidas
+// con máscara, que ensuciaban foto y mapa): el panel azul noche del mapa ocupa
+// el lugar de la foto y la foto va aparte, nítida, como una tarjeta más pequeña
+// con borde blanco (sin pestaña) montada sobre la esquina inferior izquierda
+// del panel. El
+// panel entra acercándose y enfocándose; la tarjeta llega después con el
+// barrido de color y, al bajar, sube más rápido que el panel (profundidad). En
+// celular y tableta el panel va arriba y la tarjeta se monta en su esquina.
 export function PageHero({
   children,
   image,
   media,
+  backdrop,
   reveal = "left",
   blend = false,
   shipping,
@@ -43,6 +54,8 @@ export function PageHero({
   children: ReactNode;
   image?: string;
   media?: ReactNode;
+  /** Mapa animado para la capa de fondo (con `image`: composición en capas) */
+  backdrop?: ReactNode;
   reveal?: HeroReveal;
   blend?: boolean;
   shipping?: string;
@@ -61,6 +74,7 @@ export function PageHero({
       scroll,
     );
     m.parallax("[data-hero-square]", el, { y: 0, rotation: 45 }, { y: 140, rotation: 75 }, scroll);
+    m.parallax("[data-hero-card]", el, { y: 0 }, { y: -50 }, scroll);
 
     // La foto sigue un poco al cursor (en sentido contrario, como si estuviera
     // más lejos); solo con mouse
@@ -84,6 +98,58 @@ export function PageHero({
       el.removeEventListener("pointerleave", leave);
     };
   });
+  // Clases del <section> y del cuadrado de la marca, comunes a las dos composiciones
+  const shell =
+    "relative overflow-hidden border-b border-linea pt-[124px] text-texto md:pt-[148px] wide:pt-[162px]";
+  const square = (
+    <span
+      aria-hidden="true"
+      data-hero-square
+      className="pointer-events-none absolute -start-28 top-[42%] hidden h-56 w-56 rotate-45 rounded-[22%] bg-naranja/[0.07] md:block"
+    />
+  );
+
+  // Lugar de la foto o del mapa: a la derecha, alineado con el borde del
+  // contenido; en celular y tableta, arriba con los mismos márgenes del texto
+  const frame =
+    "relative mx-auto w-[min(100%-32px,1200px)] pt-2 lg:absolute lg:top-10 lg:bottom-16 lg:left-[50%] lg:right-[max(16px,calc((100vw-1200px)/2))] lg:mx-0 lg:w-auto lg:pt-0";
+  if (backdrop && image)
+    return (
+      <section ref={ref} className={shell}>
+        {square}
+        <div className="relative">
+          <div className={`${frame} lg:bottom-24`}>
+            <div className="relative h-[360px] sm:h-[440px] lg:h-full">
+              {/* Panel del mapa */}
+              <div className="hero-blend-in h-full [--hero-ps:1]">{backdrop}</div>
+              {/* Tarjeta de la foto, montada sobre la esquina del panel */}
+              <div
+                data-hero-card
+                className="absolute -bottom-8 start-3 z-10 w-[46%] sm:w-[38%] lg:-bottom-12 lg:-start-12 lg:w-[42%]"
+              >
+                <div className="hero-reveal hero-reveal-left [--sweep-delay:.55s]">
+                  <PhotoFrame className="aspect-[4/3] shadow-[var(--shadow-float)] ring-[6px] ring-white">
+                    <img
+                      fetchPriority="high"
+                      src={image}
+                      alt=""
+                      data-hero-img
+                      className="hero-parallax hero-img-in h-full w-full object-cover"
+                    />
+                  </PhotoFrame>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="relative pb-10 pt-16 md:pb-14 md:pt-20 lg:flex lg:min-h-[640px] lg:w-[46%] lg:flex-col lg:justify-center lg:py-14 lg:pe-10">
+            <div className="relative mx-auto w-[min(100%-32px,1200px)] lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:w-auto">
+              {children}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
   const img = image && (
     <img
       fetchPriority="high"
@@ -108,21 +174,10 @@ export function PageHero({
         {img}
       </PhotoFrame>
     ));
-  // Lugar de la foto o del mapa: a la derecha, alineado con el borde del
-  // contenido; en celular y tableta, arriba con los mismos márgenes del texto
-  const frame =
-    "relative mx-auto w-[min(100%-32px,1200px)] pt-2 lg:absolute lg:top-10 lg:bottom-16 lg:left-[50%] lg:right-[max(16px,calc((100vw-1200px)/2))] lg:mx-0 lg:w-auto lg:pt-0";
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden border-b border-linea pt-[124px] text-texto md:pt-[148px] wide:pt-[162px]"
-    >
+    <section ref={ref} className={shell}>
       {/* Cuadrado naranja girado de la marca, detrás del texto */}
-      <span
-        aria-hidden="true"
-        data-hero-square
-        className="pointer-events-none absolute -start-28 top-[42%] hidden h-56 w-56 rotate-45 rounded-[22%] bg-naranja/[0.07] md:block"
-      />
+      {square}
       <span
         aria-hidden="true"
         className="hero-float pointer-events-none absolute start-[47%] top-[72%] hidden h-4 w-4 rotate-45 rounded-[4px] bg-naranja/50 lg:block"

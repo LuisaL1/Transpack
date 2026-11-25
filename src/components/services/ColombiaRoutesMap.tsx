@@ -74,7 +74,9 @@ const LABEL: Record<Side, { dx: string; dy: string; anchor: "start" | "middle" |
   below: { dx: "0", dy: "1.45em", anchor: "middle" },
 };
 
-export function ColombiaRoutesMap() {
+// Con `fill` (dentro del panel del encabezado, ServiceMapPanel; nov. 2026)
+// ocupa todo su contenedor y sin fondo propio: el panel ya es azul noche.
+export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
   const { tr } = useLang();
   const t = serviceDetailText(tr);
   const { trip, phase, journey, svgRef, truckRef, trailRefs, shineRef } = useTruckTrip(
@@ -94,13 +96,21 @@ export function ColombiaRoutesMap() {
   const to = BY_ID[trip.to];
   const arrived = phase === "arrived" || phase === "leaving";
   return (
-    <div className="relative h-[440px] w-full overflow-hidden bg-[#0D0F33] sm:h-[500px] lg:h-full">
+    <div
+      className={
+        fill
+          ? "absolute inset-0"
+          : "relative h-[440px] w-full overflow-hidden bg-[#0D0F33] sm:h-[500px] lg:h-full"
+      }
+    >
       <svg
         ref={svgRef}
         viewBox={VIEWBOX}
         role="img"
         aria-label={t.mapaRutas}
-        className="absolute inset-0 h-full w-full overflow-visible px-4 py-5 lg:px-6 lg:py-6"
+        className={`absolute inset-0 h-full w-full overflow-visible ${
+          fill ? "px-3 pb-4 pt-2 lg:px-5 lg:pb-6" : "px-4 py-5 lg:px-6 lg:py-6"
+        }`}
       >
         <defs>
           {/* Resplandor de la estela */}

@@ -70,7 +70,8 @@ src/
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
 │   │                       (Globe y CountryCard, ya sin montar), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
-│   ├── services/           ColombiaRoutesMap (mapa animado de Mudanzas nacionales)
+│   ├── services/           ServiceMapPanel (panel del mapa del encabezado) con ColombiaRoutesMap
+│   │                       (Colombia) o ServiceGlobe (Bogotá o el mundo, del globo de la portada)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -421,11 +422,12 @@ blanco.
   escalona varias fotos (`--sweep-delay`). La foto lleva la clase `hero-img-in`.
   En Certificaciones de Nosotros. Reemplazó a `DropIn` (la caja que caía y
   rebotaba), que se eliminó en noviembre de 2026 porque al cliente no le
-  gustaba. Mudanzas locales usa en el encabezado la foto fundida con el fondo
-  (`imageBlend`, `.photo-blend`).
+  gustaba. `imageBlend` (`.photo-blend`) funde la foto del encabezado con el
+  fondo; hoy ningún servicio lo usa.
 - **`ShippingPhoto`** (`src/components/services/ShippingPhoto.tsx`, nov. 2026):
   foto del encabezado de **todos los servicios con foto** (no Mudanzas
-  nacionales, que lleva el mapa): `PhotoFrame` con la pestaña abajo a la
+  locales, nacionales ni internacionales, que llevan el panel del mapa; ver
+  "Encabezado bento con mapa"): `PhotoFrame` con la pestaña abajo a la
   izquierda (ícono y nombre del servicio, con su animación), **doble marco**
   azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** arriba a la
   derecha, girada, con un sello. Los datos de la etiqueta son de muestra y van
@@ -472,6 +474,24 @@ blanco.
   oscuras) y, a la derecha, la foto en un `PhotoFrame` con pestaña (en los
   servicios, con su ícono y nombre); en celular la foto va arriba. Movimiento
   en "Movimiento".
+- **Encabezado bento con mapa** (nov. 2026; `heroMap` en `SERVICES` →
+  `PageHero` con `backdrop`): Mudanzas locales (`"bogota"`), nacionales
+  (`"colombia"`) e internacionales (`"mundo"`). Mapa y foto van **separados y
+  nítidos**: a la derecha, el panel claro del mapa (`ServiceMapPanel`, gris
+  hielo con borde suave, a tono con el mapa de la portada en gris sobre blanco;
+  el de Colombia conserva su disco azul noche) con una chapa de vidrio arriba ("Bogotá
+  · 20 localidades", "Colombia · 14 ciudades", "Desde Bogotá · 176+ países",
+  este último de `STATS`) y la leyenda; la foto del servicio, como una tarjeta
+  más pequeña con borde blanco y sin pestaña, montada sobre la esquina inferior
+  izquierda del panel. El panel entra con `.hero-blend-in`, la tarjeta con el
+  barrido (`.hero-reveal`) y, al bajar, sube más rápido que el panel
+  (`[data-hero-card]`). En celular y tableta el panel va arriba y la tarjeta se
+  monta en su esquina. Reemplazó a una composición en capas con la foto
+  fundida sobre el mapa (máscara y velo blanco), descartada porque ensuciaba
+  foto y mapa. Bogotá y el mundo son `ServiceGlobe` (el motor del globo de la
+  portada: `focusScene`/`focusStill` en `src/lib/globe.ts` y
+  `useGlobe(labels, focus)`, solo ese tramo de la historia en bucle; se carga
+  aparte con `import()`); Colombia es `ColombiaRoutesMap fill`.
 - Páginas de servicio (`ServiceDetailPage`, nov. 2026, con la dinámica del
   inicio): en "Cómo lo hacemos" el texto queda fijo en escritorio mientras pasa
   la lista "Qué incluye", cuyos ítems entran escalonados y su ✓ se dibuja
@@ -486,8 +506,8 @@ blanco.
   la foto de cada servicio: en escritorio la fila queda fija y se desplaza de
   lado con el scroll; en celular se desliza con el dedo. La página se arma de
   nuevo al pasar de un servicio a otro (`key` con el slug).
-- Mudanzas nacionales (`/servicios/mudanzas-nacionales`): en vez de la foto
-  (`heroMap` en `SERVICES`; `cargue.jpg` sigue como imagen para redes), un
+- Mudanzas nacionales (`/servicios/mudanzas-nacionales`): en el panel del
+  encabezado (`heroMap: "colombia"`, ver "Encabezado bento con mapa"), un
   **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG): silueta
   exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la portada y
   carreteras por los pueblos reales de cada troncal

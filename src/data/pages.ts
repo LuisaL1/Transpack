@@ -31,6 +31,13 @@ export const serviceDetailText = (tr: Tr) => ({
   ),
   // Avisos del mapa: al salir hacia un destino nuevo y al llegar
   mapaProximo: (city: string) => tr(`Próximo destino: ${city}`, `Next stop: ${city}`),
+  // Chapa del panel del mapa en el encabezado (ServiceMapPanel): qué muestra.
+  // 20 localidades (src/data/bogotaMap.ts) y 14 ciudades (src/data/colombiaMap.ts);
+  // los países salen de STATS
+  mapChipBogota: tr("Bogotá · 20 localidades", "Bogotá · 20 localities"),
+  mapChipColombia: tr("Colombia · 14 ciudades", "Colombia · 14 cities"),
+  mapChipMundo: (n: number) => tr(`Desde Bogotá · ${n}+ países`, `From Bogotá · ${n}+ countries`),
+  mapLegendColombia: tr("Recorrido del camión", "Truck route"),
   mapaLlegamos: (city: string) => tr(`¡Llegamos a ${city}!`, `We made it to ${city}!`),
   complementaTraslado: tr("Complementa su traslado", "Complete your move"),
   verServicio: tr("Ver servicio", "View service"),

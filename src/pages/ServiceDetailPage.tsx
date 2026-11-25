@@ -9,7 +9,7 @@ import { Bi, btn, Checks, Eyebrow, PhotoFrame, Reveal } from "@/components/ui";
 import { container } from "@/components/ui/layout";
 import { CtaBand, PageHero, StepsTimeline } from "@/components/sections";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
+import { ServiceMapPanel } from "@/components/services/ServiceMapPanel";
 import { ServiceGuide } from "@/components/services/ServiceGuide";
 
 // Las páginas de servicio usan un espaciado vertical un poco menor que el inicio
@@ -127,7 +127,11 @@ function ServiceDetail({ service }: { service: Service }) {
     <>
       <PageHero
         image={service.image}
-        media={service.heroMap ? <ColombiaRoutesMap /> : undefined}
+        backdrop={
+          // Mudanzas locales, nacionales e internacionales: panel con el mapa
+          // animado y la foto montada encima (diseño "bento" de PageHero)
+          service.heroMap && <ServiceMapPanel kind={service.heroMap} />
+        }
         reveal={service.imageReveal}
         blend={service.imageBlend}
         shipping={service.slug}

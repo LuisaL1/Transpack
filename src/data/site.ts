@@ -112,9 +112,10 @@ export type Service = {
   quote: QuoteService;
   cta: string;
   image: string;
-  // En el encabezado, el mapa animado de rutas por Colombia en vez de la foto
-  // (la foto sigue como imagen para compartir en redes)
-  heroMap?: boolean;
+  // Mapa animado en la capa de fondo del encabezado, con la foto fundida encima
+  // (PageHero con `backdrop`, nov. 2026): Bogotá y sus localidades (locales),
+  // Colombia con el camión (nacionales) o el mundo con las rutas (internacionales)
+  heroMap?: "bogota" | "colombia" | "mundo";
   // Lado desde el que el barrido de color descubre la foto del encabezado
   // (PageHero); sin él, desde la izquierda
   imageReveal?: "left" | "right" | "top";
@@ -165,7 +166,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Cotizar",
     image: imgEmbalajeHogar,
-    imageReveal: "top",
+    heroMap: "bogota",
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:
@@ -209,7 +210,7 @@ export const SERVICES: Service[] = [
     quote: "nacional",
     cta: "Cotizar",
     image: imgNacionalCarretera,
-    heroMap: true,
+    heroMap: "colombia",
     headline: "Su hogar puerta a puerta",
     intro:
       "En una mudanza nacional, el inventario y una óptima planificación son la base de todo: nos permiten calcular el volumen, determinar el tipo de vehículo y los materiales de empaque requeridos para una adecuada protección, y programar un viaje seguro, con la ruta optimizada para ajustarnos a los tiempos que usted requiere.",
@@ -251,7 +252,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Hablar con un asesor",
     image: imgInternacionalPuerto,
-    imageReveal: "right",
+    heroMap: "mundo",
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:

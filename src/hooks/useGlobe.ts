@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GlobeLabels, Hit } from "@/lib/globe";
+import type { GlobeFocus, GlobeLabels, Hit } from "@/lib/globe";
 import type { CountryPhoto, PlacePhoto } from "@/data/countryPhotos";
 import { trackEvent } from "@/lib/analytics";
 import { scrollToY } from "@/lib/smoothScroll";
@@ -27,6 +27,10 @@ export type PickedCountry = Hit & { photo?: CountryPhoto | PlacePhoto; w: number
  * animación se detiene y `picked`
  * trae el lugar y su foto (CountryCard); `close` la cierra y la animación sigue
  * (con el scroll, también se cierra al seguir bajando o subiendo).
+ *
+ * Con `focus` (páginas de servicio, nov. 2026) se ve solo un tramo de la
+ * historia en bucle, sin el carrusel de fotos (no hace falta photoRef) ni el
+ * scroll: "bogota" (Mudanzas locales) o "mundo" (Mudanzas internacionales).
  */
 const TRACK = "[data-globe-track]";
 // Avance del scroll donde cada pestaña deja la historia: Bogotá al inicio,
@@ -38,7 +42,7 @@ function trackProgress(track: HTMLElement) {
   const len = r.height - window.innerHeight;
   return len > 0 ? Math.min(1, Math.max(0, -r.top / len)) : 0;
 }
-export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
+export function useGlobe(labels: Omit<GlobeLabels, "selected">, focus?: GlobeFocus) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const [picked, setPicked] = useState<PickedCountry | null>(null);
@@ -73,11 +77,11 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     const canvas = canvasRef.current;
     const photo = photoRef.current;
     const ctx = canvas?.getContext("2d");
-    if (!canvas || !photo || !ctx) return;
+    if (!canvas || (!photo && !focus) || !ctx) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const track = canvas.closest<HTMLElement>(TRACK);
     const wide = window.matchMedia("(min-width: 1024px)");
-    const scrolled = () => !still && !!track && wide.matches;
+    const scrolled = () => !focus && !still && !!track && wide.matches;
     // Con el scroll: avance (0 a 1) y avance que se dibuja, que lo sigue con suavidad
     let progress = 0;
     let story = 0;
@@ -102,7 +106,15 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
     const draw = () => {
       if (!globe) return;
       const scroll = scrolled();
-      const s = still ? globe.stillScene() : scroll ? globe.scrollScene(story) : globe.scene(time);
+      const s = focus
+        ? still
+          ? globe.focusStill(focus)
+          : globe.focusScene(focus, time)
+        : still
+          ? globe.stillScene()
+          : scroll
+            ? globe.scrollScene(story)
+            : globe.scene(time);
       hits = globe.drawGlobe(ctx, s, time, { ...labelsRef.current, hovered }, dpr);
       const now = scroll
         ? Math.min(2, Math.floor(progress * 3))
@@ -114,6 +126,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       if (now !== shown) setStage((shown = now));
       if (barRef.current) barRef.current.style.transform = `scaleX(${scroll ? progress : 0})`;
       if (hintRef.current) hintRef.current.style.opacity = scroll && progress < 0.03 ? "1" : "0";
+      if (!photo) return;
       // La foto se cierra en el círculo del mapa: de cubrir todo a su radio
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -289,6 +302,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       window.removeEventListener("scroll", onScroll);
       wide.removeEventListener("change", onWide);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Esc o un toque fuera del mapa cierran la tarjeta
