@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { DropIn, PhotoFrame, type DropFrom } from "@/components/ui";
+import { ShippingPhoto } from "@/components/services/ShippingPhoto";
 
 // Encabezado de páginas internas (nosotros, servicio, artículo, política, 404).
 // La información va a la izquierda sobre fondo blanco y la foto a la derecha,
@@ -12,13 +13,16 @@ import { DropIn, PhotoFrame, type DropFrom } from "@/components/ui";
 // sin tarjeta: sus bordes se desvanecen y se funde con el fondo blanco.
 // La tarjeta es un PhotoFrame (nov. 2026): esquinas redondeadas, sin sombra, y
 // una pestaña blanca abajo a la izquierda, del lado del texto (vacía o con
-// `tab`, p. ej. el nombre del servicio).
+// `tab`, p. ej. el nombre del servicio). Con `shipping` (prueba, nov. 2026), la
+// foto va con un doble marco azul desplazado y una etiqueta de envío
+// (ShippingPhoto).
 export function PageHero({
   children,
   image,
   media,
   drop,
   blend = false,
+  shipping = false,
   tab = true,
 }: {
   children: ReactNode;
@@ -26,6 +30,7 @@ export function PageHero({
   media?: ReactNode;
   drop?: DropFrom;
   blend?: boolean;
+  shipping?: boolean;
   tab?: ReactNode | true;
 }) {
   const visual = Boolean(image || media);
@@ -41,6 +46,8 @@ export function PageHero({
     img &&
     (blend ? (
       img
+    ) : shipping ? (
+      <ShippingPhoto>{img}</ShippingPhoto>
     ) : (
       <PhotoFrame tab={tab} className="h-full">
         {img}

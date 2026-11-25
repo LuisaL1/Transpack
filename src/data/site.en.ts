@@ -82,7 +82,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgEmbalajeHogar,
     imageDrop: "top",
-    imageBlend: true,
+    imageShipping: true,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:

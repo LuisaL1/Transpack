@@ -106,3 +106,20 @@ export const privacyText = (tr: Tr) => ({
 
 /** Nombre corto del enlace a la política (pie, cotizador, chat y aviso de cookies) */
 export const privacyLink = (tr: Tr) => tr("Política de datos", "Privacy policy");
+
+// Etiqueta de envío sobre la foto de Mudanzas locales (ShippingPhoto). Prueba de
+// diseño, nov. 2026: DATOS DE MUESTRA, no son de un cliente real (la etiqueta es
+// decorativa y los lectores de pantalla no la leen).
+export const shippingLabelText = (tr: Tr) => ({
+  title: tr("Guía de envío", "Shipping label"),
+  from: tr("Remitente", "From"),
+  fromValue: "Familia Rodríguez · Usaquén",
+  to: tr("Destino", "To"),
+  toValue: "Cra. 11 #93-27 · Chapinero",
+  weight: tr("Peso", "Weight"),
+  weightValue: "840 kg",
+  date: tr("Fecha", "Date"),
+  dateValue: tr("24 NOV 2026", "NOV 24 2026"),
+  guideValue: "TP-1968-0458",
+  fragile: tr("Frágil", "Fragile"),
+});
