@@ -19,7 +19,8 @@ publica en Vercel.
 - `pnpm map` — regenera `src/data/worldMap.ts` (Bogotá y destinos),
   `src/data/worldGlobe.ts` (puntos de tierra del globo de la portada),
   `src/assets/images/mapa-lineas.svg` (mapamundi de líneas animado, fondo de la
-  historia en Nosotros) y `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas
+  historia en Nosotros), su versión para fondo oscuro `mapa-lineas-noche.svg`
+  (fondo animado de Cobertura en el inicio) y `src/data/colombiaMap.ts` (mapa de rutas de Mudanzas
   nacionales)
 - `pnpm map:bogota` — regenera `src/data/bogotaMap.ts` (las 20 localidades de Bogotá del
   inicio del mapa, de la capa oficial de Datos Abiertos Bogotá/IDECA, CC BY 4.0, con su
@@ -453,7 +454,10 @@ blanco.
   con destellos naranja y azul que las recorren lento y sin parar. Es un SVG
   aparte con su propia animación CSS (`src/assets/images/mapa-lineas.svg`,
   generado por `scripts/generate-world-lines.mjs` en `pnpm map`), sin JS. En el
-  bloque de historia de Nosotros.
+  bloque de historia de Nosotros. **Versión noche** (`mapa-lineas-noche.svg`,
+  nov. 2026): costas en blanco tenue, rutas en naranja, destinos titilando y
+  Bogotá con onda; es el fondo de **Cobertura** en el inicio (`Coverage.tsx`),
+  en lugar de la foto, que no tenía resolución para ocupar media pantalla.
 - **Certificaciones y membresías** (`Certifications`, al pie de Contacto en el
   inicio; nov. 2026): LACMA, IAM y PAIMA en fichas con el estilo de los logos de
   clientes (`TILE` y `TileStripe`, exportados de `Hero.tsx`), que entran
