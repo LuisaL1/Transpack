@@ -32,7 +32,7 @@ export function Logo({
         className={`rounded-[4px] transition-all duration-300 ${
           small
             ? "h-[48px] w-[48px] min-[375px]:h-[58px] min-[375px]:w-[58px] md:h-[77px] md:w-[77px] wide:h-[91px] wide:w-[91px]"
-            : "h-[58px] w-[58px] min-[375px]:h-[70px] min-[375px]:w-[70px] md:h-[92px] md:w-[92px] wide:h-[109px] wide:w-[109px]"
+            : "h-[58px] w-[58px] min-[375px]:h-[66px] min-[375px]:w-[66px] md:h-[82px] md:w-[82px] wide:h-[92px] wide:w-[92px]"
         } ${light ? "ring-[1.5px] ring-white/50" : ""}`}
       />
     </Link>

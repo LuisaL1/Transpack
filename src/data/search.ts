@@ -153,10 +153,10 @@ export const searchText = (tr: Tr) => ({
   popular: tr("Búsquedas frecuentes", "Popular searches"),
   noResults: tr("No encontramos resultados para", "No results for"),
   tryAgain: tr(
-    "Prueba con otra palabra o pregúntale a Joelito.",
-    "Try another word or ask Joelito.",
+    "Prueba con otra palabra o pregúntale a Joel.",
+    "Try another word or ask Joel.",
   ),
-  askJoel: tr("Hablar con Joelito", "Talk to Joelito"),
+  askJoel: tr("Hablar con Joel", "Talk to Joel"),
   navigate: tr("moverse", "navigate"),
   open: tr("abrir", "open"),
   closeHint: tr("cerrar", "close"),

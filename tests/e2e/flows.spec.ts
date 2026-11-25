@@ -227,7 +227,7 @@ test("si el chat con un asesor no carga, ofrece WhatsApp y el formulario", async
   await page.goto("/");
   await closeCookies(page);
   await launcher(page).click();
-  const chat = page.getByRole("region", { name: "Chat con Joelito" });
+  const chat = page.getByRole("region", { name: "Chat con Joel" });
   await expect(chat.getByText("No pudimos abrir el chat con un asesor")).toBeVisible({
     timeout: 15_000,
   });

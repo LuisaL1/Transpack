@@ -12,7 +12,7 @@ import { SupportPanel } from "@/components/layout/SupportPanel";
 
 // Cabecera fija: franja de idiomas, logo, megamenús, buscador, soporte y menú
 // móvil. El contenido de los menús está en src/data/navigation.ts.
-// Sin franja de fondo (nov. 2026): el logo y las acciones flotan sobre la página
+// Sin franja de fondo arriba (nov. 2026): el logo y las acciones flotan sobre la página
 // y los enlaces van en una píldora de vidrio (translúcida, con desenfoque). En
 // la parte de arriba del inicio flota sobre la foto del Hero, en blanco.
 export function Header() {
@@ -22,10 +22,6 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   // Escondida al bajar (pasada la parte de arriba); vuelve al subir
   const [tucked, setTucked] = useState(false);
-  // La cabecera pasa sobre una sección oscura (azul, violeta, la foto de la
-  // portada): vidrio azul noche con letras blancas, para que combine
-  const [onDark, setOnDark] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
   // Línea naranja de avance de lectura (se actualiza sin re-render)
   const progressRef = useRef<HTMLSpanElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -37,28 +33,6 @@ export function Header() {
 
   useEffect(() => {
     let last = window.scrollY;
-    let frame = 0;
-    // Mira el fondo que queda bajo el centro de la cabecera: el primer elemento
-    // de la página (fuera de la cabecera) con color de fondo propio. Lo
-    // decorativo con pointer-events: none no cuenta
-    const checkBackground = () => {
-      frame = 0;
-      const header = headerRef.current;
-      if (!header) return;
-      const y = Math.min(header.getBoundingClientRect().bottom, 120) / 2 + 20;
-      const hit = document
-        .elementsFromPoint(window.innerWidth / 2, y)
-        .find((n) => !header.contains(n));
-      let dark = false;
-      for (let n: Element | null = hit ?? null; n; n = n.parentElement) {
-        const m = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
-        if (!m || (m.length > 3 && Number(m[3]) < 0.5)) continue;
-        const [r, g, b] = m.map(Number);
-        dark = 0.2126 * r + 0.7152 * g + 0.0722 * b < 110;
-        break;
-      }
-      setOnDark(dark);
-    };
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
@@ -72,17 +46,15 @@ export function Header() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (progressRef.current)
         progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
-      if (!frame) frame = requestAnimationFrame(checkBackground);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
-      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [pathname]);
+  }, []);
 
   // Ctrl/⌘ + K abre el buscador
   useEffect(() => {
@@ -148,21 +120,21 @@ export function Header() {
   // Arriba en el inicio la cabecera va sobre la foto oscura del Hero: letras
   // blancas. En las demás portadas (blancas) y al bajar, letras oscuras.
   const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
-  const top = home && !scrolled;
-  // Al bajar, sobre una sección oscura, vidrio azul noche con letras blancas
-  const night = scrolled && onDark && !top;
-  const overlay = (top || night) && !menuOpen;
-  const glass = !overlay
-    ? "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)]"
-    : night
-      ? "border-white/15 bg-[#0D0F33]/60 text-white shadow-[0_10px_34px_-12px_rgba(0,0,0,.6)]"
-      : "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)]";
-  const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] backdrop-blur-[10px] transition-colors ${
+  const overlay = home && !scrolled && !menuOpen;
+  // Al bajar, la franja blanca es la única barra: la píldora y los círculos
+  // quedan planos sobre ella (sin borde, fondo ni sombra propios)
+  const flat = scrolled && !menuOpen;
+  const glass = overlay
+    ? "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)] backdrop-blur-[10px]"
+    : flat
+      ? "border-transparent bg-transparent text-tinta"
+      : "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)] backdrop-blur-[10px]";
+  const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] transition-colors ${
     overlay
-      ? night
-        ? "border-white/15 bg-[#0D0F33]/60 text-white hover:bg-white/15"
-        : "border-white/25 bg-white/10 text-white hover:bg-white/20"
-      : "border-linea bg-white/70 text-tinta hover:bg-white hover:text-azul"
+      ? "border-white/25 bg-white/10 text-white backdrop-blur-[10px] hover:bg-white/20"
+      : flat
+        ? "border-transparent text-tinta hover:bg-azul/[.06] hover:text-azul"
+        : "border-linea backdrop-blur-[10px] bg-white/70 text-tinta hover:bg-white hover:text-azul"
   }`;
   const current = MENUS.find((m) => m.key === active);
   const sectionOf = (m: Menu) =>
@@ -173,11 +145,19 @@ export function Header() {
   return (
     <>
       <header
-        ref={headerRef}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] focus-within:translate-y-0 ${
           hide ? "-translate-y-[calc(100%+12px)]" : ""
         } ${menuOpen ? "bg-white lg:bg-transparent" : ""}`}
       >
+        {/* Al bajar: franja blanca translúcida de lado a lado (con desenfoque y
+            una línea fina abajo) para que la cabecera se distinga sobre
+            cualquier sección. Arriba en la portada no hay franja */}
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 -z-10 border-b border-linea/80 bg-white/75 shadow-[0_10px_30px_-18px_rgba(39,43,124,.45)] backdrop-blur-[14px] transition-opacity duration-500 ${
+            scrolled ? "opacity-100" : "opacity-0"
+          }`}
+        />
         <LangBar hidden={scrolled || menuOpen} overlay={home} />
         {/* Avance de lectura, arriba del todo (ya no hay franja de fondo) */}
         <span
@@ -191,7 +171,7 @@ export function Header() {
           className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-3 xl:gap-6 wide:w-[min(100%-120px,1320px)] ${
             scrolled
               ? "h-[70px] md:h-[86px] wide:h-[100px]"
-              : "h-[88px] md:h-[112px] wide:h-[126px]"
+              : "h-[84px] md:h-[100px] wide:h-[108px]"
           }`}
         >
           <Logo light={overlay} small={scrolled} className="xl:-ms-6 wide:ms-0" />
@@ -205,12 +185,12 @@ export function Header() {
             aria-label={t.mainNav}
           >
             <div
-              className={`pointer-events-auto flex items-center gap-1 rounded-full border p-1.5 backdrop-blur-[10px] transition-colors duration-300 ${glass}`}
+              className={`pointer-events-auto flex items-center gap-1 rounded-full border p-1 transition-colors duration-300 ${glass}`}
             >
               {MENUS.map((m) => {
                 const open = active === m.key;
                 const on = open || sectionOf(m);
-                const link = `inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[0.82rem] font-bold transition-colors xl:px-5 xl:text-[0.95rem] wide:px-6 wide:text-[1rem] ${
+                const link = `inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[0.82rem] font-bold transition-colors xl:px-4 xl:text-[0.95rem] wide:px-5 wide:text-[1rem] ${
                   overlay
                     ? on
                       ? "bg-white/20 text-white"
@@ -323,7 +303,7 @@ export function Header() {
 
           {/* Botón de menú móvil */}
           <button
-            className={`relative z-10 grid h-11 w-11 place-items-center rounded-full border text-2xl backdrop-blur-[10px] transition-colors lg:hidden ${glass}`}
+            className={`relative z-10 grid h-11 w-11 place-items-center rounded-full border text-2xl transition-colors lg:hidden ${glass}`}
             aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}

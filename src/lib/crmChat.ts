@@ -16,7 +16,7 @@
 // · Diseño: src/styles/zoho-chat.css (adentro de la ventana; su copia para subir
 //   a Zoho es public/zoho-salesiq.css) y src/styles/zoho-host.css.
 // · Mientras Zoho no asigna quién responde, muestra un responsable genérico
-//   ("Operador", con su ícono): el sitio lo cambia por Joelito y su foto
+//   ("Operador", con su ícono): el sitio lo cambia por Joel y su foto
 //   (renameOperator; en SalesIQ no hay opción para cambiarlo).
 // · Solo en español. El código del widget no es secreto.
 // Documentación: docs/chat-crm.md.
@@ -123,10 +123,12 @@ export function styleChatWindow(): boolean {
   return true;
 }
 
-/** Nombres genéricos que pone Zoho antes de asignar quién responde */
-const GENERIC = new Set(["Operador", "Operator"]);
+/** Nombres genéricos que pone Zoho antes de asignar quién responde, y el
+ *  nombre anterior del bot ("Joelito", hasta nov. 2026), por si sigue así en
+ *  el panel de Zoho: el sitio muestra siempre NAME */
+const GENERIC = new Set(["Operador", "Operator", "Joelito"]);
 
-/** Cambia el responsable genérico de Zoho ("Operador") por Joelito, y su ícono
+/** Cambia el responsable genérico de Zoho ("Operador") por Joel, y su ícono
  *  por la foto (clase tp-joel, zoho-chat.css). Solo el ícono junto a ese nombre:
  *  si responde un asesor real, se respeta su nombre y su foto. */
 function renameOperator(doc: Document) {

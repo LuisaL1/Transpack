@@ -371,18 +371,21 @@ blanco.
   Excluya algo con `data-motion="off"`.
 - **Cabecera:** se esconde al bajar (pasados 480 px, salvo en saltos grandes
   como ir a una sección) y vuelve al subir; línea naranja de avance de lectura
-  arriba del todo. **Sin franja de fondo** (nov. 2026): el logo y las acciones
+  arriba del todo. **Sin franja de fondo arriba** (nov. 2026): el logo y las acciones
   (buscar y soporte en círculos de vidrio, "Cotice su mudanza") flotan sobre la
   página, y Nosotros · Servicios · Blog · Contacto van en una **píldora de
   vidrio** (`rounded-full`, `backdrop-blur-[10px]`, borde sutil). Arriba en el
   inicio va sobre la foto: vidrio blanco al 10 %, letras blancas, logo con
   anillo blanco y franja de idiomas sin fondo (`LangBar overlay`). En las
-  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras, salvo
-  sobre una sección oscura (azul, violeta, la foto de la portada): ahí, vidrio
-  azul noche (`#0D0F33` al 60 %) con letras blancas y logo con anillo (nov.
-  2026). Se detecta solo, por el color de fondo bajo la cabecera
-  (`checkBackground` en `Header.tsx`); no hay que marcar secciones. Con el
-  menú móvil abierto, la cabecera es blanca.
+  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras. **Al
+  bajar** (nov. 2026, pedido del equipo) aparece detrás una **franja blanca
+  translúcida** de lado a lado (`bg-white/75`, desenfoque y línea fina abajo)
+  para que la cabecera se distinga sobre cualquier sección, también las
+  oscuras; es la única barra: la píldora y los círculos de buscar y soporte
+  quedan planos sobre ella (sin borde, fondo ni sombra; nada de barra doble).
+  Arriba en la portada no hay franja. (Se probó y descartó un vidrio
+  azul noche que se adaptaba a las secciones oscuras.) Con el menú móvil
+  abierto, la cabecera es blanca.
 - **Botones:** la flecha `bi-arrow-right` se desliza al pasar el cursor; el
   primario lleva un brillo que lo cruza.
 - **Inicio, sección por sección:** titular del Hero por líneas (CSS) y
@@ -549,7 +552,7 @@ blanco.
 
 ## Chat (Zoho SalesIQ)
 
-- **El chat del sitio es el widget de Zoho SalesIQ** (bot "Joelito" y asesores
+- **El chat del sitio es el widget de Zoho SalesIQ** (bot "Joel" y asesores
   desde el panel de SalesIQ), con el diseño del sitio. **Nunca se menciona
   Zoho.** La cara y el nombre de Joel quedan como marca del chat (botón,
   invitación, avatar del bot). Detalle completo en `docs/chat-crm.md`.

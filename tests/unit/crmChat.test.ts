@@ -197,7 +197,7 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
     expect(styles).toHaveLength(1);
   });
 
-  it("cambia el responsable genérico de Zoho («Operador») por Joelito y su foto", async () => {
+  it("cambia el responsable genérico de Zoho («Operador») por Joel y su foto", async () => {
     const frame = document.createElement("iframe");
     frame.id = "siq_chatwindow";
     document.body.appendChild(frame);
@@ -207,7 +207,7 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
       <div class="msg"><div class="embed-prof-cont"><em class="siqico-user-logo"></em></div><span class="siqcw-name-div">Laura Gómez</span></div>`;
     styleChatWindow();
     const [bot, person] = doc.querySelectorAll(".msg");
-    expect(bot.textContent).toContain("Joelito");
+    expect(bot.textContent).toContain("Joel");
     expect(bot.textContent).not.toContain("Operador");
     expect(bot.querySelector(".tp-joel")).not.toBeNull();
     // Un asesor real conserva su nombre y su ícono
@@ -216,7 +216,11 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
     // También cuando Zoho lo agrega después
     doc.body.insertAdjacentHTML("beforeend", `<p class="late">Operador</p>`);
     await new Promise((r) => setTimeout(r, 0));
-    expect(doc.querySelector(".late")!.textContent).toBe("Joelito");
+    expect(doc.querySelector(".late")!.textContent).toBe("Joel");
+    // El nombre anterior del bot (si sigue así en Zoho) también se muestra como Joel
+    doc.body.insertAdjacentHTML("beforeend", `<p class="old">Joelito</p>`);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(doc.querySelector(".old")!.textContent).toBe("Joel");
     frame.remove();
   });
 

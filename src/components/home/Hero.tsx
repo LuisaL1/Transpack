@@ -67,7 +67,7 @@ export function Hero() {
           decoding="async"
           className="absolute inset-0 -z-30 h-full w-full scale-110 object-cover object-[50%_30%] blur-2xl"
         />
-        <div className="absolute inset-x-0 bottom-0 top-[100px] -z-20 md:top-[124px] lg:left-[28%] wide:top-[136px]">
+        <div className="absolute inset-x-0 bottom-0 top-[96px] -z-20 md:top-[112px] lg:left-[28%] wide:top-[120px]">
           <img
             src={headerImg}
             alt={t.imageAlt}
