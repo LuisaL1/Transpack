@@ -9,13 +9,14 @@ import { StepsTimeline } from "@/components/sections";
 // escritorio la línea punteada se dibuja con el scroll y cada paso se enciende
 // (rombo y texto) cuando la línea llega a él; al subir, retrocede. En celular
 // y tableta los pasos entran escalonados (StepsTimeline, el mismo de las
-// páginas de servicio).
+// páginas de servicio). Fondo gris hielo: el aro de cada rombo toma ese color
+// (--steps-ring).
 export function Process() {
   const { tr } = useLang();
   const t = processText(tr);
   const { PROCESS } = useSite();
   return (
-    <section id="proceso" className={section}>
+    <section id="proceso" className={`${section} bg-gris [--steps-ring:var(--color-gris)]`}>
       <div className={container}>
         <SectionHead eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         <StepsTimeline items={PROCESS} />

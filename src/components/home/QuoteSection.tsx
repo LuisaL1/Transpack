@@ -6,13 +6,14 @@ import { QuoteWizard } from "@/components/home/QuoteWizard";
 import { container, section } from "@/components/ui/layout";
 
 // Sección #cotizar con el cotizador. Acepta preselección por URL:
+// Fondo gris hielo: la tarjeta blanca del cotizador resalta sobre él.
 // ?servicio=<local|nacional|internacional|empresarial|bodegaje>&nivel=<1-3>
 export function QuoteSection() {
   const { tr } = useLang();
   const t = quoteSectionText(tr);
   const [params] = useSearchParams();
   return (
-    <section id="cotizar" className={`${section} bg-white`}>
+    <section id="cotizar" className={`${section} bg-gris`}>
       <div className={container}>
         <SectionHead center eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         <Reveal>
