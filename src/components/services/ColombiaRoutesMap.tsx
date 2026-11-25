@@ -20,12 +20,13 @@ import { useTruckTrip } from "@/hooks/useTruckTrip";
 // y un aviso ("Próximo destino"); al llegar salta, se abre una onda y sale el
 // aviso de llegada; luego se borra la estela, la casa del origen desaparece y
 // la del destino pasa a ser el nuevo origen. Misma estética del globo de la
-// portada, estilo "noche" (nov. 2026): el mapa va en un círculo sobre un panel
-// azul noche (#0D0F33), con el mar azul marino y un halo azul, los países
-// vecinos en azul grisáceo translúcido, Colombia en lavanda luminosa (un bloque
-// con paredes oscuras) y la estela del viaje en naranja con resplandor; los
-// nombres llevan borde blanco para leerse sobre la tierra y el mar. Antes: mar
-// gris claro, vecinos en negro carbón y Colombia en un tono claro de #1800AD.
+// portada y, desde nov. 2026, la misma línea visual del mapa de Bogotá de
+// Mudanzas locales (que le gustó al cliente): sin círculo ni mar, sobre el
+// panel gris hielo; Colombia en gris claro como un bloque con paredes, los
+// países vecinos en gris que se desvanece hacia los bordes, fronteras blancas,
+// ciudades en puntos azules y la estela del viaje en naranja; los nombres en
+// azul con borde blanco. Antes: un círculo "noche" (mar azul marino, vecinos
+// translúcidos y Colombia en lavanda).
 // Datos: `pnpm
 // map` (src/data/colombiaMap.ts); recorrido:
 // src/lib/colombiaRoutes.ts; animaciones: .map-* en src/styles/index.css.
@@ -46,22 +47,22 @@ const VIEWBOX = [
   2 * (LENS.r + PAD),
   2 * (LENS.r + PAD),
 ].join(" ");
-// Colores del estilo "noche" de la portada (src/lib/globe.ts)
-const HIGHLIGHT = "200,206,255"; // lavanda: Colombia
-const LAND = "150,162,236"; // países vecinos
-const NIGHT = "13,15,51"; // #0D0F33, fondo del panel
-const SOLID = "27,30,92"; // #1B1E5C: carreteras
-const SHADE = "4,5,22"; // sombras
-const ATMOSPHERE = "110,125,255"; // halo azul alrededor del círculo
+// Colores del mapa de Bogotá de Mudanzas locales (src/lib/globe.ts), para que
+// los tres mapas de los servicios hablen el mismo idioma (nov. 2026): tierra
+// gris claro con paredes en relieve, fronteras blancas, rutas naranja, puntos
+// y nombres en azul
+const TOP = "214,219,229"; // cara de arriba de Colombia (LOCALITY en globe.ts)
+const LAND = "176,182,196"; // países vecinos (LAND en globe.ts)
+const INK = "39,43,124"; // azul de la marca: vías y puntos
+const SHADE = "39,43,124"; // sombra (azul muy transparente)
 // Grosor del bloque de Colombia (unidades del SVG) y sus paredes, de más
-// oscuras (abajo) a más claras (arriba), en tonos del color resaltado como en
-// src/lib/globe.ts
+// oscuras (abajo) a más claras (arriba): WALL_DARK y WALL_LIGHT de globe.ts
 const SLAB = 16;
 const SLAB_STEPS = Array.from({ length: SLAB / 2 }, (_, i) => SLAB - 2 * i);
 const wallColor = (k: number) => {
   const [dark, light] = [
-    [8, 9, 34],
-    [62, 68, 150],
+    [150, 156, 172],
+    [200, 205, 216],
   ];
   return `rgb(${dark.map((c, i) => Math.round(c * k + light[i] * (1 - k)))})`;
 };
@@ -100,7 +101,7 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
       className={
         fill
           ? "absolute inset-0"
-          : "relative h-[440px] w-full overflow-hidden bg-[#0D0F33] sm:h-[500px] lg:h-full"
+          : "relative h-[440px] w-full overflow-hidden bg-gris sm:h-[500px] lg:h-full"
       }
     >
       <svg
@@ -117,42 +118,29 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
           <filter id="tp-trail-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="4" />
           </filter>
-          <clipPath id="tp-co-lens">
-            <circle cx={LENS.x} cy={LENS.y} r={LENS.r} />
-          </clipPath>
-          {/* Mar azul marino, más luminoso arriba a la izquierda */}
-          <radialGradient id="tp-co-sea" cx="32%" cy="28%" r="80%">
-            <stop offset="0" stopColor="#272B7C" />
-            <stop offset="0.55" stopColor="#1B1E5C" />
-            <stop offset="1" stopColor="#0D0F33" />
+          {/* Los países vecinos se desvanecen hacia los bordes del panel */}
+          <radialGradient id="tp-co-fade">
+            <stop offset="0.55" stopColor="#FFFFFF" />
+            <stop offset="1" stopColor="#FFFFFF" stopOpacity={0} />
           </radialGradient>
+          <mask id="tp-co-lens" maskUnits="userSpaceOnUse">
+            <circle cx={LENS.x} cy={LENS.y} r={LENS.r + PAD} fill="url(#tp-co-fade)" />
+          </mask>
           {/* Silueta de Colombia, una sola vez: el bloque la repite con <use> */}
           <path id="tp-co-shape" d={COLOMBIA_PATH} />
           <filter id="tp-co-blur" x="-10%" y="-10%" width="120%" height="120%">
             <feGaussianBlur stdDeviation="9" />
           </filter>
-          {/* Halo azul alrededor del círculo, como la atmósfera del globo */}
-          <radialGradient id="tp-co-shade">
-            <stop
-              offset={LENS.r / (LENS.r + PAD) - 0.08}
-              stopColor={`rgb(${ATMOSPHERE})`}
-              stopOpacity={0.35}
-            />
-            <stop offset="1" stopColor={`rgb(${ATMOSPHERE})`} stopOpacity={0} />
-          </radialGradient>
         </defs>
 
-        {/* Halo del círculo */}
-        <circle cx={LENS.x} cy={LENS.y} r={LENS.r + PAD} fill="url(#tp-co-shade)" />
-
-        {/* Mar, países vecinos translúcidos y Colombia en lavanda */}
-        <g clipPath="url(#tp-co-lens)">
-          <circle cx={LENS.x} cy={LENS.y} r={LENS.r} fill="url(#tp-co-sea)" />
+        {/* Países vecinos en gris, que se desvanecen hacia los bordes, y
+            Colombia en gris claro con relieve (como Bogotá en Mudanzas locales) */}
+        <g mask="url(#tp-co-lens)">
           <path
             d={NEIGHBORS_PATH}
-            fill={`rgba(${LAND},.24)`}
-            stroke={`rgba(${NIGHT},.85)`}
-            strokeWidth={1.4}
+            fill={`rgba(${LAND},.55)`}
+            stroke="#FFFFFF"
+            strokeWidth={1.6}
             strokeLinejoin="round"
           />
           {/* Relieve 3D (prototipo, nov. 2026): Colombia sobresale como un bloque
@@ -161,7 +149,7 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
           <use
             href="#tp-co-shape"
             transform={`translate(0 ${SLAB + 8})`}
-            fill={`rgba(${SHADE},.7)`}
+            fill={`rgba(${SHADE},.18)`}
             filter="url(#tp-co-blur)"
           />
           {SLAB_STEPS.map((d) => (
@@ -174,30 +162,21 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
           ))}
           <path
             d={COLOMBIA_PATH}
-            fill={`rgb(${HIGHLIGHT})`}
+            fill={`rgb(${TOP})`}
             stroke="#FFFFFF"
-            strokeOpacity={0.85}
             strokeWidth={2.4}
             strokeLinejoin="round"
           />
         </g>
-        <circle
-          cx={LENS.x}
-          cy={LENS.y}
-          r={LENS.r}
-          fill="none"
-          stroke={`rgba(${ATMOSPHERE},.45)`}
-          strokeWidth={2}
-        />
 
         <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-          {/* Carreteras: borde blanco y vía azul oscuro, para que se lean sobre
-              la lavanda y la estela del viaje resalte */}
+          {/* Carreteras: borde blanco y vía azul tenue, para que se lean sobre
+              el gris y la estela del viaje resalte */}
           {ROAD_PATHS.map((d) => (
             <path key={`c${d}`} d={d} stroke="#FFFFFF" strokeWidth={6} strokeOpacity={0.9} />
           ))}
           {ROAD_PATHS.map((d) => (
-            <path key={`r${d}`} d={d} stroke={`rgba(${SOLID},.6)`} strokeWidth={2.8} />
+            <path key={`r${d}`} d={d} stroke={`rgba(${INK},.3)`} strokeWidth={2.8} />
           ))}
           {/* Estela del viaje: crece detrás del camión, con resplandor, borde
               blanco y vía naranja; encima, el brillo que la recorre */}
@@ -230,30 +209,18 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
           />
         </g>
 
-        {/* Ciudades */}
-        {CITIES.map((c) =>
-          c.main ? (
-            <g key={c.id}>
-              <circle cx={c.x} cy={c.y} r={7} className="pulse-ring fill-naranja/40" />
-              <circle
-                cx={c.x}
-                cy={c.y}
-                r={6}
-                className="fill-naranja stroke-white"
-                strokeWidth={2}
-              />
-            </g>
-          ) : (
-            <circle
-              key={c.id}
-              cx={c.x}
-              cy={c.y}
-              r={4.2}
-              className="fill-white stroke-texto"
-              strokeWidth={2}
-            />
-          ),
-        )}
+        {/* Ciudades: puntos azules con borde blanco (como las localidades y
+            los destinos de los otros mapas); las principales, más grandes */}
+        {CITIES.map((c) => (
+          <circle
+            key={c.id}
+            cx={c.x}
+            cy={c.y}
+            r={c.main ? 6.5 : 5}
+            className="fill-azul stroke-white"
+            strokeWidth={2.4}
+          />
+        ))}
 
         {/* Onda al llegar */}
         {arrived && (
@@ -305,8 +272,8 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
               stroke="#FFFFFF"
               strokeWidth={4}
               strokeLinejoin="round"
-              className={`font-body text-[30px] sm:text-[24px] lg:text-[19px] ${
-                c.main || end ? "fill-azul font-bold" : "fill-texto font-semibold"
+              className={`font-title text-[30px] sm:text-[24px] lg:text-[19px] ${
+                c.main || end ? "fill-azul font-bold" : "fill-azul/80 font-semibold"
               }`}
             >
               {c.name}
@@ -326,8 +293,9 @@ export function ColombiaRoutesMap({ fill = false }: { fill?: boolean }) {
   );
 }
 
-// Marcador con una casa, con la punta sobre la ciudad: azul en el origen y
-// naranja (con un pulso) en el destino. "in": cae con un rebote; "arrive":
+// Marcador con una casa, con la punta sobre la ciudad: naranja en el origen
+// (como la casita de Bogotá en los otros mapas) y azul (con un pulso) en el
+// destino. "in": cae con un rebote; "arrive":
 // salta al llegar el camión; "out": se encoge y desaparece.
 function HomePin({
   node,
@@ -340,7 +308,7 @@ function HomePin({
 }) {
   return (
     <g transform={`translate(${node.x} ${node.y})`}>
-      {!origin && <circle r={9} className="pulse-ring fill-naranja/40" />}
+      {!origin && <circle r={9} className="pulse-ring fill-azul/30" />}
       <g className={`map-pin ${anim ? `map-pin-${anim}` : ""}`}>
         <path
           d="M0,0C-3.5,-5 -11,-10 -11,-18A11,11 0 1 1 11,-18C11,-10 3.5,-5 0,0Z"
@@ -348,7 +316,7 @@ function HomePin({
           strokeWidth={2}
           strokeLinejoin="round"
           className={`drop-shadow-[0_2px_3px_rgba(29,32,80,.35)] transition-colors duration-700 ${
-            origin ? "fill-azul" : "fill-naranja"
+            origin ? "fill-naranja" : "fill-azul"
           }`}
         />
         <path d="M-5.6,-17.2L0,-22.6L5.6,-17.2V-12.6H1.8V-15.6H-1.8V-12.6H-5.6Z" fill="#FFFFFF" />

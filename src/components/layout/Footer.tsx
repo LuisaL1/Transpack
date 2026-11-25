@@ -84,6 +84,7 @@ export function Footer() {
             {t.privacy}
           </Link>
           <span>{CONTACT.web}</span>
+          <span className="text-white/45">{t.mapCredit}</span>
         </span>
       </div>
     </footer>

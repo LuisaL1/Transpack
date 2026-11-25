@@ -1039,7 +1039,7 @@ function drawBogota(
     ctx.letterSpacing = "0px";
   }
   // Crédito del mapa (lo exige la licencia): abajo a la derecha; con `plain`
-  // se escribe aparte, abajo a la izquierda del lienzo (drawGlobe)
+  // no va en el mapa sino en el pie de página
   if (!labels.plain) {
     ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
     ctx.fillStyle = `rgb(${MUTED})`;
@@ -1332,16 +1332,8 @@ export function drawGlobe(
     ctx.save();
     ctx.globalAlpha = s.map;
     ctx.drawImage(layer, 0, 0);
-    // Mapa `plain`: el crédito (lo exige la licencia) abajo a la izquierda del
-    // lienzo, fuera del fundido del sur y lejos del botón del chat
-    if (labels.plain) {
-      ctx.globalAlpha = s.map * s.bogota;
-      ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
-      ctx.fillStyle = `rgb(${MUTED})`;
-      ctx.textAlign = "left";
-      ctx.textBaseline = "alphabetic";
-      ctx.fillText(labels.cityCredit, 8 * dpr, H - 10 * dpr);
-    }
+    // Mapa `plain`: sin crédito en el mapa (pedido del equipo, nov. 2026); el
+    // crédito que exige la licencia va en el pie de página (Footer, mapCredit)
     ctx.restore();
   }
   return hits;

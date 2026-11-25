@@ -20,7 +20,9 @@ import { Bi } from "@/components/ui";
 // Al tocar cerca de un punto se abre su ficha con la foto de la capital
 // (CountryCard, como en el globo); las fotos (countryPhotos.ts) se cargan solo
 // entonces. Esc, el botón cerrar o un toque fuera del mapa la cierran.
-export function WorldRoutesMap() {
+/** Con `zoom` (encabezado "split"): el dibujo del mapa se agranda en
+ *  escritorio; la ficha del destino no (va fuera de lo que se agranda) */
+export function WorldRoutesMap({ zoom = false }: { zoom?: boolean }) {
   const { tr } = useLang();
   const t = mapText(tr);
   const placeName = useDestinationName();
@@ -115,7 +117,7 @@ export function WorldRoutesMap() {
       <div className="absolute inset-0 flex items-center justify-center">
         <div
           ref={mapRef}
-          className={`relative w-[112%] shrink-0 ${hovered ? "cursor-pointer" : ""}`}
+          className={`relative w-[112%] shrink-0 ${zoom ? "lg:origin-[70%_50%] lg:scale-[1.45]" : ""} ${hovered ? "cursor-pointer" : ""}`}
           style={{ aspectRatio: `${w} / ${h}` }}
         >
           <img
@@ -142,10 +144,10 @@ export function WorldRoutesMap() {
                 <span
                   className={`block rounded-full transition-[width,height,background-color,box-shadow] duration-200 ${
                     on
-                      ? "h-3.5 w-3.5 bg-naranja ring-2 ring-white shadow-[0_0_0_6px_rgba(255,118,25,.25)]"
+                      ? "h-3 w-3 bg-naranja ring-2 ring-white shadow-[0_0_0_5px_rgba(255,118,25,.25)]"
                       : near
-                        ? "h-3 w-3 bg-naranja ring-2 ring-white"
-                        : "h-2 w-2 bg-azul ring-[1.5px] ring-white group-focus-visible:h-3 group-focus-visible:w-3 group-focus-visible:bg-naranja"
+                        ? "h-2.5 w-2.5 bg-naranja ring-2 ring-white"
+                        : "h-1.5 w-1.5 bg-azul ring-1 ring-white group-focus-visible:h-2.5 group-focus-visible:w-2.5 group-focus-visible:bg-naranja"
                   }`}
                 />
               </button>
@@ -166,20 +168,13 @@ export function WorldRoutesMap() {
                 </span>
               );
             })()}
-          {/* Bogotá: la casita naranja del mapa de Mudanzas locales y su rótulo */}
+          {/* Bogotá: la casita naranja del mapa de Mudanzas locales (sin rótulo, como allá) */}
           <span
             aria-hidden="true"
             className="pointer-events-none absolute grid h-6 w-6 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-naranja text-[0.7rem] text-white shadow-[0_0_0_5px_rgba(255,118,25,.22),0_4px_10px_rgba(39,43,124,.25)]"
             style={{ left: `${(origin.x / w) * 100}%`, top: `${(origin.y / h) * 100}%` }}
           >
             <Bi n="house-door-fill" />
-          </span>
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -translate-x-full -translate-y-1/2 whitespace-nowrap pe-5 font-title text-[0.72rem] font-semibold text-azul [text-shadow:0_0_3px_#fff,0_0_6px_#fff]"
-            style={{ left: `${(origin.x / w) * 100}%`, top: `${(origin.y / h) * 100}%` }}
-          >
-            {t.origin}
           </span>
         </div>
       </div>

@@ -117,9 +117,10 @@ export type Service = {
   // (PageHero con `backdrop`, nov. 2026): Bogotá y sus localidades (locales),
   // Colombia con el camión (nacionales) o el mundo con las rutas (internacionales)
   heroMap?: "bogota" | "colombia" | "mundo";
-  // Con `heroMap`: "split" (prueba, nov. 2026, Mudanzas locales) pone la foto a
-  // sangre en los 2/3 izquierdos, con velo naranja suave y el título encima, y
-  // el mapa libre (sin panel) en el tercio derecho; sin él, el diseño "bento"
+  // Con `heroMap`: "split" (nov. 2026, pedido del cliente; Mudanzas locales,
+  // nacionales e internacionales) pone la foto a sangre en los 2/3 izquierdos,
+  // a color y quieta, con el texto en una tarjeta de vidrio blanco encima, y el
+  // mapa libre (sin panel) en el tercio derecho; sin él, el diseño "bento"
   heroLayout?: "split";
   // Lado desde el que el barrido de color descubre la foto del encabezado
   // (PageHero); sin él, desde la izquierda
@@ -217,6 +218,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgNacionalCarretera,
     heroMap: "colombia",
+    heroLayout: "split",
     headline: "Su hogar puerta a puerta",
     intro:
       "En una mudanza nacional, el inventario y una óptima planificación son la base de todo: nos permiten calcular el volumen, determinar el tipo de vehículo y los materiales de empaque requeridos para una adecuada protección, y programar un viaje seguro, con la ruta optimizada para ajustarnos a los tiempos que usted requiere.",
@@ -259,6 +261,7 @@ export const SERVICES: Service[] = [
     cta: "Hablar con un asesor",
     image: imgInternacionalPuerto,
     heroMap: "mundo",
+    heroLayout: "split",
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:

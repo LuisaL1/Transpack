@@ -504,7 +504,7 @@ blanco.
   (`"colombia"`) e internacionales (`"mundo"`). Mapa y foto van **separados y
   nítidos**: a la derecha, el panel claro del mapa (`ServiceMapPanel`, gris
   hielo con borde suave, a tono con el mapa de la portada en gris sobre blanco;
-  el de Colombia conserva su disco azul noche) con una chapa de vidrio arriba ("Bogotá
+  los tres mapas en la misma línea visual, ver abajo) con una chapa de vidrio arriba ("Bogotá
   · 20 localidades", "Colombia · 14 ciudades", "Desde Bogotá · 176+ países",
   este último de `STATS`) y la leyenda; la foto del servicio, como una tarjeta
   más pequeña con borde blanco y sin pestaña, montada sobre la esquina inferior
@@ -527,22 +527,32 @@ blanco.
   juntos) y, al pasar el cursor, se ve su nombre. Mientras hay una ficha
   abierta, la tarjeta de la foto del servicio se desvanece para no taparla
   (`group-has-[[role=dialog]]` en `PageHero`).
-- **Encabezado "split" (prueba, nov. 2026; solo Mudanzas locales,
-  `heroLayout: "split"` en `SERVICES` → `PageHero split`):** la foto del
-  servicio va a sangre en los 2/3 izquierdos (desde arriba, detrás de la
-  cabecera), con velo naranja muy suave, lavado beige detrás del título y
-  fundido al blanco hacia la derecha; el mapa va libre, sin panel
-  (`ServiceMapPanel bare`), en el tercio derecho, con la mitad del margen derecho habitual: solo el mapa (sin chapa,
-  leyenda ni rótulo; `plain` en `GlobeLabels`: el nombre de cada localidad solo
-  junto al punto al que llega su línea, arriba, abajo, a un lado o en diagonal,
-  donde no tape otro nombre: `placeEndLabels` en `src/lib/globe.ts`) y agrandado (`scale`, `BARE_SCALE`). La
-  animación corre una vez al entrar y queda completa, sin bucle ni pausa con el
-  cursor (`useGlobe(…, { once, hoverPause })`). Sin fondo de color detrás del
-  mapa (se probaron desvanecidos azules y se descartaron). Queda el crédito de IDECA, que exige la licencia (abajo a la izquierda
-  del mapa, lejos del chat). La
-  foto es la del servicio (`locales-residencial.jpg`, entregada por el cliente). En celular, la foto detrás del
-  texto y el mapa debajo. Si el cliente lo aprueba, se extiende a nacionales e
-  internacionales; si no, se quita `heroLayout` y vuelve el diseño "bento".
+- **Encabezado "split" de los servicios con mapa** (nov. 2026, pedido del
+  cliente; Mudanzas locales, nacionales e internacionales: `heroLayout:
+  "split"` en `SERVICES` → `PageHero split`): la foto del servicio va a sangre
+  en los 2/3 izquierdos (desde arriba, detrás de la cabecera), **a color y
+  quieta** (sin velo naranja ni lavado beige, que la apagaban, ni movimiento),
+  con el texto en una **tarjeta de vidrio blanco** encima, y se funde al blanco
+  hacia la derecha; el mapa va libre, sin panel (`ServiceMapPanel bare`: sin
+  chapa ni leyenda), en el tercio derecho, con la mitad del margen derecho
+  habitual. Los tres mapas se agrandan para pesar lo mismo: Bogotá con
+  `BARE_SCALE` (y `plain` en `GlobeLabels`: el nombre de cada localidad junto
+  al punto al que llega su línea, `placeEndLabels` en `src/lib/globe.ts`; la
+  animación corre una vez, `useGlobe(…, { once, hoverPause })`), Colombia y el
+  mundo con `lg:scale-*`. El crédito de IDECA, que exige la licencia, no va
+  sobre el mapa sino en el pie de página (`mapCredit` en `footerText`). En
+  celular y tableta la foto va arriba, la tarjeta montada sobre ella y el mapa
+  debajo. El diseño "bento" (panel con la foto montada) sigue en `PageHero`
+  para un servicio con mapa sin `heroLayout`.
+- **Los tres mapas de los servicios** (Mudanzas locales, nacionales e
+  internacionales; nov. 2026, pedido del equipo: "que no sea un sancocho")
+  usan **los mismos elementos gráficos**, tomados del mapa de Bogotá (el que le
+  gustó al cliente; colores en `src/lib/globe.ts`): tierra en gris claro
+  `rgb(214,219,229)` con paredes en relieve (`WALL_DARK`/`WALL_LIGHT`),
+  vecinos o continentes en gris, fronteras blancas, rutas naranja punteadas o
+  la estela naranja, Bogotá con la casita naranja, destinos y ciudades en
+  puntos azules con borde blanco y nombres en azul (IBM Plex Sans) con halo
+  blanco, sobre el panel gris hielo. Un mapa nuevo debe seguir esta lista.
 - Páginas de servicio (`ServiceDetailPage`, nov. 2026, con la dinámica del
   inicio): en "Cómo lo hacemos" el texto queda fijo en escritorio mientras pasa
   la lista "Qué incluye", cuyos ítems entran escalonados y su ✓ se dibuja
@@ -562,11 +572,12 @@ blanco.
   **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG): silueta
   exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la portada y
   carreteras por los pueblos reales de cada troncal
-  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Va en un círculo con el
-  estilo "noche" de la portada (nov. 2026): panel `#0D0F33`, mar azul marino
-  con halo azul, países vecinos en azul grisáceo translúcido y Colombia en
-  lavanda luminosa con paredes oscuras (antes: mar gris claro, vecinos en
-  negro carbón y Colombia en un tono claro de `#1800AD`). Un camión azul y blanco viaja de una ciudad a otra por el
+  (`scripts/generate-colombia-map.mjs`, `pnpm map`). Sin círculo ni mar, en
+  la línea visual del mapa de Bogotá (nov. 2026, ver "Los tres mapas de los
+  servicios"): Colombia en gris claro con paredes en relieve, vecinos en gris
+  que se desvanece, fronteras blancas, ciudades en puntos azules y nombres en
+  azul; la casa del origen en naranja y la del destino en azul (antes: un
+  círculo "noche" con mar azul marino y Colombia en lavanda). Un camión azul y blanco viaja de una ciudad a otra por el
   camino más corto (al azar, sin repetir sus últimas 6, `RECENT`), con estela
   naranja y brillo; la casa del destino cae con rebote y aviso "Próximo
   destino", al llegar salta con una onda y "¡Llegamos a …!" (`.map-*` en

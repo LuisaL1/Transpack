@@ -117,13 +117,13 @@ export function PageHero({
   const frame =
     "relative mx-auto w-[min(100%-32px,1200px)] pt-2 lg:absolute lg:top-10 lg:bottom-16 lg:left-[50%] lg:right-[max(16px,calc((100vw-1200px)/2))] lg:mx-0 lg:w-auto lg:pt-0";
 
-  // "split" (prueba, nov. 2026, Mudanzas locales): la foto a sangre ocupa los
-  // 2/3 izquierdos, desde arriba del todo (detrás de la cabecera), con un velo
-  // naranja muy suave, un lavado beige detrás del texto para leer el título y
-  // un fundido al blanco hacia la derecha, donde el mapa va libre (sin panel)
-  // en el tercio derecho, con la mitad del margen derecho habitual del
-  // contenido (así el mapa tiene más espacio). En celular y tableta la foto va detrás del texto, fundida al blanco
-  // abajo, y el mapa debajo.
+  // "split" (nov. 2026, pedido del cliente; Mudanzas locales, nacionales e
+  // internacionales): la foto a sangre ocupa los 2/3 izquierdos, desde arriba
+  // del todo (detrás de la cabecera), a color y quieta, con el texto en una
+  // tarjeta de vidrio blanco encima, y se funde al blanco hacia la derecha,
+  // donde el mapa va libre (sin panel) en el tercio derecho, con la mitad del
+  // margen derecho habitual. En celular y tableta la foto va arriba, la
+  // tarjeta montada sobre ella y el mapa debajo.
   if (split && backdrop && image)
     return (
       <section ref={ref} className="relative overflow-hidden border-b border-linea text-texto">
@@ -132,22 +132,17 @@ export function PageHero({
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 bottom-[380px] overflow-hidden sm:bottom-[460px] lg:inset-y-0 lg:right-1/3 lg:left-0"
           >
-            <img
-              fetchPriority="high"
-              src={image}
-              alt=""
-              data-hero-img
-              className="hero-parallax hero-blend-in h-full w-full object-cover"
-            />
-            {/* Velo naranja muy suave */}
-            <div className="absolute inset-0 bg-naranja/[0.05]" />
-            {/* Lavado beige (Manual de Marca) detrás del texto */}
-            <div className="absolute inset-0 bg-[rgba(250,238,217,.62)] lg:bg-[linear-gradient(90deg,rgba(250,238,217,.66)_0%,rgba(250,238,217,.3)_40%,rgba(250,238,217,0)_58%)]" />
-            {/* Fundido al blanco del fondo, largo y suave: hacia el mapa (y abajo en celular) */}
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_55%,#fff_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0)_45%,rgba(255,255,255,.12)_58%,rgba(255,255,255,.4)_72%,rgba(255,255,255,.78)_86%,#fff_97%)]" />
+            {/* Quieta y con sus colores (pedido del cliente, nov. 2026: sin
+                velo naranja ni lavado beige, que la apagaban, ni movimiento).
+                Solo se funde al blanco hacia el mapa (y abajo en celular) */}
+            <img fetchPriority="high" src={image} alt="" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_60%,#fff_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0)_62%,rgba(255,255,255,.55)_82%,#fff_97%)]" />
           </div>
-          <div className="relative flex flex-col justify-center pt-[124px] pb-12 md:pt-[148px] md:pb-16 lg:col-span-2 lg:pe-[10%] wide:pt-[162px]">
-            <div className="relative mx-auto w-[min(100%-32px,1200px)] lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:me-0 lg:w-auto lg:max-w-[660px]">
+          <div className="relative flex flex-col justify-center pt-[300px] pb-12 md:pt-[380px] md:pb-16 lg:col-span-2 lg:pt-[148px] lg:pe-[10%] wide:pt-[162px]">
+            {/* Texto en una tarjeta de vidrio blanco (como la cabecera): la foto
+                luce y el texto se lee. En celular y tableta la foto se ve
+                arriba y la tarjeta se monta sobre su parte de abajo */}
+            <div className="relative mx-auto w-[min(100%-32px,1200px)] rounded-[28px] bg-white/80 p-6 shadow-[0_24px_60px_-24px_rgba(13,15,51,.45)] ring-1 ring-white/70 backdrop-blur-md sm:p-9 lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:me-0 lg:w-auto lg:max-w-[640px] lg:p-10">
               {children}
             </div>
           </div>

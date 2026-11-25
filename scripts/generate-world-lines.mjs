@@ -157,8 +157,8 @@ console.log("mapa de líneas noche", `${W}×${H}`, "bytes", night.length);
 // ─── Mapamundi en relieve (Mudanzas internacionales, nov. 2026) ─────────────
 // En la línea visual del mapa de Mudanzas locales, que le gustó al cliente
 // (globe.ts): continentes en gris claro con paredes (relieve), fronteras
-// blancas, Colombia en el azul de la marca y rutas naranja desde Bogotá con
-// destellos. Fondo transparente: va sobre el panel gris hielo. Los puntos de
+// blancas, Colombia en el azul de la marca y rutas naranja punteadas desde
+// Bogotá (como las líneas del mapa de Bogotá) con destellos. Fondo transparente: va sobre el panel gris hielo. Los puntos de
 // los destinos y Bogotá los pone encima WorldRoutesMap (se pueden tocar).
 const colombia = feature(world, {
   type: "GeometryCollection",
@@ -170,10 +170,10 @@ const relief = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" 
 <style>
 .wall1{fill:rgb(150,156,172)}
 .wall2{fill:rgb(200,205,216)}
-.land{fill:rgb(225,229,237)}
-.col{fill:#272B7C;fill-opacity:.55}
+.land{fill:rgb(214,219,229)}
+.col{fill:#272B7C;fill-opacity:.35}
 .border{stroke:#FFFFFF;stroke-width:.7}
-.route{stroke:${ORANGE};stroke-opacity:.45;stroke-width:1.1}
+.route{stroke:${ORANGE};stroke-opacity:.7;stroke-width:1.1;stroke-dasharray:3 3}
 .pulse{stroke:${ORANGE};stroke-width:2;stroke-dasharray:9 91;stroke-dashoffset:100;animation:run linear infinite}
 @keyframes run{to{stroke-dashoffset:0}}
 @media (prefers-reduced-motion:reduce){.pulse{animation:none;opacity:0}}

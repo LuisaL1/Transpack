@@ -8,7 +8,9 @@ import { ServiceGlobe } from "@/components/services/ServiceGlobe";
 import { WorldRoutesMap } from "@/components/services/WorldRoutesMap";
 
 // Tamaño del mapa de Bogotá cuando va libre (encabezado "split"): el lienzo es
-// una columna angosta y alta, y el mapa de la portada ocupaba ahí menos de la mitad
+// una columna angosta y alta, y el mapa de la portada ocupaba ahí menos de la
+// mitad. Colombia y el mundo se agrandan igual (scale), para que los tres
+// mapas tengan el mismo peso
 const BARE_SCALE = 1.65;
 
 export type ServiceMapKind = "bogota" | "colombia" | "mundo";
@@ -81,9 +83,11 @@ export function ServiceMapPanel({ kind, bare = false }: { kind: ServiceMapKind; 
       )}
       <div className="relative min-h-0 flex-1">
         {kind === "colombia" ? (
-          <ColombiaRoutesMap fill />
+          <div className={`absolute inset-0 ${bare ? "lg:scale-[1.7]" : ""}`}>
+            <ColombiaRoutesMap fill />
+          </div>
         ) : kind === "mundo" ? (
-          <WorldRoutesMap />
+          <WorldRoutesMap zoom={bare} />
         ) : (
           <ServiceGlobe
             focus={kind}

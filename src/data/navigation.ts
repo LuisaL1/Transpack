@@ -220,6 +220,9 @@ export const footerText = (tr: Tr) => ({
   about: tr("Quiénes somos", "About us"),
   contact: tr("Contacto", "Contact"),
   legal: "Transpack S.A.S. · Bogotá, Colombia",
+  // Crédito del mapa de Bogotá de Mudanzas locales: lo exige su licencia
+  // (Datos Abiertos Bogotá, IDECA, CC BY 4.0); va aquí y no sobre el mapa
+  mapCredit: tr("Mapa de Bogotá: IDECA · CC BY 4.0", "Bogotá map: IDECA · CC BY 4.0"),
   privacy: privacyLink(tr),
 });
 

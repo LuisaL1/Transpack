@@ -122,6 +122,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgNacionalCarretera,
     heroMap: "colombia",
+    heroLayout: "split",
     headline: "Your home, door to door",
     intro:
       "In a national move, the inventory and careful planning are the foundation of everything: they let us calculate the volume, choose the type of vehicle and the packing materials needed for proper protection, and schedule a safe trip on an optimized route to meet the timeline you need.",
@@ -158,6 +159,7 @@ export const SERVICES: Service[] = [
     cta: "Talk to an advisor",
     image: imgInternacionalPuerto,
     heroMap: "mundo",
+    heroLayout: "split",
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
