@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AdvisorChat } from "@/components/chat/AdvisorChat";
+import { RouteLines } from "@/components/layout/RouteLines";
+import { IsoCubes } from "@/components/layout/IsoCubes";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
 import { loadMotion } from "@/hooks/useMotion";
 import { usePageMotion } from "@/hooks/usePageMotion";
@@ -30,6 +32,10 @@ export function Layout() {
       </main>
       <Footer />
       <AdvisorChat />
+      {/* Fondo: rutas animadas (prueba) */}
+      <RouteLines />
+      {/* Fondo: cubos isométricos en los márgenes (prueba) */}
+      <IsoCubes />
     </>
   );
 }

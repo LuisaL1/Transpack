@@ -478,6 +478,45 @@ p {
   }
 }
 
+/* Cubos isométricos del fondo (<IsoCubes />, prueba nov. 2026): levitan y
+   giran unos grados, con ida y vuelta; cada uno con su duración y desfase */
+.iso-float {
+  animation: isoFloat var(--iso-dur, 9s) ease-in-out var(--iso-delay, 0s) infinite alternate;
+}
+@keyframes isoFloat {
+  0% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  45% {
+    transform: translate(2px, -10px) rotate(1.5deg);
+  }
+  100% {
+    transform: translate(-2px, -4px) rotate(3deg);
+  }
+}
+
+/* Rutas del fondo (<RouteLines />, prueba nov. 2026): el punto y su estela son
+   trazos de la ruta (pathLength 1000) que avanzan de punta a punta, entrando y
+   saliendo ocultos para que el bucle no salte. Cada trazo trae su largo
+   (--route-len), su duración (--route-dur) y su desfase (--route-delay). */
+.route-run {
+  stroke-dashoffset: var(--route-len, 0);
+  animation: routeRun var(--route-dur, 34s) linear var(--route-delay, 0s) infinite;
+}
+@keyframes routeRun {
+  from {
+    stroke-dashoffset: var(--route-len, 0);
+  }
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-run {
+    display: none;
+  }
+}
+
 /* Imágenes que llegan como una caja que se deja (<DropIn />): ocultas hasta
    entrar en pantalla; llegan acelerando, golpean contra su lugar (se aplastan
    un poco hacia la pared o el piso) y dan un pequeño rebote. */
