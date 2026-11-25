@@ -10,7 +10,7 @@ import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgOficina from "@/assets/images/oficina.jpeg";
+import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
@@ -293,7 +293,7 @@ export const SERVICES: Service[] = [
       "Safe office moves, with an account executive for your requirements and traceability reports.",
     quote: "empresarial",
     cta: "Request a corporate proposal",
-    image: imgOficina,
+    image: imgMovilidad,
     imageReveal: "right",
     kicker: "Office moves",
     headline: "Transpack, a professional team for the safe move of your office",

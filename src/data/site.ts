@@ -9,7 +9,7 @@ import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgOficina from "@/assets/images/oficina.jpeg";
+import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -414,7 +414,7 @@ export const SERVICES: Service[] = [
       "Traslado seguro de oficinas, con un ejecutivo de cuenta para sus requerimientos y reportes de trazabilidad.",
     quote: "empresarial",
     cta: "Solicitar propuesta corporativa",
-    image: imgOficina,
+    image: imgMovilidad,
     imageReveal: "right",
     kicker: "Traslado de oficinas",
     headline: "Transpack, un equipo profesional para el traslado seguro de su oficina",
