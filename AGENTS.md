@@ -377,7 +377,11 @@ blanco.
   vidrio** (`rounded-full`, `backdrop-blur-[10px]`, borde sutil). Arriba en el
   inicio va sobre la foto: vidrio blanco al 10 %, letras blancas, logo con
   anillo blanco y franja de idiomas sin fondo (`LangBar overlay`). En las
-  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras. Con el
+  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras, salvo
+  sobre una sección oscura (azul, violeta, la foto de la portada): ahí, vidrio
+  azul noche (`#0D0F33` al 60 %) con letras blancas y logo con anillo (nov.
+  2026). Se detecta solo, por el color de fondo bajo la cabecera
+  (`checkBackground` en `Header.tsx`); no hay que marcar secciones. Con el
   menú móvil abierto, la cabecera es blanca.
 - **Botones:** la flecha `bi-arrow-right` se desliza al pasar el cursor; el
   primario lleva un brillo que lo cruza.

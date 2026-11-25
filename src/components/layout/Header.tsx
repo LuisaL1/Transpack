@@ -22,6 +22,10 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   // Escondida al bajar (pasada la parte de arriba); vuelve al subir
   const [tucked, setTucked] = useState(false);
+  // La cabecera pasa sobre una sección oscura (azul, violeta, la foto de la
+  // portada): vidrio azul noche con letras blancas, para que combine
+  const [onDark, setOnDark] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   // Línea naranja de avance de lectura (se actualiza sin re-render)
   const progressRef = useRef<HTMLSpanElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -33,6 +37,28 @@ export function Header() {
 
   useEffect(() => {
     let last = window.scrollY;
+    let frame = 0;
+    // Mira el fondo que queda bajo el centro de la cabecera: el primer elemento
+    // de la página (fuera de la cabecera) con color de fondo propio. Lo
+    // decorativo con pointer-events: none no cuenta
+    const checkBackground = () => {
+      frame = 0;
+      const header = headerRef.current;
+      if (!header) return;
+      const y = Math.min(header.getBoundingClientRect().bottom, 120) / 2 + 20;
+      const hit = document
+        .elementsFromPoint(window.innerWidth / 2, y)
+        .find((n) => !header.contains(n));
+      let dark = false;
+      for (let n: Element | null = hit ?? null; n; n = n.parentElement) {
+        const m = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
+        if (!m || (m.length > 3 && Number(m[3]) < 0.5)) continue;
+        const [r, g, b] = m.map(Number);
+        dark = 0.2126 * r + 0.7152 * g + 0.0722 * b < 110;
+        break;
+      }
+      setOnDark(dark);
+    };
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
@@ -46,11 +72,17 @@ export function Header() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (progressRef.current)
         progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+      if (!frame) frame = requestAnimationFrame(checkBackground);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
 
   // Ctrl/⌘ + K abre el buscador
   useEffect(() => {
@@ -116,13 +148,20 @@ export function Header() {
   // Arriba en el inicio la cabecera va sobre la foto oscura del Hero: letras
   // blancas. En las demás portadas (blancas) y al bajar, letras oscuras.
   const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
-  const overlay = home && !scrolled && !menuOpen;
-  const glass = overlay
-    ? "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)]"
-    : "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)]";
+  const top = home && !scrolled;
+  // Al bajar, sobre una sección oscura, vidrio azul noche con letras blancas
+  const night = scrolled && onDark && !top;
+  const overlay = (top || night) && !menuOpen;
+  const glass = !overlay
+    ? "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)]"
+    : night
+      ? "border-white/15 bg-[#0D0F33]/60 text-white shadow-[0_10px_34px_-12px_rgba(0,0,0,.6)]"
+      : "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)]";
   const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] backdrop-blur-[10px] transition-colors ${
     overlay
-      ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
+      ? night
+        ? "border-white/15 bg-[#0D0F33]/60 text-white hover:bg-white/15"
+        : "border-white/25 bg-white/10 text-white hover:bg-white/20"
       : "border-linea bg-white/70 text-tinta hover:bg-white hover:text-azul"
   }`;
   const current = MENUS.find((m) => m.key === active);
@@ -134,6 +173,7 @@ export function Header() {
   return (
     <>
       <header
+        ref={headerRef}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] focus-within:translate-y-0 ${
           hide ? "-translate-y-[calc(100%+12px)]" : ""
         } ${menuOpen ? "bg-white lg:bg-transparent" : ""}`}
