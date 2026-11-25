@@ -1,5 +1,5 @@
 import lacmaImg from "@/assets/images/lacma.jpg";
-import imgGlobal from "@/assets/images/cobertura.jpg";
+import mapaNoche from "@/assets/images/mapa-lineas-noche.svg";
 import { useRef } from "react";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
@@ -9,17 +9,18 @@ import { useMotion } from "@/hooks/useMotion";
 import { Bi, Eyebrow, Reveal, StatOdometer } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
-// Cobertura global: la foto de un operario embalando una obra de arte
-// (entregada por el cliente, nov. 2026; antes, el avión y el buque) es la protagonista: ocupa toda la
-// sección de borde a borde. El texto va a la izquierda sobre un degradado azul
-// que se abre hacia la derecha; la foto empieza a un tercio del ancho y se
-// encuadra hacia la derecha para que el buque se vea completo; abajo, las
-// cifras de la red sobre tarjetas translúcidas. En celular la foto va arriba,
-// completa, y el texto debajo sobre azul.
-// Movimiento (nov. 2026): la foto se desplaza con parallax, los modos de
+// Cobertura global (nov. 2026): de fondo, un mapamundi de líneas animado sobre
+// el azul noche (mapa-lineas-noche.svg, generado con `pnpm map`): costas en
+// blanco tenue, rutas desde Bogotá en naranja con destellos que las recorren y
+// los destinos titilando. Reemplazó a la foto del operario embalando una obra
+// (y antes al avión y el buque): no tenía resolución para ocupar media
+// pantalla. Es un dibujo (se ve nítido en cualquier pantalla) y trae su propia
+// animación CSS, sin JS; con movimiento reducido queda quieto. El texto va a la
+// izquierda, sobre un azul que se abre hacia el mapa; abajo a la derecha, las
+// cifras de la red sobre tarjetas translúcidas. En celular el mapa va arriba.
+// Movimiento: el mapa se desplaza un poco con el scroll, los modos de
 // transporte entran escalonados, las cifras ruedan como odómetro y al pie
-// pasa una marquesina gigante con contorno de los continentes que avanza con
-// el scroll.
+// pasa una marquesina gigante con contorno de los continentes.
 export function Coverage() {
   const { tr } = useLang();
   const t = coverageText(tr);
@@ -30,7 +31,7 @@ export function Coverage() {
   const chipsRef = useRef<HTMLDivElement>(null);
   const counting = useInView(chipsRef);
   useMotion(ref, (m, el) => {
-    m.parallax("[data-cov-photo]", el, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14 });
+    m.parallax("[data-cov-map]", el, { yPercent: -6 }, { yPercent: 6 });
     m.parallax("[data-cov-marquee]", el, { xPercent: 0 }, { xPercent: -28 });
     const modes = el.querySelectorAll("[data-cov-mode]");
     m.reveal(modes, modes[0], { y: 28, stagger: 0.12 });
@@ -41,30 +42,39 @@ export function Coverage() {
       ref={ref}
       className={`${section} overflow-hidden bg-azul-900 text-white/80 lg:min-h-[720px]`}
     >
-      <img
-        loading="lazy"
-        decoding="async"
-        src={imgGlobal}
-        alt={t.imageAlt}
-        data-cov-photo
-        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[75%_50%] lg:block"
-      />
-      {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
+      {/* Mapamundi animado (decorativo), a la derecha y un poco más allá del borde */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 hidden bg-[linear-gradient(90deg,#0d0f33_0%,#0d0f33_26%,rgba(27,30,92,.9)_34%,rgba(27,30,92,.5)_44%,rgba(27,30,92,.12)_56%,transparent_66%)] lg:block"
+        className="pointer-events-none absolute inset-y-0 -right-[6%] left-[22%] hidden items-center lg:flex"
+      >
+        <img
+          loading="lazy"
+          decoding="async"
+          src={mapaNoche}
+          alt=""
+          draggable={false}
+          data-cov-map
+          className="w-full select-none [mask-image:radial-gradient(ellipse_at_center,#000_55%,transparent_80%)]"
+        />
+      </div>
+      {/* Azul a la izquierda (texto legible) que se abre hacia el mapa */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(90deg,#0d0f33_0%,#0d0f33_24%,rgba(13,15,51,.75)_34%,rgba(13,15,51,0)_50%)] lg:block"
       />
       <div
         className={`${container} relative grid items-end gap-12 lg:grid-cols-[minmax(0,500px)_1fr] lg:gap-16`}
       >
-        {/* Celular y tableta: la foto completa, arriba */}
+        {/* Celular y tableta: el mapa completo, arriba */}
         <Reveal className="lg:hidden">
           <img
             loading="lazy"
             decoding="async"
-            src={imgGlobal}
-            alt={t.imageAlt}
-            className="aspect-[1361/768] w-full rounded-[24px] object-cover shadow-[var(--shadow-float)]"
+            src={mapaNoche}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none -mx-[14%] -my-[6%] w-[128%] max-w-none select-none"
           />
         </Reveal>
         <Reveal>

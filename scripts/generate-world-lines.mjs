@@ -1,9 +1,10 @@
 // Mapamundi de líneas para fondos (Nosotros, bloque de historia): contornos de
 // los continentes, fronteras, rutas desde Bogotá y pulsos de luz que las
 // recorren, todo en un SVG con su propia animación CSS. GENERA
-// src/assets/images/mapa-lineas.svg y, para el pie de página, el mapa de
-// puntos src/assets/images/mapa-puntos.svg (parte de `pnpm map`; no editar a
-// mano).
+// src/assets/images/mapa-lineas.svg, su versión para fondo oscuro
+// mapa-lineas-noche.svg (Cobertura del inicio) y, para el pie de página, el
+// mapa de puntos src/assets/images/mapa-puntos.svg (parte de `pnpm map`; no
+// editar a mano).
 // Va como archivo aparte (se carga como imagen) para no sumar al JS principal.
 //
 // Datos: Natural Earth 1:110m (world-atlas) y los destinos del globo de la
@@ -20,6 +21,7 @@ const require = createRequire(import.meta.url);
 const world = require("world-atlas/countries-110m.json");
 const out = process.argv[2] ?? "src/assets/images/mapa-lineas.svg";
 const outDots = process.argv[3] ?? "src/assets/images/mapa-puntos.svg";
+const outNight = process.argv[4] ?? "src/assets/images/mapa-lineas-noche.svg";
 
 const W = 1000;
 // Sin la Antártida
@@ -47,7 +49,8 @@ const rings = land.coordinates
 
 // Rutas desde Bogotá: un destino de cada pocos, para que no se amontonen
 const origin = [ORIGIN.lon, ORIGIN.lat];
-const routes = DESTINATIONS.filter((_, i) => i % 3 === 0).map((d) => {
+const routeDests = DESTINATIONS.filter((_, i) => i % 3 === 0);
+const routes = routeDests.map((d) => {
   const at = geoInterpolate(origin, [d.lon, d.lat]);
   const pts = Array.from({ length: 33 }, (_, k) => projection(at(k / 32)));
   // Arco: se levanta en el centro, más entre más larga es la ruta
@@ -104,6 +107,52 @@ ${routes
 `;
 fs.writeFileSync(out, svg);
 console.log("mapa de líneas", `${W}×${H}`, "rutas", routes.length, "bytes", svg.length);
+
+// ─── Mapa de líneas "noche" (Cobertura del inicio, nov. 2026) ───────────────
+// La misma geometría sobre fondo azul noche: costas y fronteras en blanco
+// tenue, rutas punteadas en naranja, pulsos naranja y blancos que las recorren,
+// el destino de cada ruta titilando y Bogotá con una onda. Reemplazó a la foto
+// de Cobertura, que no tenía resolución para ocupar media pantalla.
+const ends = routeDests.map((d) => projection([d.lon, d.lat]).map(Math.round));
+const night = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<!-- GENERADO con \`pnpm map\` (scripts/generate-world-lines.mjs). Natural Earth 1:110m. -->
+<style>
+.coast{stroke:#FFFFFF;stroke-opacity:.3;stroke-width:.9}
+.border{stroke:#FFFFFF;stroke-opacity:.1;stroke-width:.5}
+.route{stroke:${ORANGE};stroke-opacity:.35;stroke-width:1;stroke-dasharray:2 5}
+.pulse{stroke-width:1.6;stroke-dasharray:1.6 98.4;stroke-dashoffset:100;animation:run linear infinite}
+.o{stroke:${ORANGE};stroke-opacity:.95}
+.w{stroke:#FFFFFF;stroke-opacity:.7}
+.dest{stroke:${ORANGE};stroke-width:4;animation:tw 3.6s ease-in-out infinite}
+.home{fill:${ORANGE}}
+.ring{stroke:${ORANGE};stroke-width:1.3;transform-box:fill-box;transform-origin:center;animation:ping 3.2s ease-out infinite}
+@keyframes run{to{stroke-dashoffset:0}}
+@keyframes tw{0%,100%{stroke-opacity:.3}50%{stroke-opacity:1}}
+@keyframes ping{from{transform:scale(.4);opacity:.9}to{transform:scale(3.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pulse,.ring,.dest{animation:none}.pulse,.ring{opacity:0}.dest{stroke-opacity:.8}}
+</style>
+<path class="border" d="${path(borders)}"/>
+<path class="coast" d="${path(coast)}"/>
+${routes.map((d) => `<path class="route" d="${d}"/>`).join("\n")}
+${rings
+  .map(
+    (r, i) =>
+      `<path class="pulse ${i % 2 ? "w" : "o"}" pathLength="100" style="stroke-opacity:.45;animation-duration:${26 + (i % 4) * 5}s;animation-delay:-${i * 3.7}s" d="${path(r)}"/>`,
+  )
+  .join("\n")}
+${routes
+  .map(
+    (d, i) =>
+      `<path class="pulse ${i % 3 === 2 ? "w" : "o"}" pathLength="100" style="stroke-dasharray:9 91;animation-duration:${7 + (i % 5) * 1.3}s;animation-delay:-${(i * 1.9).toFixed(1)}s" d="${d}"/>`,
+  )
+  .join("\n")}
+${ends.map(([x, y], i) => `<path class="dest" style="animation-delay:-${((i * 0.7) % 3.6).toFixed(1)}s" d="M${x} ${y}h0"/>`).join("\n")}
+<circle class="home" cx="${bx}" cy="${by}" r="4"/>
+<circle class="ring" cx="${bx}" cy="${by}" r="5"/>
+</svg>
+`;
+fs.writeFileSync(outNight, night);
+console.log("mapa de líneas noche", `${W}×${H}`, "bytes", night.length);
 
 // ─── Mapa de puntos (pie de página, nov. 2026) ──────────────────────────────
 // La tierra como una cuadrícula de puntos claros (sobre el azul del pie), los
