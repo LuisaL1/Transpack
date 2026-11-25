@@ -4,7 +4,7 @@
 import type { Tr } from "@/i18n";
 
 /** Nombre y cara del chat (también es el bot de Zoho) */
-export const NAME = "Joelito";
+export const NAME = "Joel";
 
 /** Acción de un mensaje de la ventana de respaldo: un enlace con ícono */
 export type ChatAction = { label: string; icon: string; href: string };

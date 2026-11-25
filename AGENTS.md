@@ -492,6 +492,23 @@ blanco.
   portada: `focusScene`/`focusStill` en `src/lib/globe.ts` y
   `useGlobe(labels, focus)`, solo ese tramo de la historia en bucle; se carga
   aparte con `import()`); Colombia es `ColombiaRoutesMap fill`.
+- **Encabezado "split" (prueba, nov. 2026; solo Mudanzas locales,
+  `heroLayout: "split"` en `SERVICES` → `PageHero split`):** la foto del
+  servicio va a sangre en los 2/3 izquierdos (desde arriba, detrás de la
+  cabecera), con velo naranja muy suave, lavado beige detrás del título y
+  fundido al blanco hacia la derecha; el mapa va libre, sin panel
+  (`ServiceMapPanel bare`), en el tercio derecho, con la mitad del margen derecho habitual: solo el mapa (sin chapa,
+  leyenda ni rótulo; `plain` en `GlobeLabels`: el nombre de cada localidad solo
+  junto al punto al que llega su línea, arriba, abajo, a un lado o en diagonal,
+  donde no tape otro nombre: `placeEndLabels` en `src/lib/globe.ts`) y agrandado (`scale`, `BARE_SCALE`). La
+  animación corre una vez al entrar y queda completa, sin bucle ni pausa con el
+  cursor (`useGlobe(…, { once, hoverPause })`). Sin fondo de color detrás del
+  mapa (se probaron desvanecidos azules y se descartaron). Queda el crédito de IDECA, que exige la licencia (abajo a la izquierda
+  del mapa, lejos del chat). La
+  foto es `servicio-local-hero.jpg` (el original de la galería en 1151 px; la
+  de 900 px se veía borrosa a ese tamaño). En celular, la foto detrás del
+  texto y el mapa debajo. Si el cliente lo aprueba, se extiende a nacionales e
+  internacionales; si no, se quita `heroLayout` y vuelve el diseño "bento".
 - Páginas de servicio (`ServiceDetailPage`, nov. 2026, con la dinámica del
   inicio): en "Cómo lo hacemos" el texto queda fijo en escritorio mientras pasa
   la lista "Qué incluye", cuyos ítems entran escalonados y su ✓ se dibuja
@@ -539,7 +556,7 @@ blanco.
 
 ## Chat (Zoho SalesIQ)
 
-- **El chat del sitio es el widget de Zoho SalesIQ** (bot "Joelito" y asesores
+- **El chat del sitio es el widget de Zoho SalesIQ** (bot "Joel" y asesores
   desde el panel de SalesIQ), con el diseño del sitio. **Nunca se menciona
   Zoho.** La cara y el nombre de Joel quedan como marca del chat (botón,
   invitación, avatar del bot). Detalle completo en `docs/chat-crm.md`.

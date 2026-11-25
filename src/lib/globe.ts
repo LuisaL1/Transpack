@@ -54,6 +54,11 @@ export type GlobeLabels = {
   selected?: string;
   /** Lugar bajo el puntero (las localidades se iluminan) */
   hovered?: string;
+  /** Solo el mapa: sin el rótulo de la ciudad y con el nombre de cada
+   * localidad solo sobre el punto al que llega su línea (no en todas) */
+  plain?: boolean;
+  /** Multiplica el tamaño del mapa en su lienzo (1 = el de la portada) */
+  scale?: number;
 };
 /** Punto de un destino o de una ciudad de Colombia en pantalla (px de CSS), para
  * saber qué se toca */
@@ -424,13 +429,16 @@ const FOCUS_RANGE: Record<GlobeFocus, [number, number]> = {
   bogota: [LINES_AT - 400, BOGOTA_END],
   mundo: [LOCAL, LEAVE],
 };
-/** Estado del mapa de una página de servicio en el momento `time` (ms) */
-export function focusScene(focus: GlobeFocus, time: number): Scene {
+/** Estado del mapa de una página de servicio en el momento `time` (ms); con
+ * `once`, la animación corre una sola vez y queda completa (sin bucle) */
+export function focusScene(focus: GlobeFocus, time: number, once = false): Scene {
   const [from, to] = FOCUS_RANGE[focus];
   const len = to - from + (focus === "bogota" ? FOCUS_HOLD : 0);
-  const u = ((time % len) + len) % len;
+  const u = once ? Math.max(0, time) : ((time % len) + len) % len;
   const s = scene(Math.min(from + u, to - 1));
-  const map = Math.min(1, u / FOCUS_FADE, (len - u) / FOCUS_FADE);
+  const map = once
+    ? Math.min(1, u / FOCUS_FADE)
+    : Math.min(1, u / FOCUS_FADE, (len - u) / FOCUS_FADE);
   return { ...s, photo: 0, slide: 0, morph: 1, map: ease(clamp01(map)) };
 }
 /** Vista fija (movimiento reducido) del mapa de una página de servicio */
@@ -822,6 +830,75 @@ function arc(a: [number, number], b: [number, number]) {
   });
 }
 
+type Box = [number, number, number, number];
+const endFont = (fine: boolean, dpr: number) =>
+  `${fine ? 700 : 600} ${10.5 * dpr}px Montserrat, system-ui, sans-serif`;
+const overlap = (a: Box, b: Box) =>
+  Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) *
+  Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+// Lugar del nombre de cada localidad junto al punto al que llega su línea (mapa
+// `plain`): se prueban posiciones alrededor del punto (arriba, abajo, a los
+// lados y en diagonal) y se toma la primera que no tapa otro nombre, otro punto
+// ni la sede; si ninguna está libre, la que menos tapa. Se calcula con todas las
+// líneas, no solo las ya trazadas: así un nombre no salta cuando llega otro.
+// Devuelve la caja (px del lienzo) de cada nombre.
+function placeEndLabels(
+  ctx: CanvasRenderingContext2D,
+  flat: Flat,
+  home: [number, number] | null,
+  dpr: number,
+): Map<string, Box> {
+  const pts = LINES.map((l) => ({ ...l, at: flat(l.to) })).filter(
+    (l): l is (typeof LINES)[number] & { at: [number, number] } => !!l.at,
+  );
+  const busy: Box[] = pts.map(({ at: [x, y] }) => [
+    x - 4 * dpr,
+    y - 4 * dpr,
+    x + 4 * dpr,
+    y + 4 * dpr,
+  ]);
+  if (home) {
+    const r = 14 * dpr;
+    busy.push([home[0] - r, home[1] - r, home[0] + r, home[1] + r]);
+  }
+  // Primero las exclusivas y luego las que tienen más vecinos cerca (las del
+  // centro), que son las que menos opciones tienen
+  const near = (p: (typeof pts)[number]) =>
+    pts.filter((q) => Math.hypot(q.at[0] - p.at[0], q.at[1] - p.at[1]) < 60 * dpr).length;
+  const order = [...pts].sort((a, b) => Number(b.fine) - Number(a.fine) || near(b) - near(a));
+  const out = new Map<string, Box>();
+  ctx.save();
+  for (const p of order) {
+    ctx.font = endFont(p.fine, dpr);
+    const w = ctx.measureText(p.name).width + 2 * dpr;
+    const h = 12 * dpr;
+    const g = (p.fine ? 8 : 5) * dpr;
+    const d = g * 0.7;
+    const [x, y] = p.at;
+    const options: Box[] = [
+      [x - w / 2, y - g - h, x + w / 2, y - g], // arriba
+      [x + g, y - h / 2, x + g + w, y + h / 2], // derecha
+      [x - g - w, y - h / 2, x - g, y + h / 2], // izquierda
+      [x - w / 2, y + g, x + w / 2, y + g + h], // abajo
+      [x + d, y - d - h, x + d + w, y - d], // arriba a la derecha
+      [x - d - w, y - d - h, x - d, y - d], // arriba a la izquierda
+      [x + d, y + d, x + d + w, y + d + h], // abajo a la derecha
+      [x - d - w, y + d, x - d, y + d + h], // abajo a la izquierda
+    ];
+    let best = options[0];
+    let bestCost = Infinity;
+    for (const o of options) {
+      const cost = busy.reduce((sum, b) => sum + overlap(o, b), 0);
+      if (cost < bestCost) [best, bestCost] = [o, cost];
+      if (cost === 0) break;
+    }
+    busy.push(best);
+    out.set(p.name, best);
+  }
+  ctx.restore();
+  return out;
+}
+
 // Bogotá con sus localidades, inclinada y en bloque, con las líneas desde la sede
 // y los nombres (uno que se montaría sobre otro ya puesto se omite)
 function drawBogota(
@@ -874,6 +951,8 @@ function drawBogota(
   // los trazos avanzan despacio hacia la localidad
   const home = flat(HOME);
   const arrived = new Set<string>();
+  // Con `plain`: nombres sobre el punto de llegada de cada línea (se escriben al final)
+  const ends: { name: string; at: [number, number]; fine: boolean; a: number }[] = [];
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
@@ -913,6 +992,8 @@ function drawBogota(
     ctx.stroke(line);
     ctx.setLineDash([]);
     if (amount >= 1) arrived.add(l.name);
+    if (labels.plain && amount > 0.85)
+      ends.push({ name: l.name, at: to, fine: l.fine, a: (amount - 0.85) / 0.15 });
     // Punta de la línea y, al llegar, el punto de la localidad (con pulso en las
     // exclusivas)
     if (l.fine) {
@@ -948,7 +1029,7 @@ function drawBogota(
     ctx.fill(HOUSE);
     ctx.restore();
   }
-  const n = flat([-74.2, 4.78]);
+  const n = labels.plain ? null : flat([-74.2, 4.78]);
   if (n) {
     ctx.font = `700 ${15 * dpr}px "IBM Plex Sans", system-ui, sans-serif`;
     ctx.letterSpacing = `${4 * dpr}px`;
@@ -957,14 +1038,37 @@ function drawBogota(
     ctx.fillText(labels.city.toUpperCase(), n[0], n[1]);
     ctx.letterSpacing = "0px";
   }
-  ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
-  ctx.fillStyle = `rgb(${MUTED})`;
-  ctx.textAlign = "center";
-  // Abajo a la derecha, donde no hay localidades
-  const lens = lensRadius(W, H);
-  ctx.fillText(labels.cityCredit, W / 2 + lens * 0.42, H / 2 + lens * 0.64);
-  const placed: [number, number, number, number][] = [];
-  for (const l of LOCALITY_LABELS) {
+  // Crédito del mapa (lo exige la licencia): abajo a la derecha; con `plain`
+  // se escribe aparte, abajo a la izquierda del lienzo (drawGlobe)
+  if (!labels.plain) {
+    ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
+    ctx.fillStyle = `rgb(${MUTED})`;
+    ctx.textAlign = "center";
+    const lens = lensRadius(W, H);
+    ctx.fillText(labels.cityCredit, W / 2 + lens * 0.42, H / 2 + lens * 0.64);
+  }
+  if (labels.plain) {
+    const spots = placeEndLabels(ctx, flat, home, dpr);
+    for (const e of ends) {
+      const b = spots.get(e.name);
+      if (!b) continue;
+      ctx.save();
+      ctx.globalAlpha *= e.a;
+      ctx.font = endFont(e.fine, dpr);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      const x = b[0] + dpr;
+      const y = (b[1] + b[3]) / 2;
+      ctx.lineWidth = 3 * dpr;
+      ctx.strokeStyle = `rgba(${HALO},.9)`;
+      ctx.strokeText(e.name, x, y);
+      ctx.fillStyle = e.fine ? "#E8620A" : `rgb(${INK})`;
+      ctx.fillText(e.name, x, y);
+      ctx.restore();
+    }
+  }
+  const placed: Box[] = [];
+  for (const l of labels.plain ? [] : LOCALITY_LABELS) {
     const p = flat([l.lon, l.lat]);
     if (!p) continue;
     // Las exclusivas, en negrita y, con su línea ya trazada, en naranja
@@ -1027,7 +1131,7 @@ export function drawGlobe(
   const cx = W / 2;
   const cy = H / 2;
   const lens = lensRadius(W, H);
-  const R = Math.min(W, H) * BASE * v.zoom;
+  const R = Math.min(W, H) * BASE * v.zoom * (labels.scale ?? 1);
   // De cerca el círculo es una lupa sobre el mapa; de lejos se ve el globo entero
   const near = clamp01((v.zoom - 1.05) / 0.6);
   const close = clamp01((v.zoom - 1.8) / 1.6);
@@ -1217,7 +1321,9 @@ export function drawGlobe(
     drawBogota(lc, proj, s, dpr, time, labels);
     lc.save();
     lc.globalCompositeOperation = "destination-in";
-    const fade = lc.createLinearGradient(0, cy + lens * 0.55, 0, cy + lens * 0.98);
+    // (con `scale`, el fundido crece con el mapa)
+    const k = labels.scale ?? 1;
+    const fade = lc.createLinearGradient(0, cy + lens * k * 0.55, 0, cy + lens * k * 0.98);
     fade.addColorStop(0, "#000");
     fade.addColorStop(1, "rgba(0,0,0,0)");
     lc.fillStyle = fade;
@@ -1226,6 +1332,16 @@ export function drawGlobe(
     ctx.save();
     ctx.globalAlpha = s.map;
     ctx.drawImage(layer, 0, 0);
+    // Mapa `plain`: el crédito (lo exige la licencia) abajo a la izquierda del
+    // lienzo, fuera del fundido del sur y lejos del botón del chat
+    if (labels.plain) {
+      ctx.globalAlpha = s.map * s.bogota;
+      ctx.font = `500 ${9 * dpr}px Montserrat, system-ui, sans-serif`;
+      ctx.fillStyle = `rgb(${MUTED})`;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(labels.cityCredit, 8 * dpr, H - 10 * dpr);
+    }
     ctx.restore();
   }
   return hits;

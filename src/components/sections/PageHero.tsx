@@ -48,6 +48,7 @@ export function PageHero({
   backdrop,
   reveal = "left",
   blend = false,
+  split = false,
   shipping,
   tab = true,
 }: {
@@ -58,6 +59,8 @@ export function PageHero({
   backdrop?: ReactNode;
   reveal?: HeroReveal;
   blend?: boolean;
+  /** Con `backdrop` e `image`: foto a sangre en 2/3 y el mapa libre en el tercio derecho */
+  split?: boolean;
   shipping?: string;
   tab?: ReactNode | true;
 }) {
@@ -113,6 +116,48 @@ export function PageHero({
   // contenido; en celular y tableta, arriba con los mismos márgenes del texto
   const frame =
     "relative mx-auto w-[min(100%-32px,1200px)] pt-2 lg:absolute lg:top-10 lg:bottom-16 lg:left-[50%] lg:right-[max(16px,calc((100vw-1200px)/2))] lg:mx-0 lg:w-auto lg:pt-0";
+
+  // "split" (prueba, nov. 2026, Mudanzas locales): la foto a sangre ocupa los
+  // 2/3 izquierdos, desde arriba del todo (detrás de la cabecera), con un velo
+  // naranja muy suave, un lavado beige detrás del texto para leer el título y
+  // un fundido al blanco hacia la derecha, donde el mapa va libre (sin panel)
+  // en el tercio derecho, con la mitad del margen derecho habitual del
+  // contenido (así el mapa tiene más espacio). En celular y tableta la foto va detrás del texto, fundida al blanco
+  // abajo, y el mapa debajo.
+  if (split && backdrop && image)
+    return (
+      <section ref={ref} className="relative overflow-hidden border-b border-linea text-texto">
+        <div className="relative lg:grid lg:min-h-[min(100svh,880px)] lg:grid-cols-3">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 bottom-[380px] overflow-hidden sm:bottom-[460px] lg:inset-y-0 lg:right-1/3 lg:left-0"
+          >
+            <img
+              fetchPriority="high"
+              src={image}
+              alt=""
+              data-hero-img
+              className="hero-parallax hero-blend-in h-full w-full object-cover"
+            />
+            {/* Velo naranja muy suave */}
+            <div className="absolute inset-0 bg-naranja/[0.05]" />
+            {/* Lavado beige (Manual de Marca) detrás del texto */}
+            <div className="absolute inset-0 bg-[rgba(250,238,217,.62)] lg:bg-[linear-gradient(90deg,rgba(250,238,217,.66)_0%,rgba(250,238,217,.3)_40%,rgba(250,238,217,0)_58%)]" />
+            {/* Fundido al blanco del fondo, largo y suave: hacia el mapa (y abajo en celular) */}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_55%,#fff_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0)_45%,rgba(255,255,255,.12)_58%,rgba(255,255,255,.4)_72%,rgba(255,255,255,.78)_86%,#fff_97%)]" />
+          </div>
+          <div className="relative flex flex-col justify-center pt-[124px] pb-12 md:pt-[148px] md:pb-16 lg:col-span-2 lg:pe-[10%] wide:pt-[162px]">
+            <div className="relative mx-auto w-[min(100%-32px,1200px)] lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:me-0 lg:w-auto lg:max-w-[660px]">
+              {children}
+            </div>
+          </div>
+          <div className="relative mx-auto h-[380px] w-[min(100%-32px,1200px)] sm:h-[460px] lg:mx-0 lg:h-auto lg:w-auto lg:pt-[124px] lg:pb-10 lg:pe-[max(8px,calc((100vw-1200px)/4))] wide:pt-[162px]">
+            <div className="hero-blend-in h-full [--hero-ps:1]">{backdrop}</div>
+          </div>
+        </div>
+      </section>
+    );
+
   if (backdrop && image)
     return (
       <section ref={ref} className={shell}>

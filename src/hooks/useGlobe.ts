@@ -42,7 +42,13 @@ function trackProgress(track: HTMLElement) {
   const len = r.height - window.innerHeight;
   return len > 0 ? Math.min(1, Math.max(0, -r.top / len)) : 0;
 }
-export function useGlobe(labels: Omit<GlobeLabels, "selected">, focus?: GlobeFocus) {
+export function useGlobe(
+  labels: Omit<GlobeLabels, "selected">,
+  focus?: GlobeFocus,
+  /** `once`: la animación corre una vez al entrar y queda completa (sin bucle);
+   * `hoverPause: false`: no se detiene con el cursor encima */
+  { once = false, hoverPause = true }: { once?: boolean; hoverPause?: boolean } = {},
+) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const [picked, setPicked] = useState<PickedCountry | null>(null);
@@ -109,7 +115,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">, focus?: GlobeFoc
       const s = focus
         ? still
           ? globe.focusStill(focus)
-          : globe.focusScene(focus, time)
+          : globe.focusScene(focus, time, once)
         : still
           ? globe.stillScene()
           : scroll
@@ -251,7 +257,7 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">, focus?: GlobeFoc
     // Sobre todo el mapa, incluida la tarjeta de un lugar
     const root = canvas.parentElement ?? canvas;
     const onEnter = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" || !hoverPause) return;
       hovering = true;
       play();
     };

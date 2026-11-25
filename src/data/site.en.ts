@@ -12,6 +12,8 @@ import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgOficina from "@/assets/images/oficina.jpeg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+// La misma foto en 1151 px, para el encabezado a sangre de Mudanzas locales
+import imgLocalHero from "@/assets/images/servicio-local-hero.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -80,8 +82,9 @@ export const SERVICES: Service[] = [
       "Moves in Bogotá and its surroundings, carried out by expert, trained crews for the professional protection of your furniture, with vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
-    image: imgEmbalajeHogar,
+    image: imgLocalHero,
     heroMap: "bogota",
+    heroLayout: "split",
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
     intro:

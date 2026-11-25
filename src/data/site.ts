@@ -13,6 +13,8 @@ import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
+// La misma foto en 1151 px, para el encabezado a sangre de Mudanzas locales
+import imgLocalHero from "@/assets/images/servicio-local-hero.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -116,6 +118,10 @@ export type Service = {
   // (PageHero con `backdrop`, nov. 2026): Bogotá y sus localidades (locales),
   // Colombia con el camión (nacionales) o el mundo con las rutas (internacionales)
   heroMap?: "bogota" | "colombia" | "mundo";
+  // Con `heroMap`: "split" (prueba, nov. 2026, Mudanzas locales) pone la foto a
+  // sangre en los 2/3 izquierdos, con velo naranja suave y el título encima, y
+  // el mapa libre (sin panel) en el tercio derecho; sin él, el diseño "bento"
+  heroLayout?: "split";
   // Lado desde el que el barrido de color descubre la foto del encabezado
   // (PageHero); sin él, desde la izquierda
   imageReveal?: "left" | "right" | "top";
@@ -165,8 +171,9 @@ export const SERVICES: Service[] = [
       "Trasteos en Bogotá y sus alrededores, realizados por personal experto y capacitado para la protección profesional del mobiliario, con vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
-    image: imgEmbalajeHogar,
+    image: imgLocalHero,
     heroMap: "bogota",
+    heroLayout: "split",
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
     intro:

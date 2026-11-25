@@ -13,7 +13,18 @@ import { CountryCard } from "@/components/home/CountryCard";
 // todo su contenedor, sin fondo propio: va dentro del panel azul noche de
 // ServiceMapPanel. Se puede tocar un lugar para ver su foto (CountryCard),
 // como en la portada.
-export function ServiceGlobe({ focus }: { focus: GlobeFocus }) {
+// Con `plain` (encabezado "split"), solo el mapa con el nombre de cada localidad
+// en la punta de su línea; la animación corre una vez, sin bucle ni pausa con el
+// cursor. `scale` lo agranda en su lienzo.
+export function ServiceGlobe({
+  focus,
+  plain = false,
+  scale = 1,
+}: {
+  focus: GlobeFocus;
+  plain?: boolean;
+  scale?: number;
+}) {
   const { tr } = useLang();
   const t = mapText(tr);
   const placeName = useDestinationName();
@@ -24,8 +35,11 @@ export function ServiceGlobe({ focus }: { focus: GlobeFocus }) {
       city: "Bogotá",
       cityCredit: t.cityCredit,
       place: (p) => placeName(p.name),
+      plain,
+      scale,
     },
     focus,
+    { once: plain, hoverPause: !plain },
   );
   return (
     <div className="absolute inset-0" dir="ltr">

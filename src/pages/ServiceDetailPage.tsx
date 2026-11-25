@@ -130,8 +130,11 @@ function ServiceDetail({ service }: { service: Service }) {
         backdrop={
           // Mudanzas locales, nacionales e internacionales: panel con el mapa
           // animado y la foto montada encima (diseño "bento" de PageHero)
-          service.heroMap && <ServiceMapPanel kind={service.heroMap} />
+          service.heroMap && (
+            <ServiceMapPanel kind={service.heroMap} bare={service.heroLayout === "split"} />
+          )
         }
+        split={service.heroLayout === "split"}
         reveal={service.imageReveal}
         blend={service.imageBlend}
         shipping={service.slug}

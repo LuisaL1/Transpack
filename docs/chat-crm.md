@@ -1,7 +1,7 @@
 # Chat con un asesor: Zoho SalesIQ (CRM)
 
 El chat del sitio **es el widget de Zoho SalesIQ**, con el diseño del sitio. Lo
-atiende el bot de Zoho ("Joelito") y, cuando hace falta, un asesor desde su
+atiende el bot de Zoho ("Joel") y, cuando hace falta, un asesor desde su
 panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
 
 | Pieza                                                                      | Archivo                                                                                                         |
@@ -26,7 +26,7 @@ panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
    mensajes ni avisa al bot. Si el visitante rechaza las cookies o no responde
    el aviso, no hay precarga.
 2. **Abrir.** Al tocar el botón flotante (o cualquier elemento que dispare
-   `tp:open-chat`, como "Habla con Joelito" del menú o el buscador), `openCrmChat`
+   `tp:open-chat`, como "Habla con Joel" del menú o el buscador), `openCrmChat`
    muestra la ventana: con precarga tarda ~0,2 s; sin ella, ~3,5 s (el botón
    muestra que está cargando).
    - Abre en la pestaña de conversación (`defaultview: "chat"`) y, si no hay una
@@ -60,7 +60,7 @@ panel de SalesIQ. **Nunca se menciona Zoho** en el sitio.
     por visitante", quien vuelve no recibe el saludo).
 - **Chats que inicia el visitante:** que también los atienda el bot (si no, el
   primer mensaje va directo a los asesores, "En espera de conectarse…").
-- **Título de la ventana:** "Joelito" (en la conversación nueva Zoho muestra su
+- **Título de la ventana:** "Joel" (en la conversación nueva Zoho muestra su
   título; hoy "Chatee con nosotros ahora").
 - **Dominio autorizado:** `www.transpacksas.com` (y el de Vercel si se prueba
   ahí). **Idioma:** español.
@@ -80,7 +80,7 @@ La ventana de Zoho tiene el diseño del chat del sitio:
   al asesor…") y el botón cuadrado de enviar (gris vacío, azul con naranja al
   escribir); botón de responder y mensaje citado con colores de la marca;
 - mientras Zoho no asigna quién responde, muestra un responsable genérico
-  ("Operador", con su ícono): el sitio lo cambia por "Joelito" y su foto
+  ("Operador", con su ícono): el sitio lo cambia por "Joel" y su foto
   (`renameOperator` en `src/lib/crmChat.ts`; en SalesIQ no hay opción para
   cambiarlo). Un asesor real conserva su nombre y su foto;
 - tipografías del sitio (IBM Plex Sans y Montserrat) y solo colores de la marca.
