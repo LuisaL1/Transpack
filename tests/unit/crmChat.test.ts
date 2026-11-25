@@ -217,6 +217,10 @@ describe("chat de Zoho SalesIQ · diseño del sitio", () => {
     doc.body.insertAdjacentHTML("beforeend", `<p class="late">Operador</p>`);
     await new Promise((r) => setTimeout(r, 0));
     expect(doc.querySelector(".late")!.textContent).toBe("Joel");
+    // El nombre anterior del bot (si sigue así en Zoho) también se muestra como Joel
+    doc.body.insertAdjacentHTML("beforeend", `<p class="old">Joelito</p>`);
+    await new Promise((r) => setTimeout(r, 0));
+    expect(doc.querySelector(".old")!.textContent).toBe("Joel");
     frame.remove();
   });
 

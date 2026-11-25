@@ -29,7 +29,7 @@ export function IsoCubes() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 hidden min-[1360px]:block"
+      className="bg-margins-only pointer-events-none fixed inset-0 -z-10 hidden min-[1360px]:block"
     >
       {PIECES.map((p, i) => (
         <div

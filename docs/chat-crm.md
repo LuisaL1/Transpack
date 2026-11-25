@@ -82,7 +82,9 @@ La ventana de Zoho tiene el diseño del chat del sitio:
 - mientras Zoho no asigna quién responde, muestra un responsable genérico
   ("Operador", con su ícono): el sitio lo cambia por "Joel" y su foto
   (`renameOperator` en `src/lib/crmChat.ts`; en SalesIQ no hay opción para
-  cambiarlo). Un asesor real conserva su nombre y su foto;
+  cambiarlo). Un asesor real conserva su nombre y su foto. También cambia
+  "Joelito", el nombre anterior del bot (nov. 2026), por si sigue así en el
+  panel; los mensajes que escribe el bot ("Soy Joelito…") se cambian en Zoho;
 - tipografías del sitio (IBM Plex Sans y Montserrat) y solo colores de la marca.
 
 - **Por qué funciona:** la ventana de Zoho es un iframe del mismo origen que la

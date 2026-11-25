@@ -8,8 +8,12 @@ import { useMotion } from "@/hooks/useMotion";
 // en sentidos opuestos con el scroll (nov. 2026, estilo unitedcarriers; sin
 // fijar la sección). Las fotos verticales ("tall") van más angostas. Cada fila
 // repite sus fotos para cubrir el ancho mientras se mueve (la copia va oculta a
-// los lectores de pantalla). Al pasar el cursor, la foto se acerca y sube su
-// leyenda. Con movimiento reducido, las filas quedan quietas.
+// los lectores de pantalla). Al pasar el cursor, la foto se acerca (sin
+// leyenda encima desde nov. 2026; la descripción queda en el alt). Con movimiento reducido, las filas quedan quietas.
+// Con márgenes (nov. 2026, pedido del equipo): las filas ya no van de borde a
+// borde de la pantalla, sino dentro del ancho del contenido (el de la
+// cabecera), en un recuadro con las esquinas redondeadas como las fotos; sin
+// difuminado en los lados (no gustó).
 export function Gallery() {
   const { tr } = useLang();
   const t = galleryText(tr);
@@ -22,7 +26,12 @@ export function Gallery() {
     m.parallax(b, el, { xPercent: -22 }, { xPercent: -4 }, { scrub: 0.5 });
   });
   return (
-    <section ref={ref} aria-label={t.label} className="grid gap-3 overflow-hidden py-3" dir="ltr">
+    <section
+      ref={ref}
+      aria-label={t.label}
+      className="mx-auto my-3 grid w-[min(100%-32px,1200px)] gap-3 overflow-hidden rounded-[20px] wide:w-[min(100%-120px,1320px)]"
+      dir="ltr"
+    >
       {rows.map((row, r) => (
         <div key={r} data-gallery-row className="flex w-max gap-3">
           {[0, 1].map((copy) =>
@@ -41,9 +50,6 @@ export function Gallery() {
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-tinta/85 to-transparent px-4 pb-3.5 pt-10 text-[0.88rem] font-semibold text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  {g.caption}
-                </figcaption>
               </figure>
             )),
           )}

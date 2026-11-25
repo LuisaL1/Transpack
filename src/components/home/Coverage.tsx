@@ -1,5 +1,5 @@
 import lacmaImg from "@/assets/images/lacma.jpg";
-import imgGlobal from "@/assets/images/global.jpg";
+import imgGlobal from "@/assets/images/cobertura.jpg";
 import { useRef } from "react";
 import { useLang } from "@/i18n";
 import { coverageText } from "@/data/home";
@@ -9,8 +9,8 @@ import { useMotion } from "@/hooks/useMotion";
 import { Bi, Eyebrow, Reveal, StatOdometer } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
 
-// Cobertura global: la foto del avión y el buque con efecto de velocidad
-// (editada por el cliente, oct. 2026) es la protagonista: ocupa toda la
+// Cobertura global: la foto de un operario embalando una obra de arte
+// (entregada por el cliente, nov. 2026; antes, el avión y el buque) es la protagonista: ocupa toda la
 // sección de borde a borde. El texto va a la izquierda sobre un degradado azul
 // que se abre hacia la derecha; la foto empieza a un tercio del ancho y se
 // encuadra hacia la derecha para que el buque se vea completo; abajo, las
@@ -47,7 +47,7 @@ export function Coverage() {
         src={imgGlobal}
         alt={t.imageAlt}
         data-cov-photo
-        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[85%_50%] lg:block"
+        className="absolute inset-y-0 left-[28%] hidden h-full w-[72%] object-cover object-[75%_50%] lg:block"
       />
       {/* Azul a la izquierda (texto legible) que se abre hacia la foto */}
       <div
@@ -64,7 +64,7 @@ export function Coverage() {
             decoding="async"
             src={imgGlobal}
             alt={t.imageAlt}
-            className="aspect-[1280/698] w-full rounded-[24px] object-cover shadow-[var(--shadow-float)]"
+            className="aspect-[1361/768] w-full rounded-[24px] object-cover shadow-[var(--shadow-float)]"
           />
         </Reveal>
         <Reveal>

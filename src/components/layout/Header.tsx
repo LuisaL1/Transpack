@@ -12,7 +12,7 @@ import { SupportPanel } from "@/components/layout/SupportPanel";
 
 // Cabecera fija: franja de idiomas, logo, megamenús, buscador, soporte y menú
 // móvil. El contenido de los menús está en src/data/navigation.ts.
-// Sin franja de fondo (nov. 2026): el logo y las acciones flotan sobre la página
+// Sin franja de fondo arriba (nov. 2026): el logo y las acciones flotan sobre la página
 // y los enlaces van en una píldora de vidrio (translúcida, con desenfoque). En
 // la parte de arriba del inicio flota sobre la foto del Hero, en blanco.
 export function Header() {
@@ -49,7 +49,11 @@ export function Header() {
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   // Ctrl/⌘ + K abre el buscador
@@ -117,13 +121,20 @@ export function Header() {
   // blancas. En las demás portadas (blancas) y al bajar, letras oscuras.
   const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
   const overlay = home && !scrolled && !menuOpen;
+  // Al bajar, la franja blanca es la única barra: la píldora y los círculos
+  // quedan planos sobre ella (sin borde, fondo ni sombra propios)
+  const flat = scrolled && !menuOpen;
   const glass = overlay
-    ? "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)]"
-    : "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)]";
-  const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] backdrop-blur-[10px] transition-colors ${
+    ? "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)] backdrop-blur-[10px]"
+    : flat
+      ? "border-transparent bg-transparent text-tinta"
+      : "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)] backdrop-blur-[10px]";
+  const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] transition-colors ${
     overlay
-      ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
-      : "border-linea bg-white/70 text-tinta hover:bg-white hover:text-azul"
+      ? "border-white/25 bg-white/10 text-white backdrop-blur-[10px] hover:bg-white/20"
+      : flat
+        ? "border-transparent text-tinta hover:bg-azul/[.06] hover:text-azul"
+        : "border-linea backdrop-blur-[10px] bg-white/70 text-tinta hover:bg-white hover:text-azul"
   }`;
   const current = MENUS.find((m) => m.key === active);
   const sectionOf = (m: Menu) =>
@@ -138,6 +149,15 @@ export function Header() {
           hide ? "-translate-y-[calc(100%+12px)]" : ""
         } ${menuOpen ? "bg-white lg:bg-transparent" : ""}`}
       >
+        {/* Al bajar: franja blanca translúcida de lado a lado (con desenfoque y
+            una línea fina abajo) para que la cabecera se distinga sobre
+            cualquier sección. Arriba en la portada no hay franja */}
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 -z-10 border-b border-linea/80 bg-white/75 shadow-[0_10px_30px_-18px_rgba(39,43,124,.45)] backdrop-blur-[14px] transition-opacity duration-500 ${
+            scrolled ? "opacity-100" : "opacity-0"
+          }`}
+        />
         <LangBar hidden={scrolled || menuOpen} overlay={home} />
         {/* Avance de lectura, arriba del todo (ya no hay franja de fondo) */}
         <span
@@ -151,22 +171,26 @@ export function Header() {
           className={`relative mx-auto flex w-[min(100%-32px,1200px)] items-center justify-between gap-2 transition-all lg:gap-3 xl:gap-6 wide:w-[min(100%-120px,1320px)] ${
             scrolled
               ? "h-[70px] md:h-[86px] wide:h-[100px]"
-              : "h-[88px] md:h-[112px] wide:h-[126px]"
+              : "h-[84px] md:h-[100px] wide:h-[108px]"
           }`}
         >
           <Logo light={overlay} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          {/* Menús en el centro, entre el logo y las acciones, en una píldora de
-              vidrio redondeada como el botón de cotizar */}
-          <nav className="hidden flex-1 justify-center lg:flex" aria-label={t.mainNav}>
+          {/* Menús en una píldora de vidrio centrada en la pantalla (no entre el
+              logo y las acciones, que miden distinto), con los mismos espacios
+              entre opciones y a los bordes */}
+          <nav
+            className="pointer-events-none hidden lg:absolute lg:left-1/2 lg:top-1/2 lg:flex lg:-translate-x-1/2 lg:-translate-y-1/2"
+            aria-label={t.mainNav}
+          >
             <div
-              className={`flex items-center gap-0.5 rounded-full border p-1 backdrop-blur-[10px] transition-colors duration-300 xl:gap-1 ${glass}`}
+              className={`pointer-events-auto flex items-center gap-1 rounded-full border p-1 transition-colors duration-300 ${glass}`}
             >
               {MENUS.map((m) => {
                 const open = active === m.key;
                 const on = open || sectionOf(m);
-                const link = `inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-[0.82rem] font-bold transition-colors xl:px-4 xl:text-[0.95rem] wide:px-5 wide:text-[1rem] ${
+                const link = `inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[0.82rem] font-bold transition-colors xl:px-4 xl:text-[0.95rem] wide:px-5 wide:text-[1rem] ${
                   overlay
                     ? on
                       ? "bg-white/20 text-white"
@@ -279,7 +303,7 @@ export function Header() {
 
           {/* Botón de menú móvil */}
           <button
-            className={`relative z-10 grid h-11 w-11 place-items-center rounded-full border text-2xl backdrop-blur-[10px] transition-colors lg:hidden ${glass}`}
+            className={`relative z-10 grid h-11 w-11 place-items-center rounded-full border text-2xl transition-colors lg:hidden ${glass}`}
             aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}

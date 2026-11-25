@@ -3,7 +3,8 @@ import { chatText } from "@/data/chat";
 import { useLang } from "@/i18n";
 import { Bi } from "@/components/ui";
 
-// Invitación: Joel se asoma junto al botón (una vez por sesión)
+// Invitación: Joel se asoma junto al botón (una vez por sesión). El muñeco
+// baja un poco (translate-y), más cerca del botón (pedido del equipo, nov. 2026)
 export function ChatTeaser({ onOpen, onClose }: { onOpen: () => void; onClose: () => void }) {
   const { tr } = useLang();
   const t = chatText(tr);
@@ -30,7 +31,7 @@ export function ChatTeaser({ onOpen, onClose }: { onOpen: () => void; onClose: (
           decoding="async"
           src={joelFull}
           alt=""
-          className="h-[150px] w-auto drop-shadow-[0_12px_18px_rgba(29,32,80,.25)] md:h-[170px]"
+          className="h-[150px] w-auto translate-y-3 drop-shadow-[0_12px_18px_rgba(29,32,80,.25)] md:h-[170px] md:translate-y-4"
         />
       </button>
     </div>

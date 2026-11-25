@@ -11,8 +11,8 @@ import { container } from "@/components/ui/layout";
 // pantalla (StatOdometer: los dígitos ruedan como un odómetro); el HTML pre-generado y los lectores de pantalla llevan
 // el valor completo. Panel en azul marino (azul-900, nov. 2026): cifras en
 // blanco con el sufijo (+, K+) en naranja, descripciones en blanco al 80 %
-// (contraste AA de sobra) e íconos en cuadros azul claro translúcido con borde
-// sutil. Al pasar el cursor, cada cifra se levanta con sombra naranja, su ícono
+// (contraste AA de sobra) e íconos naranja en cuadros blancos más grandes, con borde naranja, halo
+// blanco y brillo naranja, para que destaquen sobre el azul. Al pasar el cursor, cada cifra se levanta con sombra naranja, su ícono
 // pasa a naranja y crece la franja naranja de abajo.
 const ICONS = ["award", "globe-americas", "box-seam", "people"];
 
@@ -56,10 +56,10 @@ export function Stats({ className = "pb-4 pt-6" }: { className?: string }) {
               key={s.label}
               className="group relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl px-3 py-5 transition-[translate,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:bg-white/[0.06] hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)] sm:flex-row sm:items-center sm:gap-3.5 sm:px-5"
             >
-              <span className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-xl bg-azul-700/60 text-[1.25rem] text-naranja ring-1 ring-white/15 transition-[rotate,scale,background-color,color,box-shadow] duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-naranja group-hover:text-white group-hover:ring-naranja sm:h-12 sm:w-12">
+              <span className="relative grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-white text-[1.4rem] text-naranja shadow-[0_0_0_5px_rgba(255,255,255,.1),0_12px_28px_-8px_rgba(255,118,25,.6)] ring-[3px] ring-naranja/80 transition-[rotate,scale,background-color,color,box-shadow] duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-naranja group-hover:text-white group-hover:ring-naranja sm:h-14 sm:w-14 sm:text-[1.6rem]">
                 <span
                   aria-hidden="true"
-                  className="absolute -right-3 -top-3 h-6 w-6 rotate-45 rounded-[5px] bg-white/10"
+                  className="absolute -right-3 -top-3 h-6 w-6 rotate-45 rounded-[5px] bg-naranja/12 transition-colors duration-300 group-hover:bg-white/20"
                 />
                 <Bi n={ICONS[k % ICONS.length]} className="relative" />
               </span>

@@ -103,7 +103,10 @@ export const coverageText = (tr: Tr) => ({
   sealAlt: tr("Sello LACMA Certified Packers", "LACMA Certified Packers seal"),
   certificationsTitle: tr("Certificaciones internacionales", "International certifications"),
   certifications: "LACMA · IAM · PAIMA",
-  imageAlt: tr("Avión y buque portacontenedores en puerto", "Airplane and container ship in port"),
+  imageAlt: tr(
+    "Operario de Transpack embalando una obra de arte con plástico de burbujas",
+    "Transpack crew member wrapping a painting in bubble wrap",
+  ),
   shipAlt: tr("Cargue de un contenedor de mudanza", "Loading a moving container"),
   agents: tr("2.000+", "2,000+"),
   agentsLabel: tr(
@@ -193,6 +196,26 @@ export const contactText = (tr: Tr) => ({
   email: tr("Correo", "Email"),
   mapTitle: tr("Ubicación de Transpack en Bogotá", "Transpack location in Bogotá"),
   mapSrc: "https://www.google.com/maps?q=Carrera+40+%2320A-96,+Bogot%C3%A1,+Colombia&output=embed",
+});
+
+// Franja de certificaciones y membresías al pie de Contacto (nov. 2026). Los
+// nombres completos van en inglés, como los usan las asociaciones.
+export const certsText = (tr: Tr) => ({
+  eyebrow: tr("Certificaciones y membresías", "Certifications and memberships"),
+  title: tr("Respaldo internacional en cada traslado", "International backing on every move"),
+  items: [
+    {
+      key: "lacma",
+      name: "LACMA",
+      full: "Latin American & Caribbean Moving Association",
+    },
+    { key: "iam", name: "IAM", full: "International Association of Movers" },
+    {
+      key: "paima",
+      name: "PAIMA",
+      full: "Pan American International Movers Association",
+    },
+  ],
 });
 
 export const videosText = (tr: Tr) => ({

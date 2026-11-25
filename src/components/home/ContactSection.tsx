@@ -4,8 +4,10 @@ import { useSite } from "@/hooks/useContent";
 import { contactHref } from "@/data/contact";
 import { Bi, Eyebrow, Reveal } from "@/components/ui";
 import { container, section } from "@/components/ui/layout";
+import { Certifications } from "@/components/home/Certifications";
 
-// Contacto: dirección, teléfonos, correo, redes y mapa
+// Contacto: dirección, teléfonos, correo, redes y mapa; al pie, la franja de
+// certificaciones y membresías (Certifications)
 export function ContactSection() {
   const { tr } = useLang();
   const t = contactText(tr);
@@ -91,6 +93,9 @@ export function ContactSection() {
             className="block h-full min-h-[380px] w-full border-0"
           />
         </Reveal>
+      </div>
+      <div className={container}>
+        <Certifications />
       </div>
     </section>
   );

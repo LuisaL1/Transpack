@@ -6,14 +6,13 @@ import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
+import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgOficina from "@/assets/images/oficina.jpeg";
+import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
-// La misma foto en 1151 px, para el encabezado a sangre de Mudanzas locales
-import imgLocalHero from "@/assets/images/servicio-local-hero.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -82,7 +81,7 @@ export const SERVICES: Service[] = [
       "Moves in Bogotá and its surroundings, carried out by expert, trained crews for the professional protection of your furniture, with vehicles sized to your load.",
     quote: "local",
     cta: "Get a quote",
-    image: imgLocalHero,
+    image: imgLocalesResidencial,
     heroMap: "bogota",
     heroLayout: "split",
     kicker: "Moving in Bogotá",
@@ -295,7 +294,7 @@ export const SERVICES: Service[] = [
       "Safe office moves, with an account executive for your requirements and traceability reports.",
     quote: "empresarial",
     cta: "Request a corporate proposal",
-    image: imgOficina,
+    image: imgMovilidad,
     imageReveal: "right",
     kicker: "Office moves",
     headline: "Transpack, a professional team for the safe move of your office",

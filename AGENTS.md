@@ -207,7 +207,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
   en una barra compacta en azul marino (`Stats.tsx`, `azul-900`: cifras en
-  blanco, sufijo `+`/`K+` en naranja, descripciones en blanco al 80 %; ya no en
+  blanco, sufijo `+`/`K+` en naranja, descripciones en blanco al 80 %, íconos en cuadros blancos; ya no en
   carrusel desde noviembre de 2026): al entrar, los dígitos de cada cifra ruedan como un odómetro hasta su
   valor (`StatOdometer`), desde que la barra se ve en pantalla, y al pasar el cursor cada una se
   levanta con sombra y franja naranja, como los logos de clientes. El HTML
@@ -371,14 +371,21 @@ blanco.
   Excluya algo con `data-motion="off"`.
 - **Cabecera:** se esconde al bajar (pasados 480 px, salvo en saltos grandes
   como ir a una sección) y vuelve al subir; línea naranja de avance de lectura
-  arriba del todo. **Sin franja de fondo** (nov. 2026): el logo y las acciones
+  arriba del todo. **Sin franja de fondo arriba** (nov. 2026): el logo y las acciones
   (buscar y soporte en círculos de vidrio, "Cotice su mudanza") flotan sobre la
   página, y Nosotros · Servicios · Blog · Contacto van en una **píldora de
   vidrio** (`rounded-full`, `backdrop-blur-[10px]`, borde sutil). Arriba en el
   inicio va sobre la foto: vidrio blanco al 10 %, letras blancas, logo con
   anillo blanco y franja de idiomas sin fondo (`LangBar overlay`). En las
-  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras. Con el
-  menú móvil abierto, la cabecera es blanca.
+  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras. **Al
+  bajar** (nov. 2026, pedido del equipo) aparece detrás una **franja blanca
+  translúcida** de lado a lado (`bg-white/75`, desenfoque y línea fina abajo)
+  para que la cabecera se distinga sobre cualquier sección, también las
+  oscuras; es la única barra: la píldora y los círculos de buscar y soporte
+  quedan planos sobre ella (sin borde, fondo ni sombra; nada de barra doble).
+  Arriba en la portada no hay franja. (Se probó y descartó un vidrio
+  azul noche que se adaptaba a las secciones oscuras.) Con el menú móvil
+  abierto, la cabecera es blanca.
 - **Botones:** la flecha `bi-arrow-right` se desliza al pasar el cursor; el
   primario lleva un brillo que lo cruza.
 - **Inicio, sección por sección:** titular del Hero por líneas (CSS) y
@@ -447,6 +454,12 @@ blanco.
   aparte con su propia animación CSS (`src/assets/images/mapa-lineas.svg`,
   generado por `scripts/generate-world-lines.mjs` en `pnpm map`), sin JS. En el
   bloque de historia de Nosotros.
+- **Certificaciones y membresías** (`Certifications`, al pie de Contacto en el
+  inicio; nov. 2026): LACMA, IAM y PAIMA en fichas con el estilo de los logos de
+  clientes (`TILE` y `TileStripe`, exportados de `Hero.tsx`), que entran
+  escalonadas. Logos: LACMA es el sello del cliente e IAM el oficial de
+  iamovers.org (`cert-iam.svg`). PAIMA va como logotipo de texto hasta que el
+  cliente entregue su logo (su sitio no respondía).
 - Clientes y embajadas del inicio (`Hero`): dos cuadrículas fijas con todos los
   logos, en gris; al pasar el cursor el logo toma sus colores y su ficha se
   levanta con sombra y la franja naranja.
@@ -454,17 +467,16 @@ blanco.
 ### Portada (`Hero`)
 
 - **Foto a pantalla completa** (nov. 2026; reemplazó al mapa animado):
-  `src/assets/images/img-header.jpg` (original en
-  `RecursosTranspack/Imagenes/img-header.jpeg`) cubre todo el ancho y alto del
-  Hero en escritorio (`min-h-[100svh]`, `object-cover` anclada arriba, para no
-  cortar la cabeza), también detrás de la cabecera fija. Degradado oscuro (azul
-  noche `#0D0F33` translúcido) desde la izquierda, hasta un 54 % del ancho (más
-  corto desde nov. 2026, para que se vea la caja con el logo), y desde arriba
-  (200 px, para el menú). En celular y tableta (nov. 2026) la foto va arriba en
-  4:3, casi completa, y se funde con el azul noche, donde sigue el texto (antes
-  cubría todo el alto y solo se veía un 30 % de su ancho). Para reemplazarla:
-  horizontal 16:9, idealmente 2400 × 1350 px, con el sujeto en la mitad derecha
-  y aire arriba para el menú. Titular, texto, rótulo "Desde 1968", botón
+  `src/assets/images/img-header.jpg`, el embalador con una vajilla (original en
+  `RecursosTranspack/Imagenes/img-header-vajilla.png`). La foto nítida empieza
+  bajo la cabecera (para que el menú no tape al embalador) y, en escritorio, al
+  28 % del ancho, con el borde izquierdo fundido (`.hero-photo-mask`); detrás, la
+  misma foto desenfocada llena todo el Hero (`min-h-[100svh]`), también detrás
+  de la cabecera transparente. Degradado oscuro (azul noche `#0D0F33`
+  translúcido) desde la izquierda, hasta un 56 % del ancho, y desde arriba; en
+  celular, uno vertical más parejo. Para reemplazarla: horizontal, idealmente
+  16:9 y 2400 × 1350 px, con el sujeto centrado y aire arriba. Titular, texto,
+  rótulo "Desde 1968", botón
   secundario (`btn.ghost`) y marquesina van en blanco. El `h1` usa
   `text-white!`: la regla base de `h1` en `index.css` no está en una capa y
   le gana a las utilidades.
@@ -510,8 +522,7 @@ blanco.
   cursor (`useGlobe(…, { once, hoverPause })`). Sin fondo de color detrás del
   mapa (se probaron desvanecidos azules y se descartaron). Queda el crédito de IDECA, que exige la licencia (abajo a la izquierda
   del mapa, lejos del chat). La
-  foto es `servicio-local-hero.jpg` (el original de la galería en 1151 px; la
-  de 900 px se veía borrosa a ese tamaño). En celular, la foto detrás del
+  foto es la del servicio (`locales-residencial.jpg`, entregada por el cliente). En celular, la foto detrás del
   texto y el mapa debajo. Si el cliente lo aprueba, se extiende a nacionales e
   internacionales; si no, se quita `heroLayout` y vuelve el diseño "bento".
 - Páginas de servicio (`ServiceDetailPage`, nov. 2026, con la dinámica del

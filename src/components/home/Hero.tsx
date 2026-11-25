@@ -10,20 +10,13 @@ import { Bi, btn } from "@/components/ui";
 import { container } from "@/components/ui/layout";
 import headerImg from "@/assets/images/img-header.jpg";
 
-// Portada (nov. 2026): la foto img-header.jpg a pantalla completa, de borde a
+// Portada (nov. 2026): la foto img-header.jpg (embalador con una vajilla) a pantalla completa, de borde a
 // borde y también detrás de la cabecera (que flota sobre ella, ver Header), con
 // un degradado oscuro desde la izquierda y desde arriba para que el titular y el
 // menú se lean. Reemplazó al mapa animado (Globe). Al pie, los clientes y las
 // embajadas atendidas, todos a la vista en cuadrículas fijas: en gris; al pasar
 // el cursor, cada logo recupera sus colores y su ficha se levanta con sombra y
 // la franja naranja de la marca.
-//
-// Que se vea la mayor parte de la foto (nov. 2026): en escritorio la foto casi
-// cabe entera (solo recorta arriba y abajo; se ancla arriba para no cortar la
-// cabeza) y el degradado oscuro de la izquierda es más corto, para que se vea
-// la caja con el logo detrás del titular. En celular y tableta la foto ya no
-// cubre todo el alto (así solo se veía un 30 % de su ancho): va arriba, en 4:3
-// (casi completa), y se funde con el azul noche, donde sigue el texto.
 // Resalta en negrita las cifras indicadas dentro de un texto
 function highlight(text: string, marks: string[]) {
   const parts: React.ReactNode[] = [];
@@ -56,30 +49,44 @@ export function Hero() {
   return (
     <section className="relative text-texto">
       {/* Foto a pantalla completa, también detrás de la cabecera fija */}
-      <div className="relative isolate flex items-start lg:min-h-[100svh] overflow-hidden bg-[#0D0F33] pb-16 pt-[calc(75vw-24px)] lg:items-center lg:pb-20 lg:pt-[180px]">
+      <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
+        {/* Foto a sangre detrás de la cabecera transparente (estilo pedido por el
+            cliente). La foto nítida baja hasta quedar bajo la cabecera, para que
+            el menú no tape al embalador, y la misma foto desenfocada llena el
+            espacio de atrás, así se ve continua. Foto de la vajilla (nov. 2026):
+            el embalador está en el centro de la foto; en escritorio la foto
+            nítida empieza al 28 % del ancho para que él quede a la derecha,
+            completo y fuera del texto, y su borde izquierdo se funde con la
+            desenfocada (.hero-photo-mask) */}
         <img
           src={headerImg}
-          alt={t.imageAlt}
-          width={1183}
-          height={804}
-          fetchPriority="high"
+          alt=""
+          aria-hidden="true"
+          width={1200}
+          height={805}
           decoding="async"
-          className="absolute inset-x-0 top-0 -z-20 aspect-[4/3] w-full object-cover object-[55%_top] lg:inset-y-0 lg:aspect-auto lg:h-full lg:object-[72%_top]"
+          className="absolute inset-0 -z-30 h-full w-full scale-110 object-cover object-[50%_30%] blur-2xl"
         />
-        {/* Celular y tableta: la foto se funde abajo con el azul noche */}
+        <div className="absolute inset-x-0 bottom-0 top-[96px] -z-20 md:top-[112px] lg:left-[28%] wide:top-[120px]">
+          <img
+            src={headerImg}
+            alt={t.imageAlt}
+            width={1200}
+            height={805}
+            fetchPriority="high"
+            decoding="async"
+            className="hero-photo-mask h-full w-full object-cover object-[51%_10%]"
+          />
+        </div>
+        {/* Degradado oscuro desde la izquierda (titular) y desde arriba (menú).
+            En celular, el texto va sobre toda la foto: más parejo */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 aspect-[4/3] bg-[linear-gradient(180deg,rgba(13,15,51,0)_45%,rgba(13,15,51,.55)_75%,#0D0F33_100%)] lg:hidden"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,15,51,.85)_0%,rgba(13,15,51,.7)_28%,rgba(13,15,51,.32)_44%,rgba(13,15,51,0)_56%)] max-lg:bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,.72)_45%,rgba(13,15,51,.85)_100%)]"
         />
-        {/* Escritorio: degradado oscuro desde la izquierda, detrás del titular */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 hidden bg-[linear-gradient(90deg,rgba(13,15,51,.82)_0%,rgba(13,15,51,.58)_24%,rgba(13,15,51,.2)_40%,rgba(13,15,51,0)_54%)] lg:block"
-        />
-        {/* Desde arriba, para el menú */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[140px] bg-[linear-gradient(180deg,rgba(13,15,51,.5)_0%,rgba(13,15,51,0)_100%)] lg:h-[200px]"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[240px] bg-[linear-gradient(180deg,rgba(13,15,51,.35)_0%,rgba(13,15,51,0)_100%)]"
         />
 
         <div className="mx-auto w-[min(100%-32px,1200px)] wide:w-[min(100%-120px,1320px)]">
@@ -111,7 +118,7 @@ export function Hero() {
                 </span>
               </span>
             </h1>
-            <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-white/90 [text-shadow:0_1px_14px_rgba(13,15,51,.6)] lg:mx-0 lg:text-start">
+            <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-white/90 lg:mx-0 lg:text-start">
               {highlight(t.sub, t.subHighlights)}
             </p>
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
@@ -233,11 +240,11 @@ export function Hero() {
 // transición CSS se limita a esas propiedades: la entrada (opacidad y posición)
 // la anima GSAP, y una transición CSS sobre las mismas lo confundiría al medir
 // (los logos quedaban invisibles)
-const TILE =
+export const TILE =
   "group relative overflow-hidden rounded-2xl border border-transparent bg-white transition-[translate,border-color,box-shadow] duration-300 hover:-translate-y-1.5 hover:border-linea hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)]";
 
 // Franja naranja que crece desde la izquierda al pasar el cursor por la ficha
-function TileStripe() {
+export function TileStripe() {
   return (
     <span
       aria-hidden="true"

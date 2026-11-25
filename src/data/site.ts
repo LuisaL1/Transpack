@@ -5,16 +5,15 @@ import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
+import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgOficina from "@/assets/images/oficina.jpeg";
+import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
-// La misma foto en 1151 px, para el encabezado a sangre de Mudanzas locales
-import imgLocalHero from "@/assets/images/servicio-local-hero.jpg";
 import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -171,7 +170,7 @@ export const SERVICES: Service[] = [
       "Trasteos en Bogotá y sus alrededores, realizados por personal experto y capacitado para la protección profesional del mobiliario, con vehículos adecuados al volumen.",
     quote: "local",
     cta: "Cotizar",
-    image: imgLocalHero,
+    image: imgLocalesResidencial,
     heroMap: "bogota",
     heroLayout: "split",
     kicker: "Trasteos en Bogotá",
@@ -420,7 +419,7 @@ export const SERVICES: Service[] = [
       "Traslado seguro de oficinas, con un ejecutivo de cuenta para sus requerimientos y reportes de trazabilidad.",
     quote: "empresarial",
     cta: "Solicitar propuesta corporativa",
-    image: imgOficina,
+    image: imgMovilidad,
     imageReveal: "right",
     kicker: "Traslado de oficinas",
     headline: "Transpack, un equipo profesional para el traslado seguro de su oficina",
