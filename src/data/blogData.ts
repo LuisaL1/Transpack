@@ -1,8 +1,8 @@
 // Artículos del blog. Texto tomado de los PDF de RecursosTranspack/
 // (#1 mudanza marítima internacional y #3 58 años; el #2, "elegancia en
 // tránsito", se retiró a pedido del cliente en noviembre de 2026).
-import imgContenedor from "@/assets/images/global.jpg";
-import imgGlobal from "@/assets/images/global.jpg";
+import imgContenedor from "@/assets/images/blog-mudanza-maritima.jpg";
+import imgGlobal from "@/assets/images/blog-58-anos.jpg";
 
 export type Item = string | { b: string; t: string };
 export type Block =

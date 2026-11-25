@@ -1,7 +1,7 @@
 // English version of the blog articles (blogData.ts). The slug stays in Spanish
 // as an internal id; the English URL comes from the i18n slug map.
-import imgContenedor from "@/assets/images/contenedor.jpg";
-import imgGlobal from "@/assets/images/global.jpg";
+import imgContenedor from "@/assets/images/blog-mudanza-maritima.jpg";
+import imgGlobal from "@/assets/images/blog-58-anos.jpg";
 import type { Post } from "@/data/blogData";
 
 export const blogPosts: Post[] = [

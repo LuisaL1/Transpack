@@ -103,7 +103,10 @@ export const coverageText = (tr: Tr) => ({
   sealAlt: tr("Sello LACMA Certified Packers", "LACMA Certified Packers seal"),
   certificationsTitle: tr("Certificaciones internacionales", "International certifications"),
   certifications: "LACMA · IAM · PAIMA",
-  imageAlt: tr("Avión y buque portacontenedores en puerto", "Airplane and container ship in port"),
+  imageAlt: tr(
+    "Operario de Transpack embalando una obra de arte con plástico de burbujas",
+    "Transpack crew member wrapping a painting in bubble wrap",
+  ),
   shipAlt: tr("Cargue de un contenedor de mudanza", "Loading a moving container"),
   agents: tr("2.000+", "2,000+"),
   agentsLabel: tr(
