@@ -7,16 +7,17 @@ import { useDestinationName, useSite } from "@/hooks/useContent";
 import { useMotion } from "@/hooks/useMotion";
 import { DESTINATIONS } from "@/data/worldMap";
 import { Bi, btn } from "@/components/ui";
-import { Globe } from "@/components/home/Globe";
 import { container } from "@/components/ui/layout";
+import headerImg from "@/assets/images/img-header.jpg";
 
-// Fondo blanco (pedido del cliente, oct. 2026). A la izquierda el titular y los
-// botones; a la derecha el mapa animado (Globe) en su panel azul marino. En
-// celular el mapa va debajo del texto. Al pie, los clientes y las embajadas
-// atendidas, todos a la vista en cuadrículas fijas (ya no en carrusel, nov.
-// 2026): en gris; al pasar el cursor, cada logo recupera sus colores y su ficha
-// se levanta con sombra y la franja naranja de la marca.
-// Resalta en negrita y azul las cifras indicadas dentro de un texto
+// Portada (nov. 2026): la foto img-header.jpg a pantalla completa, de borde a
+// borde y también detrás de la cabecera (que flota sobre ella, ver Header), con
+// un degradado oscuro desde la izquierda y desde arriba para que el titular y el
+// menú se lean. Reemplazó al mapa animado (Globe). Al pie, los clientes y las
+// embajadas atendidas, todos a la vista en cuadrículas fijas: en gris; al pasar
+// el cursor, cada logo recupera sus colores y su ficha se levanta con sombra y
+// la franja naranja de la marca.
+// Resalta en negrita las cifras indicadas dentro de un texto
 function highlight(text: string, marks: string[]) {
   const parts: React.ReactNode[] = [];
   let rest = text;
@@ -25,7 +26,7 @@ function highlight(text: string, marks: string[]) {
     if (at < 0) continue;
     parts.push(
       rest.slice(0, at),
-      <strong key={mark} className="font-bold text-azul">
+      <strong key={mark} className="font-bold text-white">
         {mark}
       </strong>,
     );
@@ -46,97 +47,99 @@ export function Hero() {
       m.reveal(list.children, list, { y: 24, stagger: 0.05, duration: 0.7 });
   });
   return (
-    // overflow-x-clip (no overflow-hidden): así funciona el sticky de adentro
-    <section className="relative overflow-x-clip bg-white text-texto">
-      {/* Dos columnas en escritorio (propuesta "noche", nov. 2026): el titular a la
-          izquierda y el mapa a la derecha en un panel azul marino de casi la mitad
-          de la pantalla, unidos por un resplandor suave detrás del panel. En
-          celular y tableta el panel va debajo del texto.
-          Historia guiada por el scroll (escritorio, sin movimiento reducido): este
-          bloque mide 3,2 pantallas y su contenido queda fijo mientras se recorre;
-          el avance elige la etapa del mapa (useGlobe lee `data-globe-track`). */}
-      <div data-globe-track className="pt-[124px] md:pt-[150px] lg:pt-0 motion-safe:lg:h-[320vh]">
-        <div className="lg:flex lg:min-h-[100svh] lg:items-center lg:pb-8 lg:pt-[150px] motion-safe:lg:sticky motion-safe:lg:top-0 motion-safe:lg:h-[100svh]">
-          <div className="mx-auto grid w-[min(100%-32px,1200px)] wide:w-[min(100%-120px,1320px)] grid-cols-[minmax(0,1fr)] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-12 xl:gap-16">
-            <div className="animate-fade-up mx-auto w-full min-w-0 max-w-[600px] text-center lg:mx-0 lg:max-w-[560px] lg:text-start">
-              <Link
-                to={lp("/#cobertura")}
-                className="group mb-7 inline-flex items-center gap-2 rounded-full border border-linea bg-white px-3.5 py-1.5 text-[0.76rem] font-medium text-texto shadow-[0_6px_18px_-12px_rgba(39,43,124,.45)] transition-colors hover:border-azul/30 hover:text-azul"
-              >
-                <span className="h-2 w-2 rounded-full bg-naranja shadow-[0_0_0_4px_rgba(255,118,25,.25)]" />
-                <span>
-                  {t.since} · <span className="hidden sm:inline">{t.certifications}</span>
-                  <span className="sm:hidden">{t.certificationsShort}</span>
-                </span>
-                <Bi
-                  n="chevron-right"
-                  className="text-[0.7rem] transition-transform group-hover:translate-x-0.5"
-                />
-              </Link>
-              {/* Cada línea sale de una máscara (CSS .line-mask: está arriba, no
-                  espera al motor de movimiento) */}
-              <h1 className="mb-6 text-[clamp(2.2rem,1.2rem+3vw,3.9rem)] leading-[1.05] tracking-[-0.005em] text-azul">
-                <span className="line-mask">
-                  <span>{t.title}</span>
-                </span>
-                <span className="line-mask [--d:140ms]">
-                  <span>
-                    {t.titlePrefix}
-                    <span className="text-naranja-600">{t.titleHighlight}</span>
-                  </span>
-                </span>
-              </h1>
-              <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-texto lg:mx-0 lg:text-start">
-                {highlight(t.sub, t.subHighlights)}
-              </p>
-              <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
-                <Link to={lp("/#cotizar")} data-magnetic className={`${btn.primary} ${btn.lg}`}>
-                  {t.cta}
-                  <Bi n="arrow-right" />
-                </Link>
-                <Link to={lp("/#servicios")} className={`${btn.outline} ${btn.lg}`}>
-                  {t.ctaServices}
-                </Link>
-              </div>
-              {/* Marquesina de destinos (los del mapa, src/data/worldMap.ts) */}
-              <div className="mt-9 flex items-center gap-3 text-[0.8rem] font-semibold">
-                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-azul px-3 py-1.5 font-title text-[0.72rem] uppercase tracking-[0.14em] text-white">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-naranja/70 motion-reduce:hidden" />
-                    <span className="relative h-2 w-2 rounded-full bg-naranja" />
-                  </span>
-                  {t.routesFrom}
-                </span>
-                <div className="marquee flex min-w-0 flex-1 overflow-hidden" dir="ltr">
-                  {[0, 1].map((k) => (
-                    <ul
-                      key={k}
-                      aria-hidden={k === 1}
-                      className="animate-marquee flex shrink-0 items-center gap-5 pr-5 text-azul [animation-duration:70s]"
-                    >
-                      {DESTINATIONS.map((d) => (
-                        <li key={d.name} className="flex items-center gap-5 whitespace-nowrap">
-                          {placeName(d.name)}
-                          <Bi n="airplane" className="text-[0.7rem] text-naranja" />
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
-                </div>
-              </div>
-            </div>
+    <section className="relative bg-white text-texto">
+      {/* Foto a pantalla completa, también detrás de la cabecera fija */}
+      <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
+        <img
+          src={headerImg}
+          alt={t.imageAlt}
+          width={1183}
+          height={804}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_center]"
+        />
+        {/* Degradado oscuro desde la izquierda (titular) y desde arriba (menú).
+            En celular, el texto va sobre toda la foto: más parejo */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,15,51,.85)_0%,rgba(13,15,51,.7)_28%,rgba(13,15,51,.32)_46%,rgba(13,15,51,0)_62%)] max-lg:bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,.72)_45%,rgba(13,15,51,.85)_100%)]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[200px] bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,0)_100%)]"
+        />
 
-            <div className="relative">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-8 -z-0 rounded-[48px] bg-[radial-gradient(closest-side,rgba(39,43,124,.18),transparent)] blur-2xl"
+        <div className="mx-auto w-[min(100%-32px,1200px)] wide:w-[min(100%-120px,1320px)]">
+          <div className="animate-fade-up mx-auto w-full min-w-0 max-w-[620px] text-center lg:mx-0 lg:text-start">
+            <Link
+              to={lp("/#cobertura")}
+              className="group mb-7 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[0.76rem] font-medium text-white backdrop-blur-[10px] transition-colors hover:border-white/50 hover:bg-white/15"
+            >
+              <span className="h-2 w-2 rounded-full bg-naranja shadow-[0_0_0_4px_rgba(255,118,25,.25)]" />
+              <span>
+                {t.since} · <span className="hidden sm:inline">{t.certifications}</span>
+                <span className="sm:hidden">{t.certificationsShort}</span>
+              </span>
+              <Bi
+                n="chevron-right"
+                className="text-[0.7rem] transition-transform group-hover:translate-x-0.5"
               />
-              <Globe className="relative h-[min(118vw,560px)] sm:h-[600px] lg:h-[min(calc(100svh-200px),660px)] lg:min-h-[460px]" />
+            </Link>
+            {/* Cada línea sale de una máscara (CSS .line-mask: está arriba, no
+                espera al motor de movimiento) */}
+            <h1 className="mb-6 text-[clamp(2.2rem,1.2rem+3vw,3.9rem)] leading-[1.05] tracking-[-0.005em] text-white! [text-shadow:0_2px_24px_rgba(13,15,51,.35)]">
+              <span className="line-mask">
+                <span>{t.title}</span>
+              </span>
+              <span className="line-mask [--d:140ms]">
+                <span>
+                  {t.titlePrefix}
+                  <span className="text-naranja">{t.titleHighlight}</span>
+                </span>
+              </span>
+            </h1>
+            <p className="mx-auto mb-9 max-w-[52ch] text-[clamp(1rem,.95rem+.25vw,1.12rem)] font-medium text-white/90 lg:mx-0 lg:text-start">
+              {highlight(t.sub, t.subHighlights)}
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
+              <Link to={lp("/#cotizar")} data-magnetic className={`${btn.primary} ${btn.lg}`}>
+                {t.cta}
+                <Bi n="arrow-right" />
+              </Link>
+              <Link to={lp("/#servicios")} className={`${btn.ghost} ${btn.lg}`}>
+                {t.ctaServices}
+              </Link>
+            </div>
+            {/* Marquesina de destinos (src/data/worldMap.ts) */}
+            <div className="mt-9 flex items-center gap-3 text-[0.8rem] font-semibold">
+              <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-title text-[0.72rem] uppercase tracking-[0.14em] text-white ring-1 ring-white/25 backdrop-blur-[10px]">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-naranja/70 motion-reduce:hidden" />
+                  <span className="relative h-2 w-2 rounded-full bg-naranja" />
+                </span>
+                {t.routesFrom}
+              </span>
+              <div className="marquee flex min-w-0 flex-1 overflow-hidden" dir="ltr">
+                {[0, 1].map((k) => (
+                  <ul
+                    key={k}
+                    aria-hidden={k === 1}
+                    className="animate-marquee flex shrink-0 items-center gap-5 pr-5 text-white/90 [animation-duration:70s]"
+                  >
+                    {DESTINATIONS.map((d) => (
+                      <li key={d.name} className="flex items-center gap-5 whitespace-nowrap">
+                        {placeName(d.name)}
+                        <Bi n="airplane" className="text-[0.7rem] text-naranja" />
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       {/* Clientes y embajadas: todos a la vista; el logo toma color al pasar el cursor */}
       <div ref={clientsRef} className="relative pb-14 pt-10">
         <p className="mb-10 px-4 text-center text-[0.95rem] font-medium text-texto">

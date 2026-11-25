@@ -18,6 +18,11 @@ export const heroText = (tr: Tr) => ({
   ),
   // Cifras que se resaltan dentro de "sub" (deben aparecer tal cual en el texto)
   subHighlights: [tr("60.000 toneladas", "60,000 tons"), tr("176 países", "176 countries")],
+  // Foto de fondo del Hero (img-header.jpg)
+  imageAlt: tr(
+    "Embalador de Transpack envolviendo con cuidado una vajilla fina, junto a cajas de la marca",
+    "Transpack packer carefully wrapping fine tableware next to branded boxes",
+  ),
   cta: tr("Cotiza tu mudanza", "Get a moving quote"),
   ctaServices: tr("Ver servicios", "See services"),
   // Marquesina de destinos bajo los botones
@@ -214,7 +219,6 @@ export const mapText = (tr: Tr) => ({
   countryName: "Colombia",
   locality: tr("Localidad de Bogotá", "Bogotá locality"),
   cityCredit: tr("Mapa: IDECA · CC BY 4.0", "Map: IDECA · CC BY 4.0"),
-  exclusive: tr("Zona exclusiva", "Exclusive area"),
   cityPhoto: (city: string, country: string) =>
     tr(`Vista de ${city}, ${country}`, `View of ${city}, ${country}`),
   credit: tr("Foto", "Photo"),

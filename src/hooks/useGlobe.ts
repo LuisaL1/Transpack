@@ -147,8 +147,9 @@ export function useGlobe(labels: Omit<GlobeLabels, "selected">) {
       last = now;
       if (scrolled() && globe && track) {
         progress = trackProgress(track);
-        // Sigue al scroll con suavidad (igual a cualquier frecuencia de pantalla)
-        story += (progress - story) * Math.min(1, dt / 140);
+        // Sigue al scroll con suavidad (igual a cualquier frecuencia de pantalla;
+        // más pausado desde nov. 2026, para que las transiciones se vean fluidas)
+        story += (progress - story) * Math.min(1, dt / 320);
         if (Math.abs(progress - story) < 0.0005) story = progress;
       }
       draw();

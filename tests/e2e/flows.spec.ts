@@ -140,127 +140,16 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);
 });
 
-test("portada: globo animado al lado del titular y botón para cotizar", async ({ page }) => {
+test("portada: foto a pantalla completa bajo la cabecera y botón para cotizar", async ({ page }) => {
   await page.goto("/");
   await closeCookies(page);
-  await expect(
-    page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" }),
-  ).toBeVisible();
-  await expect(page.getByText("¿Qué necesitas hoy?")).toHaveCount(0);
+  const photo = page.getByRole("img", { name: /^Embalador de Transpack/ });
+  await expect(photo).toBeVisible();
+  // La foto empieza arriba del todo: detrás de la cabecera, que flota sobre ella
+  expect((await photo.boundingBox())!.y).toBeLessThanOrEqual(1);
+  await expect(page.locator("canvas")).toHaveCount(0);
   await page.getByRole("link", { name: "Cotiza tu mudanza" }).click();
   await expect(page).toHaveURL(/#cotizar/);
-});
-
-// Puntos de los destinos en el mapa (px de CSS): discos naranjas con un anillo
-// azul oscuro; las rutas, también naranjas (y con resplandor donde se juntan),
-// no tienen ese anillo
-const mapPins = (c: HTMLCanvasElement) => {
-  const { data, width, height } = c.getContext("2d")!.getImageData(0, 0, c.width, c.height);
-  const dpr = c.width / c.clientWidth;
-  const orange = (x: number, y: number) => {
-    const i = (y * width + x) * 4;
-    return data[i] > 230 && data[i + 1] > 90 && data[i + 1] < 150 && data[i + 2] < 70;
-  };
-  const dark = (x: number, y: number) => {
-    const i = (y * width + x) * 4;
-    return data[i] < 90 && data[i + 1] < 90 && data[i + 2] < 130 && data[i + 3] > 200;
-  };
-  const r = Math.round(dpr);
-  const ring = Math.round(3.5 * dpr);
-  const found: [number, number][] = [];
-  for (let y = ring; y < height - ring; y += 1)
-    for (let x = ring; x < width - ring; x += 1) {
-      if (![-r, 0, r].every((dy) => [-r, 0, r].every((dx) => orange(x + dx, y + dy)))) continue;
-      if (
-        ![dark(x - ring, y), dark(x + ring, y), dark(x, y - ring), dark(x, y + ring)].every(Boolean)
-      )
-        continue;
-      if (found.some(([fx, fy]) => Math.hypot(fx - x, fy - y) < 12 * dpr)) continue;
-      found.push([x, y]);
-    }
-  return found.map(([x, y]) => [x / dpr, y / dpr]);
-};
-
-test("mapa de la portada: tras el carrusel muestra Bogotá y al tocar una localidad, su foto", async ({
-  page,
-}) => {
-  test.setTimeout(70000);
-  await page.goto("/");
-  await closeCookies(page);
-  const map = page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" });
-  await map.scrollIntoViewIfNeeded();
-  // En escritorio el mapa avanza con el scroll (el Hero queda fijo): bajar un
-  // poco lleva a Bogotá. En celular avanza solo, como antes
-  const toBogota = () =>
-    page.evaluate(() => {
-      // Solo en escritorio (en celular el Hero no queda fijo)
-      if (!matchMedia("(min-width: 1024px)").matches) return;
-      const track = document.querySelector<HTMLElement>("[data-globe-track]")!;
-      const len = track.offsetHeight - innerHeight;
-      if (len > 0) scrollTo({ top: len * 0.2, behavior: "instant" });
-    });
-  await toBogota();
-  // Primero, que la foto se haya ido y se vea el mapa (con la máquina cargada
-  // tarda más): la capa de fotos va justo después del canvas
-  await expect
-    .poll(() => map.evaluate((c) => getComputedStyle(c.nextElementSibling!).opacity), {
-      timeout: 40000,
-    })
-    .toBe("0");
-  const box = (await map.boundingBox())!;
-  const card = page.getByRole("dialog");
-  // Tras el carrusel de fotos (unos 15 s; en escritorio, al bajar) aparece
-  // Bogotá: el centro del mapa cae sobre una localidad. Con el mouse encima la
-  // animación se pausa (en celular), así que después de cada intento se saca
-  // del mapa para que siga. El clic va a coordenadas de la pantalla: el de un
-  // elemento lo desplaza antes "a la vista", y con el Hero fijo eso movería la
-  // página (y el mapa avanzaría a Colombia)
-  await expect
-    .poll(
-      async () => {
-        await toBogota();
-        await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-        const shown = await card.waitFor({ timeout: 300 }).then(
-          () => true,
-          () => false,
-        );
-        if (shown && (await card.getByText("Localidad de Bogotá").isVisible())) return true;
-        if (shown) await page.keyboard.press("Escape");
-        await page.mouse.move(0, 0);
-        return false;
-      },
-      { timeout: 45000, intervals: [1500] },
-    )
-    .toBe(true);
-  await expect(card.getByRole("img", { name: /, Bogotá$/ })).toBeVisible();
-  // También en coordenadas: desplazar la página cerraría la tarjeta por sí solo
-  const closeBox = (await card.getByRole("button", { name: "Cerrar" }).boundingBox())!;
-  await page.mouse.click(closeBox.x + closeBox.width / 2, closeBox.y + closeBox.height / 2);
-  await expect(card).toHaveCount(0);
-});
-
-test("mapa de la portada: al tocar un país muestra la foto de su capital", async ({ page }) => {
-  // Con movimiento reducido el mapa queda fijo, con todos los destinos
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  await closeCookies(page);
-  const map = page.getByRole("img", { name: "Mapa de destinos de Transpack desde Bogotá" });
-  await map.scrollIntoViewIfNeeded();
-  await expect.poll(async () => (await map.evaluate(mapPins)).length).toBeGreaterThan(3);
-  const card = page.getByRole("dialog");
-  for (const [x, y] of await map.evaluate(mapPins)) {
-    await map.click({ position: { x, y } });
-    const shown = await card.waitFor({ timeout: 500 }).then(
-      () => true,
-      () => false,
-    );
-    if (shown) break;
-  }
-  await expect(card).toBeVisible();
-  await expect(card.getByText(/^Capital: /)).toBeVisible();
-  await expect(card.getByRole("img", { name: /^Vista de / })).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(card).toHaveCount(0);
 });
 
 test("cotizador: preselección por URL y validación", async ({ page }) => {

@@ -7,7 +7,8 @@ import { LANG_INFO, LANGS, useLang, type Lang } from "@/i18n";
 import { langBarText, REGIONS, regionLabel as optionLabel } from "@/data/navigation";
 import { Bi } from "@/components/ui";
 
-export function LangBar({ hidden }: { hidden: boolean }) {
+// `overlay`: en el inicio va sin fondo, sobre la foto del Hero (nov. 2026)
+export function LangBar({ hidden, overlay = false }: { hidden: boolean; overlay?: boolean }) {
   const { lang, tr, switchTo } = useLang();
   const t = langBarText(tr);
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export function LangBar({ hidden }: { hidden: boolean }) {
 
   return (
     <div
-      className={`relative z-[60] bg-[#0d0f33] text-[0.78rem] text-white/65 transition-[max-height,opacity] duration-300 ${
+      className={`relative z-[60] ${overlay ? "bg-transparent" : "bg-[#0d0f33]"} text-[0.78rem] text-white/65 transition-[max-height,opacity] duration-300 ${
         hidden ? "max-h-0 overflow-hidden opacity-0" : "max-h-10 opacity-100"
       }`}
       aria-hidden={hidden}

@@ -68,7 +68,7 @@ src/
 │   │                       Services, Levels, Coverage, Process,
 │   │                       AboutTeaser, Gallery, QuoteSection, BlogSection,
 │   │                       FaqSection, VideoShorts, ContactSection), el mapamundi
-│   │                       (Globe, con CountryCard al tocar un país), el
+│   │                       (Globe y CountryCard, ya sin montar), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
 │   ├── services/           ColombiaRoutesMap (mapa animado de Mudanzas nacionales)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
@@ -293,7 +293,7 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   `text-center`. Los párrafos del header van siempre a la izquierda (`header p`).
 - Fondo de página blanco por defecto, con bloques de color hechos a propósito
   (Cobertura en azul, Videos en violeta, la franja naranja de llamado a la
-  acción, el panel azul noche del mapa de la portada). Fondos con movimiento
+  acción, la foto a pantalla completa de la portada). Fondos con movimiento
   sutil (como `WorldLines`) son bienvenidos donde una sección se vea estática.
 
 ### Movimiento (noviembre de 2026)
@@ -363,7 +363,15 @@ blanco.
   en secuencia y los enlaces con `data-magnetic` siguen un poco al puntero.
   Excluya algo con `data-motion="off"`.
 - **Cabecera:** se esconde al bajar (pasados 480 px, salvo en saltos grandes
-  como ir a una sección) y vuelve al subir; línea naranja de avance de lectura.
+  como ir a una sección) y vuelve al subir; línea naranja de avance de lectura
+  arriba del todo. **Sin franja de fondo** (nov. 2026): el logo y las acciones
+  (buscar y soporte en círculos de vidrio, "Cotice su mudanza") flotan sobre la
+  página, y Nosotros · Servicios · Blog · Contacto van en una **píldora de
+  vidrio** (`rounded-full`, `backdrop-blur-[10px]`, borde sutil). Arriba en el
+  inicio va sobre la foto: vidrio blanco al 10 %, letras blancas, logo con
+  anillo blanco y franja de idiomas sin fondo (`LangBar overlay`). En las
+  demás páginas y al bajar: vidrio blanco al 70 % con letras oscuras. Con el
+  menú móvil abierto, la cabecera es blanca.
 - **Botones:** la flecha `bi-arrow-right` se desliza al pasar el cursor; el
   primario lleva un brillo que lo cruza.
 - **Inicio, sección por sección:** titular del Hero por líneas (CSS) y
@@ -419,59 +427,22 @@ blanco.
   logos, en gris; al pasar el cursor el logo toma sus colores y su ficha se
   levanta con sombra y la franja naranja.
 
-### Portada (`Hero` + `Globe`)
+### Portada (`Hero`)
 
-- Dos columnas en escritorio: titular y botones a la izquierda; a la derecha el
-  **mapa animado en un panel azul noche** (`#0D0F33`) con esquinas redondeadas,
-  resplandor azul suave detrás, **pestañas** arriba (Bogotá · Colombia · Mundo,
-  marcan la etapa y llevan a ella), barra de avance naranja y leyenda abajo. En
-  celular y tableta el panel va debajo del texto.
-- Estilo del mapa ("noche", `src/lib/globe.ts`): mar azul marino con halo,
-  continentes azul grisáceo translúcido, Colombia, Estados Unidos y las
-  localidades de Bogotá en lavanda luminosa, rutas y puntos naranja con
-  resplandor, textos claros con halo oscuro, camión blanco con franjas naranja.
-- **Historia guiada por el scroll en escritorio** (sin movimiento reducido): el
-  bloque superior del Hero mide 3,2 pantallas (`data-globe-track`,
-  `motion-safe:lg:h-[320vh]`) y su contenido queda fijo (`sticky`) mientras se
-  recorre; el avance elige el momento de la historia (`scrollScene` en
-  `src/lib/globe.ts`, suavizado en `useGlobe`) y al subir retrocede:
-  0–33 % Bogotá (la primera foto de los sectores se cierra en la ciudad y los
-  camiones recorren las localidades), 33–66 % Colombia (la cámara se aleja y
-  salen las rutas a las ciudades), 66–100 % Mundo (continentes y, desde el
-  90 %, el mapamundi del Atlántico con todas las rutas). Aviso "Desliza para
-  explorar" al llegar. Los pulsos y brillos siguen con el reloj. Seguir
-  desplazándose cierra la tarjeta de un lugar. La sección usa `overflow-x-clip`
-  (no `overflow-hidden`, que rompe el `sticky`).
-- **En celular y tableta** la historia avanza sola en bucle (velocidad ≈ 0,89×
-  en `useGlobe`) y se detiene con el mouse encima: carrusel de fotos de los
-  sectores exclusivos de Bogotá (El Nogal, Hacienda Santa Bárbara en Usaquén,
-  la Séptima con 94, El Refugio y el Parque de la 93; 2 s cada una, con nombre
-  y crédito; `SECTORS` en `scripts/fetch-country-photos.mjs` →
-  `src/data/sectorPhotos.ts`) → Bogotá y sus 20 localidades (unos 15 s) →
-  Colombia con rutas a las capitales de departamento (`CITIES`) → por
-  continente (América con toda Latinoamérica; Europa con sus 10 países
-  principales; África; Asia; Oceanía con Australia y Nueva Zelanda), con 2 s
-  de pausa en Colombia y en cada continente → globo girando con todos los
-  destinos → vuelve la primera foto. Con movimiento reducido, mapa fijo.
-- Bogotá: tres camiones salen de Puente Aranda (la sede) y pasan por todas las
-  localidades menos Sumapaz, con estela naranja; frenan en cada una (onda) y
-  cada uno termina en una de las de clientes exclusivos, estratos 5 y 6
-  (Usaquén, Chapinero y Suba, `FINE`), que sube, se pone naranja con el aviso
-  "Zona exclusiva" y queda con una estrella. Rutas y tiempos en `TRUCK_ROUTES`.
-  Las localidades se pueden tocar.
-- Ciudades y destinos: `scripts/generate-world-map.mjs` (`pnpm map`); nombres
-  de capitales y textos del panel en `mapText` de `src/data/home.ts`. Lógica y
-  dibujo en `src/lib/globe.ts`, animación en `src/hooks/useGlobe.ts` (pausa
-  fuera de pantalla).
-- Al tocar un país (o una localidad de Bogotá, o una ciudad de Colombia) la
-  animación se detiene y `CountryCard` muestra la foto de su sitio más
-  representativo (Torre Eiffel, Coliseo, Monserrate, TransMiCable…; elegidas a
-  mano en `OVERRIDES` de `scripts/fetch-country-photos.mjs`; las demás usan la
-  foto automática de su capital), con autor y licencia (lo exige la licencia).
-  Las fotos **no están en el proyecto**: se cargan desde `thumb.wikimedia.org`
-  y `upload.wikimedia.org`, los únicos dominios de Wikimedia que autoriza la
-  CSP. Para cambiar una, use `OVERRIDES` y corra `pnpm fotos`. Están
-  pendientes de que el cliente las apruebe.
+- **Foto a pantalla completa** (nov. 2026; reemplazó al mapa animado):
+  `src/assets/images/img-header.jpg` (original en
+  `RecursosTranspack/Imagenes/img-header.jpeg`) cubre todo el ancho y alto del
+  Hero (`min-h-[100svh]`, `object-cover`), también detrás de la cabecera fija.
+  Degradado oscuro (azul noche `#0D0F33` translúcido) desde la izquierda,
+  hasta un 62 % del ancho, y desde arriba (200 px, para el menú); en celular,
+  uno vertical más parejo. Titular, texto, rótulo "Desde 1968", botón
+  secundario (`btn.ghost`) y marquesina van en blanco. El `h1` usa
+  `text-white!`: la regla base de `h1` en `index.css` no está en una capa y
+  le gana a las utilidades.
+- **Mapa animado (retirado de la portada):** `Globe`, `useGlobe`,
+  `src/lib/globe.ts` y `CountryCard` siguen en el proyecto pero no se montan
+  en ninguna página. Su historia (Bogotá con líneas a las localidades, Colombia
+  y el mundo, gris sobre blanco) está en el historial de git.
 
 ### Páginas internas
 

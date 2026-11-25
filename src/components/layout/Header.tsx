@@ -12,6 +12,9 @@ import { SupportPanel } from "@/components/layout/SupportPanel";
 
 // Cabecera fija: franja de idiomas, logo, megamenús, buscador, soporte y menú
 // móvil. El contenido de los menús está en src/data/navigation.ts.
+// Sin franja de fondo (nov. 2026): el logo y las acciones flotan sobre la página
+// y los enlaces van en una píldora de vidrio (translúcida, con desenfoque). En
+// la parte de arriba del inicio flota sobre la foto del Hero, en blanco.
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -108,13 +111,20 @@ export function Header() {
     closeTimer.current = window.setTimeout(() => setActive(null), 160);
   };
 
-  const solid = scrolled || menuOpen || active !== null;
   // Nunca se esconde con un menú o el buscador abiertos
   const hide = tucked && !menuOpen && active === null && !searchOpen;
-  // Todas las portadas son blancas (inicio y PageHero): la cabecera siempre
-  // usa letras oscuras.
-  const iconCls =
-    "grid h-9 w-9 place-items-center rounded-full text-[1.05rem] transition-colors text-tinta hover:bg-gris hover:text-azul";
+  // Arriba en el inicio la cabecera va sobre la foto oscura del Hero: letras
+  // blancas. En las demás portadas (blancas) y al bajar, letras oscuras.
+  const home = pathname.replace(/\/$/, "") === lp("/").replace(/\/$/, "");
+  const overlay = home && !scrolled && !menuOpen;
+  const glass = overlay
+    ? "border-white/25 bg-white/10 text-white shadow-[0_8px_30px_-12px_rgba(13,15,51,.55)]"
+    : "border-linea bg-white/70 text-tinta shadow-[0_8px_30px_-14px_rgba(39,43,124,.35)]";
+  const iconCls = `grid h-10 w-10 place-items-center rounded-full border text-[1.05rem] backdrop-blur-[10px] transition-colors ${
+    overlay
+      ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
+      : "border-linea bg-white/70 text-tinta hover:bg-white hover:text-azul"
+  }`;
   const current = MENUS.find((m) => m.key === active);
   const sectionOf = (m: Menu) =>
     (m.key === "nosotros" && /^(\/en)?\/(nosotros|about)/.test(pathname)) ||
@@ -125,18 +135,15 @@ export function Header() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] focus-within:translate-y-0 ${
-          hide ? "-translate-y-full" : ""
-        } ${
-          solid
-            ? "bg-white/95 shadow-[0_1px_0_#e1e5ee,0_8px_24px_-16px_rgba(39,43,124,.25)] backdrop-blur-xl"
-            : ""
-        }`}
+          hide ? "-translate-y-[calc(100%+12px)]" : ""
+        } ${menuOpen ? "bg-white lg:bg-transparent" : ""}`}
       >
-        <LangBar hidden={scrolled || menuOpen} />
+        <LangBar hidden={scrolled || menuOpen} overlay={home} />
+        {/* Avance de lectura, arriba del todo (ya no hay franja de fondo) */}
         <span
           ref={progressRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-naranja"
+          className="pointer-events-none absolute inset-x-0 top-0 z-[61] h-0.5 origin-left scale-x-0 bg-naranja"
         />
         <div
           ref={navRef}
@@ -147,40 +154,47 @@ export function Header() {
               : "h-[88px] md:h-[112px] wide:h-[126px]"
           }`}
         >
-          <Logo light={false} small={scrolled} className="xl:-ms-6 wide:ms-0" />
+          <Logo light={overlay} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          {/* Menús en el centro, entre el logo y las acciones */}
-          <nav
-            className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-10 wide:gap-14"
-            aria-label={t.mainNav}
-          >
-            {MENUS.map((m) => {
-              const open = active === m.key;
-              const underline = `relative inline-flex items-center gap-1 whitespace-nowrap py-1.5 text-[0.82rem] font-bold xl:text-[0.97rem] wide:text-[1rem] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-naranja after:transition-transform after:duration-300 text-tinta hover:text-azul`;
-              return (
-                <Fragment key={m.key}>
-                  <button
-                    onMouseEnter={() => hoverOpen(m.key)}
-                    onFocus={() => hoverOpen(m.key)}
-                    onClick={() => setActive(open ? null : m.key)}
-                    aria-expanded={open}
-                    aria-haspopup="true"
-                    className={`${underline} ${
-                      open || sectionOf(m)
-                        ? "after:scale-x-100"
-                        : "after:scale-x-0 hover:after:scale-x-100"
-                    }`}
-                  >
-                    {m.label}
-                    <Bi
-                      n="chevron-down"
-                      className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                </Fragment>
-              );
-            })}
+          {/* Menús en el centro, entre el logo y las acciones, en una píldora de
+              vidrio redondeada como el botón de cotizar */}
+          <nav className="hidden flex-1 justify-center lg:flex" aria-label={t.mainNav}>
+            <div
+              className={`flex items-center gap-0.5 rounded-full border p-1 backdrop-blur-[10px] transition-colors duration-300 xl:gap-1 ${glass}`}
+            >
+              {MENUS.map((m) => {
+                const open = active === m.key;
+                const on = open || sectionOf(m);
+                const link = `inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-[0.82rem] font-bold transition-colors xl:px-4 xl:text-[0.95rem] wide:px-5 wide:text-[1rem] ${
+                  overlay
+                    ? on
+                      ? "bg-white/20 text-white"
+                      : "text-white hover:bg-white/15"
+                    : on
+                      ? "bg-azul/[.07] text-azul"
+                      : "text-tinta hover:bg-azul/[.05] hover:text-azul"
+                }`;
+                return (
+                  <Fragment key={m.key}>
+                    <button
+                      onMouseEnter={() => hoverOpen(m.key)}
+                      onFocus={() => hoverOpen(m.key)}
+                      onClick={() => setActive(open ? null : m.key)}
+                      aria-expanded={open}
+                      aria-haspopup="true"
+                      className={link}
+                    >
+                      {m.label}
+                      <Bi
+                        n="chevron-down"
+                        className={`text-[0.65rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  </Fragment>
+                );
+              })}
+            </div>
           </nav>
           {/* Buscar, soporte y cotizar, a la derecha */}
           <div className="hidden items-center gap-1.5 lg:flex xl:gap-3.5">
@@ -204,7 +218,7 @@ export function Header() {
                 aria-label={t.support}
                 aria-expanded={active === "soporte"}
                 title={t.support}
-                className={`${iconCls} ${active === "soporte" ? "bg-gris text-azul" : ""}`}
+                className={iconCls}
               >
                 <Bi n="headset" />
               </button>
@@ -246,7 +260,7 @@ export function Header() {
                 setSearchOpen(true);
               }}
               aria-label={t.searchMobile}
-              className={`${iconCls} ${menuOpen ? "text-azul" : ""}`}
+              className={iconCls}
             >
               <Bi n="search" />
             </button>
@@ -257,7 +271,7 @@ export function Header() {
               }}
               aria-label={t.support}
               aria-expanded={active === "soporte"}
-              className={`${iconCls} ${menuOpen ? "text-azul" : ""}`}
+              className={iconCls}
             >
               <Bi n="headset" />
             </button>
@@ -265,7 +279,7 @@ export function Header() {
 
           {/* Botón de menú móvil */}
           <button
-            className={`relative z-10 grid h-11 w-11 place-items-center text-2xl text-azul lg:hidden`}
+            className={`relative z-10 grid h-11 w-11 place-items-center rounded-full border text-2xl backdrop-blur-[10px] transition-colors lg:hidden ${glass}`}
             aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
