@@ -140,13 +140,22 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);
 });
 
-test("portada: foto a pantalla completa bajo la cabecera y botón para cotizar", async ({ page }) => {
+test("portada: foto a pantalla completa bajo la cabecera y botón para cotizar", async ({
+  page,
+}) => {
   await page.goto("/");
   await closeCookies(page);
   const photo = page.getByRole("img", { name: /^Embalador de Transpack/ });
   await expect(photo).toBeVisible();
-  // La foto empieza arriba del todo: detrás de la cabecera, que flota sobre ella
-  expect((await photo.boundingBox())!.y).toBeLessThanOrEqual(1);
+  // La foto nítida empieza debajo de la cabecera (el menú no le tapa la cara
+  // al señor); arriba, detrás del menú transparente, va la misma foto desenfocada
+  const nav = page.locator("header > div").last();
+  const navBottom = (await nav.boundingBox())!;
+  expect((await photo.boundingBox())!.y).toBeGreaterThanOrEqual(
+    navBottom.y + navBottom.height - 30,
+  );
+  const backdrop = page.locator("section img[aria-hidden='true']").first();
+  expect((await backdrop.boundingBox())!.y).toBeLessThanOrEqual(1);
   await expect(page.locator("canvas")).toHaveCount(0);
   await page.getByRole("link", { name: "Cotiza tu mudanza" }).click();
   await expect(page).toHaveURL(/#cotizar/);

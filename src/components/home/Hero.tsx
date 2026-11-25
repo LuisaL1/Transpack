@@ -50,15 +50,31 @@ export function Hero() {
     <section className="relative text-texto">
       {/* Foto a pantalla completa, también detrás de la cabecera fija */}
       <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
+        {/* Foto a sangre detrás de la cabecera transparente (estilo pedido por el
+            cliente). El señor tiene la cabeza en el borde superior de la foto:
+            la foto nítida baja hasta quedar bajo la cabecera, para que el menú no
+            le tape la cara, y arriba la misma foto desenfocada llena el espacio
+            detrás del menú, así se ve continua */}
         <img
           src={headerImg}
-          alt={t.imageAlt}
+          alt=""
+          aria-hidden="true"
           width={1183}
           height={804}
-          fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_center]"
+          className="absolute inset-0 -z-30 h-full w-full scale-110 object-cover object-[72%_0%] blur-2xl"
         />
+        <div className="absolute inset-x-0 bottom-0 top-[100px] -z-20 md:top-[124px] wide:top-[136px]">
+          <img
+            src={headerImg}
+            alt={t.imageAlt}
+            width={1183}
+            height={804}
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover object-[72%_0%] [mask-image:linear-gradient(180deg,transparent_0,#000_40px)]"
+          />
+        </div>
         {/* Degradado oscuro desde la izquierda (titular) y desde arriba (menú).
             En celular, el texto va sobre toda la foto: más parejo */}
         <div
@@ -67,7 +83,7 @@ export function Hero() {
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[200px] bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,0)_100%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[240px] bg-[linear-gradient(180deg,rgba(13,15,51,.35)_0%,rgba(13,15,51,0)_100%)]"
         />
 
         <div className="mx-auto w-[min(100%-32px,1200px)] wide:w-[min(100%-120px,1320px)]">

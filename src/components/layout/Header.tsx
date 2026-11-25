@@ -157,16 +157,20 @@ export function Header() {
           <Logo light={overlay} small={scrolled} className="xl:-ms-6 wide:ms-0" />
 
           {/* Escritorio */}
-          {/* Menús en el centro, entre el logo y las acciones, en una píldora de
-              vidrio redondeada como el botón de cotizar */}
-          <nav className="hidden flex-1 justify-center lg:flex" aria-label={t.mainNav}>
+          {/* Menús en una píldora de vidrio centrada en la pantalla (no entre el
+              logo y las acciones, que miden distinto), con los mismos espacios
+              entre opciones y a los bordes */}
+          <nav
+            className="pointer-events-none hidden lg:absolute lg:left-1/2 lg:top-1/2 lg:flex lg:-translate-x-1/2 lg:-translate-y-1/2"
+            aria-label={t.mainNav}
+          >
             <div
-              className={`flex items-center gap-0.5 rounded-full border p-1 backdrop-blur-[10px] transition-colors duration-300 xl:gap-1 ${glass}`}
+              className={`pointer-events-auto flex items-center gap-1 rounded-full border p-1.5 backdrop-blur-[10px] transition-colors duration-300 ${glass}`}
             >
               {MENUS.map((m) => {
                 const open = active === m.key;
                 const on = open || sectionOf(m);
-                const link = `inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-[0.82rem] font-bold transition-colors xl:px-4 xl:text-[0.95rem] wide:px-5 wide:text-[1rem] ${
+                const link = `inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[0.82rem] font-bold transition-colors xl:px-5 xl:text-[0.95rem] wide:px-6 wide:text-[1rem] ${
                   overlay
                     ? on
                       ? "bg-white/20 text-white"
