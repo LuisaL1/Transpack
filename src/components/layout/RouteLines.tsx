@@ -10,7 +10,8 @@ import type { CSSProperties } from "react";
 // fija DETRÁS de todo el contenido (z-index -1, sobre el blanco del body), así
 // textos, tarjetas e imágenes siempre quedan encima; se ve donde la sección no
 // tiene fondo propio (por eso las secciones blancas no llevan bg-white).
-// Decorativa (aria-hidden, sin clics). Desde 1024 px; con
+// Solo se ve en los márgenes laterales (.bg-margins-only): nunca detrás del
+// contenido. Decorativa (aria-hidden, sin clics). Desde 1024 px; con
 // movimiento reducido quedan las rutas quietas, sin el punto.
 type Route = {
   d: string;
@@ -75,7 +76,7 @@ export function RouteLines() {
       aria-hidden="true"
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
-      className="route-lines pointer-events-none fixed inset-0 -z-10 hidden h-full w-full lg:block"
+      className="route-lines bg-margins-only pointer-events-none fixed inset-0 -z-10 hidden h-full w-full lg:block"
       fill="none"
     >
       {ROUTES.map((r, i) => {

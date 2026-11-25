@@ -973,3 +973,48 @@ html.tp-zoho-open #tp-zoho-frame {
     height: auto;
   }
 }
+
+/* Adornos de fondo (RouteLines e IsoCubes): plenos en los márgenes y muy
+   tenues en la franja del contenido (hasta 1320 px), para que se vean como
+   textura de fondo sin competir con textos ni íconos (pedido del equipo,
+   nov. 2026). La transición es suave. */
+.bg-margins-only {
+  --clear: 640px;
+  --fade: 140px;
+  --inside: rgb(0 0 0 / 0.22);
+  mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(50% - var(--clear) - var(--fade)),
+    var(--inside) calc(50% - var(--clear)),
+    var(--inside) calc(50% + var(--clear)),
+    #000 calc(50% + var(--clear) + var(--fade))
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(50% - var(--clear) - var(--fade)),
+    var(--inside) calc(50% - var(--clear)),
+    var(--inside) calc(50% + var(--clear)),
+    #000 calc(50% + var(--clear) + var(--fade))
+  );
+}
+
+/* Foto nítida de la portada (Hero): se funde arriba, bajo la cabecera, y en
+   escritorio también por su borde izquierdo con la copia desenfocada */
+.hero-photo-mask {
+  mask-image: linear-gradient(180deg, transparent 0, #000 40px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 40px);
+}
+@media (min-width: 64rem) {
+  .hero-photo-mask {
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 40px),
+      linear-gradient(90deg, transparent 0, #000 18%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 40px),
+      linear-gradient(90deg, transparent 0, #000 18%);
+    -webkit-mask-composite: source-in;
+  }
+}

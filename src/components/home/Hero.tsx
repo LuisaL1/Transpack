@@ -10,7 +10,7 @@ import { Bi, btn } from "@/components/ui";
 import { container } from "@/components/ui/layout";
 import headerImg from "@/assets/images/img-header.jpg";
 
-// Portada (nov. 2026): la foto img-header.jpg a pantalla completa, de borde a
+// Portada (nov. 2026): la foto img-header.jpg (embalador con una vajilla) a pantalla completa, de borde a
 // borde y también detrás de la cabecera (que flota sobre ella, ver Header), con
 // un degradado oscuro desde la izquierda y desde arriba para que el titular y el
 // menú se lean. Reemplazó al mapa animado (Globe). Al pie, los clientes y las
@@ -51,35 +51,38 @@ export function Hero() {
       {/* Foto a pantalla completa, también detrás de la cabecera fija */}
       <div className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0D0F33] pb-16 pt-[150px] md:pt-[180px] lg:pb-20">
         {/* Foto a sangre detrás de la cabecera transparente (estilo pedido por el
-            cliente). El señor tiene la cabeza en el borde superior de la foto:
-            la foto nítida baja hasta quedar bajo la cabecera, para que el menú no
-            le tape la cara, y arriba la misma foto desenfocada llena el espacio
-            detrás del menú, así se ve continua */}
+            cliente). La foto nítida baja hasta quedar bajo la cabecera, para que
+            el menú no tape al embalador, y la misma foto desenfocada llena el
+            espacio de atrás, así se ve continua. Foto de la vajilla (nov. 2026):
+            el embalador está en el centro de la foto; en escritorio la foto
+            nítida empieza al 28 % del ancho para que él quede a la derecha,
+            completo y fuera del texto, y su borde izquierdo se funde con la
+            desenfocada (.hero-photo-mask) */}
         <img
           src={headerImg}
           alt=""
           aria-hidden="true"
-          width={1183}
-          height={804}
+          width={1200}
+          height={805}
           decoding="async"
-          className="absolute inset-0 -z-30 h-full w-full scale-110 object-cover object-[72%_0%] blur-2xl"
+          className="absolute inset-0 -z-30 h-full w-full scale-110 object-cover object-[50%_30%] blur-2xl"
         />
-        <div className="absolute inset-x-0 bottom-0 top-[100px] -z-20 md:top-[124px] wide:top-[136px]">
+        <div className="absolute inset-x-0 bottom-0 top-[100px] -z-20 md:top-[124px] lg:left-[28%] wide:top-[136px]">
           <img
             src={headerImg}
             alt={t.imageAlt}
-            width={1183}
-            height={804}
+            width={1200}
+            height={805}
             fetchPriority="high"
             decoding="async"
-            className="h-full w-full object-cover object-[72%_0%] [mask-image:linear-gradient(180deg,transparent_0,#000_40px)]"
+            className="hero-photo-mask h-full w-full object-cover object-[51%_10%]"
           />
         </div>
         {/* Degradado oscuro desde la izquierda (titular) y desde arriba (menú).
             En celular, el texto va sobre toda la foto: más parejo */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,15,51,.85)_0%,rgba(13,15,51,.7)_28%,rgba(13,15,51,.32)_46%,rgba(13,15,51,0)_62%)] max-lg:bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,.72)_45%,rgba(13,15,51,.85)_100%)]"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(13,15,51,.85)_0%,rgba(13,15,51,.7)_28%,rgba(13,15,51,.32)_44%,rgba(13,15,51,0)_56%)] max-lg:bg-[linear-gradient(180deg,rgba(13,15,51,.55)_0%,rgba(13,15,51,.72)_45%,rgba(13,15,51,.85)_100%)]"
         />
         <div
           aria-hidden="true"
