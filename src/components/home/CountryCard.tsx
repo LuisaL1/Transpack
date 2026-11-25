@@ -27,7 +27,10 @@ export function CountryCard({ picked, onClose }: { picked: PickedCountry; onClos
         : capital && `${t.capital}: ${capital}`;
   const W = Math.min(240, width - 24);
   const left = x < width / 2 ? Math.min(x + 18, width - W - 12) : Math.max(x - W - 18, 12);
-  const top = Math.min(Math.max(y - 120, 12), Math.max(12, height - 260));
+  // Alto aproximado de la tarjeta (foto 4:3 y texto): siempre completa dentro
+  // del mapa, sin cortarse abajo
+  const cardH = (photo && !broken ? W * 0.75 : 0) + 112;
+  const top = Math.min(Math.max(y - 120, 12), Math.max(12, height - cardH - 12));
 
   return (
     <div

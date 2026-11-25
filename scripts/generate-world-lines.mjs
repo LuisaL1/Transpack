@@ -13,7 +13,7 @@
 // #34399A (pulsos). Con movimiento reducido, sin pulsos.
 import { createRequire } from "module";
 import fs from "fs";
-import { geoNaturalEarth1, geoPath, geoInterpolate, geoArea, geoContains } from "d3-geo";
+import { geoNaturalEarth1, geoPath, geoArea, geoContains } from "d3-geo";
 import { feature, mesh, merge } from "topojson-client";
 import { DESTINATIONS, ORIGIN } from "../src/data/worldMap.ts";
 
@@ -51,20 +51,20 @@ const rings = land.coordinates
 const origin = [ORIGIN.lon, ORIGIN.lat];
 const routeDests = DESTINATIONS.filter((_, i) => i % 3 === 0);
 const routes = routeDests.map((d) => {
-  const at = geoInterpolate(origin, [d.lon, d.lat]);
-  const pts = Array.from({ length: 33 }, (_, k) => projection(at(k / 32)));
-  // Arco: se levanta en el centro, más entre más larga es la ruta
-  const [x0, y0] = pts[0];
-  const [x1, y1] = pts[pts.length - 1];
+  // Arco sobre el mapa plano, de Bogotá al destino (no el círculo máximo: las
+  // rutas a Asia y Oceanía darían la vuelta por el Pacífico y cruzarían el
+  // mapa de borde a borde). Se levanta en el centro, más entre más larga es
+  const [x0, y0] = projection(origin);
+  const [x1, y1] = projection([d.lon, d.lat]);
   const lift = Math.min(90, Math.hypot(x1 - x0, y1 - y0) * 0.18);
   return (
     "M" +
-    pts
-      .map(([x, y], k) => {
-        const s = Math.sin((Math.PI * k) / 32);
-        return `${Math.round(x)},${Math.round(y - lift * s)}`;
-      })
-      .join("L")
+    Array.from({ length: 33 }, (_, k) => {
+      const t = k / 32;
+      const x = x0 + (x1 - x0) * t;
+      const y = y0 + (y1 - y0) * t - lift * Math.sin(Math.PI * t);
+      return `${Math.round(x)},${Math.round(y)}`;
+    }).join("L")
   );
 });
 const [bx, by] = projection(origin).map((v) => +v.toFixed(1));
@@ -153,6 +153,64 @@ ${ends.map(([x, y], i) => `<path class="dest" style="animation-delay:-${((i * 0.
 `;
 fs.writeFileSync(outNight, night);
 console.log("mapa de líneas noche", `${W}×${H}`, "bytes", night.length);
+
+// ─── Mapamundi en relieve (Mudanzas internacionales, nov. 2026) ─────────────
+// En la línea visual del mapa de Mudanzas locales, que le gustó al cliente
+// (globe.ts): continentes en gris claro con paredes (relieve), fronteras
+// blancas, Colombia en el azul de la marca y rutas naranja desde Bogotá con
+// destellos. Fondo transparente: va sobre el panel gris hielo. Los puntos de
+// los destinos y Bogotá los pone encima WorldRoutesMap (se pueden tocar).
+const colombia = feature(world, {
+  type: "GeometryCollection",
+  geometries: geoms.filter((g) => g.id === "170"),
+});
+const landPath = path(land);
+const relief = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" overflow="visible" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<!-- GENERADO con \`pnpm map\` (scripts/generate-world-lines.mjs). Natural Earth 1:110m. -->
+<style>
+.wall1{fill:rgb(150,156,172)}
+.wall2{fill:rgb(200,205,216)}
+.land{fill:rgb(225,229,237)}
+.col{fill:#272B7C;fill-opacity:.55}
+.border{stroke:#FFFFFF;stroke-width:.7}
+.route{stroke:${ORANGE};stroke-opacity:.45;stroke-width:1.1}
+.pulse{stroke:${ORANGE};stroke-width:2;stroke-dasharray:9 91;stroke-dashoffset:100;animation:run linear infinite}
+@keyframes run{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none;opacity:0}}
+</style>
+<path class="wall1" transform="translate(0 3.5)" d="${landPath}"/>
+<path class="wall2" transform="translate(0 1.8)" d="${landPath}"/>
+<path class="land" d="${landPath}"/>
+<path class="col" d="${path(colombia)}"/>
+<path class="border" d="${path(borders)}"/>
+${routes.map((d) => `<path class="route" d="${d}"/>`).join("\n")}
+${routes
+  .map(
+    (d, i) =>
+      `<path class="pulse" pathLength="100" style="animation-duration:${6 + (i % 5) * 1.2}s;animation-delay:-${(i * 1.7).toFixed(1)}s" d="${d}"/>`,
+  )
+  .join("\n")}
+</svg>
+`;
+fs.writeFileSync("src/assets/images/mapa-mundo-relieve.svg", relief);
+console.log("mapamundi en relieve", `${W}×${H}`, "bytes", relief.length);
+
+// Posición de Bogotá y de cada destino sobre los mapas de líneas (en el
+// viewBox), para poner encima los puntos que se tocan (WorldRoutesMap, en
+// Mudanzas internacionales)
+const points = DESTINATIONS.map((d) => {
+  const [x, y] = projection([d.lon, d.lat]).map((v) => +v.toFixed(1));
+  return { name: d.name, x, y };
+});
+fs.writeFileSync(
+  "src/data/worldLines.ts",
+  `// Bogotá y los destinos sobre los mapas de líneas (mapa-lineas*.svg), en
+// coordenadas de su viewBox. GENERADO con \`pnpm map\`
+// (scripts/generate-world-lines.mjs): no editar a mano.
+
+export const WORLD_LINES = ${JSON.stringify({ w: W, h: H, origin: { x: bx, y: by }, points }, null, 2)};
+`,
+);
 
 // ─── Mapa de puntos (pie de página, nov. 2026) ──────────────────────────────
 // La tierra como una cuadrícula de puntos claros (sobre el azul del pie), los

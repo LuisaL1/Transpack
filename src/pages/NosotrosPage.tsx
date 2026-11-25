@@ -179,6 +179,13 @@ export function NosotrosPage() {
       {/* Historia, sobre un mapamundi de líneas con pulsos de luz (WorldLines) */}
       <section id="historia" ref={historyRef} className={`${section} overflow-hidden`}>
         <WorldLines className="left-1/2 top-1/2 w-[max(1400px,130%)] -translate-x-1/2 -translate-y-1/2 lg:w-[min(1500px,110%)]" />
+        {/* Velo blanco entre el mapa y el texto (nov. 2026): más fuerte donde
+            están las letras y más suave hacia los bordes, para que el mapa se
+            vea sin competir con la lectura */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_62%_70%_at_50%_50%,rgba(255,255,255,.62)_0%,rgba(255,255,255,.5)_55%,rgba(255,255,255,.1)_100%)]"
+        />
         {/* Año de fundación gigante, en contorno, abajo a la derecha (bajo la
             línea de tiempo) */}
         <span

@@ -72,7 +72,8 @@ src/
 │   │                       (Globe y CountryCard, ya sin montar), el
 │   │                       cotizador (QuoteWizard + QuoteFields)
 │   ├── services/           ServiceMapPanel (panel del mapa del encabezado) con ColombiaRoutesMap
-│   │                       (Colombia) o ServiceGlobe (Bogotá o el mundo, del globo de la portada)
+│   │                       (Colombia), ServiceGlobe (Bogotá, del globo de la portada) o
+│   │                       WorldRoutesMap (el mundo, mapamundi plano en relieve)
 │   ├── chat/               Chat (Zoho SalesIQ): AdvisorChat (botón, invitación y
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
@@ -454,7 +455,10 @@ blanco.
   con destellos naranja y azul que las recorren lento y sin parar. Es un SVG
   aparte con su propia animación CSS (`src/assets/images/mapa-lineas.svg`,
   generado por `scripts/generate-world-lines.mjs` en `pnpm map`), sin JS. En el
-  bloque de historia de Nosotros. **Versión noche** (`mapa-lineas-noche.svg`,
+  bloque de historia de Nosotros, con un velo blanco radial encima (más
+  fuerte bajo el texto) para que las letras se lean sin perder el mapa. Las
+  rutas son arcos sobre el mapa plano (no círculos máximos, que cruzaban el
+  mapa de borde a borde). **Versión noche** (`mapa-lineas-noche.svg`,
   nov. 2026): costas en blanco tenue, rutas en naranja, destinos titilando y
   Bogotá con onda; es el fondo de **Cobertura** en el inicio (`Coverage.tsx`),
   en lugar de la foto, que no tenía resolución para ocupar media pantalla.
@@ -509,10 +513,20 @@ blanco.
   (`[data-hero-card]`). En celular y tableta el panel va arriba y la tarjeta se
   monta en su esquina. Reemplazó a una composición en capas con la foto
   fundida sobre el mapa (máscara y velo blanco), descartada porque ensuciaba
-  foto y mapa. Bogotá y el mundo son `ServiceGlobe` (el motor del globo de la
+  foto y mapa. Bogotá es `ServiceGlobe` (el motor del globo de la
   portada: `focusScene`/`focusStill` en `src/lib/globe.ts` y
   `useGlobe(labels, focus)`, solo ese tramo de la historia en bucle; se carga
-  aparte con `import()`); Colombia es `ColombiaRoutesMap fill`.
+  aparte con `import()`); Colombia es `ColombiaRoutesMap fill`. **El mundo**
+  (nov. 2026; el globo no le gustó al cliente) es `WorldRoutesMap`: mapamundi
+  plano en relieve en la **línea visual del mapa de Bogotá**, que sí le gustó
+  (`mapa-mundo-relieve.svg`, de `pnpm map`: continentes grises con paredes,
+  fronteras blancas, Colombia en azul, arcos naranja desde Bogotá con
+  destellos), con la casita naranja en Bogotá y un punto azul por destino
+  (`src/data/worldLines.ts`, generado). Tocar cerca de un punto abre su ficha
+  (`CountryCard`; el destino más cercano al toque, porque en Europa están muy
+  juntos) y, al pasar el cursor, se ve su nombre. Mientras hay una ficha
+  abierta, la tarjeta de la foto del servicio se desvanece para no taparla
+  (`group-has-[[role=dialog]]` en `PageHero`).
 - **Encabezado "split" (prueba, nov. 2026; solo Mudanzas locales,
   `heroLayout: "split"` en `SERVICES` → `PageHero split`):** la foto del
   servicio va a sangre en los 2/3 izquierdos (desde arriba, detrás de la

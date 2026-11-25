@@ -164,13 +164,15 @@ export function PageHero({
         {square}
         <div className="relative">
           <div className={`${frame} lg:bottom-24`}>
-            <div className="relative h-[360px] sm:h-[440px] lg:h-full">
+            <div className="group/bento relative h-[360px] sm:h-[440px] lg:h-full">
               {/* Panel del mapa */}
               <div className="hero-blend-in h-full [--hero-ps:1]">{backdrop}</div>
-              {/* Tarjeta de la foto, montada sobre la esquina del panel */}
+              {/* Tarjeta de la foto, montada sobre la esquina del panel. Mientras
+                  se ve la ficha de un destino del mapa, se desvanece para no
+                  taparla (vuelve al cerrarla) */}
               <div
                 data-hero-card
-                className="absolute -bottom-8 start-3 z-10 w-[46%] sm:w-[38%] lg:-bottom-12 lg:-start-12 lg:w-[42%]"
+                className="absolute -bottom-8 start-3 z-10 w-[46%] transition-[opacity,translate] duration-300 group-has-[[role=dialog]]/bento:pointer-events-none group-has-[[role=dialog]]/bento:translate-y-4 group-has-[[role=dialog]]/bento:opacity-0 sm:w-[38%] lg:-bottom-12 lg:-start-12 lg:w-[42%]"
               >
                 <div className="hero-reveal hero-reveal-left [--sweep-delay:.55s]">
                   <PhotoFrame className="aspect-[4/3] shadow-[var(--shadow-float)] ring-[6px] ring-white">

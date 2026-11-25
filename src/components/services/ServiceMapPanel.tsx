@@ -5,6 +5,7 @@ import { useSite } from "@/hooks/useContent";
 import { Bi } from "@/components/ui";
 import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
 import { ServiceGlobe } from "@/components/services/ServiceGlobe";
+import { WorldRoutesMap } from "@/components/services/WorldRoutesMap";
 
 // Tamaño del mapa de Bogotá cuando va libre (encabezado "split"): el lienzo es
 // una columna angosta y alta, y el mapa de la portada ocupaba ahí menos de la mitad
@@ -19,7 +20,10 @@ export type ServiceMapKind = "bogota" | "colombia" | "mundo";
 // mapa (y su cifra) y la leyenda a la derecha. El mapa ocupa el resto, nítido;
 // la foto del servicio va aparte, como tarjeta montada sobre la esquina
 // (PageHero con `backdrop`). Bogotá y el mundo salen del globo de la portada
-// (ServiceGlobe); Colombia, del mapa del camión (ColombiaRoutesMap).
+// (ServiceGlobe); Colombia, del mapa del camión (ColombiaRoutesMap). El mundo
+// (Mudanzas internacionales, nov. 2026; antes el globo, que no gustó) es un
+// mapamundi plano en relieve, en la misma línea visual del de Bogotá
+// (WorldRoutesMap).
 // Con `bare` (encabezado "split" de PageHero, prueba en Mudanzas locales), el
 // mapa va libre: sin panel, sin borde ni sombra, sobre el blanco de la página,
 // solo el mapa (sin chapa, leyenda ni nombres) y más grande, casi a todo el lugar.
@@ -78,6 +82,8 @@ export function ServiceMapPanel({ kind, bare = false }: { kind: ServiceMapKind; 
       <div className="relative min-h-0 flex-1">
         {kind === "colombia" ? (
           <ColombiaRoutesMap fill />
+        ) : kind === "mundo" ? (
+          <WorldRoutesMap />
         ) : (
           <ServiceGlobe
             focus={kind}
