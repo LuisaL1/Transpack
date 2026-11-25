@@ -153,7 +153,7 @@ export const galleryText = (tr: Tr) => ({
 });
 
 export const quoteSectionText = (tr: Tr) => ({
-  eyebrow: tr("Cotiza su mudanza", "Get a moving quote"),
+  eyebrow: tr("Cotice su mudanza", "Get a moving quote"),
   title: tr("Contáctenos para cotizar su mudanza", "Contact us for a quote on your move"),
   sub: tr(
     "Con esta información un asesor se comunicará con una propuesta ajustada a su requerimiento.",

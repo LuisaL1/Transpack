@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { AdvisorChat } from "@/components/chat/AdvisorChat";
 import { RouteLines } from "@/components/layout/RouteLines";
 import { IsoCubes } from "@/components/layout/IsoCubes";
+import { PageCurtain } from "@/components/layout/PageCurtain";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
 import { loadMotion } from "@/hooks/useMotion";
 import { usePageMotion } from "@/hooks/usePageMotion";
@@ -36,6 +37,7 @@ export function Layout() {
       <RouteLines />
       {/* Fondo: cubos isométricos en los márgenes (prueba) */}
       <IsoCubes />
+      <PageCurtain />
     </>
   );
 }

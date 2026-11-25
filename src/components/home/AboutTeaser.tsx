@@ -19,11 +19,10 @@ export function AboutTeaser() {
   const badgeRef = useRef<HTMLDivElement>(null);
   const counting = useInView(badgeRef);
   useMotion(ref, (m, el) => {
-    const scrub = { trigger: el, start: "top bottom", end: "bottom top", scrub: true };
     // Las dos fotos (PhotoFrame), en sentidos opuestos
     const [a, b] = el.querySelectorAll(".photo-frame");
-    m.gsap.fromTo(a, { yPercent: 6 }, { yPercent: -6, ease: "none", scrollTrigger: scrub });
-    m.gsap.fromTo(b, { yPercent: -14 }, { yPercent: 14, ease: "none", scrollTrigger: scrub });
+    m.parallax(a, el, { yPercent: 6 }, { yPercent: -6 });
+    m.parallax(b, el, { yPercent: -14 }, { yPercent: 14 });
   });
   const year = Number(t.year);
   return (

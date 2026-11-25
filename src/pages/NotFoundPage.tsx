@@ -14,7 +14,7 @@ export function NotFoundPage() {
   const t = notFoundText(tr);
   return (
     <PageHero>
-      <div className="max-w-3xl py-10">
+      <div className="hero-stagger max-w-3xl py-10">
         <Eyebrow>{t.eyebrow}</Eyebrow>
         <h1 className="mb-5 text-[clamp(2.2rem,1.4rem+3vw,3.6rem)] text-tinta">{t.title}</h1>
         <p className="mb-8 text-[1.08rem]">{t.text}</p>

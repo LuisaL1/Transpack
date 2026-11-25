@@ -17,10 +17,9 @@ export function Gallery() {
   const rows = [GALLERY.filter((_, i) => i % 2 === 0), GALLERY.filter((_, i) => i % 2 === 1)];
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, (m, el) => {
-    const scrub = { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.5 };
     const [a, b] = el.querySelectorAll("[data-gallery-row]");
-    m.gsap.fromTo(a, { xPercent: -4 }, { xPercent: -22, ease: "none", scrollTrigger: scrub });
-    m.gsap.fromTo(b, { xPercent: -22 }, { xPercent: -4, ease: "none", scrollTrigger: scrub });
+    m.parallax(a, el, { xPercent: -4 }, { xPercent: -22 }, { scrub: 0.5 });
+    m.parallax(b, el, { xPercent: -22 }, { xPercent: -4 }, { scrub: 0.5 });
   });
   return (
     <section ref={ref} aria-label={t.label} className="grid gap-3 overflow-hidden py-3" dir="ltr">

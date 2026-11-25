@@ -167,7 +167,7 @@ export const aboutText = (tr: Tr) => ({
     "Asociaciones internacionales de empresas de mudanzas",
     "International associations of moving companies",
   ),
-  cotizaMudanza: tr("Cotiza su mudanza", "Get a moving quote"),
+  cotizaMudanza: tr("Cotice su mudanza", "Get a moving quote"),
 });
 
 // ─── Nuestro CEO ─────────────────────────────────────────────────────────────

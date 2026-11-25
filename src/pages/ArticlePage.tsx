@@ -30,8 +30,8 @@ export function ArticlePage() {
 
   return (
     <>
-      <PageHero image={post.cover} drop={blogPosts.indexOf(post) % 2 ? "top" : "right"}>
-        <div className="animate-fade-up mx-auto max-w-3xl">
+      <PageHero image={post.cover} reveal={blogPosts.indexOf(post) % 2 ? "top" : "right"}>
+        <div className="hero-stagger mx-auto max-w-3xl">
           <Link
             to={lp("/#blog")}
             className="mb-6 inline-flex items-center gap-2 text-[0.88rem] text-suave hover:text-azul"
@@ -46,7 +46,9 @@ export function ArticlePage() {
             </span>
           </p>
           <h1 className="text-[clamp(1.7rem,1.15rem+2vw,2.7rem)] leading-[1.14] text-tinta">
-            {post.title}
+            <span className="line-mask [--d:200ms]">
+              <span>{post.title}</span>
+            </span>
           </h1>
         </div>
       </PageHero>

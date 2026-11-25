@@ -117,3 +117,73 @@ export function splitReveal(el: Element, vars: gsap.TweenVars = {}) {
       }),
   });
 }
+
+/** Desplazamiento atado al scroll mientras `trigger` cruza la pantalla */
+const SCRUB = { start: "top bottom", end: "bottom top", scrub: true } as const;
+
+/**
+ * Parallax: `target` va de `from` a `to` mientras `trigger` cruza la pantalla
+ * (de que asoma abajo a que sale arriba), atado al scroll y sin aceleración.
+ * `scroll` cambia el tramo (p. ej. `{ start: "top top" }` en un encabezado).
+ */
+export function parallax(
+  target: gsap.TweenTarget,
+  trigger: Element,
+  from: gsap.TweenVars,
+  to: gsap.TweenVars,
+  scroll: ScrollTrigger.Vars = {},
+) {
+  return gsap.fromTo(target, from, {
+    ...to,
+    ease: "none",
+    scrollTrigger: { trigger, ...SCRUB, ...scroll },
+  });
+}
+
+/**
+ * Línea que se dibuja con el scroll (de 0 a su largo, en `axis`) mientras
+ * `trigger` pasa del 75 % al 45 % de la pantalla; al subir, retrocede. La
+ * línea debe tener su `transform-origin` en el punto de partida.
+ */
+export function drawLine(
+  line: gsap.TweenTarget,
+  trigger: Element,
+  axis: "x" | "y" = "x",
+  scroll: ScrollTrigger.Vars = {},
+) {
+  const prop = axis === "x" ? "scaleX" : "scaleY";
+  return gsap.fromTo(
+    line,
+    { [prop]: 0 },
+    {
+      [prop]: 1,
+      ease: "none",
+      scrollTrigger: { trigger, start: "top 75%", end: "bottom 45%", scrub: 0.6, ...scroll },
+    },
+  );
+}
+
+/**
+ * Marquesina infinita (`row` lleva el contenido dos veces y se corre −50 %)
+ * que se acelera con la velocidad del scroll y retrocede al subir, como la
+ * franja naranja (CtaBand). `duration`: segundos de una vuelta en reposo.
+ */
+export function velocityMarquee(row: Element, trigger: Element, duration = 28) {
+  const loop = gsap.to(row, { xPercent: -50, duration, ease: "none", repeat: -1 });
+  ScrollTrigger.create({
+    trigger,
+    ...SCRUB,
+    scrub: false,
+    onUpdate: (self) => {
+      const v = self.getVelocity();
+      const boost = Math.min(Math.abs(v) / 250, 6);
+      gsap.to(loop, {
+        timeScale: (v < 0 ? -1 : 1) * (1 + boost),
+        duration: 0.2,
+        overwrite: true,
+        onComplete: () => void gsap.to(loop, { timeScale: v < 0 ? -1 : 1, duration: 1.2 }),
+      });
+    },
+  });
+  return loop;
+}

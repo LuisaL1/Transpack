@@ -65,10 +65,10 @@ export function searchIndex(lang: Lang): SearchEntry[] {
     })),
     page(
       "ui-checks",
-      tr("Cotiza su mudanza", "Get a moving quote"),
+      tr("Cotice su mudanza", "Get a moving quote"),
       tr("Cotizador en 6 pasos, sin compromiso", "6-step quote form, no commitment"),
       "/#cotizar",
-      "precio cotizacion presupuesto valor price quote cost estimate",
+      "precio cotizacion cotiza cotizar presupuesto valor price quote cost estimate",
     ),
     page(
       "people",

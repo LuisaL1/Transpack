@@ -79,6 +79,52 @@ test("menú Servicios lleva a la página del servicio", async ({ page, isMobile 
   await expect(page.locator("h1")).toContainText("Un lugar seguro");
 });
 
+test("servicio: tras recorrer la fila de otros servicios, salir de la página no la deja en blanco", async ({
+  page,
+}) => {
+  // En escritorio la fila "Otros servicios" queda fija (pin de ScrollTrigger);
+  // si se fijara la sección, React fallaría al quitarla (removeChild)
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/servicios/bodegaje");
+  const card = page.locator('[data-other-card][href="/servicios/diplomatico"]');
+  await card.scrollIntoViewIfNeeded();
+  await page.mouse.wheel(0, 2500);
+  await page.waitForTimeout(600);
+  await card.evaluate((a: HTMLElement) => a.click());
+  await expect(page).toHaveURL(/\/servicios\/diplomatico$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await page.locator('footer a[href="/nosotros"]').evaluate((a: HTMLElement) => a.click());
+  await expect(page).toHaveURL(/\/nosotros$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  expect(errors.filter((m) => /removeChild|insertBefore/.test(m))).toEqual([]);
+});
+
+test("servicio: el paso a paso queda fijo hasta completar los pasos (escritorio)", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, "En celular y tableta los pasos no se fijan");
+  await page.goto("/servicios/mudanzas-internacionales");
+  const pinned = page.locator("[data-steps-pin]");
+  const dots = pinned.locator("[data-step-dot]");
+  // Espera al motor de movimiento (atenúa los pasos que faltan)
+  await expect
+    .poll(() => dots.last().evaluate((d) => +getComputedStyle(d).opacity))
+    .toBeLessThan(0.5);
+  const top = await pinned.evaluate((el) => el.getBoundingClientRect().top + scrollY);
+  await page.evaluate((y) => window.scrollTo(0, y + 400), top);
+  // Fija arriba y con el último paso aún sin encender
+  await expect
+    .poll(() => pinned.evaluate((el) => Math.round(el.getBoundingClientRect().top)))
+    .toBe(0);
+  expect(await dots.last().evaluate((d) => +getComputedStyle(d).opacity)).toBeLessThan(0.5);
+  // Al seguir bajando se completan todos y luego la página continúa
+  for (let i = 0; i < 12; i++) await page.mouse.wheel(0, 300);
+  await expect.poll(() => dots.last().evaluate((d) => +getComputedStyle(d).opacity)).toBe(1);
+  await expect.poll(() => pinned.evaluate((el) => el.getBoundingClientRect().top)).toBeLessThan(0);
+});
+
 test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page }) => {
   await page.goto("/");
   await page
