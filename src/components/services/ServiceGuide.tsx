@@ -1,14 +1,25 @@
+import { useRef } from "react";
 import type { ServiceGuide as Guide } from "@/data/site";
+import { useMotion } from "@/hooks/useMotion";
 import { Bi, Eyebrow, Reveal } from "@/components/ui";
-
-const container = "mx-auto w-[min(100%-32px,1200px)]";
+import { container } from "@/components/ui/layout";
 
 // Guía de términos de un servicio (Mudanzas locales, nacionales e internacionales). El
 // texto sale de "guide" en SERVICES (src/data/site.ts y site.en.ts).
+// Movimiento (nov. 2026): las tarjetas entran escalonadas desde abajo y, con el
+// mouse, se inclinan hacia el puntero con un resplandor (.spotlight).
 export function ServiceGuide({ guide }: { guide: Guide }) {
   const { sections = [], closing } = guide;
+  const ref = useRef<HTMLElement>(null);
+  useMotion(ref, (m, el) => {
+    const cards = [...el.querySelectorAll<HTMLElement>("[data-guide-card]")];
+    if (!cards.length) return;
+    m.reveal(cards, cards[0], { y: 50, stagger: 0.1 });
+    const offs = cards.map((c) => m.tilt(c, 3));
+    return () => offs.forEach((off) => off());
+  });
   return (
-    <section className="relative pb-[clamp(64px,8vw,112px)]">
+    <section ref={ref} className="relative pb-[clamp(64px,8vw,112px)]">
       <div className={container}>
         <Reveal className={`max-w-3xl ${sections.length || closing ? "mb-12" : ""}`}>
           <Eyebrow>{guide.eyebrow}</Eyebrow>
@@ -20,11 +31,10 @@ export function ServiceGuide({ guide }: { guide: Guide }) {
         {(sections.length > 0 || closing) && (
           <div className="grid gap-5 md:grid-cols-2">
             {sections.map((s, i) => (
-              <Reveal
-                as="article"
+              <article
                 key={s.title}
-                delay={(i % 2) * 80}
-                className="rounded-[22px] bg-gris p-7 md:p-9"
+                data-guide-card
+                className="spotlight relative rounded-[22px] bg-gris p-7 md:p-9"
               >
                 <div className="mb-5 flex items-center gap-4">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-azul text-xl text-naranja">
@@ -52,13 +62,12 @@ export function ServiceGuide({ guide }: { guide: Guide }) {
                   </ul>
                 )}
                 {s.after && <p className="text-[0.98rem]">{s.after}</p>}
-              </Reveal>
+              </article>
             ))}
             {closing && (
-              <Reveal
-                as="article"
-                delay={80}
-                className="rounded-[22px] bg-azul p-7 text-white/80 md:p-9"
+              <article
+                data-guide-card
+                className="spotlight spotlight-light relative rounded-[22px] bg-azul p-7 text-white/80 md:p-9"
               >
                 <div className="mb-5 flex items-center gap-4">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/10 text-xl text-naranja">
@@ -78,7 +87,7 @@ export function ServiceGuide({ guide }: { guide: Guide }) {
                     {p}
                   </p>
                 ))}
-              </Reveal>
+              </article>
             )}
           </div>
         )}

@@ -2,7 +2,7 @@
 export { Bi } from "./Bi";
 export { btn } from "./buttons";
 export { Checks } from "./Checks";
-export { DropIn, type DropFrom } from "./DropIn";
+export { SweepIn, type SweepFrom } from "./SweepIn";
 export { Eyebrow } from "./Eyebrow";
 export { PhotoFrame, type TabCorner } from "./PhotoFrame";
 export { Reveal } from "./Reveal";

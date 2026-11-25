@@ -30,17 +30,8 @@ export function Coverage() {
   const chipsRef = useRef<HTMLDivElement>(null);
   const counting = useInView(chipsRef);
   useMotion(ref, (m, el) => {
-    const scrub = { trigger: el, start: "top bottom", end: "bottom top", scrub: true };
-    m.gsap.fromTo(
-      "[data-cov-photo]",
-      { yPercent: -7, scale: 1.14 },
-      { yPercent: 7, scale: 1.14, ease: "none", scrollTrigger: scrub },
-    );
-    m.gsap.fromTo(
-      "[data-cov-marquee]",
-      { xPercent: 0 },
-      { xPercent: -28, ease: "none", scrollTrigger: scrub },
-    );
+    m.parallax("[data-cov-photo]", el, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14 });
+    m.parallax("[data-cov-marquee]", el, { xPercent: 0 }, { xPercent: -28 });
     const modes = el.querySelectorAll("[data-cov-mode]");
     m.reveal(modes, modes[0], { y: 28, stagger: 0.12 });
   });

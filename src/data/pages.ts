@@ -20,7 +20,7 @@ export const serviceDetailText = (tr: Tr) => ({
   preguntasFrecuentes: tr("Preguntas frecuentes", "Frequently asked questions"),
   antesCotizar: tr("Antes de cotizar", "Before you get a quote"),
   siTienesOtraDuda: tr(
-    "Si tienes otra duda, escríbenos y un asesor te responde.",
+    "Si tiene otra duda, escríbanos y un asesor le responde.",
     "If you have another question, message us and an advisor will answer.",
   ),
   otrosServicios: tr("Otros servicios", "Other services"),
@@ -33,6 +33,7 @@ export const serviceDetailText = (tr: Tr) => ({
   mapaProximo: (city: string) => tr(`Próximo destino: ${city}`, `Next stop: ${city}`),
   mapaLlegamos: (city: string) => tr(`¡Llegamos a ${city}!`, `We made it to ${city}!`),
   complementaTraslado: tr("Complementa su traslado", "Complete your move"),
+  verServicio: tr("Ver servicio", "View service"),
   quoteService: (title: string) =>
     tr(`Cotizar ${title.toLowerCase()}`, `Get a ${title.toLowerCase()} quote`),
   whatsappAbout: (title: string) =>
@@ -62,7 +63,7 @@ export const notFoundText = (tr: Tr) => ({
     "We couldn't find what you were looking for. Let us take you back home.",
   ),
   cta: tr("Ir al inicio", "Go to home"),
-  quote: tr("Cotiza su mudanza", "Get a moving quote"),
+  quote: tr("Cotice su mudanza", "Get a moving quote"),
   services: tr("Servicios", "Services"),
 });
 
@@ -70,12 +71,12 @@ export const notFoundText = (tr: Tr) => ({
 export const ctaBandText = (tr: Tr) => ({
   title: tr("¿Listo para su próximo destino?", "Ready for your next destination?"),
   text: tr(
-    "Un asesor especializado diseñará contigo el plan de su mudanza.",
+    "Un asesor especializado diseñará con usted el plan de su mudanza.",
     "A specialized advisor will design your moving plan with you.",
   ),
   cta: tr("Cotizar ahora", "Get a quote"),
   // Marquesina gigante con contorno arriba de la franja (decorativa)
-  marquee: tr("Cotiza tu mudanza", "Get your moving quote"),
+  marquee: tr("Cotice su mudanza", "Get your moving quote"),
 });
 
 // Política de tratamiento de datos (/privacidad). El texto legal está en

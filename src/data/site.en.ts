@@ -81,7 +81,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Get a quote",
     image: imgEmbalajeHogar,
-    imageDrop: "top",
+    imageReveal: "top",
     imageBlend: true,
     kicker: "Moving in Bogotá",
     headline: "Your move across town, stress-free",
@@ -156,7 +156,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Talk to an advisor",
     image: imgInternacionalPuerto,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "To and from Colombia",
     headline: "Crossing borders without worry",
     intro:
@@ -209,7 +209,7 @@ export const SERVICES: Service[] = [
     quote: "bodegaje",
     cta: "Get a quote",
     image: imgBodegajeBodega,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "Storage in Bogotá",
     headline: "A safe place for your belongings, for as long as you need",
     intro:
@@ -240,7 +240,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Get a quote",
     image: imgGuacales,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "Artwork and valuables",
     headline: "Your most valuable items in professional hands. Specialized packing and total care",
     intro:
@@ -264,7 +264,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Get a quote",
     image: imgAduanaCajas,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "International paperwork",
     headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
@@ -294,7 +294,7 @@ export const SERVICES: Service[] = [
     quote: "empresarial",
     cta: "Request a corporate proposal",
     image: imgOficina,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "Office moves",
     headline: "Transpack, a professional team for the safe move of your office",
     intro:
@@ -333,7 +333,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Contact the institutional team",
     image: imgArteHogar,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "Embassies and foreign and non-governmental organizations",
     headline: "Discretion, protocol and precision for diplomatic missions",
     intro:
@@ -364,7 +364,6 @@ export const SERVICES: Service[] = [
     ],
   },
 ];
-
 
 // ─── Service levels ───────────────────────────────────────────────────────────
 

@@ -14,7 +14,8 @@ import { container } from "@/components/ui/layout";
 // logos de clientes del hero.
 const ICONS = ["award", "globe-americas", "box-seam", "people"];
 
-export function Stats() {
+// También en Nosotros, montada sobre el borde del encabezado (`className`).
+export function Stats({ className = "pb-4 pt-6" }: { className?: string }) {
   const { tr } = useLang();
   const t = statsText(tr);
   const { STATS } = useSite();
@@ -38,7 +39,7 @@ export function Stats() {
   }, []);
 
   return (
-    <section ref={ref} className="pb-4 pt-6" aria-label={t.label}>
+    <section ref={ref} className={className} aria-label={t.label}>
       <div
         className={`${container} relative overflow-hidden rounded-[22px] bg-white shadow-[var(--shadow-float)] ring-1 ring-linea`}
       >
@@ -51,7 +52,7 @@ export function Stats() {
           {STATS.map((s, k) => (
             <li
               key={s.label}
-              className="group relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl px-3 py-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)] sm:flex-row sm:items-center sm:gap-3.5 sm:px-5"
+              className="group relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl px-3 py-5 transition-[translate,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)] sm:flex-row sm:items-center sm:gap-3.5 sm:px-5"
             >
               <span className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-xl bg-azul text-[1.25rem] text-naranja shadow-[0_10px_22px_-12px_rgba(39,43,124,.8)] transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-naranja group-hover:text-white sm:h-12 sm:w-12">
                 <span

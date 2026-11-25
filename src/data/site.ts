@@ -115,9 +115,9 @@ export type Service = {
   // En el encabezado, el mapa animado de rutas por Colombia en vez de la foto
   // (la foto sigue como imagen para compartir en redes)
   heroMap?: boolean;
-  // La foto del encabezado llega como una caja que se deja, desde este lado
-  // (DropIn); sin él, aparece quieta
-  imageDrop?: "left" | "right" | "top";
+  // Lado desde el que el barrido de color descubre la foto del encabezado
+  // (PageHero); sin él, desde la izquierda
+  imageReveal?: "left" | "right" | "top";
   // La foto del encabezado sin marco: se funde con el fondo blanco
   imageBlend?: boolean;
   // Rótulo sobre el título; sin él, no se muestra
@@ -165,7 +165,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Cotizar",
     image: imgEmbalajeHogar,
-    imageDrop: "top",
+    imageReveal: "top",
     imageBlend: true,
     kicker: "Trasteos en Bogotá",
     headline: "Su trasteo en la ciudad sin estrés",
@@ -252,7 +252,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Hablar con un asesor",
     image: imgInternacionalPuerto,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "Desde y hacia Colombia",
     headline: "Cruzar fronteras sin preocupación",
     intro:
@@ -305,7 +305,7 @@ export const SERVICES: Service[] = [
     quote: "bodegaje",
     cta: "Cotizar",
     image: imgBodegajeBodega,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "Almacenamiento en Bogotá",
     headline: "Un lugar seguro para sus pertenencias, el tiempo que lo necesite",
     intro:
@@ -345,7 +345,7 @@ export const SERVICES: Service[] = [
     quote: "local",
     cta: "Cotizar",
     image: imgGuacales,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "Obras de arte y objetos de valor",
     headline:
       "Sus objetos más valiosos en manos profesionales. Empaque especializado y cuidado total",
@@ -370,7 +370,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Cotizar",
     image: imgAduanaCajas,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "Trámites internacionales",
     headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
@@ -414,7 +414,7 @@ export const SERVICES: Service[] = [
     quote: "empresarial",
     cta: "Solicitar propuesta corporativa",
     image: imgOficina,
-    imageDrop: "right",
+    imageReveal: "right",
     kicker: "Traslado de oficinas",
     headline: "Transpack, un equipo profesional para el traslado seguro de su oficina",
     intro:
@@ -453,7 +453,7 @@ export const SERVICES: Service[] = [
     quote: "internacional",
     cta: "Contactar al área institucional",
     image: imgArteHogar,
-    imageDrop: "top",
+    imageReveal: "top",
     kicker: "Embajadas y organismos extranjeros y no gubernamentales",
     headline: "Discreción, protocolo y precisión para misiones diplomáticas",
     intro:
@@ -484,7 +484,6 @@ export const SERVICES: Service[] = [
     ],
   },
 ];
-
 
 // ─── Niveles de servicio (Lógica de Cotización, sección 8) ───────────────────
 
@@ -551,7 +550,7 @@ export const FAQS = [
   },
   {
     q: "¿Es mejor una mudanza marítima o aérea?",
-    a: "La marítima es ideal para grandes volúmenes, mobiliario completo y pertenencias familiares. La aérea es más rápida y se recomienda para cargas pequeñas o urgentes. Te asesoramos según su presupuesto, tiempos y tipo de pertenencias.",
+    a: "La marítima es ideal para grandes volúmenes, mobiliario completo y pertenencias familiares. La aérea es más rápida y se recomienda para cargas pequeñas o urgentes. Lo asesoramos según su presupuesto, tiempos y tipo de pertenencias.",
   },
   {
     q: "¿Necesito una visita técnica para cotizar?",

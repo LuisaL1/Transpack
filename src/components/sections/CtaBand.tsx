@@ -18,23 +18,7 @@ export function CtaBand({ title, text }: { title?: string; text?: string }) {
   text ??= t.text;
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, (m, el) => {
-    const row = el.querySelector("[data-cta-marquee]");
-    const loop = m.gsap.to(row, { xPercent: -50, duration: 28, ease: "none", repeat: -1 });
-    m.ScrollTrigger.create({
-      trigger: el,
-      start: "top bottom",
-      end: "bottom top",
-      onUpdate: (self) => {
-        const v = self.getVelocity();
-        const boost = Math.min(Math.abs(v) / 250, 6);
-        m.gsap.to(loop, {
-          timeScale: (v < 0 ? -1 : 1) * (1 + boost),
-          duration: 0.2,
-          overwrite: true,
-          onComplete: () => void m.gsap.to(loop, { timeScale: v < 0 ? -1 : 1, duration: 1.2 }),
-        });
-      },
-    });
+    m.velocityMarquee(el.querySelector("[data-cta-marquee]")!, el);
   });
   return (
     <section

@@ -202,7 +202,7 @@ export const headerText = (tr: Tr) => ({
   searchTitle: tr("Buscar (Ctrl + K)", "Search (Ctrl + K)"),
   searchMobile: tr("Buscar en el sitio", "Search the site"),
   support: tr("Soporte", "Support"),
-  quote: tr("Cotiza su mudanza", "Get a quote"),
+  quote: tr("Cotice su mudanza", "Get a quote"),
   openMenu: tr("Abrir menú", "Open menu"),
   closeMenu: tr("Cerrar menú", "Close menu"),
   mobileNav: tr("Menú móvil", "Mobile menu"),

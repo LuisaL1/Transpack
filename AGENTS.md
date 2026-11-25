@@ -75,7 +75,7 @@ src/
 │   │                       ventana de respaldo), ChatLauncher, ChatTeaser,
 │   │                       ChatBubble, ChatOptions, ChatAvatar
 │   └── ui/                 Primitivas: Bi (íconos), btn, Eyebrow, SectionHead,
-│                           Reveal, DropIn, PhotoFrame (marco de foto con pestaña),
+│                           Reveal, SweepIn, PhotoFrame (marco de foto con pestaña),
 │                           StatValue, Checks y medidas de sección (layout.ts)
 ├── data/                   CONTENIDO del sitio (fuente única de verdad)
 │   ├── site.ts (+ .en)                   Contacto, cifras, servicios,
@@ -206,8 +206,8 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
   exportadas (`STATS` en `src/data/site.ts`). Las pruebas verifican que los
   textos coincidan con `STATS`. En el inicio se muestran las cuatro a la vez
   en una barra compacta (`Stats.tsx`; ya no en carrusel desde noviembre de
-  2026): al entrar, cada cifra cuenta desde 0 hasta su valor (`StatCounter`),
-  desde que la barra se ve en pantalla, y al pasar el cursor cada una se
+  2026): al entrar, los dígitos de cada cifra ruedan como un odómetro hasta su
+  valor (`StatOdometer`), desde que la barra se ve en pantalla, y al pasar el cursor cada una se
   levanta con sombra y franja naranja, como los logos de clientes. El HTML
   pre-generado y los lectores de pantalla llevan el valor completo.
 - Embajadas atendidas: las 10 de `EMBASSIES`. En el inicio van en su propia
@@ -311,8 +311,20 @@ blanco.
   desmontar (devuelva una función para quitar listeners). Utilidades del motor:
   `reveal()` (entrada escalonada con `opacity`, nunca `autoAlpha`: lo que espera
   debe poder enfocarse con el teclado), `splitReveal()` (líneas desde una
-  máscara), `tilt()` (inclinación y resplandor `.spotlight` con el cursor) y
-  `ENTER` (cuándo entra un elemento).
+  máscara), `tilt()` (inclinación y resplandor `.spotlight` con el cursor),
+  `parallax()` (desplazamiento atado al scroll), `drawLine()` (línea que se
+  dibuja con el scroll), `velocityMarquee()` (marquesina que se acelera con la
+  velocidad del scroll) y `ENTER` (cuándo entra un elemento).
+- **Fijar con ScrollTrigger (`pin`):** nunca fije un elemento que React monta o
+  quita directamente (una `section` de la página): ScrollTrigger lo envuelve en
+  un `pin-spacer` y, al salir de la página, React falla con `removeChild` y deja
+  la pantalla en blanco. Fije un `div` interno (ver "Otros servicios" en
+  `ServiceDetailPage`; lo vigila una prueba en `tests/e2e/flows.spec.ts`).
+- **Transición entre páginas:** `PageCurtain` (`src/components/layout/`,
+  montado en `Layout`): al cambiar de ruta, un telón azul con el cuadrado
+  naranja se retira hacia arriba (`.page-curtain`, solo CSS). No sale al
+  entrar al sitio, con `#anclas` ni con movimiento reducido. `BrowserRouter` no
+  admite las View Transitions de React Router, por eso es CSS.
 - **GSAP y transiciones CSS no se mezclan:** un elemento que GSAP anima (opacidad,
   posición, giro) no puede tener una transición CSS sobre esas mismas
   propiedades (`transition-all`): al recalcular posiciones, ScrollTrigger lee
@@ -329,6 +341,23 @@ blanco.
   desharía). Se detiene solo cuando un modal bloquea el scroll
   (`body.style.overflow = "hidden"`); no suaviza dentro de diálogos ni de lo
   marcado con `data-lenis-prevent`.
+- **Encabezado de las páginas internas** (`PageHero`): los hijos del bloque de
+  texto con `.hero-stagger` entran uno tras otro y el `h1` lleva su texto en
+  `.line-mask` (CSS, sin esperar al motor). La foto (o el mapa) llega con un
+  **barrido de color** (`.hero-reveal`, CSS; pedido del cliente, nov. 2026, en
+  vez de la caja que caía y rebotaba): una franja naranja y un panel azul
+  cruzan el marco con `clip-path` desde el lado de `reveal` (`imageReveal` en
+  `SERVICES`; izquierda por defecto), la foto aparece detrás acercándose y
+  pasando de borrosa a nítida (`.hero-img-in`), completa y con las cuatro
+  esquinas redondeadas; al terminar, la pestaña brota rápido desde su esquina
+  con un pequeño rebote (`hero-tab-pop`) y la esquina de la foto vuelve a ser
+  recta bajo ella. La
+  foto fundida (`imageBlend`) solo se acerca y se enfoca (`.hero-blend-in`).
+  Ya quieta, la foto sigue un poco al cursor (solo con mouse) y, al bajar, se
+  corre y se acerca: GSAP mueve `--hero-mx`/`--hero-my`/`--hero-py`/`--hero-ps`,
+  que usan las propiedades `translate` y `scale`, aparte del `transform` del
+  acercamiento de `PhotoFrame`. Flota detrás del texto el cuadrado naranja de
+  la marca.
 - **En todas las páginas** (`usePageMotion`, montado en `Layout`): los `h2` de
   `main` entran línea por línea, los chevrons ››› de cada `Eyebrow` se encienden
   en secuencia y los enlaces con `data-magnetic` siguen un poco al puntero.
@@ -346,7 +375,7 @@ blanco.
   pantalla; en celular, todos desplegados con su foto); Niveles con números que
   se descubren y tarjetas con `tilt`; Cobertura con parallax, odómetro y
   marquesina gigante de continentes; Proceso con la línea que se dibuja con el
-  scroll (escritorio); Quiénes somos con parallax y "1968" en odómetro; Galería
+  scroll (escritorio; `StepsTimeline`, el mismo de los servicios); Quiénes somos con parallax y "1968" en odómetro; Galería
   en dos filas que se desplazan en sentidos opuestos; tarjetas del blog con
   `tilt`; FAQ que abre con animación de altura (`::details-content`); pasos del
   cotizador que entran deslizándose; Shorts que entran en abanico; franja
@@ -372,12 +401,14 @@ blanco.
   páginas de servicio, las tarjetas del blog (la categoría va en la pestaña),
   los artículos relacionados, Quiénes somos, el CEO y Certificaciones en
   Nosotros. Ya no hay franjas diagonales naranja sobre las fotos.
-- **`DropIn`** (`src/components/ui/DropIn.tsx`, animaciones `.drop-*`): la foto
-  llega como una caja que se deja (desde un lado o desde arriba, golpe y
-  rebote) al entrar en pantalla. En las fotos del encabezado de los servicios
-  con `imageDrop` en `SERVICES`, Quiénes somos, los artículos del blog
-  (`PageHero drop`) y Certificaciones en Nosotros. Mudanzas locales usa en
-  cambio la foto fundida con el fondo (`imageBlend`, `.photo-blend`).
+- **`SweepIn`** (`src/components/ui/SweepIn.tsx`): el barrido de color de los
+  encabezados (`.hero-reveal`, ver "Movimiento") para una foto más abajo en la
+  página: espera en pausa (`.sweep-on-view`) hasta entrar en pantalla; `delay`
+  escalona varias fotos (`--sweep-delay`). La foto lleva la clase `hero-img-in`.
+  En Certificaciones de Nosotros. Reemplazó a `DropIn` (la caja que caía y
+  rebotaba), que se eliminó en noviembre de 2026 porque al cliente no le
+  gustaba. Mudanzas locales usa en el encabezado la foto fundida con el fondo
+  (`imageBlend`, `.photo-blend`).
 - **`WorldLines`** (`src/components/sections/WorldLines.tsx`): fondo de
   mapamundi de líneas (costas, fronteras y rutas desde Bogotá en azul al 7–13 %)
   con destellos naranja y azul que las recorren lento y sin parar. Es un SVG
@@ -446,22 +477,48 @@ blanco.
 
 - `PageHero`: texto a la izquierda sobre blanco (la cabecera usa letras
   oscuras) y, a la derecha, la foto en un `PhotoFrame` con pestaña (en los
-  servicios, con su ícono y nombre); en celular la foto va arriba.
+  servicios, con su ícono y nombre); en celular la foto va arriba. Movimiento
+  en "Movimiento".
+- Páginas de servicio (`ServiceDetailPage`, nov. 2026, con la dinámica del
+  inicio): en "Cómo lo hacemos" el texto queda fijo en escritorio mientras pasa
+  la lista "Qué incluye", cuyos ítems entran escalonados y su ✓ se dibuja
+  (trazo SVG `data-check` en `Checks`); las cajas de compromiso y nota entran
+  con su franja naranja. Los pasos van en `StepsTimeline` (tono oscuro sobre
+  azul, con `pin`): en escritorio la sección queda fija mientras se baja y solo
+  sigue cuando la línea llegó al último paso (pedido del cliente, nov. 2026;
+  unas 0,45 pantallas de scroll por paso). Se fija el `div` `data-steps-pin`,
+  no la sección. En el inicio (`Process`) los pasos no se fijan. La guía de términos (`ServiceGuide`) lleva tarjetas con `tilt`. El
+  carrusel de Embalaje usa `velocityMarquee` (se detiene con el cursor y, con
+  movimiento reducido, se desliza a mano). "Otros servicios" son tarjetas con
+  la foto de cada servicio: en escritorio la fila queda fija y se desplaza de
+  lado con el scroll; en celular se desliza con el dedo. La página se arma de
+  nuevo al pasar de un servicio a otro (`key` con el slug).
 - Mudanzas nacionales (`/servicios/mudanzas-nacionales`): en vez de la foto
   (`heroMap` en `SERVICES`; `cargue.jpg` sigue como imagen para redes), un
   **mapa de Colombia con un camión** (`ColombiaRoutesMap`, en SVG): silueta
   exacta (Natural Earth 1:10m), las 14 ciudades del recorrido de la portada y
   carreteras por los pueblos reales de cada troncal
   (`scripts/generate-colombia-map.mjs`, `pnpm map`). Va en un círculo con el
-  mar gris claro, los países vecinos en negro carbón y Colombia en un tono
-  claro de `#1800AD` (estética anterior; candidata a pasarse al estilo "noche"
-  de la portada). Un camión azul y blanco viaja de una ciudad a otra por el
+  estilo "noche" de la portada (nov. 2026): panel `#0D0F33`, mar azul marino
+  con halo azul, países vecinos en azul grisáceo translúcido y Colombia en
+  lavanda luminosa con paredes oscuras (antes: mar gris claro, vecinos en
+  negro carbón y Colombia en un tono claro de `#1800AD`). Un camión azul y blanco viaja de una ciudad a otra por el
   camino más corto (al azar, sin repetir sus últimas 6, `RECENT`), con estela
   naranja y brillo; la casa del destino cae con rebote y aviso "Próximo
   destino", al llegar salta con una onda y "¡Llegamos a …!" (`.map-*` en
   `src/styles/index.css`; textos en `serviceDetailText` de `src/data/pages.ts`;
   lógica en `src/lib/colombiaRoutes.ts` y `src/hooks/useTruckTrip.ts`). Pausa
   fuera de pantalla; con movimiento reducido, el viaje ya hecho sin avisos.
+- Nosotros (`NosotrosPage`, nov. 2026, con la dinámica del inicio): las cifras
+  son la barra del inicio (`Stats`, con `className` para montarla sobre el borde
+  del encabezado); la línea de tiempo de la historia se dibuja con el scroll y
+  cada hito se enciende (rombo azul → naranja; GSAP reemplaza el `rotate-45`,
+  por eso la animación incluye `rotation: 45`), con el año de fundación
+  gigante en contorno y parallax abajo a la derecha; misión, visión y valores
+  (estos en abanico) entran y se inclinan hacia el puntero (`tilt` +
+  `.spotlight`); logos y banderas entran escalonados y cada logo toma sus
+  colores al pasar el cursor; las fotos de Certificaciones llegan con
+  `SweepIn` y el sello LACMA se "estampa".
 - Chat: mismo estilo de los menús (cabecera azul con el cuadrado naranja
   translúcido girado 45°, rótulo naranja en mayúsculas, opciones como lista con
   íconos en cuadros grises). La ventana de Zoho lo recibe de

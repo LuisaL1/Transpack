@@ -87,10 +87,12 @@ export function PrivacyPage() {
           <Bi n="chevron-right" className="text-[0.7rem]" />
           <span className="font-semibold text-azul">{PRIVACY.title}</span>
         </nav>
-        <div className="animate-fade-up max-w-3xl">
+        <div className="hero-stagger max-w-3xl">
           <Eyebrow>{t.eyebrow}</Eyebrow>
           <h1 className="mb-6 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.1] text-tinta">
-            {PRIVACY.title}
+            <span className="line-mask [--d:120ms]">
+              <span>{PRIVACY.title}</span>
+            </span>
           </h1>
           <p className="max-w-2xl text-start text-[1.05rem]">{PRIVACY.intro}</p>
           <p className="mt-6 text-[0.85rem] text-suave">{PRIVACY.updated}</p>

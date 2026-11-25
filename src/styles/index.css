@@ -301,6 +301,256 @@ p {
     animation: none;
   }
 }
+/* Encabezado de las páginas internas (PageHero, nov. 2026). Cada hijo de
+   .hero-stagger entra desde abajo, uno tras otro (migas, rótulo, h1, texto,
+   botones); el h1 además sale de una máscara (.line-mask). La foto se corre y
+   se acerca con el scroll: GSAP mueve --hero-py y --hero-ps (propiedades
+   translate y scale, aparte del transform que usa el acercamiento de
+   PhotoFrame al pasar el cursor). */
+.hero-stagger > * {
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-stagger > :nth-child(2) {
+  animation-delay: 90ms;
+}
+.hero-stagger > :nth-child(3) {
+  animation-delay: 180ms;
+}
+.hero-stagger > :nth-child(4) {
+  animation-delay: 270ms;
+}
+.hero-stagger > :nth-child(5) {
+  animation-delay: 360ms;
+}
+.hero-stagger > :nth-child(n + 6) {
+  animation-delay: 450ms;
+}
+.hero-parallax {
+  translate: calc(var(--hero-mx, 0) * 1px) calc(var(--hero-py, 0%) + var(--hero-my, 0) * 1px);
+  /* Un poco acercada: así seguir al cursor no deja ver los bordes */
+  scale: var(--hero-ps, 1.06);
+}
+
+/* Llegada de la foto del encabezado (PageHero, nov. 2026; antes una caja que
+   caía y rebotaba). Una franja naranja y, detrás, un panel azul cruzan el
+   marco desde un lado (.hero-reveal-left/right/top, con clip-path para que
+   las esquinas no se deformen): lo cubren y salen por el lado opuesto. Mientras lo cubren aparece la foto
+   (.hero-img-in), que llega acercada y borrosa y se asienta. Al final entra la
+   pestaña. Todo en CSS: está arriba de la página y no espera al motor. Con
+   movimiento reducido los paneles no se ven (escala 0) y la foto queda quieta. */
+.hero-reveal {
+  position: relative;
+}
+.hero-reveal::before,
+.hero-reveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  /* Quieto (o con movimiento reducido): recortado del todo, no se ve */
+  clip-path: inset(0 100% 0 0 round 24px);
+  animation: hero-wipe-left 1.15s cubic-bezier(0.77, 0, 0.18, 1)
+    calc(0.15s + var(--sweep-delay, 0s)) both;
+}
+.hero-reveal::before {
+  background: var(--color-naranja);
+}
+.hero-reveal::after {
+  background: var(--color-azul);
+  animation-delay: calc(0.27s + var(--sweep-delay, 0s));
+}
+.hero-reveal-right::before,
+.hero-reveal-right::after {
+  animation-name: hero-wipe-right;
+}
+.hero-reveal-top::before,
+.hero-reveal-top::after {
+  animation-name: hero-wipe-top;
+}
+/* Entra por un lado, cubre el marco y sale por el opuesto */
+@keyframes hero-wipe-left {
+  0% {
+    clip-path: inset(0 100% 0 0 round 24px);
+  }
+  48%,
+  52% {
+    clip-path: inset(0 0 0 0 round 24px);
+  }
+  100% {
+    clip-path: inset(0 0 0 100% round 24px);
+  }
+}
+@keyframes hero-wipe-right {
+  0% {
+    clip-path: inset(0 0 0 100% round 24px);
+  }
+  48%,
+  52% {
+    clip-path: inset(0 0 0 0 round 24px);
+  }
+  100% {
+    clip-path: inset(0 100% 0 0 round 24px);
+  }
+}
+@keyframes hero-wipe-top {
+  0% {
+    clip-path: inset(0 0 100% 0 round 24px);
+  }
+  48%,
+  52% {
+    clip-path: inset(0 0 0 0 round 24px);
+  }
+  100% {
+    clip-path: inset(100% 0 0 0 round 24px);
+  }
+}
+/* La foto: oculta hasta que el panel azul la cubre (~0,8 s); luego se asienta */
+.hero-img-in {
+  /* backwards: al terminar manda .hero-parallax (mismo valor, sin salto) */
+  animation: hero-img-in 2s var(--sweep-delay, 0s) backwards;
+}
+@keyframes hero-img-in {
+  0%,
+  40% {
+    opacity: 0;
+    scale: 1.32;
+    filter: blur(10px) saturate(1.3);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  41% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    scale: var(--hero-ps, 1.06);
+    filter: none;
+  }
+}
+/* Primero se ve la foto completa, con sus cuatro esquinas redondeadas (sin el
+   recorte de la pestaña). Al terminar el barrido, la pestaña brota rápido
+   desde su esquina con un pequeño rebote, y su ícono y nombre aparecen
+   encima. Con movimiento reducido la pestaña ya está puesta. */
+.hero-reveal .photo-frame {
+  /* Redondeada mientras llega la foto; cuando la pestaña ya cubre su esquina,
+     vuelve a la esquina recta de PhotoFrame (si no, la pestaña quedaría
+     recortada por la curva) */
+  animation: hero-frame-corner 0.1s linear calc(1.5s + var(--sweep-delay, 0s)) backwards;
+}
+@keyframes hero-frame-corner {
+  from {
+    border-radius: 24px;
+  }
+}
+.hero-reveal .frame-tab {
+  animation: hero-tab-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)
+    calc(1.45s + var(--sweep-delay, 0s)) both;
+}
+.hero-reveal .frame-tab-bl {
+  transform-origin: 0 100%;
+}
+.hero-reveal .frame-tab-tr {
+  transform-origin: 100% 0;
+}
+@keyframes hero-tab-pop {
+  from {
+    scale: 0;
+  }
+}
+.hero-reveal .frame-tab > * {
+  animation: hero-tab-in 0.35s ease-out calc(1.7s + var(--sweep-delay, 0s)) both;
+}
+@keyframes hero-tab-in {
+  from {
+    opacity: 0;
+    translate: -8px 0;
+  }
+}
+/* El mismo barrido más abajo en la página (<SweepIn />): todo espera en pausa
+   (foto oculta, paneles recortados) hasta que el bloque entra en pantalla.
+   --sweep-delay escalona varias fotos. */
+.sweep-on-view:not(.is-in)::before,
+.sweep-on-view:not(.is-in)::after,
+.sweep-on-view:not(.is-in) .hero-img-in,
+.sweep-on-view:not(.is-in) .photo-frame,
+.sweep-on-view:not(.is-in) .frame-tab,
+.sweep-on-view:not(.is-in) .frame-tab > * {
+  animation-play-state: paused;
+}
+/* Foto fundida con el fondo (sin marco): sin panel, solo el acercamiento */
+.hero-blend-in {
+  animation: hero-blend-in 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+@keyframes hero-blend-in {
+  from {
+    opacity: 0;
+    scale: 1.25;
+    filter: blur(12px);
+  }
+  to {
+    scale: var(--hero-ps, 1.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal::before,
+  .hero-reveal::after,
+  .hero-img-in,
+  .hero-blend-in,
+  .hero-reveal .photo-frame,
+  .hero-reveal .frame-tab,
+  .hero-reveal .frame-tab > * {
+    animation: none;
+  }
+}
+/* Rombo pequeño que flota despacio (decorativo) */
+.hero-float {
+  animation: hero-float 6s ease-in-out infinite;
+}
+@keyframes hero-float {
+  50% {
+    transform: translateY(-14px) rotate(20deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-stagger > *,
+  .hero-float {
+    animation: none;
+  }
+}
+/* Telón entre páginas (PageCurtain): cubre la pantalla y se retira hacia
+   arriba; el cuadrado naranja gira y se encoge mientras tanto */
+.page-curtain {
+  animation: page-curtain 0.75s cubic-bezier(0.77, 0, 0.18, 1) 0.12s both;
+}
+@keyframes page-curtain {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+.page-curtain-mark {
+  animation: page-curtain-mark 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes page-curtain-mark {
+  from {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1) rotate(90deg);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain {
+    display: none;
+  }
+}
 /* Paso del cotizador que entra deslizándose desde la derecha (nov. 2026) */
 .animate-step-in {
   animation: step-in 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -478,143 +728,6 @@ p {
   }
 }
 
-/* Imágenes que llegan como una caja que se deja (<DropIn />): ocultas hasta
-   entrar en pantalla; llegan acelerando, golpean contra su lugar (se aplastan
-   un poco hacia la pared o el piso) y dan un pequeño rebote. */
-.drop-in {
-  opacity: 0;
-}
-.drop-in.is-dropped {
-  animation-duration: 1.05s;
-  animation-fill-mode: both;
-}
-.drop-from-top {
-  transform-origin: 50% 100%;
-}
-.drop-from-right {
-  transform-origin: 0% 50%;
-}
-.drop-from-left {
-  transform-origin: 100% 50%;
-}
-.drop-from-top.is-dropped {
-  animation-name: dropTop;
-}
-.drop-from-right.is-dropped {
-  animation-name: dropRight;
-}
-.drop-from-left.is-dropped {
-  animation-name: dropLeft;
-}
-/* Cae acelerando, se aplasta contra el piso y rebota dos veces, cada vez menos */
-@keyframes dropTop {
-  0% {
-    opacity: 0;
-    transform: translateY(-115%);
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  12% {
-    opacity: 1;
-  }
-  48% {
-    opacity: 1;
-    transform: translateY(0) scale(1, 1);
-    animation-timing-function: ease-out;
-  }
-  56% {
-    transform: translateY(0) scale(1.05, 0.9);
-    animation-timing-function: ease-out;
-  }
-  70% {
-    transform: translateY(-7%) scale(0.98, 1.03);
-    animation-timing-function: ease-in;
-  }
-  80% {
-    transform: translateY(0) scale(1.02, 0.97);
-    animation-timing-function: ease-out;
-  }
-  90% {
-    transform: translateY(-1.5%) scale(1, 1);
-    animation-timing-function: ease-in;
-  }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-/* Llega desde la derecha, golpea la pared de la izquierda y rebota */
-@keyframes dropRight {
-  0% {
-    opacity: 0;
-    transform: translateX(115%);
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  12% {
-    opacity: 1;
-  }
-  48% {
-    opacity: 1;
-    transform: translateX(0) scale(1, 1);
-    animation-timing-function: ease-out;
-  }
-  56% {
-    transform: translateX(0) scale(0.92, 1.03);
-    animation-timing-function: ease-out;
-  }
-  70% {
-    transform: translateX(4%) scale(1.02, 0.99);
-    animation-timing-function: ease-in;
-  }
-  80% {
-    transform: translateX(0) scale(0.98, 1.01);
-    animation-timing-function: ease-out;
-  }
-  90% {
-    transform: translateX(1%) scale(1, 1);
-    animation-timing-function: ease-in;
-  }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-/* Llega desde la izquierda, golpea la pared de la derecha y rebota */
-@keyframes dropLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-115%);
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  12% {
-    opacity: 1;
-  }
-  48% {
-    opacity: 1;
-    transform: translateX(0) scale(1, 1);
-    animation-timing-function: ease-out;
-  }
-  56% {
-    transform: translateX(0) scale(0.92, 1.03);
-    animation-timing-function: ease-out;
-  }
-  70% {
-    transform: translateX(-4%) scale(1.02, 0.99);
-    animation-timing-function: ease-in;
-  }
-  80% {
-    transform: translateX(0) scale(0.98, 1.01);
-    animation-timing-function: ease-out;
-  }
-  90% {
-    transform: translateX(-1%) scale(1, 1);
-    animation-timing-function: ease-in;
-  }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* Mapa de Mudanzas nacionales (ColombiaRoutesMap): casas de origen y destino
    (la punta del marcador queda sobre la ciudad) y avisos del viaje */
 .map-pin {
@@ -762,8 +875,7 @@ p {
   html {
     scroll-behavior: auto;
   }
-  .reveal,
-  .drop-in {
+  .reveal {
     opacity: 1;
     transform: none;
   }
