@@ -447,6 +447,12 @@ blanco.
   aparte con su propia animación CSS (`src/assets/images/mapa-lineas.svg`,
   generado por `scripts/generate-world-lines.mjs` en `pnpm map`), sin JS. En el
   bloque de historia de Nosotros.
+- **Certificaciones y membresías** (`Certifications`, al pie de Contacto en el
+  inicio; nov. 2026): LACMA, IAM y PAIMA en fichas con el estilo de los logos de
+  clientes (`TILE` y `TileStripe`, exportados de `Hero.tsx`), que entran
+  escalonadas. Logos: LACMA es el sello del cliente e IAM el oficial de
+  iamovers.org (`cert-iam.svg`). PAIMA va como logotipo de texto hasta que el
+  cliente entregue su logo (su sitio no respondía).
 - Clientes y embajadas del inicio (`Hero`): dos cuadrículas fijas con todos los
   logos, en gris; al pasar el cursor el logo toma sus colores y su ficha se
   levanta con sombra y la franja naranja.

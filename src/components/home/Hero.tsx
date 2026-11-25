@@ -237,11 +237,11 @@ export function Hero() {
 // transición CSS se limita a esas propiedades: la entrada (opacidad y posición)
 // la anima GSAP, y una transición CSS sobre las mismas lo confundiría al medir
 // (los logos quedaban invisibles)
-const TILE =
+export const TILE =
   "group relative overflow-hidden rounded-2xl border border-transparent bg-white transition-[translate,border-color,box-shadow] duration-300 hover:-translate-y-1.5 hover:border-linea hover:shadow-[0_18px_40px_-16px_rgba(255,118,25,.45)]";
 
 // Franja naranja que crece desde la izquierda al pasar el cursor por la ficha
-function TileStripe() {
+export function TileStripe() {
   return (
     <span
       aria-hidden="true"

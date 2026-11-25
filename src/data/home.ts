@@ -198,6 +198,26 @@ export const contactText = (tr: Tr) => ({
   mapSrc: "https://www.google.com/maps?q=Carrera+40+%2320A-96,+Bogot%C3%A1,+Colombia&output=embed",
 });
 
+// Franja de certificaciones y membresías al pie de Contacto (nov. 2026). Los
+// nombres completos van en inglés, como los usan las asociaciones.
+export const certsText = (tr: Tr) => ({
+  eyebrow: tr("Certificaciones y membresías", "Certifications and memberships"),
+  title: tr("Respaldo internacional en cada traslado", "International backing on every move"),
+  items: [
+    {
+      key: "lacma",
+      name: "LACMA",
+      full: "Latin American & Caribbean Moving Association",
+    },
+    { key: "iam", name: "IAM", full: "International Association of Movers" },
+    {
+      key: "paima",
+      name: "PAIMA",
+      full: "Pan American International Movers Association",
+    },
+  ],
+});
+
 export const videosText = (tr: Tr) => ({
   eyebrow: tr("Transpack en video", "Transpack on video"),
   title: tr("Así se ve una mudanza bien hecha", "This is what a move done right looks like"),
