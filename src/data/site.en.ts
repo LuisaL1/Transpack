@@ -466,19 +466,8 @@ export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boo
   { src: imgBodegaAlmacenamiento, caption: "Storage warehouse", wide: true },
   { src: imgEmbalajeSala, caption: "On-site packing" },
   { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
-  { src: imgEmbalajeSala, caption: "On-site packing" },
-  { src: imgMontacargasBodega, caption: "Forklift in our warehouse" },
-  { src: imgCargueCajas, caption: "Loading Transpack boxes" },
-  { src: imgEmbalajeBiblioteca, caption: "Packing a home library" },
-  { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
-  { src: imgSalaProtegida, caption: "Furniture protected in the living room" },
-  { src: imgEmbalajeObra, caption: "Protecting a work of art" },
-  { src: imgContenedorCalle, caption: "Container ready for loading" },
-  { src: imgGuacalExportacion, caption: "Export crate" },
-  { src: imgMenajeListo, caption: "Household goods ready to move" },
-  { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
-  { src: imgBodegaAlmacenamiento, caption: "Storage warehouse" },
   { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
+  { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
 ];
 
 // Política de tratamiento de datos (traducción; la versión en español es la oficial).

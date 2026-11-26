@@ -581,7 +581,7 @@ export const FAQS = [
   },
 ];
 
-// Galería (mosaico del inicio). "tall": foto vertical que ocupa dos filas.
+// Galería del inicio (dos filas que se desplazan). "tall": foto vertical; "wide": foto destacada 16:9.
 export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
   { src: imgEmbalajeObra, caption: "Protección de una obra de arte", wide: true },
   { src: imgContenedorCalle, caption: "Contenedor listo para el cargue", wide: true },
@@ -593,19 +593,8 @@ export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boo
   { src: imgBodegaAlmacenamiento, caption: "Bodega de almacenamiento", wide: true },
   { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
   { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
-  { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
-  { src: imgMontacargasBodega, caption: "Montacargas en la bodega" },
-  { src: imgCargueCajas, caption: "Cargue de cajas Transpack" },
-  { src: imgEmbalajeBiblioteca, caption: "Embalaje de la biblioteca" },
-  { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
-  { src: imgSalaProtegida, caption: "Muebles protegidos en la sala" },
-  { src: imgEmbalajeObra, caption: "Protección de una obra de arte" },
-  { src: imgContenedorCalle, caption: "Contenedor listo para el cargue" },
-  { src: imgGuacalExportacion, caption: "Guacal de exportación" },
-  { src: imgMenajeListo, caption: "Menaje listo para el traslado" },
-  { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
-  { src: imgBodegaAlmacenamiento, caption: "Bodega de almacenamiento" },
   { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
+  { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
 ];
 
 export const ABOUT_IMAGES = { a: imgCargue, b: imgEquipoCaja };
