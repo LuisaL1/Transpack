@@ -241,8 +241,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
   de "diáspora").
 - Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
-  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, gestión
-  aduanera, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, trámites
+  internacionales —antes "Gestión documental y aduanera", nov. 2026; la URL
+  sigue siendo `/servicios/gestion-aduanera`—, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
   y en los textos del inicio que el cliente corrigió (niveles, cotizador, proceso). Pedido del cliente,
   noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
   sección.
@@ -438,8 +439,10 @@ blanco.
   locales, nacionales ni internacionales, que llevan el panel del mapa; ver
   "Encabezado bento con mapa"): `PhotoFrame` con la pestaña abajo a la
   izquierda (ícono y nombre del servicio, con su animación), **doble marco**
-  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** arriba a la
-  derecha, girada, con un sello. Los datos de la etiqueta son de muestra y van
+  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** compacta
+  (138 px de ancho, un 40 % menos que la primera; nov. 2026) arriba a la
+  izquierda, girada, con un sello; en Diplomático va abajo a la derecha
+  (`LABEL_BOTTOM_RIGHT` en `ShippingPhoto.tsx`). Los datos de la etiqueta son de muestra y van
   con el servicio (`shippingLabelText(tr, slug)` en `src/data/pages.ts`: p.
   ej. Bogotá → Madrid por vía marítima en internacionales, orden de bodegaje en
   Bodegaje, guacal a medida en Embalaje); al agregar un servicio, agregue su
@@ -527,23 +530,24 @@ blanco.
   juntos) y, al pasar el cursor, se ve su nombre. Mientras hay una ficha
   abierta, la tarjeta de la foto del servicio se desvanece para no taparla
   (`group-has-[[role=dialog]]` en `PageHero`).
-- **Encabezado "split" de los servicios con mapa** (nov. 2026, pedido del
-  cliente; Mudanzas locales, nacionales e internacionales: `heroLayout:
-  "split"` en `SERVICES` → `PageHero split`): la foto del servicio va a sangre
-  en los 2/3 izquierdos (desde arriba, detrás de la cabecera), **a color y
-  quieta** (sin velo naranja ni lavado beige, que la apagaban, ni movimiento),
-  con el texto en una **tarjeta de vidrio blanco** encima, y se funde al blanco
-  hacia la derecha; el mapa va libre, sin panel (`ServiceMapPanel bare`: sin
-  chapa ni leyenda), en el tercio derecho, con la mitad del margen derecho
-  habitual. Los tres mapas se agrandan para pesar lo mismo: Bogotá con
-  `BARE_SCALE` (y `plain` en `GlobeLabels`: el nombre de cada localidad junto
-  al punto al que llega su línea, `placeEndLabels` en `src/lib/globe.ts`; la
-  animación corre una vez, `useGlobe(…, { once, hoverPause })`), Colombia y el
-  mundo con `lg:scale-*`. El crédito de IDECA, que exige la licencia, no va
-  sobre el mapa sino en el pie de página (`mapCredit` en `footerText`). En
-  celular y tableta la foto va arriba, la tarjeta montada sobre ella y el mapa
-  debajo. El diseño "bento" (panel con la foto montada) sigue en `PageHero`
-  para un servicio con mapa sin `heroLayout`.
+- **Encabezado "split" de los servicios con mapa** (Mudanzas locales,
+  nacionales e internacionales: `heroLayout: "split"` en `SERVICES` →
+  `PageHero split`). **Desde el 26 de nov. de 2026** (pedido del cliente: "la
+  foto es la protagonista", con la misma secuencia de diseño de los servicios
+  sin mapa): la **foto a la derecha**, con el mismo marco de los demás servicios
+  (`ShippingPhoto`: pestaña, doble marco azul y etiqueta de envío), y el **mapa
+  de fondo detrás del texto**, en la mitad izquierda (`ServiceMapPanel bare`,
+  al 80 % de opacidad, decorativo: `aria-hidden`, `inert` y sin eventos del
+  puntero; por eso el mapa del mundo ya no abre fichas en el encabezado). El
+  texto va en una tarjeta de vidrio blanco **más transparente** (`bg-white/60`,
+  sin desenfoque; antes `/80` con desenfoque) para que se vea el mapa. En
+  celular, la foto arriba y el texto con el mapa detrás debajo. Antes: la foto a
+  sangre en los 2/3 izquierdos con la tarjeta encima y el mapa libre en el
+  tercio derecho. Bogotá se agranda con `BARE_SCALE`; los nombres de las
+  localidades van junto al punto al que llega su línea (`plain`). El crédito de
+  IDECA, que exige la licencia, va en el pie de página (`mapCredit` en
+  `footerText`). El diseño "bento" (panel con la foto montada) sigue en
+  `PageHero` para un servicio con mapa sin `heroLayout`.
 - **Los tres mapas de los servicios** (Mudanzas locales, nacionales e
   internacionales; nov. 2026, pedido del equipo: "que no sea un sancocho")
   usan **los mismos elementos gráficos**, tomados del mapa de Bogotá (el que le

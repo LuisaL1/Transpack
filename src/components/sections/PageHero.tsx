@@ -59,12 +59,18 @@ export function PageHero({
   backdrop?: ReactNode;
   reveal?: HeroReveal;
   blend?: boolean;
-  /** Con `backdrop` e `image`: foto a sangre en 2/3 y el mapa libre en el tercio derecho */
+  /** Con `backdrop`: foto a la derecha (como los demás servicios) y el mapa de fondo detrás del texto */
   split?: boolean;
   shipping?: string;
   tab?: ReactNode | true;
 }) {
   const visual = Boolean(image || media);
+  // "split" (nov. 2026, pedido del cliente; Mudanzas locales, nacionales e
+  // internacionales): la foto es la protagonista, a la derecha y con el mismo
+  // marco de los demás servicios (ShippingPhoto), y el mapa va de fondo detrás
+  // del texto, que va en una tarjeta de vidrio blanco translúcida (deja ver
+  // el mapa). Antes: foto a sangre detrás de la tarjeta y mapa a la derecha.
+  const mapBehind = split && Boolean(backdrop);
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, (m, el) => {
     // En la parte de arriba la foto está quieta: no salta cuando carga el motor
@@ -117,43 +123,7 @@ export function PageHero({
   const frame =
     "relative mx-auto w-[min(100%-32px,1200px)] pt-2 lg:absolute lg:top-10 lg:bottom-16 lg:left-[50%] lg:right-[max(16px,calc((100vw-1200px)/2))] lg:mx-0 lg:w-auto lg:pt-0";
 
-  // "split" (nov. 2026, pedido del cliente; Mudanzas locales, nacionales e
-  // internacionales): la foto a sangre ocupa los 2/3 izquierdos, desde arriba
-  // del todo (detrás de la cabecera), a color y quieta, con el texto en una
-  // tarjeta de vidrio blanco encima, y se funde al blanco hacia la derecha,
-  // donde el mapa va libre (sin panel) en el tercio derecho, con la mitad del
-  // margen derecho habitual. En celular y tableta la foto va arriba, la
-  // tarjeta montada sobre ella y el mapa debajo.
-  if (split && backdrop && image)
-    return (
-      <section ref={ref} className="relative overflow-hidden border-b border-linea text-texto">
-        <div className="relative lg:grid lg:min-h-[min(100svh,880px)] lg:grid-cols-3">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 bottom-[380px] overflow-hidden sm:bottom-[460px] lg:inset-y-0 lg:right-1/3 lg:left-0"
-          >
-            {/* Quieta y con sus colores (pedido del cliente, nov. 2026: sin
-                velo naranja ni lavado beige, que la apagaban, ni movimiento).
-                Solo se funde al blanco hacia el mapa (y abajo en celular) */}
-            <img fetchPriority="high" src={image} alt="" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_60%,#fff_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0)_62%,rgba(255,255,255,.55)_82%,#fff_97%)]" />
-          </div>
-          <div className="relative flex flex-col justify-center pt-[300px] pb-12 md:pt-[380px] md:pb-16 lg:col-span-2 lg:pt-[148px] lg:pe-[10%] wide:pt-[162px]">
-            {/* Texto en una tarjeta de vidrio blanco (como la cabecera): la foto
-                luce y el texto se lee. En celular y tableta la foto se ve
-                arriba y la tarjeta se monta sobre su parte de abajo */}
-            <div className="relative mx-auto w-[min(100%-32px,1200px)] rounded-[28px] bg-white/80 p-6 shadow-[0_24px_60px_-24px_rgba(13,15,51,.45)] ring-1 ring-white/70 backdrop-blur-md sm:p-9 lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:me-0 lg:w-auto lg:max-w-[640px] lg:p-10">
-              {children}
-            </div>
-          </div>
-          <div className="relative mx-auto h-[380px] w-[min(100%-32px,1200px)] sm:h-[460px] lg:mx-0 lg:h-auto lg:w-auto lg:pt-[124px] lg:pb-10 lg:pe-[max(8px,calc((100vw-1200px)/4))] wide:pt-[162px]">
-            <div className="hero-blend-in h-full [--hero-ps:1]">{backdrop}</div>
-          </div>
-        </div>
-      </section>
-    );
-
-  if (backdrop && image)
+  if (backdrop && image && !split)
     return (
       <section ref={ref} className={shell}>
         {square}
@@ -251,9 +221,25 @@ export function PageHero({
               : "pb-20 md:pb-28"
           }`}
         >
+          {mapBehind && (
+            // El mapa, de fondo detrás del texto (decorativo): en escritorio
+            // llena la mitad izquierda, a la altura del texto (sin subir hasta
+            // la cabecera, donde chocaba con el logo)
+            // `inert`: los puntos del mapa del mundo son botones; de fondo no
+            // deben recibir el foco
+            <div
+              aria-hidden="true"
+              inert
+              className="pointer-events-none absolute inset-0 overflow-hidden lg:-top-6 lg:-right-[4%] lg:-bottom-6"
+            >
+              <div className="hero-blend-in h-full opacity-80 [--hero-ps:1]">{backdrop}</div>
+            </div>
+          )}
           <div
             className={`relative mx-auto w-[min(100%-32px,1200px)] ${
               visual ? "lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:w-auto" : ""
+            } ${
+              mapBehind ? "rounded-[28px] bg-white/60 p-6 ring-1 ring-white/70 sm:p-9 lg:p-10" : ""
             }`}
           >
             {children}

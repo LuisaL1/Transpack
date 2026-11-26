@@ -115,9 +115,10 @@ test("servicio: el paso a paso queda fijo hasta completar los pasos (escritorio)
   const top = await pinned.evaluate((el) => el.getBoundingClientRect().top + scrollY);
   await page.evaluate((y) => window.scrollTo(0, y + 400), top);
   // Fija arriba y con el último paso aún sin encender
+  // (a menos de medio píxel: con alturas fraccionarias arriba queda en -0,4)
   await expect
-    .poll(() => pinned.evaluate((el) => Math.round(el.getBoundingClientRect().top)))
-    .toBe(0);
+    .poll(() => pinned.evaluate((el) => el.getBoundingClientRect().top))
+    .toBeCloseTo(0, 0);
   expect(await dots.last().evaluate((d) => +getComputedStyle(d).opacity)).toBeLessThan(0.5);
   // Al seguir bajando se completan todos y luego la página continúa
   for (let i = 0; i < 12; i++) await page.mouse.wheel(0, 300);
@@ -134,7 +135,7 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   const dialog = page.getByRole("dialog", { name: "Buscar en el sitio" });
   await dialog.getByRole("textbox").fill("gestion aduanera");
   await dialog
-    .getByRole("button", { name: /Gestión documental y aduanera/ })
+    .getByRole("button", { name: /Trámites internacionales/ })
     .first()
     .click();
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);
