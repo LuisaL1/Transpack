@@ -241,8 +241,9 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Lenguaje claro, sin tecnicismos (por ejemplo, "vivir en el exterior" en vez
   de "diáspora").
 - Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
-  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, gestión
-  aduanera, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
+  (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, trámites
+  internacionales —antes "Gestión documental y aduanera", nov. 2026; la URL
+  sigue siendo `/servicios/gestion-aduanera`—, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
   y en los textos del inicio que el cliente corrigió (niveles, cotizador, proceso). Pedido del cliente,
   noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
   sección.

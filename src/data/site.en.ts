@@ -266,14 +266,14 @@ export const SERVICES: Service[] = [
   {
     slug: "gestion-aduanera",
     icon: "file-earmark-text",
-    title: "Customs and documentation",
+    title: "International paperwork",
     short:
       "We offer clear, timely guidance on the documentation and customs regulations needed to carry out your move in compliance with international regulations.",
     quote: "internacional",
     cta: "Get a quote",
     image: imgAduanaCajas,
     imageReveal: "top",
-    kicker: "International paperwork",
+    kicker: "Customs and documentation",
     headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
       "A poorly declared inventory or a missing permit can cost weeks of delay and penalties. We guide you through the export and import documentation for household goods and personal effects, according to each country's regulations.",

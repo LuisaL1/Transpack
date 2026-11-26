@@ -6,7 +6,10 @@ import { LANGS } from "@/i18n";
 describe("Buscador", () => {
   it("encuentra sin tildes ni mayúsculas", () => {
     expect(searchSite("es", "MUDANZA INTERNACIONAL")[0].title).toMatch(/internacionales/i);
-    expect(searchSite("es", "gestion aduanera").some((r) => /aduanera/i.test(r.title))).toBe(true);
+    // El nombre anterior del servicio (hoy su rótulo) sigue llevando a él
+    expect(
+      searchSite("es", "gestion aduanera").some((r) => /Trámites internacionales/.test(r.title)),
+    ).toBe(true);
   });
 
   it("exige todas las palabras y pide al menos 2 letras", () => {

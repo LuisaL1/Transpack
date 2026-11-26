@@ -378,14 +378,14 @@ export const SERVICES: Service[] = [
   {
     slug: "gestion-aduanera",
     icon: "file-earmark-text",
-    title: "Gestión documental y aduanera",
+    title: "Trámites internacionales",
     short:
       "Ofrecemos una orientación clara y oportuna de la documentación y regulación aduanera para llevar a cabo el proceso de su mudanza en cumplimiento de la normativa internacional.",
     quote: "internacional",
     cta: "Cotizar",
     image: imgAduanaCajas,
     imageReveal: "top",
-    kicker: "Trámites internacionales",
+    kicker: "Gestión documental y aduanera",
     headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
       "Un inventario mal declarado o un permiso omitido puede costar semanas de retraso y sanciones. Te acompañamos con la documentación de exportación e importación de menaje y efectos personales, según la normativa de cada país.",
