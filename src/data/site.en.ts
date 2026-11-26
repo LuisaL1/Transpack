@@ -9,7 +9,7 @@ import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
+import imgTrasladoOficinas from "@/assets/images/traslado-de-oficinas.jpg";
 import imgServicioDiplomatico from "@/assets/images/servicio-diplomatico.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
@@ -294,16 +294,16 @@ export const SERVICES: Service[] = [
   },
   // Formerly under "Solutions" (Nov. 2026)
   {
-    slug: "movilidad-corporativa",
+    slug: "traslado-de-oficinas",
     icon: "buildings",
-    title: "Corporate Mobility",
+    title: "Office Moves",
     short:
       "Safe office moves, with an account executive for your requirements and traceability reports.",
     quote: "empresarial",
     cta: "Request a corporate proposal",
-    image: imgMovilidad,
+    image: imgTrasladoOficinas,
     imageReveal: "right",
-    kicker: "Office moves",
+    kicker: "Moving for businesses",
     headline: "Transpack, a professional team for the safe move of your office",
     intro:
       "We move offices with a professional team and safe operating conditions. We work under agreements or contracts, with an account executive who handles your requirements and an operation that repeats every time your company needs it.",

@@ -204,7 +204,7 @@ export const shippingLabelText = (tr: Tr, slug: string) => {
       guide: "TP-ADU-3087",
       stamp: tr("Revisado", "Checked"),
     },
-    "movilidad-corporativa": {
+    "traslado-de-oficinas": {
       title: tr("Traslado de oficina", "Office move"),
       icon: "buildings",
       rows: [

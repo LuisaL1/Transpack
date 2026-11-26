@@ -77,7 +77,9 @@ export function MegaMenuPanel({ menu }: { menu: Menu }) {
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-gris text-lg text-azul transition-colors group-hover:bg-azul group-hover:text-naranja">
                 <Bi n={it.icon} />
               </span>
-              <span className="min-w-0 self-center">
+              <span
+                className={`min-w-0 ${menu.key === "servicios" ? "self-start" : "self-center"}`}
+              >
                 <span className="block font-title text-[0.92rem] font-semibold leading-tight text-tinta">
                   {it.label}
                 </span>

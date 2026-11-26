@@ -19,7 +19,7 @@ describe("SEO · metadatos por página", () => {
     // Francés, alemán, italiano y árabe se retiraron: sus URLs antiguas redirigen a /en (vercel.json)
     expect(PUBLIC_ROUTES.some((r) => /^\/(fr|de|it|ar)(\/|$)/.test(r))).toBe(false);
     for (const l of LANGS) expect(PUBLIC_ROUTES).toContain(localize("/", l));
-    // 6 servicios más Movilidad corporativa y Diplomático (antes en "Soluciones")
+    // 6 servicios más Traslado de oficinas y Diplomático (antes en "Soluciones")
     expect(PUBLIC_ROUTES.filter((r) => r.startsWith("/servicios/"))).toHaveLength(8);
     expect(metas.every((m) => !m.notFound)).toBe(true);
   });

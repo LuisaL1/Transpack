@@ -170,11 +170,16 @@ test("cotizador: preselección por URL y validación", async ({ page }) => {
   await expect(form.getByText("Indica el país de origen.")).toBeVisible();
 });
 
-test("servicios: Movilidad corporativa y Diplomático tienen su página", async ({ page }) => {
-  await page.goto("/servicios/movilidad-corporativa");
+test("servicios: Traslado de oficinas y Diplomático tienen su página", async ({ page }) => {
+  await page.goto("/servicios/traslado-de-oficinas");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "traslado seguro de su oficina",
   );
+  await expect(page.getByRole("navigation", { name: "Ruta" })).toContainText(
+    "Traslado de oficinas",
+  );
+  await page.goto("/en/services/office-moves");
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText("Office Moves");
   await page.goto("/en/services/diplomatic");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("diplomatic missions");
 });

@@ -83,8 +83,8 @@ export const aboutTimeline = (tr: Tr) => [
   {
     year: tr("Hoy", "Today"),
     text: tr(
-      "Operamos mudanzas locales, nacionales, internacionales, bodegaje y movilidad corporativa.",
-      "We run local, national and international moves, storage and corporate mobility.",
+      "Operamos mudanzas locales, nacionales, internacionales, bodegaje y traslado de oficinas.",
+      "We run local, national and international moves, storage and office moves.",
     ),
   },
   {

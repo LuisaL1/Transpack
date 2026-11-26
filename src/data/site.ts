@@ -8,7 +8,7 @@ import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
-import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
+import imgTrasladoOficinas from "@/assets/images/traslado-de-oficinas.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgServicioDiplomatico from "@/assets/images/servicio-diplomatico.jpg";
@@ -420,16 +420,16 @@ export const SERVICES: Service[] = [
   // noviembre de 2026 y Modelo de Negocio (4.1 y 7); sin "traslado de
   // funcionarios", que ya cubren las mudanzas nacionales e internacionales.
   {
-    slug: "movilidad-corporativa",
+    slug: "traslado-de-oficinas",
     icon: "buildings",
-    title: "Movilidad corporativa",
+    title: "Traslado de oficinas",
     short:
       "Traslado seguro de oficinas, con un ejecutivo de cuenta para sus requerimientos y reportes de trazabilidad.",
     quote: "empresarial",
     cta: "Solicitar propuesta corporativa",
-    image: imgMovilidad,
+    image: imgTrasladoOficinas,
     imageReveal: "right",
-    kicker: "Traslado de oficinas",
+    kicker: "Mudanzas para empresas",
     headline: "Transpack, un equipo profesional para el traslado seguro de su oficina",
     intro:
       "Trasladamos oficinas con un equipo profesional y condiciones operativas seguras. Trabajamos bajo acuerdos o contratos, con un ejecutivo de cuenta que atiende sus requerimientos y una operación que se repite cada vez que su empresa lo necesita.",

@@ -94,7 +94,7 @@ export function menusFor(lang: Lang): Menu[] {
       },
       items: SERVICES.map((s) => ({
         label: s.title,
-        desc: s.kicker,
+        desc: s.slug === "traslado-de-oficinas" ? undefined : s.kicker,
         icon: s.icon,
         to: lp(`/servicios/${s.slug}`),
       })),

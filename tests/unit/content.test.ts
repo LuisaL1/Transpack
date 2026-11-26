@@ -51,12 +51,17 @@ describe("Servicios", () => {
       }
   });
 
-  it("el header ya no tiene «Soluciones»: Movilidad corporativa y Diplomático están en Servicios", () => {
+  it("el header ya no tiene «Soluciones»: Traslado de oficinas y Diplomático están en Servicios", () => {
     const menus = menusFor("es");
     expect(menus.map((m) => m.key)).not.toContain("soluciones");
-    const servicios = menus.find((m) => m.key === "servicios")?.items.map((i) => i.to);
-    expect(servicios).toContain("/servicios/movilidad-corporativa");
-    expect(servicios).toContain("/servicios/diplomatico");
+    const servicios = menus.find((m) => m.key === "servicios")?.items;
+    expect(servicios).toContainEqual(
+      expect.objectContaining({
+        label: "Traslado de oficinas",
+        to: "/servicios/traslado-de-oficinas",
+      }),
+    );
+    expect(servicios?.map((i) => i.to)).toContain("/servicios/diplomatico");
     expect(slugs).not.toContain("residencial");
   });
 });

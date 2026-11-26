@@ -26,7 +26,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
     brand: "Transpack",
     homeTitle: "Mudanzas nacionales e internacionales en Bogotá | Transpack",
     homeDescription:
-      "Transpack S.A.S.: mudanzas locales, nacionales e internacionales, bodegaje y movilidad corporativa desde Bogotá. Más de 58 años de experiencia y cobertura en 176 países.",
+      "Transpack S.A.S.: mudanzas locales, nacionales e internacionales, bodegaje y traslado de oficinas desde Bogotá. Más de 58 años de experiencia y cobertura en 176 países.",
     aboutTitle: "Quiénes somos: mudanzas desde 1968 en Bogotá | Transpack",
     privacyTitle: "Política de tratamiento de datos personales | Transpack",
     privacyDescription:
@@ -48,7 +48,7 @@ export const SEO_TEXT: Record<Lang, SeoText> = {
     brand: "Transpack",
     homeTitle: "National and International Movers in Bogotá | Transpack",
     homeDescription:
-      "Transpack S.A.S.: local, national and international moving, storage and corporate mobility from Bogotá, Colombia. 58 years of experience and coverage in 176 countries.",
+      "Transpack S.A.S.: local, national and international moving, storage and office moves from Bogotá, Colombia. 58 years of experience and coverage in 176 countries.",
     aboutTitle: "About us: movers in Bogotá since 1968 | Transpack",
     privacyTitle: "Personal Data Processing Policy | Transpack",
     privacyDescription:

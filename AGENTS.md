@@ -1,7 +1,7 @@
 # Transpack · Sitio web
 
 Sitio corporativo de Transpack S.A.S. (mudanzas locales, nacionales e
-internacionales, bodegaje y movilidad corporativa, Bogotá) hecho con React 19 +
+internacionales, bodegaje y traslado de oficinas, Bogotá) hecho con React 19 +
 Vite 8 + Tailwind CSS v4 + TypeScript + React Router 7, en español e inglés. Se
 publica en Vercel.
 
@@ -243,13 +243,13 @@ empresa })` (`src/data/contact.ts`): abre `ContactModal`, montado una vez en
 - Trato: de "tú" en general, pero de **"usted/su"** en las páginas de servicios
   (mudanzas locales, nacionales e internacionales, bodegaje, embalaje, trámites
   internacionales —antes "Gestión documental y aduanera", nov. 2026; su rótulo es "Documentación aduanera"; la URL
-  sigue siendo `/servicios/gestion-aduanera`—, movilidad corporativa y diplomático; `SERVICES` en `src/data/site.ts`)
+  sigue siendo `/servicios/gestion-aduanera`—, traslado de oficinas y diplomático; `SERVICES` en `src/data/site.ts`)
   y en los textos del inicio que el cliente corrigió (niveles, cotizador, proceso). Pedido del cliente,
   noviembre de 2026: no mezclar "tú" y "su" en una misma frase ni en una misma
   sección.
 
 - **Sin "Soluciones"** (noviembre de 2026): el menú y la sección del inicio
-  "Soluciones" se quitaron. Movilidad corporativa (`/servicios/movilidad-corporativa`)
+  "Soluciones" se quitaron. Traslado de oficinas (`/servicios/traslado-de-oficinas`)
   y Diplomático (`/servicios/diplomatico`) son ahora servicios, con su página, en
   el menú "Servicios", el pie, el buscador y el sitemap; sus textos salen de las
   correcciones del cliente de noviembre de 2026 y del Modelo de Negocio (4.1 y 7).
@@ -441,7 +441,7 @@ blanco.
   izquierda (ícono y nombre del servicio, con su animación), **doble marco**
   azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** compacta
   (138 px de ancho, un 40 % menos que la primera; nov. 2026) arriba a la
-  izquierda, girada, con un sello; en Diplomático y Movilidad corporativa va
+  izquierda, girada, con un sello; en Diplomático y Traslado de oficinas va
   abajo a la derecha para dejar visible al equipo
   (`LABEL_BOTTOM_RIGHT` en `ShippingPhoto.tsx`). Los datos de la etiqueta son de muestra y van
   con el servicio (`shippingLabelText(tr, slug)` en `src/data/pages.ts`: p.

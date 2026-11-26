@@ -56,8 +56,8 @@ const SLUGS: Record<string, Record<L, string>> = {
   "gestion-aduanera": {
     en: "customs-and-documentation",
   },
-  "movilidad-corporativa": {
-    en: "corporate-mobility",
+  "traslado-de-oficinas": {
+    en: "office-moves",
   },
   diplomatico: {
     en: "diplomatic",

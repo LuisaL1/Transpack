@@ -44,7 +44,7 @@ export function ShippingPhoto({
 }
 
 // La etiqueta va abajo a la derecha cuando taparía al equipo en la otra esquina.
-const LABEL_BOTTOM_RIGHT = new Set(["diplomatico", "movilidad-corporativa"]);
+const LABEL_BOTTOM_RIGHT = new Set(["diplomatico", "traslado-de-oficinas"]);
 
 // Código de barras a partir del número de guía (siempre el mismo dibujo)
 function bars(code: string) {

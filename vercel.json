@@ -8,6 +8,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/servicios/movilidad-corporativa",
+      "destination": "/servicios/traslado-de-oficinas",
+      "permanent": true
+    },
+    {
+      "source": "/en/services/corporate-mobility",
+      "destination": "/en/services/office-moves",
+      "permanent": true
+    },
+    {
       "source": "/blog/elegancia-en-transito-seguridad-mudanzas-internacionales-premium",
       "destination": "/#blog",
       "permanent": true
