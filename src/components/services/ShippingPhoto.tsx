@@ -7,8 +7,8 @@ import { Bi, PhotoFrame } from "@/components/ui";
 // antes solo Mudanzas locales): la foto en un PhotoFrame con su pestaña abajo a
 // la izquierda (nombre del servicio, con la animación de .hero-reveal), dos
 // capas azules sólidas desplazadas detrás (como hojas apiladas, a 10 y 20 px; la
-// de atrás más clara) y una etiqueta de envío pegada arriba a la derecha, un
-// poco girada (en celular, reducida a 2/3). Los datos de la etiqueta son de
+// de atrás más clara) y una etiqueta de envío compacta pegada arriba a la
+// izquierda, un poco girada (en Diplomático, abajo a la derecha: LABEL_BOTTOM_RIGHT). Los datos de la etiqueta son de
 // muestra y van con el tipo de servicio (shippingLabelText, por `slug`): es
 // decorativa y los lectores de pantalla no la leen.
 export function ShippingPhoto({
@@ -37,11 +37,15 @@ export function ShippingPhoto({
         <PhotoFrame tab={tab} className="h-full">
           {children}
         </PhotoFrame>
-        <ShippingLabel t={t} />
+        <ShippingLabel t={t} bottomRight={LABEL_BOTTOM_RIGHT.has(slug)} />
       </div>
     </div>
   );
 }
+
+// Servicios cuya etiqueta va abajo a la derecha en vez de arriba a la izquierda
+// (pedido del equipo, nov. 2026: en Diplomático tapaba lo importante de la foto)
+const LABEL_BOTTOM_RIGHT = new Set(["diplomatico"]);
 
 // Código de barras a partir del número de guía (siempre el mismo dibujo)
 function bars(code: string) {
@@ -51,37 +55,59 @@ function bars(code: string) {
   });
 }
 
-function ShippingLabel({ t }: { t: ReturnType<typeof shippingLabelText> }) {
+// Etiqueta compacta (nov. 2026: un 40 % más pequeña que la primera, de 230 a
+// 138 px de ancho, con letras apenas más chicas para que los datos se sigan
+// leyendo) y pegada arriba a la izquierda de la foto, un poco girada; el sello
+// cuelga de su esquina inferior derecha. Con `bottomRight`, en la esquina
+// inferior derecha, girada al otro lado y con el sello arriba a la izquierda.
+// En celular, a 85 %.
+function ShippingLabel({
+  t,
+  bottomRight = false,
+}: {
+  t: ReturnType<typeof shippingLabelText>;
+  bottomRight?: boolean;
+}) {
   return (
     <div
       aria-hidden="true"
-      className="shipping-label pointer-events-none absolute right-3 top-3 z-10 w-[230px] origin-top-right rotate-3 scale-[0.66] overflow-visible rounded-md bg-white text-start shadow-[var(--shadow-float)] ring-1 ring-linea sm:scale-100 lg:-right-8 lg:top-8"
+      className={`shipping-label pointer-events-none absolute z-10 w-[138px] scale-[0.85] overflow-visible rounded-[5px] bg-white text-start shadow-[var(--shadow-float)] ring-1 ring-linea sm:scale-100 ${
+        bottomRight
+          ? "bottom-3 right-3 origin-bottom-right rotate-3 lg:-right-4 lg:bottom-8"
+          : "left-3 top-3 origin-top-left -rotate-3 lg:-left-5 lg:top-6"
+      }`}
     >
-      <div className="flex items-center gap-1.5 rounded-t-md bg-azul px-3 py-1.5 font-title text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-white">
-        <Bi n={t.icon} className="text-naranja" /> Transpack · {t.title}
+      <div className="flex items-center gap-1 rounded-t-[5px] bg-azul px-2 py-1 font-title text-[0.5rem] font-semibold uppercase leading-tight tracking-[0.12em] text-white">
+        <Bi n={t.icon} className="shrink-0 text-naranja" /> {t.title}
       </div>
-      <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 px-3 pt-2.5">
+      <dl className="grid grid-cols-2 gap-x-2 gap-y-1 px-2 pt-1.5">
         {t.rows.map(([label, value, wide]) => (
           <div key={label} className={wide ? "col-span-2" : ""}>
-            <dt className="text-[0.52rem] font-semibold uppercase tracking-[0.14em] text-suave">
+            <dt className="text-[0.44rem] font-semibold uppercase tracking-[0.12em] text-suave">
               {label}
             </dt>
-            <dd className="font-mono text-[0.66rem] font-semibold leading-tight text-tinta">
+            <dd className="font-mono text-[0.56rem] font-semibold leading-tight text-tinta">
               {value}
             </dd>
           </div>
         ))}
       </dl>
-      <div className="mx-3 mt-2.5 flex h-7 items-stretch gap-[1.5px] sm:h-8">
+      <div className="mx-2 mt-1.5 flex h-4 items-stretch gap-px overflow-hidden">
         {bars(t.guide).map((w, i) => (
-          <span key={i} className={i % 2 ? "bg-transparent" : "bg-tinta"} style={{ width: w }} />
+          <span
+            key={i}
+            className={i % 2 ? "bg-transparent" : "bg-tinta"}
+            style={{ width: w * 0.6 }}
+          />
         ))}
       </div>
-      <p className="px-3 pb-2 pt-1 text-center font-mono text-[0.6rem] tracking-[0.28em] text-tinta">
+      <p className="px-2 pb-1.5 pt-0.5 text-center font-mono text-[0.5rem] tracking-[0.2em] text-tinta">
         {t.guide}
       </p>
       {/* Sello */}
-      <span className="absolute -bottom-5 -left-7 -rotate-12 rounded border-2 border-naranja bg-white/85 px-2 py-0.5 font-title text-[0.62rem] font-bold uppercase tracking-[0.2em] text-naranja">
+      <span
+        className={`absolute ${bottomRight ? "-left-5 -top-3 -rotate-12" : "-bottom-3 -right-5 rotate-12"} rounded-[3px] border-[1.5px] border-naranja bg-white/85 px-1.5 py-px font-title text-[0.46rem] font-bold uppercase tracking-[0.16em] text-naranja`}
+      >
         {t.stamp}
       </span>
     </div>

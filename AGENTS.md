@@ -438,8 +438,10 @@ blanco.
   locales, nacionales ni internacionales, que llevan el panel del mapa; ver
   "Encabezado bento con mapa"): `PhotoFrame` con la pestaña abajo a la
   izquierda (ícono y nombre del servicio, con su animación), **doble marco**
-  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** arriba a la
-  derecha, girada, con un sello. Los datos de la etiqueta son de muestra y van
+  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** compacta
+  (138 px de ancho, un 40 % menos que la primera; nov. 2026) arriba a la
+  izquierda, girada, con un sello; en Diplomático va abajo a la derecha
+  (`LABEL_BOTTOM_RIGHT` en `ShippingPhoto.tsx`). Los datos de la etiqueta son de muestra y van
   con el servicio (`shippingLabelText(tr, slug)` en `src/data/pages.ts`: p.
   ej. Bogotá → Madrid por vía marítima en internacionales, orden de bodegaje en
   Bodegaje, guacal a medida en Embalaje); al agregar un servicio, agregue su
