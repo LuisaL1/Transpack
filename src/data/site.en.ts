@@ -8,7 +8,6 @@ import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
-import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
@@ -461,12 +460,11 @@ export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boo
   { src: imgEmbalajeBiblioteca, caption: "Packing a home library", wide: true },
   { src: imgSalaProtegida, caption: "Furniture protected in the living room", wide: true },
   { src: imgMontacargasBodega, caption: "Forklift in our warehouse", wide: true },
-  { src: imgMenajeListo, caption: "Household goods ready to move", wide: true },
-  { src: imgContenedor, caption: "Container loading", tall: true },
   { src: imgBodegaAlmacenamiento, caption: "Storage warehouse", wide: true },
+  { src: imgMenajeListo, caption: "Household goods ready to move", wide: true },
   { src: imgEmbalajeSala, caption: "On-site packing" },
-  { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
   { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
+  { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
   { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
 ];
 

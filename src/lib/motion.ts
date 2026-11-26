@@ -50,7 +50,33 @@ function startLenis() {
 export function init() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
   startLenis();
+  watchLayout();
   return true;
+}
+
+// ScrollTrigger calcula dónde empieza y termina cada animación al crearla. Si
+// después la página cambia de alto (fotos o secciones que terminan de armarse
+// más arriba), esas posiciones quedan corridas, y en celular no se recalculan
+// solas (ScrollTrigger ignora los cambios de tamaño en pantallas táctiles):
+// la galería del inicio arrancaba ~200 px antes y su primera foto no se veía.
+// Al cambiar el alto del documento, recalcula (agrupado; el segundo cálculo
+// ya no cambia el alto, así que no entra en bucle).
+let layoutWatched = false;
+function watchLayout() {
+  if (layoutWatched || typeof ResizeObserver === "undefined") return;
+  layoutWatched = true;
+  let height = document.documentElement.scrollHeight;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  new ResizeObserver(() => {
+    const h = document.documentElement.scrollHeight;
+    if (Math.abs(h - height) < 2) return;
+    height = h;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+      height = document.documentElement.scrollHeight;
+    }, 250);
+  }).observe(document.body);
 }
 
 /**

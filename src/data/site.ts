@@ -7,7 +7,6 @@ import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
-import imgContenedor from "@/assets/images/contenedor.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
@@ -588,12 +587,11 @@ export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boo
   { src: imgEmbalajeBiblioteca, caption: "Embalaje de la biblioteca", wide: true },
   { src: imgSalaProtegida, caption: "Muebles protegidos en la sala", wide: true },
   { src: imgMontacargasBodega, caption: "Montacargas en la bodega", wide: true },
-  { src: imgMenajeListo, caption: "Menaje listo para el traslado", wide: true },
-  { src: imgContenedor, caption: "Cargue de contenedor", tall: true },
   { src: imgBodegaAlmacenamiento, caption: "Bodega de almacenamiento", wide: true },
+  { src: imgMenajeListo, caption: "Menaje listo para el traslado", wide: true },
   { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
-  { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
   { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
+  { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
   { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
 ];
 

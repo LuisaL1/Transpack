@@ -24,8 +24,13 @@ export function Gallery() {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, (m, el) => {
     const [a, b] = el.querySelectorAll("[data-gallery-row]");
-    m.parallax(a, el, { xPercent: -4 }, { xPercent: -22 }, { scrub: 0.5 });
-    m.parallax(b, el, { xPercent: -22 }, { xPercent: -4 }, { scrub: 0.5 });
+    // El recorrido ocurre mientras la galería está bien a la vista (no desde
+    // que asoma abajo hasta que sale arriba), para que se vea cada foto.
+    const RANGE = { start: "top 65%", end: "bottom 35%" };
+    // Desde 0 % (y hacia 0 % en la segunda fila): así el principio de cada
+    // fila, donde van las fotos destacadas, sí pasa por el recuadro.
+    m.parallax(a, el, { xPercent: 0 }, { xPercent: -40 }, { scrub: 0.5, ...RANGE });
+    m.parallax(b, el, { xPercent: -40 }, { xPercent: 0 }, { scrub: 0.5, ...RANGE });
   });
   return (
     <section
