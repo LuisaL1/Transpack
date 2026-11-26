@@ -45,7 +45,7 @@ export function Coverage() {
       {/* Mapamundi animado (decorativo), a la derecha y un poco más allá del borde */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 -right-[6%] left-[22%] hidden items-center lg:flex"
+        className="pointer-events-none absolute -right-[6%] top-[8%] bottom-[28%] left-[22%] hidden items-center lg:flex"
       >
         <img
           loading="lazy"
