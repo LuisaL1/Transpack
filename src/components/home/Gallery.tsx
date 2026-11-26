@@ -6,7 +6,9 @@ import { useMotion } from "@/hooks/useMotion";
 
 // Fotos del trabajo (GALLERY de src/data/site.ts) en dos filas que se desplazan
 // en sentidos opuestos con el scroll (nov. 2026, estilo unitedcarriers; sin
-// fijar la sección). Las fotos verticales ("tall") van más angostas. Cada fila
+// fijar la sección). Las fotos verticales ("tall") van más angostas y las
+// destacadas ("wide", 16:9) más anchas; las fotos nuevas del cliente (nov.
+// 2026) van "wide" y al principio de cada fila, la parte que más se ve. Cada fila
 // repite sus fotos para cubrir el ancho mientras se mueve (la copia va oculta a
 // los lectores de pantalla). Al pasar el cursor, la foto se acerca (sin
 // leyenda encima desde nov. 2026; la descripción queda en el alt). Con movimiento reducido, las filas quedan quietas.
@@ -40,7 +42,7 @@ export function Gallery() {
                 key={`${copy}-${g.caption}`}
                 aria-hidden={copy === 1}
                 className={`group relative m-0 h-[200px] shrink-0 overflow-hidden rounded-[20px] sm:h-[260px] lg:h-[300px] ${
-                  g.tall ? "aspect-[3/4]" : "aspect-[4/3]"
+                  g.tall ? "aspect-[3/4]" : g.wide ? "aspect-[16/9]" : "aspect-[4/3]"
                 }`}
               >
                 <img

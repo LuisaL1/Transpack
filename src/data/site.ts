@@ -14,12 +14,18 @@ import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
-import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
+import imgEmbalajeBiblioteca from "@/assets/images/galeria/embalaje-biblioteca.jpg";
+import imgMontacargasBodega from "@/assets/images/galeria/montacargas-bodega.jpg";
+import imgMenajeListo from "@/assets/images/galeria/menaje-listo.jpg";
+import imgSalaProtegida from "@/assets/images/galeria/sala-protegida.jpg";
+import imgBodegaAlmacenamiento from "@/assets/images/galeria/bodega-almacenamiento.jpg";
+import imgContenedorCalle from "@/assets/images/galeria/contenedor-calle.jpg";
+import imgEmbalajeObra from "@/assets/images/galeria/embalaje-obra.jpg";
 
 export const CONTACT = {
   whatsapp: "573218115967",
@@ -576,16 +582,29 @@ export const FAQS = [
 ];
 
 // Galería (mosaico del inicio). "tall": foto vertical que ocupa dos filas.
-export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
+export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
+  { src: imgEmbalajeObra, caption: "Protección de una obra de arte", wide: true },
+  { src: imgContenedorCalle, caption: "Contenedor listo para el cargue", wide: true },
+  { src: imgEmbalajeBiblioteca, caption: "Embalaje de la biblioteca", wide: true },
+  { src: imgSalaProtegida, caption: "Muebles protegidos en la sala", wide: true },
+  { src: imgMontacargasBodega, caption: "Montacargas en la bodega", wide: true },
+  { src: imgMenajeListo, caption: "Menaje listo para el traslado", wide: true },
   { src: imgContenedor, caption: "Cargue de contenedor", tall: true },
+  { src: imgBodegaAlmacenamiento, caption: "Bodega de almacenamiento", wide: true },
+  { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
   { src: imgEmbalajeCuadro, caption: "Embalaje de un cuadro", tall: true },
   { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
-  { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
+  { src: imgMontacargasBodega, caption: "Montacargas en la bodega" },
   { src: imgCargueCajas, caption: "Cargue de cajas Transpack" },
-  { src: imgGuacales, caption: "Guacales a la medida" },
+  { src: imgEmbalajeBiblioteca, caption: "Embalaje de la biblioteca" },
   { src: imgBodegaGuacales, caption: "Bodega con guacales de almacenamiento" },
-  { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
+  { src: imgSalaProtegida, caption: "Muebles protegidos en la sala" },
+  { src: imgEmbalajeObra, caption: "Protección de una obra de arte" },
+  { src: imgContenedorCalle, caption: "Contenedor listo para el cargue" },
   { src: imgGuacalExportacion, caption: "Guacal de exportación" },
+  { src: imgMenajeListo, caption: "Menaje listo para el traslado" },
+  { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
+  { src: imgBodegaAlmacenamiento, caption: "Bodega de almacenamiento" },
   { src: imgDespachoBodega, caption: "Despacho desde la bodega" },
 ];
 

@@ -13,12 +13,18 @@ import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
-import imgCargueCajas from "@/assets/images/galeria/cargue-cajas.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
 import imgGuacalExportacion from "@/assets/images/galeria/guacal-exportacion.jpg";
 import imgEmbalajeCuadro from "@/assets/images/galeria/embalaje-cuadro.jpg";
 import imgEmbalajeCarton from "@/assets/images/galeria/embalaje-carton.jpg";
+import imgEmbalajeBiblioteca from "@/assets/images/galeria/embalaje-biblioteca.jpg";
+import imgMontacargasBodega from "@/assets/images/galeria/montacargas-bodega.jpg";
+import imgMenajeListo from "@/assets/images/galeria/menaje-listo.jpg";
+import imgSalaProtegida from "@/assets/images/galeria/sala-protegida.jpg";
+import imgBodegaAlmacenamiento from "@/assets/images/galeria/bodega-almacenamiento.jpg";
+import imgContenedorCalle from "@/assets/images/galeria/contenedor-calle.jpg";
+import imgEmbalajeObra from "@/assets/images/galeria/embalaje-obra.jpg";
 import type { Service } from "@/data/site";
 
 export { CONTACT, YOUTUBE_CHANNEL, ABOUT_IMAGES } from "@/data/site";
@@ -449,16 +455,29 @@ export const FAQS = [
   },
 ];
 
-export const GALLERY: { src: string; caption: string; tall?: boolean }[] = [
+export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
+  { src: imgEmbalajeObra, caption: "Protecting a work of art", wide: true },
+  { src: imgContenedorCalle, caption: "Container ready for loading", wide: true },
+  { src: imgEmbalajeBiblioteca, caption: "Packing a home library", wide: true },
+  { src: imgSalaProtegida, caption: "Furniture protected in the living room", wide: true },
+  { src: imgMontacargasBodega, caption: "Forklift in our warehouse", wide: true },
+  { src: imgMenajeListo, caption: "Household goods ready to move", wide: true },
   { src: imgContenedor, caption: "Container loading", tall: true },
+  { src: imgBodegaAlmacenamiento, caption: "Storage warehouse", wide: true },
+  { src: imgEmbalajeSala, caption: "On-site packing" },
   { src: imgEmbalajeCuadro, caption: "Packing a painting", tall: true },
   { src: imgEmbalajeSala, caption: "On-site packing" },
-  { src: imgArteHogar, caption: "Protecting artwork at home" },
+  { src: imgMontacargasBodega, caption: "Forklift in our warehouse" },
   { src: imgCargueCajas, caption: "Loading Transpack boxes" },
-  { src: imgGuacales, caption: "Custom wooden crates" },
+  { src: imgEmbalajeBiblioteca, caption: "Packing a home library" },
   { src: imgBodegaGuacales, caption: "Warehouse with storage crates" },
-  { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
+  { src: imgSalaProtegida, caption: "Furniture protected in the living room" },
+  { src: imgEmbalajeObra, caption: "Protecting a work of art" },
+  { src: imgContenedorCalle, caption: "Container ready for loading" },
   { src: imgGuacalExportacion, caption: "Export crate" },
+  { src: imgMenajeListo, caption: "Household goods ready to move" },
+  { src: imgEmbalajeHogar, caption: "Packing household goods at home" },
+  { src: imgBodegaAlmacenamiento, caption: "Storage warehouse" },
   { src: imgDespachoBodega, caption: "Dispatch from our warehouse" },
 ];
 
