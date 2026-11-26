@@ -115,9 +115,10 @@ test("servicio: el paso a paso queda fijo hasta completar los pasos (escritorio)
   const top = await pinned.evaluate((el) => el.getBoundingClientRect().top + scrollY);
   await page.evaluate((y) => window.scrollTo(0, y + 400), top);
   // Fija arriba y con el último paso aún sin encender
+  // (a menos de medio píxel: con alturas fraccionarias arriba queda en -0,4)
   await expect
-    .poll(() => pinned.evaluate((el) => Math.round(el.getBoundingClientRect().top)))
-    .toBe(0);
+    .poll(() => pinned.evaluate((el) => el.getBoundingClientRect().top))
+    .toBeCloseTo(0, 0);
   expect(await dots.last().evaluate((d) => +getComputedStyle(d).opacity)).toBeLessThan(0.5);
   // Al seguir bajando se completan todos y luego la página continúa
   for (let i = 0; i < 12; i++) await page.mouse.wheel(0, 300);

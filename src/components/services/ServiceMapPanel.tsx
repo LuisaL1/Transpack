@@ -7,11 +7,10 @@ import { ColombiaRoutesMap } from "@/components/services/ColombiaRoutesMap";
 import { ServiceGlobe } from "@/components/services/ServiceGlobe";
 import { WorldRoutesMap } from "@/components/services/WorldRoutesMap";
 
-// Tamaño del mapa de Bogotá cuando va libre (encabezado "split"): el lienzo es
-// una columna angosta y alta, y el mapa de la portada ocupaba ahí menos de la
-// mitad. Colombia y el mundo se agrandan igual (scale), para que los tres
-// mapas tengan el mismo peso
-const BARE_SCALE = 1.65;
+// Tamaño del mapa de Bogotá cuando va libre (encabezado "split"): de fondo
+// detrás del texto, en la mitad izquierda del encabezado (nov. 2026; antes en
+// una columna angosta, con 1.65 y Colombia y el mundo agrandados igual)
+const BARE_SCALE = 1.45;
 
 export type ServiceMapKind = "bogota" | "colombia" | "mundo";
 
@@ -26,9 +25,9 @@ export type ServiceMapKind = "bogota" | "colombia" | "mundo";
 // (Mudanzas internacionales, nov. 2026; antes el globo, que no gustó) es un
 // mapamundi plano en relieve, en la misma línea visual del de Bogotá
 // (WorldRoutesMap).
-// Con `bare` (encabezado "split" de PageHero, prueba en Mudanzas locales), el
-// mapa va libre: sin panel, sin borde ni sombra, sobre el blanco de la página,
-// solo el mapa (sin chapa, leyenda ni nombres) y más grande, casi a todo el lugar.
+// Con `bare` (encabezado "split" de PageHero), el mapa va libre, de fondo
+// detrás del texto: sin panel, sin borde ni sombra, sobre el blanco de la
+// página, solo el mapa (sin chapa ni leyenda).
 export function ServiceMapPanel({ kind, bare = false }: { kind: ServiceMapKind; bare?: boolean }) {
   const { tr } = useLang();
   const t = mapText(tr);
@@ -83,11 +82,11 @@ export function ServiceMapPanel({ kind, bare = false }: { kind: ServiceMapKind; 
       )}
       <div className="relative min-h-0 flex-1">
         {kind === "colombia" ? (
-          <div className={`absolute inset-0 ${bare ? "lg:scale-[1.7]" : ""}`}>
+          <div className="absolute inset-0">
             <ColombiaRoutesMap fill />
           </div>
         ) : kind === "mundo" ? (
-          <WorldRoutesMap zoom={bare} />
+          <WorldRoutesMap />
         ) : (
           <ServiceGlobe
             focus={kind}
