@@ -46,7 +46,7 @@ export function searchIndex(lang: Lang): SearchEntry[] {
       title: s.title,
       desc: s.short,
       to: lp(`/servicios/${s.slug}`),
-      extra: `${s.kicker ?? ""} ${s.intro} ${(s.includes ?? []).join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""}`,
+      extra: `${s.kicker ?? ""} ${s.intro} ${(s.includes ?? []).join(" ")} ${s.guide ? guideText(s.guide) : ""} ${s.quote === "internacional" ? countries : ""} ${s.slug === "gestion-aduanera" ? "gestión documental y aduanera (nombre anterior)" : ""}`,
     })),
     ...posts.map((p) => ({
       kind: tr("Artículo", "Article"),
@@ -152,10 +152,7 @@ export const searchText = (tr: Tr) => ({
   close: "Esc",
   popular: tr("Búsquedas frecuentes", "Popular searches"),
   noResults: tr("No encontramos resultados para", "No results for"),
-  tryAgain: tr(
-    "Prueba con otra palabra o pregúntale a Joel.",
-    "Try another word or ask Joel.",
-  ),
+  tryAgain: tr("Prueba con otra palabra o pregúntale a Joel.", "Try another word or ask Joel."),
   askJoel: tr("Hablar con Joel", "Talk to Joel"),
   navigate: tr("moverse", "navigate"),
   open: tr("abrir", "open"),

@@ -273,7 +273,7 @@ export const SERVICES: Service[] = [
     cta: "Get a quote",
     image: imgAduanaCajas,
     imageReveal: "top",
-    kicker: "Customs and documentation",
+    kicker: "Customs documentation",
     headline: "Guidance on documentation and customs requirements for the process in each country",
     intro:
       "A poorly declared inventory or a missing permit can cost weeks of delay and penalties. We guide you through the export and import documentation for household goods and personal effects, according to each country's regulations.",

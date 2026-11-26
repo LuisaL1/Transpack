@@ -385,7 +385,7 @@ export const SERVICES: Service[] = [
     cta: "Cotizar",
     image: imgAduanaCajas,
     imageReveal: "top",
-    kicker: "Gestión documental y aduanera",
+    kicker: "Documentación aduanera",
     headline: "Asesoría en requisitos documentales y aduaneros para trámite en cada país",
     intro:
       "Un inventario mal declarado o un permiso omitido puede costar semanas de retraso y sanciones. Te acompañamos con la documentación de exportación e importación de menaje y efectos personales, según la normativa de cada país.",
