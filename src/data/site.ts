@@ -11,7 +11,7 @@ import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
 import imgCargue from "@/assets/images/cargue.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
-import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgServicioDiplomatico from "@/assets/images/servicio-diplomatico.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -367,7 +367,7 @@ export const SERVICES: Service[] = [
       "Obras de arte, colecciones, cristalería y mobiliario de alto valor requieren de una protección especializada, realizada por expertos con materiales de primera calidad, en cumplimiento de normativas internacionales para el cuidado y resguardo de sus objetos más delicados.",
     photo: { src: imgEmbalajeCuadro, alt: "Embalaje de un cuadro" },
     reel: [
-      { src: imgArteHogar, caption: "Protección de obras de arte en casa" },
+      { src: imgServicioDiplomatico, caption: "Protección de obras de arte en casa" },
       { src: imgEmbalajeCarton, caption: "Embalaje de un cuadro" },
       { src: imgGuacalExportacion, caption: "Guacal de exportación" },
       { src: imgEmbalajeSala, caption: "Embalaje en sitio" },
@@ -466,7 +466,7 @@ export const SERVICES: Service[] = [
       "Traslados para embajadas y organismos extranjeros y no gubernamentales, con atención protocolaria y absoluta confidencialidad.",
     quote: "internacional",
     cta: "Contactar al área institucional",
-    image: imgArteHogar,
+    image: imgServicioDiplomatico,
     imageReveal: "top",
     kicker: "Embajadas y organismos extranjeros y no gubernamentales",
     headline: "Discreción, protocolo y precisión para misiones diplomáticas",

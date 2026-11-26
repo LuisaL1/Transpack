@@ -10,7 +10,7 @@ import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgMovilidad from "@/assets/images/movilidad-corporativa.jpg";
-import imgArteHogar from "@/assets/images/galeria/arte-hogar.jpg";
+import imgServicioDiplomatico from "@/assets/images/servicio-diplomatico.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
 import imgDespachoBodega from "@/assets/images/galeria/despacho-bodega.jpg";
 import imgBodegaGuacales from "@/assets/images/galeria/bodega-guacales.jpg";
@@ -255,7 +255,7 @@ export const SERVICES: Service[] = [
       "Artwork, collections, glassware and high-value furniture require specialized protection, carried out by experts with top-quality materials, in compliance with international standards for the care and safekeeping of your most delicate items.",
     photo: { src: imgEmbalajeCuadro, alt: "Packing a painting" },
     reel: [
-      { src: imgArteHogar, caption: "Protecting artwork at home" },
+      { src: imgServicioDiplomatico, caption: "Protecting artwork at home" },
       { src: imgEmbalajeCarton, caption: "Packing a painting" },
       { src: imgGuacalExportacion, caption: "Export crate" },
       { src: imgEmbalajeSala, caption: "On-site packing" },
@@ -340,7 +340,7 @@ export const SERVICES: Service[] = [
       "Moves for embassies and foreign and non-governmental organizations, with protocol-minded service and absolute confidentiality.",
     quote: "internacional",
     cta: "Contact the institutional team",
-    image: imgArteHogar,
+    image: imgServicioDiplomatico,
     imageReveal: "top",
     kicker: "Embassies and foreign and non-governmental organizations",
     headline: "Discretion, protocol and precision for diplomatic missions",
