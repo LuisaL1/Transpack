@@ -8,7 +8,7 @@ import { Bi, PhotoFrame } from "@/components/ui";
 // la izquierda (nombre del servicio, con la animación de .hero-reveal), dos
 // capas azules sólidas desplazadas detrás (como hojas apiladas, a 10 y 20 px; la
 // de atrás más clara) y una etiqueta de envío compacta pegada arriba a la
-// izquierda, un poco girada (en Diplomático, abajo a la derecha: LABEL_BOTTOM_RIGHT). Los datos de la etiqueta son de
+// izquierda, un poco girada (ver excepciones en LABEL_BOTTOM_RIGHT). Los datos de la etiqueta son de
 // muestra y van con el tipo de servicio (shippingLabelText, por `slug`): es
 // decorativa y los lectores de pantalla no la leen.
 export function ShippingPhoto({
@@ -43,9 +43,8 @@ export function ShippingPhoto({
   );
 }
 
-// Servicios cuya etiqueta va abajo a la derecha en vez de arriba a la izquierda
-// (pedido del equipo, nov. 2026: en Diplomático tapaba lo importante de la foto)
-const LABEL_BOTTOM_RIGHT = new Set(["diplomatico"]);
+// La etiqueta va abajo a la derecha cuando taparía al equipo en la otra esquina.
+const LABEL_BOTTOM_RIGHT = new Set(["diplomatico", "movilidad-corporativa"]);
 
 // Código de barras a partir del número de guía (siempre el mismo dibujo)
 function bars(code: string) {
