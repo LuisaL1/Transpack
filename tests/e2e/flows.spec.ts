@@ -135,7 +135,7 @@ test("buscador encuentra un servicio sin tildes y lleva a él", async ({ page })
   const dialog = page.getByRole("dialog", { name: "Buscar en el sitio" });
   await dialog.getByRole("textbox").fill("gestion aduanera");
   await dialog
-    .getByRole("button", { name: /Trámites internacionales/ })
+    .getByRole("button", { name: /Asesoría en Requisitos Aduanales y Documentales/ })
     .first()
     .click();
   await expect(page).toHaveURL(/\/servicios\/gestion-aduanera/);

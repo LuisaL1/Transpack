@@ -8,7 +8,7 @@ describe("Buscador", () => {
     expect(searchSite("es", "MUDANZA INTERNACIONAL")[0].title).toMatch(/internacionales/i);
     // El nombre anterior del servicio (hoy su rótulo) sigue llevando a él
     expect(
-      searchSite("es", "gestion aduanera").some((r) => /Trámites internacionales/.test(r.title)),
+      searchSite("es", "gestion aduanera").some((r) => /Asesoría en Requisitos Aduanales y Documentales/.test(r.title)),
     ).toBe(true);
   });
 

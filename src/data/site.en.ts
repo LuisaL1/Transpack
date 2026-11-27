@@ -3,7 +3,7 @@
 // stay in Spanish because they drive URLs and the quote form.
 // Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
 import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
-import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+import imgInternacional from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
@@ -162,7 +162,7 @@ export const SERVICES: Service[] = [
       "By sea or air, to and from Colombia. We advise you on requirements, timelines and customs before we quote.",
     quote: "internacional",
     cta: "Talk to an advisor",
-    image: imgInternacionalPuerto,
+    image: imgInternacional,
     heroMap: "mundo",
     heroLayout: "split",
     kicker: "To and from Colombia",
@@ -266,7 +266,7 @@ export const SERVICES: Service[] = [
   {
     slug: "gestion-aduanera",
     icon: "file-earmark-text",
-    title: "International paperwork",
+    title: "Customs and Document Requirements Advisory",
     short:
       "We offer clear, timely guidance on the documentation and customs regulations needed to carry out your move in compliance with international regulations.",
     quote: "internacional",

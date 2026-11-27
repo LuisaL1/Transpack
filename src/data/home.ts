@@ -51,7 +51,7 @@ export const servicesText = (tr: Tr) => ({
 });
 
 export const levelsText = (tr: Tr) => ({
-  eyebrow: tr("Niveles de servicio", "Service levels"),
+  eyebrow: tr("Niveles de servicio Local y Nacional", "Local and National Service Levels"),
   title: tr(
     "Elija la línea de servicio de acuerdo con sus necesidades",
     "Choose the service line that fits your needs",
@@ -129,8 +129,8 @@ export const processText = (tr: Tr) => ({
 
 export const aboutTeaserText = (tr: Tr) => ({
   crewAlt: tr(
-    "Colaboradores de Transpack cargando cajas en un camión",
-    "Transpack crew loading boxes onto a truck",
+    "Colaboradores de Transpack embalando muebles en guacales de madera junto a cajas de la empresa",
+    "Transpack crew packing furniture in wooden crates next to company boxes",
   ),
   furnitureAlt: tr(
     "Dos colaboradores de Transpack cargando una caja de mudanza",
@@ -164,8 +164,8 @@ export const quoteSectionText = (tr: Tr) => ({
   eyebrow: tr("Cotice su mudanza", "Get a moving quote"),
   title: tr("Contáctenos para cotizar su mudanza", "Contact us for a quote on your move"),
   sub: tr(
-    "Con esta información un asesor se comunicará con una propuesta ajustada a su requerimiento.",
-    "With this information an advisor will get in touch with a proposal tailored to your needs.",
+    "Con la información suministrada por usted, un asesor se comunicará con una propuesta ajustada a su requerimiento.",
+    "With the information you provide, an advisor will get in touch with a proposal tailored to your needs.",
   ),
 });
 

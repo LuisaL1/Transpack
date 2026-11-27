@@ -401,7 +401,9 @@ blanco.
   se descubren y tarjetas con `tilt`; Cobertura con parallax, odómetro y
   marquesina gigante de continentes; Proceso con la línea que se dibuja con el
   scroll (escritorio; `StepsTimeline`, el mismo de los servicios); Quiénes somos con parallax y "1968" en odómetro; Galería
-  en dos filas que se desplazan en sentidos opuestos; tarjetas del blog con
+  en dos filas que se desplazan en sentidos opuestos (mosaico: todas las fotos
+  en 4:3 y del mismo tamaño, 210 px de alto en escritorio, con la segunda fila
+  corrida media foto); tarjetas del blog con
   `tilt`; FAQ que abre con animación de altura (`::details-content`); pasos del
   cotizador que entran deslizándose; Shorts que entran en abanico; franja
   naranja con marquesina gigante que se acelera con la velocidad del scroll y
@@ -439,16 +441,9 @@ blanco.
   locales, nacionales ni internacionales, que llevan el panel del mapa; ver
   "Encabezado bento con mapa"): `PhotoFrame` con la pestaña abajo a la
   izquierda (ícono y nombre del servicio, con su animación), **doble marco**
-  azul desplazado detrás (10 y 20 px) y una **etiqueta de envío** compacta
-  (138 px de ancho, un 40 % menos que la primera; nov. 2026) arriba a la
-  izquierda, girada, con un sello; en Diplomático y Traslado de oficinas va
-  abajo a la derecha para dejar visible al equipo
-  (`LABEL_BOTTOM_RIGHT` en `ShippingPhoto.tsx`). Los datos de la etiqueta son de muestra y van
-  con el servicio (`shippingLabelText(tr, slug)` en `src/data/pages.ts`: p.
-  ej. Bogotá → Madrid por vía marítima en internacionales, orden de bodegaje en
-  Bodegaje, guacal a medida en Embalaje); al agregar un servicio, agregue su
-  etiqueta. Es decorativa (`aria-hidden`). `PageHero` la usa con
-  `shipping={service.slug}`.
+  azul desplazado detrás (10 y 20 px). La **etiqueta de envío** simulada que
+  llevaba encima se quitó por completo (nov. 2026, pedido del equipo). `PageHero`
+  la usa con `shipping={service.slug}`.
 - **Fondos decorativos fijos** (`RouteLines` y `IsoCubes` en
   `src/components/layout/`): son solo fondo, con `-z-10`, detrás de todo el
   contenido; textos, tarjetas e imágenes siempre quedan encima. Se ven donde la
@@ -536,12 +531,13 @@ blanco.
   `PageHero split`). **Desde el 26 de nov. de 2026** (pedido del cliente: "la
   foto es la protagonista", con la misma secuencia de diseño de los servicios
   sin mapa): la **foto a la derecha**, con el mismo marco de los demás servicios
-  (`ShippingPhoto`: pestaña, doble marco azul y etiqueta de envío), y el **mapa
+  (`ShippingPhoto`: pestaña y doble marco azul), y el **mapa
   de fondo detrás del texto**, en la mitad izquierda (`ServiceMapPanel bare`,
   al 80 % de opacidad, decorativo: `aria-hidden`, `inert` y sin eventos del
   puntero; por eso el mapa del mundo ya no abre fichas en el encabezado). El
   texto va en una tarjeta de vidrio blanco **más transparente** (`bg-white/60`,
-  sin desenfoque; antes `/80` con desenfoque) para que se vea el mapa. En
+  sin desenfoque; antes `/80` con desenfoque) para que se vea el mapa; su
+  párrafo va en `tinta` y `font-medium` para que contraste sobre el mapa. En
   celular, la foto arriba y el texto con el mapa detrás debajo. Antes: la foto a
   sangre en los 2/3 izquierdos con la tarjeta encima y el mapa libre en el
   tercio derecho. Bogotá se agranda con `BARE_SCALE`; los nombres de las

@@ -16,6 +16,10 @@ import { useMotion } from "@/hooks/useMotion";
 // borde de la pantalla, sino dentro del ancho del contenido (el de la
 // cabecera), en un recuadro con las esquinas redondeadas como las fotos; sin
 // difuminado en los lados (no gustó).
+// Mosaico (nov. 2026, pedido del equipo): todas las fotos del mismo tamaño
+// (4:3) y un 30 % más pequeñas (de 200/260/300 px de alto a 140/182/210), con la
+// segunda fila corrida media foto, como ladrillos, para que se vean intercaladas
+// y no como un listado.
 export function Gallery() {
   const { tr } = useLang();
   const t = galleryText(tr);
@@ -40,15 +44,17 @@ export function Gallery() {
       dir="ltr"
     >
       {rows.map((row, r) => (
-        <div key={r} data-gallery-row className="flex w-max gap-3">
+        <div
+          key={r}
+          data-gallery-row
+          className={`flex w-max gap-3 ${r === 1 ? "-ms-[93px] sm:-ms-[121px] lg:-ms-[140px]" : ""}`}
+        >
           {[0, 1].map((copy) =>
             row.map((g) => (
               <figure
                 key={`${copy}-${g.caption}`}
                 aria-hidden={copy === 1}
-                className={`group relative m-0 h-[200px] shrink-0 overflow-hidden rounded-[20px] sm:h-[260px] lg:h-[300px] ${
-                  g.tall ? "aspect-[3/4]" : g.wide ? "aspect-[16/9]" : "aspect-[4/3]"
-                }`}
+                className="group relative m-0 aspect-[4/3] h-[140px] shrink-0 overflow-hidden rounded-[16px] sm:h-[182px] lg:h-[210px]"
               >
                 <img
                   decoding="async"

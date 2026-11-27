@@ -37,7 +37,7 @@ export function AboutTeaser() {
               decoding="async"
               src={ABOUT_IMAGES.a}
               alt={t.crewAlt}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-[70%_center]"
             />
           </PhotoFrame>
           <PhotoFrame className="absolute bottom-0 right-0 h-[56%] w-[50%] ring-[6px] ring-white">

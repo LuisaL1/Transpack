@@ -2,14 +2,16 @@
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
 // Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
 import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
-import imgInternacionalPuerto from "@/assets/images/internacional-puerto.jpg";
+// Mudanzas internacionales: puerto con contenedores Transpack (foto del cliente, nov. 2026)
+import imgInternacional from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
 import imgLocalesResidencial from "@/assets/images/locales-residencial.jpg";
 import imgEmbalajeSala from "@/assets/images/embalaje-sala.jpg";
 import imgGuacales from "@/assets/images/guacales.jpeg";
 import imgTrasladoOficinas from "@/assets/images/traslado-de-oficinas.jpg";
-import imgCargue from "@/assets/images/cargue.jpg";
+// Quiénes somos (inicio): embalaje en guacales con cajas Transpack (foto del cliente, nov. 2026)
+import imgQuienesSomos from "@/assets/images/quienes-somos-embalaje.jpg";
 import imgEquipoCaja from "@/assets/images/equipo-caja.jpg";
 import imgServicioDiplomatico from "@/assets/images/servicio-diplomatico.jpg";
 import imgEmbalajeHogar from "@/assets/images/galeria/embalaje-hogar.jpg";
@@ -264,7 +266,7 @@ export const SERVICES: Service[] = [
       "Vía marítima o aérea, desde y hacia Colombia. Lo asesoramos en requisitos, tiempos y trámites aduaneros antes de cotizar.",
     quote: "internacional",
     cta: "Hablar con un asesor",
-    image: imgInternacionalPuerto,
+    image: imgInternacional,
     heroMap: "mundo",
     heroLayout: "split",
     kicker: "Desde y hacia Colombia",
@@ -378,7 +380,7 @@ export const SERVICES: Service[] = [
   {
     slug: "gestion-aduanera",
     icon: "file-earmark-text",
-    title: "Trámites internacionales",
+    title: "Asesoría en Requisitos Aduanales y Documentales",
     short:
       "Ofrecemos una orientación clara y oportuna de la documentación y regulación aduanera para llevar a cabo el proceso de su mudanza en cumplimiento de la normativa internacional.",
     quote: "internacional",
@@ -580,7 +582,7 @@ export const FAQS = [
   },
 ];
 
-// Galería del inicio (dos filas que se desplazan). "tall": foto vertical; "wide": foto destacada 16:9.
+// Galería del inicio (dos filas que se desplazan, todas las fotos en 4:3 desde nov. 2026; "tall" y "wide" ya no cambian el tamaño).
 export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
   { src: imgEmbalajeObra, caption: "Protección de una obra de arte", wide: true },
   { src: imgContenedorCalle, caption: "Contenedor listo para el cargue", wide: true },
@@ -595,7 +597,7 @@ export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boo
   { src: imgEmbalajeHogar, caption: "Embalaje del menaje en casa" },
 ];
 
-export const ABOUT_IMAGES = { a: imgCargue, b: imgEquipoCaja };
+export const ABOUT_IMAGES = { a: imgQuienesSomos, b: imgEquipoCaja };
 
 // ─── Política de tratamiento de datos personales ─────────────────────────────
 // Ley 1581 de 2012 y Decreto 1377 de 2013 (compilado en el Decreto 1074 de

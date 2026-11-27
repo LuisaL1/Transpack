@@ -17,7 +17,7 @@ import { ShippingPhoto } from "@/components/services/ShippingPhoto";
 // una pestaña blanca abajo a la izquierda, del lado del texto (vacía o con
 // `tab`, p. ej. el nombre del servicio). Con `shipping` (el slug del servicio;
 // nov. 2026, en todos los servicios con foto), la foto va además con un doble
-// marco azul desplazado y una etiqueta de envío acorde al servicio (ShippingPhoto).
+// marco azul desplazado (ShippingPhoto; sin la etiqueta de envío, quitada en nov. 2026).
 //
 // Movimiento (nov. 2026, como el inicio): el contenido entra escalonado y el
 // h1 sale de una máscara (CSS .hero-stagger y .line-mask, sin esperar al
@@ -178,9 +178,7 @@ export function PageHero({
     (blend ? (
       img
     ) : shipping ? (
-      <ShippingPhoto slug={shipping} tab={tab}>
-        {img}
-      </ShippingPhoto>
+      <ShippingPhoto tab={tab}>{img}</ShippingPhoto>
     ) : (
       <PhotoFrame tab={tab} className="h-full">
         {img}
@@ -239,7 +237,11 @@ export function PageHero({
             className={`relative mx-auto w-[min(100%-32px,1200px)] ${
               visual ? "lg:ms-[max(16px,calc((100vw-1200px)/2))] lg:w-auto" : ""
             } ${
-              mapBehind ? "rounded-[28px] bg-white/60 p-6 ring-1 ring-white/70 sm:p-9 lg:p-10" : ""
+              mapBehind
+                ? // Sobre el mapa, el párrafo en tinta (más oscuro que el gris
+                  // del texto) para que se lea bien
+                  "rounded-[28px] bg-white/60 p-6 ring-1 ring-white/70 sm:p-9 lg:p-10 [&_p]:font-medium [&_p]:text-tinta"
+                : ""
             }`}
           >
             {children}
