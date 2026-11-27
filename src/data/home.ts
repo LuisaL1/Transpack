@@ -199,7 +199,9 @@ export const contactText = (tr: Tr) => ({
 });
 
 // Franja de certificaciones y membresías al pie de Contacto (nov. 2026). Los
-// nombres completos van en inglés, como los usan las asociaciones.
+// nombres completos de las asociaciones internacionales van en inglés, como
+// ellas los usan; AMCHAM y la Cámara de la Diversidad (membresías en Colombia,
+// nov. 2026), con el texto de su propio logo.
 export const certsText = (tr: Tr) => ({
   eyebrow: tr("Certificaciones y membresías", "Certifications and memberships"),
   title: tr("Respaldo internacional en cada traslado", "International backing on every move"),
@@ -214,6 +216,16 @@ export const certsText = (tr: Tr) => ({
       key: "paima",
       name: "PAIMA",
       full: "Pan American International Movers Association",
+    },
+    {
+      key: "amcham",
+      name: "AMCHAM Colombia",
+      full: tr("Cámara de Comercio Colombo Americana", "Colombian American Chamber of Commerce"),
+    },
+    {
+      key: "diversidad",
+      name: tr("Cámara de la Diversidad", "Chamber of Diversity"),
+      full: tr("Membresía", "Membership"),
     },
   ],
 });

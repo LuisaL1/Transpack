@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import lacmaImg from "@/assets/images/lacma.jpg";
 import iamImg from "@/assets/images/cert-iam.svg";
+import amchamImg from "@/assets/images/cert-amcham.png";
+import diversidadImg from "@/assets/images/cert-diversidad.png";
 import { useLang } from "@/i18n";
 import { certsText } from "@/data/home";
 import { useMotion } from "@/hooks/useMotion";
@@ -14,8 +16,18 @@ import { TILE, TileStripe } from "@/components/home/Hero";
 // Logos: LACMA, el sello del cliente (RecursosTranspack/Imagenes); IAM, el
 // oficial de iamovers.org; PAIMA aún sin archivo (su marca registrada es la
 // palabra "PAIMA"), así que va como logotipo de texto hasta que el cliente
-// entregue el logo.
-const LOGOS: Record<string, string> = { lacma: lacmaImg, iam: iamImg };
+// entregue el logo. AMCHAM Colombia y la Cámara de la Diversidad (nov. 2026):
+// solo el símbolo de su logo (la estrella y la "S"), recortado sin el fondo de
+// RecursosTranspack/Imagenes/*-cert.jpeg, para que quepa como los demás; el
+// nombre va al lado. Van en una segunda fila de dos, centrada bajo las tres
+// primeras (pirámide invertida 3-2): rejilla de 6 columnas, cada ficha ocupa
+// 2 y la cuarta empieza en la columna 2.
+const LOGOS: Record<string, string> = {
+  lacma: lacmaImg,
+  iam: iamImg,
+  amcham: amchamImg,
+  diversidad: diversidadImg,
+};
 
 export function Certifications() {
   const { tr } = useLang();
@@ -34,13 +46,15 @@ export function Certifications() {
             {t.title}
           </h3>
         </div>
-        <ul className="grid gap-3 sm:grid-cols-3">
-          {t.items.map((c) => (
+        <ul className="grid gap-3 sm:grid-cols-6">
+          {t.items.map((c, i) => (
             <li
               key={c.key}
               data-cert
               title={`${c.name} · ${c.full}`}
-              className={`${TILE} flex h-28 items-center gap-4 border-linea! px-5 shadow-[var(--shadow-card)]`}
+              className={`${TILE} flex h-28 items-center gap-4 border-linea! px-5 shadow-[var(--shadow-card)] sm:col-span-2 ${
+                i === 3 ? "sm:col-start-2" : ""
+              }`}
             >
               <span className="grid h-16 w-20 shrink-0 place-items-center">
                 {LOGOS[c.key] ? (

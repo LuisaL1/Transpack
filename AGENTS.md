@@ -466,7 +466,11 @@ blanco.
   clientes (`TILE` y `TileStripe`, exportados de `Hero.tsx`), que entran
   escalonadas. Logos: LACMA es el sello del cliente e IAM el oficial de
   iamovers.org (`cert-iam.svg`). PAIMA va como logotipo de texto hasta que el
-  cliente entregue su logo (su sitio no respondía).
+  cliente entregue su logo (su sitio no respondía). Debajo, en una fila de dos
+  centrada (pirámide invertida 3-2, nov. 2026), las membresías **AMCHAM
+  Colombia** y **Cámara de la Diversidad**, con solo el símbolo de su logo
+  (`cert-amcham.png`, `cert-diversidad.png`, recortados de
+  `RecursosTranspack/Imagenes/*-cert.jpeg`).
 - Clientes y embajadas del inicio (`Hero`): dos cuadrículas fijas con todos los
   logos, en gris; al pasar el cursor el logo toma sus colores y su ficha se
   levanta con sombra y la franja naranja.
