@@ -2,7 +2,6 @@
 // changes in Spanish, update it here too. Internal codes (slug, quote, id)
 // stay in Spanish because they drive URLs and the quote form.
 // Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
-import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 import imgInternacional from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
 import imgBodegajeBodega from "@/assets/images/bodegaje-bodega.jpg";
@@ -22,7 +21,7 @@ import imgMontacargasBodega from "@/assets/images/galeria/montacargas-bodega.jpg
 import imgMenajeListo from "@/assets/images/galeria/menaje-listo.jpg";
 import imgSalaProtegida from "@/assets/images/galeria/sala-protegida.jpg";
 import imgBodegaAlmacenamiento from "@/assets/images/galeria/bodega-almacenamiento.jpg";
-import imgContenedorCalle from "@/assets/images/galeria/contenedor-calle.jpg";
+import imgNacional from "@/assets/images/nacional-contenedor.jpg";
 import imgEmbalajeObra from "@/assets/images/galeria/embalaje-obra.jpg";
 import type { Service } from "@/data/site";
 
@@ -125,7 +124,7 @@ export const SERVICES: Service[] = [
       "Moves to Colombia's main cities with a detailed inventory, professional packing, vehicle monitoring and door-to-door delivery.",
     quote: "nacional",
     cta: "Get a quote",
-    image: imgNacionalCarretera,
+    image: imgNacional,
     heroMap: "colombia",
     heroLayout: "split",
     headline: "Your home, door to door",
@@ -456,7 +455,6 @@ export const FAQS = [
 
 export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
   { src: imgEmbalajeObra, caption: "Protecting a work of art", wide: true },
-  { src: imgContenedorCalle, caption: "Container ready for loading", wide: true },
   { src: imgEmbalajeBiblioteca, caption: "Packing a home library", wide: true },
   { src: imgSalaProtegida, caption: "Furniture protected in the living room", wide: true },
   { src: imgMontacargasBodega, caption: "Forklift in our warehouse", wide: true },

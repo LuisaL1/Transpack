@@ -1,7 +1,6 @@
 // Contenido del sitio. Fuentes: carpeta RecursosTranspack/ (Modelo de
 // Negocio, Lógica de Cotización y blogs) y el Manual de Marca.
 // Fotos de los servicios entregadas por el cliente (nov. 2026); originales en RecursosTranspack/Imagenes
-import imgNacionalCarretera from "@/assets/images/nacional-carretera.jpg";
 // Mudanzas internacionales: puerto con contenedores Transpack (foto del cliente, nov. 2026)
 import imgInternacional from "@/assets/images/internacional-puerto.jpg";
 import imgAduanaCajas from "@/assets/images/aduana-cajas.jpg";
@@ -25,7 +24,9 @@ import imgMontacargasBodega from "@/assets/images/galeria/montacargas-bodega.jpg
 import imgMenajeListo from "@/assets/images/galeria/menaje-listo.jpg";
 import imgSalaProtegida from "@/assets/images/galeria/sala-protegida.jpg";
 import imgBodegaAlmacenamiento from "@/assets/images/galeria/bodega-almacenamiento.jpg";
-import imgContenedorCalle from "@/assets/images/galeria/contenedor-calle.jpg";
+// Mudanzas nacionales: contenedor Transpack en la calle (original Galeria/Camion.jpg,
+// sacado de la galería del inicio en nov. 2026)
+import imgNacional from "@/assets/images/nacional-contenedor.jpg";
 import imgEmbalajeObra from "@/assets/images/galeria/embalaje-obra.jpg";
 
 export const CONTACT = {
@@ -223,7 +224,7 @@ export const SERVICES: Service[] = [
       "Traslado a las principales ciudades de Colombia con inventario detallado, embalaje profesional, monitoreo del vehículo y entrega puerta a puerta.",
     quote: "nacional",
     cta: "Cotizar",
-    image: imgNacionalCarretera,
+    image: imgNacional,
     heroMap: "colombia",
     heroLayout: "split",
     headline: "Su hogar puerta a puerta",
@@ -585,7 +586,6 @@ export const FAQS = [
 // Galería del inicio (dos filas que se desplazan, todas las fotos en 4:3 desde nov. 2026; "tall" y "wide" ya no cambian el tamaño).
 export const GALLERY: { src: string; caption: string; tall?: boolean; wide?: boolean }[] = [
   { src: imgEmbalajeObra, caption: "Protección de una obra de arte", wide: true },
-  { src: imgContenedorCalle, caption: "Contenedor listo para el cargue", wide: true },
   { src: imgEmbalajeBiblioteca, caption: "Embalaje de la biblioteca", wide: true },
   { src: imgSalaProtegida, caption: "Muebles protegidos en la sala", wide: true },
   { src: imgMontacargasBodega, caption: "Montacargas en la bodega", wide: true },
